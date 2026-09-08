@@ -1,0 +1,22 @@
+{
+  // 사용자 설정 스냅샷 (%APPDATA%\Code\User\settings.json / ~/Library/Application Support/Code/User/settings.json)
+  // 기계마다 다른 값(경로, 폰트 크기 등)은 넣지 않는다 — Settings Sync가 알아서 제외한다.
+  "git.autofetch": true,
+  "editor.linkedEditing": true,
+  "liveServer.settings.donotShowInfoMsg": true,
+  "redhat.telemetry.enabled": true,
+
+  // Claude Code 확장 — 공식 문서 "Extension settings" 기준
+  "claudeCode.preferredLocation": "panel",
+  "claudeCode.autosave": true,
+  "claudeCode.focusView": true,
+  "claudeCode.respectGitIgnore": true,
+  "claudeCode.enableReopenClosedSessionShortcut": true,
+
+  // Markdown — 이 저장소와 kolo_pwa 등이 markdownlint를 CI에서 돌리므로 에디터에서도 같은 기준으로
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.formatOnSave": false
+  },
+  "files.eol": "\n"
+}

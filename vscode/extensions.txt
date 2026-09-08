@@ -1,0 +1,26 @@
+# VS Code 확장 — 실제 저장소 스택(정적 PWA·Spring Boot·FastAPI·셸/PowerShell·Markdown CI)에 필요한 것만.
+# 커뮤니티 "필수" 목록(Prettier·ESLint·GitLens·Error Lens) 중 프로젝트 설정 파일이 없는 것은 뺐다 — 설정 없이 켜면 CI와 다른 기준으로 잔소리만 한다.
+# 갱신: 아래 목록을 손으로 고친다. `code --list-extensions` 결과를 그대로 덮어쓰지 않는다.
+
+# 핵심
+anthropic.claude-code
+ms-ceintl.vscode-language-pack-ko
+usernamehw.errorlens
+
+# 문서 · CI (저장소들이 markdownlint와 GitHub Actions를 실제로 돌림)
+davidanson.vscode-markdownlint
+github.vscode-github-actions
+
+# 언어별 — 실제 저장소가 있는 스택만
+ms-python.python
+ms-python.vscode-pylance
+ms-python.debugpy
+vscjava.vscode-java-pack
+vscjava.vscode-gradle
+ms-vscode.powershell
+
+# 원격 · 정적 페이지
+ms-vscode-remote.remote-ssh
+ritwickdey.liveserver
+
+# Mac에서만 추가: swiftlang.swift-vscode (Xcode 필요, Windows에선 무의미)
