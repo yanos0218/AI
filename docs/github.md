@@ -43,8 +43,37 @@ Claude와 GitHub를 엮는 방법은 크게 넷이다. 아래는 **사용자 저
 
 **효과가 나는 최소 수준**: (1) 커밋·push, (2) 태그·Release, (3) Actions로 테스트 — 이 셋은 이미 하고 있다. 그다음 한 단계는 PR인데, 이건 GitHub 자체 때문이 아니라 Claude 자동화(위 표의 "결정 필요" 2건)를 쓸 때 비로소 값어치가 생긴다.
 
+## Actions 제한과 방지
+
+비공개 저장소는 한도가 있다(GitHub Free, 2026-09 기준). 초과하면 워크플로가 **실행되지 않고 실패**하고, 분은 월초에 리셋된다.
+
+| 한도 | 값 | 초과하면 |
+| --- | --- | --- |
+| 월 실행 분 | 2,000분 (계정 전체 합산, Linux 기준. Windows 2배·macOS 10배 과금) | 그 달 남은 워크플로 전부 실패 |
+| 아티팩트·패키지 저장 | 500MB | 업로드 실패 |
+| 캐시 | 저장소당 10GB | 오래된 것부터 삭제 |
+| job 실행 시간 | 6시간 | 강제 취소 |
+| 동시 job | 20개 | 대기 |
+| API(`GITHUB_TOKEN`) | 시간당 1,000회/저장소 | 403, 폴링 루프가 주범 |
+
+방지 장치와 어디에 적용돼 있는지:
+
+| 장치 | 효과 | 적용 |
+| --- | --- | --- |
+| 경로 필터 / docs-only 감지 | 문서만 바뀐 push에 무거운 테스트를 돌리지 않음 | kolo_pwa `test.yml` `detect-changes` 잡(Playwright 5~6분 절약) |
+| `concurrency` + `cancel-in-progress` | 같은 브랜치에 연속 push 시 이전 실행 취소 | kolo_pwa, 이 저장소 |
+| `push: branches: [main]` + `pull_request` | 브랜치 push와 PR이 같은 커밋을 두 번 돌리지 않음 | 이 저장소 |
+| `timeout-minutes` (잡마다) | 멈춘 잡이 6시간짜리 청구가 되는 것을 막음 | kolo_pwa 5·15분, 이 저장소 5분 |
+| 매트릭스 대신 순차 스텝 | VM 부팅 오버헤드 중복 방지 | kolo_pwa 브라우저 엔진 2종을 한 잡에서 |
+| 아티팩트 안 올림, 캐시 최소 | 500MB 한도 | kolo 저장소 규칙(auto memory에 기록됨) |
+| 폴링은 스크립트로, 15초 간격 | `gh run view` 타이트 루프가 API 한도를 소진하는 문제(Claude Code 알려진 버그) | kolo_pwa `scripts/wait-for-ci.sh`. 다른 저장소에서는 `gh run watch` |
+| 월 사용량 확인 | 한도 근접을 미리 봄 | Settings → Billing and plans → Usage. `gh api users/<id>/settings/billing/actions`는 `user` 스코프 필요 |
+
+현재 kolo_pwa·kolo-api가 최근 30일에 각각 100회 이상 실행됐다(`gh run list` 상한). 분 단위 실제 사용량은 Billing 페이지에서 봐야 한다(C-38).
+
 ## 참고한 자료
 
+- [GitHub Actions 사용 제한 공식](https://docs.github.com/en/actions/reference/limits)
 - [Claude Code 공식 — GitHub Actions](https://code.claude.com/docs/en/github-actions), [Code Review](https://code.claude.com/docs/en/code-review), [Claude Code on the web](https://code.claude.com/docs/en/claude-code-on-the-web)
 - [GitHub 플랜 비교 공식](https://docs.github.com/en/get-started/learning-about-github/githubs-plans), [Rulesets Free 비공개 저장소 불가 — community](https://github.com/orgs/community/discussions/190190), [The Git Workflow That Actually Works for Solo Developers (2026)](https://dev.to/armorbreak/the-git-workflow-that-actually-works-for-solo-developers-2026-2mna), [Popit — GitHub로 프로젝트 관리하기](https://www.popit.kr/github%EB%A1%9C-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EA%B4%80%EB%A6%AC%ED%95%98%EA%B8%B0-part1-%EC%9D%B4%EC%8A%88-%EB%B0%9C%EA%B8%89-%EB%B6%80%ED%84%B0-%EC%BD%94%EB%93%9C%EB%A6%AC%EB%B7%B0%EA%B9%8C/)
 - [Dale Seo — Claude Code GitHub Actions 사용법](https://daleseo.com/claude-code-action/), [Hyperithm — Claude Code 심화 활용법](https://tech.hyperithm.com/claude_code_guides_2), [doug-skinner/github-cli-claude-skill](https://github.com/doug-skinner/github-cli-claude-skill)

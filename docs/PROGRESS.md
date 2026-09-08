@@ -78,6 +78,7 @@
 - [ ] C-35 저장소 표준 적용 — `docs/repo-standard.md` 체크리스트를 Script·Etc에 맞추고(다음에 열 때), 표준을 자동으로 맞춰 주는 `repo-setup` 스킬을 초안으로(계획). 전역 지침에 "세션당 한 번 제안" 줄 추가는 C-37에 포함
 - [ ] C-36 세션 관찰 기록 — 세션 끝에 `drafts/observations/YYYY-MM-DD.md`에 요청·대화·작업 방식 관찰을 적고, 월 1회(C-21) 반복되는 것만 `drafts/claude-md/` 후보로. 첫 기록 2026-09-08 작성됨. 다른 저장소는 auto memory(`feedback_*`)가 같은 역할
 - [ ] C-37 **전역 지침 수정안 결정** — `drafts/claude-md/CLAUDE.md`에 4가지: (1) 로컬 커밋은 묻지 않음, (2) 배치 = 메시지 하나, "진행해줘"면 끝까지 재확인 없음, (3) 저장소 표준 미달 세션당 한 번 제안, (4) §7 커밋 규칙 문구. 승인 시 기본 영역 승격 → 확인 기준이 바뀌므로 등급은 MAJOR 성격이나 v1.0.0 전이라 `v0.2.0`
+- [ ] C-38 Actions 월 사용량 확인 — Settings → Billing → Usage에서 분·저장소 사용량. kolo_pwa·kolo-api가 30일 100회 이상 실행. 2,000분의 절반을 넘으면 kolo-api `build.yml`에도 docs-only 감지 추가
 - [ ] C-31 Dependabot 알림 켜기 — AI·OpenClaw·Script·Etc 저장소 Settings → Security → Dependabot alerts. 무료, 사용자가 클릭(외부 서비스 설정 변경이라 Claude가 대신 켜지 않음)
 - [ ] C-32 GitHub 2FA 켜져 있는지 확인 — Settings → Password and authentication
 - [ ] C-18 GitHub 활용 결정 — README "GitHub 활용" 표의 "결정 필요" 2건: (1) Claude Code on the web으로 PR 만들기(Codex 클라우드 PR 방식 대체), (2) `@claude` GitHub Actions 설치 여부. 둘 다 PR 단위 작업 습관이 전제

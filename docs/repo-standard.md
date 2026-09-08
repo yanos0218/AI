@@ -14,7 +14,7 @@
 | 6 | 진행 보드 | 지금 어디까지 됐는지 | `docs/PROGRESS.md` 또는 동급 |
 | 7 | Dependabot 알림 | 무료, 클릭 1회 | Settings → Security → Dependabot alerts |
 | 8 | 비밀 정보 차단 | `.env`·토큰 커밋 방지 | `.gitignore` + 전역 `permissions.deny` |
-| 9 | Actions 분 절약 | 비공개 저장소 월 2,000분 | 경로 필터(docs만 바뀌면 테스트 생략), `concurrency` |
+| 9 | Actions 한도 방지 | 비공개 저장소 월 2,000분·아티팩트 500MB·API 시간당 1,000회 | 경로 필터, `concurrency`, `timeout-minutes`, main만 push 트리거, 폴링은 스크립트로. 상세는 [github.md](github.md) "Actions 제한과 방지" |
 
 ## 현황 (2026-09-08)
 
