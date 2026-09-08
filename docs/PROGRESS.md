@@ -98,12 +98,12 @@
 - [ ] <a id="c-16"></a>C-16 Linux(Rocky) 반영 — C-15와 동일 절차. jq 없어도 상태줄은 python/node 폴백
 - [ ] <a id="c-17"></a>C-17 Claude.ai 웹 업로드 — `bash tools/pack.sh` → Customize → Skills 업로드, Project instructions에 `base/claude-md/CLAUDE.md` 붙여넣기. 이후 CLAUDE.md를 고칠 때마다 다시 붙여넣어야 함(README "규칙을 고칠 때")
 - [~] <a id="c-34"></a>C-34 GitHub Issues 시험 시작 — 첫 Issue [#1](https://github.com/yanos0218/AI/issues/1)(복합 명령 승인 프롬프트). 규칙: 작업 중 발견한 문제는 Issue, 계획·상태는 이 보드, 항목에 `#N`. 한 달 뒤(10월 점검) 유지 여부 판단 (2026-09-09)
-- [~] <a id="c-35"></a>C-35 저장소 표준 적용 — `repo-setup` 스킬 초안(`drafts/skills/repo-setup/`), Script 클론에서 1시나리오 통과(Sonnet $0.27, 9항목 판정표 + **이력 속 개인키 발견**). 상세 [docs/progress/C-35.md](progress/C-35.md). Script·Etc에 실제 적용은 사용자 결정 후(다른 저장소 push) (2026-09-09)
-- [ ] <a id="c-18"></a>C-18 GitHub 활용 결정 — **추천(2026-09-09)**: (1) Claude Code on the web을 OpenClaw에서 먼저(Codex 클라우드 PR을 대체, Actions 분 소모 없음, 폰에서 지시·auto-fix). (2) `@claude` Actions는 보류(이슈 미사용, Actions 분·토큰 이중 소모). 전제인 PR 습관은 OpenClaw에 이미 있음(PR 18개). 사용자 결정 대기
+- [~] <a id="c-35"></a>C-35 저장소 표준 적용 — `repo-setup` 초안 1시나리오 통과. Script는 **현재 zip 안에도 개인키** 확인. 추천 순서(보안 처리 → 최소 + shellcheck CI, Etc는 최소 3파일)는 [docs/progress/C-35.md](progress/C-35.md). 항목마다 사용자 확인 후 진행
+- [~] <a id="c-18"></a>C-18 GitHub 활용 — **Claude Code on the web을 OpenClaw에서 채택(2026-09-09)**, `@claude` Actions 보류. 절차는 `docs/github.md` "Claude Code on the web 켜기". 사용자: `/web-setup`(대화형) + GitHub App. Claude: OpenClaw `CLAUDE.md` 초안(브랜치 `chore/claude-md`, push·PR 확인 대기)
 - [ ] <a id="c-19"></a>C-19 블로그용 스킬 — 원본은 OpenClaw `core/definitions/modes/blog.md`·`core/playbooks/blog-*.md`(참조만). OpenClaw 원칙 "Claude Code가 블로그를 직접 쓰지 않는다"와 충돌하므로, 스킬화 전에 **역할 구분을 먼저 정리**(초안은 누가, 검수는 누가)
 - [ ] <a id="c-20"></a>C-20 사업기획용 스킬 — 요구사항 미정. 먼저 "어떤 산출물(시장 조사·경쟁 분석·사업계획서 초안 중 무엇)을 어떤 형식으로" 구체화 대화
 - [ ] <a id="c-25"></a>C-25 `/insights` 실행 — 대화형 세션에서 `/insights`를 치면 최근 30일 로컬 세션을 분석해 마찰 지점과 CLAUDE.md 제안을 HTML로 보여줌(외부 전송 없음). Windows는 kolo_pwa 3세션뿐이라 결과가 얕을 수 있음. **Mac mini에서 실행**해야 OpenClaw 기록까지 반영됨. 결과에서 쓸 만한 제안은 `drafts/claude-md/`로
-- [~] <a id="c-26"></a>C-26 claude.ai 메모리 검토 — 사용자가 데이터 내보내기 요청함(2026-09-08 manifest, 5개 zip). **`memories-000.zip`(가능하면 `conversations-000.zip`도)을 내려받아 `drafts/observations/claude-ai-export/`에 넣어 주면** 분석. 내보내기 URL은 1회용이라 Claude가 직접 받지 않음
+- [~] <a id="c-26"></a>C-26 claude.ai 메모리 검토 — 받은 것은 manifest(링크 목록)뿐. 필요한 파일: manifest의 `memories-000.zip` 링크(브라우저에서 로그인 상태로 클릭)로 내려받아 `C:\Git\AI\drafts\observations\claude-ai-export\memories-000.zip`에 저장. `conversations-000.zip`도 같은 폴더면 대화 방식 분석까지. 링크는 1회용
 - [~] <a id="c-27"></a>C-27 auto memory 수집 — Windows 첫 수집 완료(`drafts/observations/memory-windows/`, 29개, 2026-09-09). Mac은 C-15 때. 전역 성향 추출은 월 점검 5번에서
 - [ ] <a id="c-22"></a>C-22 사용량·비용 확인 습관 — 상태줄 `$`와 claude.ai 사용량 페이지. 시험 세션 4회에 약 2달러였음. 한 달 뒤 실제 사용량을 보고 모델/effort 기본값 재검토
 

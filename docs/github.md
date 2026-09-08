@@ -43,6 +43,20 @@ Claude와 GitHub를 엮는 방법은 크게 넷이다. 아래는 **사용자 저
 
 **효과가 나는 최소 수준**: (1) 커밋·push, (2) 태그·Release, (3) Actions로 테스트 — 이 셋은 이미 하고 있다. 그다음 한 단계는 PR인데, 이건 GitHub 자체 때문이 아니라 Claude 자동화(위 표의 "결정 필요" 2건)를 쓸 때 비로소 값어치가 생긴다.
 
+## Claude Code on the web 켜기 (C-18 채택, 2026-09-09)
+
+결정: `@claude` Actions는 보류하고, **Claude Code on the web**을 OpenClaw에서 먼저 쓴다. OpenClaw가 Codex 클라우드 PR을 쓰던 자리라 PR 흐름이 이미 있고, Actions 분을 쓰지 않으며, 폰에서 지시하고 PR의 CI 실패·리뷰 코멘트를 자동 수정(auto-fix)할 수 있다.
+
+| 순서 | 무엇 | 누가 |
+| --- | --- | --- |
+| 1 | 터미널에서 `claude`를 열고 `/web-setup` 입력 — 로컬 `gh` 토큰을 claude.ai 계정에 연결하고 Default 환경을 만든다. `gh auth refresh -s workflow`를 먼저 해 두면 워크플로 파일 push도 됨. 브라우저로 하려면 claude.ai/code → Sign in with GitHub | 사용자 (대화형 명령이라 Claude가 대신 못 함) |
+| 2 | auto-fix를 쓰려면 Claude GitHub App을 OpenClaw에 설치(claude.ai/code 온보딩에서 안내, 또는 github.com/apps/claude) | 사용자 |
+| 3 | OpenClaw에 루트 `CLAUDE.md` 추가 — 클라우드 VM은 저장소의 CLAUDE.md만 읽고 `~/.claude`는 못 읽으므로, 확인 기준과 검사 명령을 저장소 안에 둔다. 초안은 브랜치 `chore/claude-md`(스크래치패드 클론), push·PR은 확인 후 | Claude(초안) → 사용자(승인) |
+| 4 | 첫 작업: claude.ai/code에서 OpenClaw 선택 → Plan 모드로 작은 문서 작업 하나 → diff 확인 → Create PR → merge. 터미널에서는 `claude --cloud "작업 설명"`(현재 폴더가 OpenClaw 클론일 때) | 사용자 |
+| 5 | 한 달 뒤 판단: PR 리뷰 부담, 세션 한도 소모, Codex 대비 품질 | 월 점검 |
+
+주의: 클라우드 세션은 플랜 한도를 공유하고, 병렬 세션은 그만큼 더 쓴다. `--teleport`로 로컬에 가져오면 이후 작업은 로컬 문맥이다.
+
 ## Actions 제한과 방지
 
 비공개 저장소는 한도가 있다(GitHub Free, 2026-09 기준). 초과하면 워크플로가 **실행되지 않고 실패**하고, 분은 월초에 리셋된다.
