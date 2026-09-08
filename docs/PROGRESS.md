@@ -62,6 +62,7 @@
 - [ ] C-11 `permissions.allow` 보완 — C-07 시험에서 `python -m py_compile`이 막혔고, `cd X && ls`는 `Read(./.env)` deny 규칙과 겹쳐 승인 프롬프트가 뜸. 자주 쓰는 검사 명령을 allow에 추가하고 예시 파일에도 반영
 - [ ] C-12 이 저장소 CI — markdownlint + shellcheck를 GitHub Actions로 (kolo_pwa `test.yml`의 경로 필터 방식 참고, 복사 금지). Actions 분은 문서 변경만이라 소액
 - [ ] C-13 개발용 스킬(파일 관리, 테스트 방법 정의) — 참고 원본 kolo_pwa `docs/testing.md`(참조만). `skills/_template` 구조, 3시나리오 시험 후 완료
+- [ ] C-29 `scripts/pack.sh`가 Windows Git Bash에서 실패 — `zip: command not found`(v0.1.0 컷 중 발견). 기본 영역 수정이므로 초안을 `drafts/scripts/pack.sh`에: `zip`이 없으면 `python -c zipfile`로 폴백(제외 규칙 동일). 이번 zip은 같은 규칙의 python 명령으로 임시 생성
 - [ ] C-14 Notification 훅 — 병렬 세션(`claude --bg`, worktree)을 실제로 쓰기 시작하면 추가. 그전엔 보류
 
 ## 3. 할 일 — 배포·운영·비개발
