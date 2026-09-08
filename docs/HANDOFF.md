@@ -8,7 +8,7 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 
 ## 현재 상태 (2026-09-08)
 
-- 저장소: github.com/yanos0218/AI (비공개), `main` = `d5a3fc1`. v0.1.0 릴리즈 커밋까지 완료(`docs/versioning.md`·`CHANGELOG.md` 신설). **태그·push·GitHub Release는 사용자 확인 후** — 노트는 스크래치패드 `release-notes-v0.1.0.md`, 첨부는 `dist/dev-release.zip`(`bash scripts/pack.sh`).
+- 저장소: github.com/yanos0218/AI (비공개), `main` = `d5a3fc1`. **v0.1.0 릴리즈 완료(2026-09-08)** — 태그·push·GitHub Release(`dev-release.zip` 첨부) 됨. 이후 docs 커밋은 로컬에만 있음(push는 다음 확인 때).
 - **dev-release 발동 테스트 완료(2026-09-08)** — README 시험 시나리오 3개를 스크래치패드에 임시 git 저장소로 만들고 `claude -p "..." --output-format stream-json --verbose` 새 세션으로 실행. A(versioning.md)·B(두 자리 태그) 통과. C(태그·CHANGELOG 없음)는 처음에 `v0.1.0`을 스스로 정해 실패 → SKILL.md §0·§1에 "태그 없으면 형식·시작 번호와 CHANGELOG 생성 여부를 먼저 묻는다" 추가 후 재시험 통과. 설치본 `~/.claude/skills/dev-release/`에도 복사됨.
 - 테스트 중 관찰: `cd X && ls -la` 같은 복합 명령은 settings의 `Read(./.env)` deny 규칙 때문에 승인 프롬프트가 뜸(스킬 문제 아님, 모델이 `git -C`·Glob으로 우회함). `python -m py_compile`은 allow 목록에 없어 막힘.
 - 자산별 단계(계획/초안/검증/기본)와 표면별 배포 상태는 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본. 아래 두 줄은 요약.

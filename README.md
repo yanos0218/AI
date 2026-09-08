@@ -168,6 +168,32 @@ Claude와 GitHub를 엮는 방법은 크게 넷이다. 아래는 **사용자 저
 
 추천 순서: PR 습관(브랜치에서 작업 → `gh pr create` → merge)을 먼저 한 저장소에서 시도하고, 그게 편하면 Claude Code on the web을 켠다. `@claude` Actions는 이슈를 쓰기 시작할 때.
 
+### GitHub 기능 전체 대비 사용 수준 (2026-09-08)
+
+"전부 써야 하나"에 대한 답은 **아니오**. 계정은 GitHub Free이고 저장소가 전부 비공개라 애초에 못 쓰는 기능이 있고, 1인 개발에서 커뮤니티가 공통으로 권하는 수준은 "main + 기능 브랜치, Conventional Commits, SemVer 태그, Actions로 테스트·배포, 나머지는 필요해질 때"다. 현재 사용 수준은 그 권장과 거의 일치한다.
+
+| 기능 | 현재 | 판단 | 이유 |
+| --- | --- | --- | --- |
+| 저장소·커밋·push | 11개 저장소, Conventional Commits | 쓴다 | 백업·이력의 기본 |
+| Releases·태그 | kolo_pwa 30, OpenClaw 42, 이 저장소 v0.1.0 | 쓴다 | 어느 기기에 어느 버전이 깔렸는지의 기준점. zip 첨부로 웹 업로드 산출물도 보관 |
+| Actions | kolo_pwa test·release, OpenClaw lint·release | 쓴다 | 월 2,000분 한도. kolo_pwa처럼 경로 필터로 절약. 이 저장소는 C-12 |
+| Dependabot 알림 | kolo_pwa·kolo-api만 켜짐 | **켠다** | 무료, 저장소 Settings → Security 클릭 1회. AI·OpenClaw·Script·Etc는 꺼져 있음 |
+| Dependabot 버전 업데이트 | kolo_pwa(actions만) | 유지 | 의존성 트리가 있는 저장소만 |
+| PR | 사람이 만든 PR 없음(Codex·Dependabot뿐) | 필요할 때 | Claude 클라우드·`@claude`·리뷰 코멘트가 전부 PR 위에서 도니, 그걸 쓰기로 하면 같이 시작 |
+| 이슈·마일스톤·라벨 | 이슈 0, 마일스톤 0, 라벨 기본값 | 안 쓴다 | `docs/PROGRESS.md` + `P-NN`이 대체. 커뮤니티 다수는 이슈를 백로그로 쓰지만, 1인이면 파일 하나가 더 빠르다 |
+| Projects(칸반) | 켜져 있으나 미사용 | 안 쓴다 | 이슈를 안 쓰면 의미 없음 |
+| Wiki·Discussions·Pages | 꺼짐 | 불가/불필요 | Free 비공개 저장소는 Wiki·Pages 불가. 문서는 `docs/`, 서비스는 NAS |
+| 브랜치 보호·룰셋·CODEOWNERS | 없음 | **불가**(Pro 필요) | 대신 로컬 훅(`git-guardrails`)이 push 앞에서 확인. 두 번째 개발자가 오면 Pro($4/월) |
+| Secret scanning·Code scanning | 없음 | 불가(Free 비공개) | 대신 `permissions.deny`로 `.env` 읽기·편집 차단, CLAUDE.md §7 |
+| Codespaces | 미사용(월 120시간 무료) | 안 쓴다 | 브라우저 개발 환경은 Claude Code on the web이 같은 자리 |
+| Copilot | 미사용 | 안 쓴다 | Claude가 그 역할 |
+| Packages·Gists | 미사용 | 안 쓴다 | 배포 산출물이 없음 |
+| Actions secrets·Environments | 0개 | 필요할 때 | `@claude` Actions를 켜면 토큰 1개가 처음 생김 |
+| 2FA | 확인 불가(토큰 권한 부족) | **확인** | GitHub 필수화 대상. Settings → Password and authentication |
+
+**효과가 나는 최소 수준**: (1) 커밋·push, (2) 태그·Release, (3) Actions로 테스트 — 이 셋은 이미 하고 있다. 그다음 한 단계는 PR인데, 이건 GitHub 자체 때문이 아니라 Claude 자동화(위 표의 "결정 필요" 2건)를 쓸 때 비로소 값어치가 생긴다.
+
+
 ## 새 스킬 추가
 
 1. `skills/_template/`을 복사해 이름을 바꾼다.
@@ -197,6 +223,7 @@ Claude와 GitHub를 엮는 방법은 크게 넷이다. 아래는 **사용자 저
 - [Claude 도움말 — 스킬 사용](https://support.claude.com/en/articles/12512180-use-skills-in-claude), [Claude Design 시작하기](https://support.claude.com/en/articles/14604416-get-started-with-claude-design)
 - [VS Code — Settings Sync](https://code.visualstudio.com/docs/configure/settings-sync)
 - [Claude Code 공식 — GitHub Actions](https://code.claude.com/docs/en/github-actions), [Code Review](https://code.claude.com/docs/en/code-review), [Claude Code on the web](https://code.claude.com/docs/en/claude-code-on-the-web)
+- [GitHub 플랜 비교 공식](https://docs.github.com/en/get-started/learning-about-github/githubs-plans), [Rulesets Free 비공개 저장소 불가 — community](https://github.com/orgs/community/discussions/190190), [The Git Workflow That Actually Works for Solo Developers (2026)](https://dev.to/armorbreak/the-git-workflow-that-actually-works-for-solo-developers-2026-2mna), [Popit — GitHub로 프로젝트 관리하기](https://www.popit.kr/github%EB%A1%9C-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EA%B4%80%EB%A6%AC%ED%95%98%EA%B8%B0-part1-%EC%9D%B4%EC%8A%88-%EB%B0%9C%EA%B8%89-%EB%B6%80%ED%84%B0-%EC%BD%94%EB%93%9C%EB%A6%AC%EB%B7%B0%EA%B9%8C/)
 - [Dale Seo — Claude Code GitHub Actions 사용법](https://daleseo.com/claude-code-action/), [Hyperithm — Claude Code 심화 활용법](https://tech.hyperithm.com/claude_code_guides_2), [doug-skinner/github-cli-claude-skill](https://github.com/doug-skinner/github-cli-claude-skill)
 - [HumanLayer — Writing a good CLAUDE.md](https://www.humanlayer.dev/blog/writing-a-good-claude-md), [Writing a CLAUDE.md that Claude actually follows](https://dev.to/peterverse180/writing-a-claudemd-that-claude-actually-follows-4llo)
 - [mattpocock/skills — git-guardrails](https://github.com/mattpocock/skills/blob/main/skills/misc/git-guardrails-claude-code/SKILL.md), [claude-code-dotfiles](https://github.com/elizabethfuentes12/claude-code-dotfiles)
