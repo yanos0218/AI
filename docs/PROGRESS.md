@@ -23,6 +23,8 @@
 - [x] C-06 공식 문서·커뮤니티 대비 검토표(README) (2026-09-08)
 - [x] C-07 dev-release 발동 테스트 3시나리오 — `claude -p` 새 세션으로 시험, C 시나리오 실패분 SKILL.md 수정 후 재통과 (2026-09-08)
 - [x] C-08 GitHub 활용 현황 조사 + 선택지 정리(README "GitHub 활용") (2026-09-08)
+- [x] C-23 기본 영역/작업 영역 분리 — 저장소 `CLAUDE.md`, `drafts/`, `.claude/hooks/baseline-guard.sh`(기본 영역 쓰기 확인 강제) (2026-09-08)
+- [x] C-24 사용자 성향 데이터 활용 방안 조사 — 로컬 세션 기록·auto memory·claude.ai 메모리·`/insights` 검토, 결론은 C-25~C-27 (2026-09-08)
 
 ## 2. 할 일 — 개발·설정
 
@@ -42,6 +44,9 @@
 - [ ] C-19 블로그용 스킬 — 원본은 OpenClaw `core/definitions/modes/blog.md`·`core/playbooks/blog-*.md`(참조만). OpenClaw 원칙 "Claude Code가 블로그를 직접 쓰지 않는다"와 충돌하므로, 스킬화 전에 **역할 구분을 먼저 정리**(초안은 누가, 검수는 누가)
 - [ ] C-20 사업기획용 스킬 — 요구사항 미정. 먼저 "어떤 산출물(시장 조사·경쟁 분석·사업계획서 초안 중 무엇)을 어떤 형식으로" 구체화 대화
 - [ ] C-21 정기 점검 루틴 정의 — 월 1회: `claude --version` 업데이트 확인, 스킬 3시나리오 재시험, 메모리(`~/.claude/projects/*/memory`) 정리, README 검토표 갱신. 항목이 정해지면 HANDOFF에 "마지막 점검일"을 두고 세션 시작 시 제안만 받음
+- [ ] C-25 `/insights` 실행 — 대화형 세션에서 `/insights`를 치면 최근 30일 로컬 세션을 분석해 마찰 지점과 CLAUDE.md 제안을 HTML로 보여줌(외부 전송 없음). Windows는 kolo_pwa 3세션뿐이라 결과가 얕을 수 있음. **Mac mini에서 실행**해야 OpenClaw 기록까지 반영됨. 결과에서 쓸 만한 제안은 `drafts/claude-md/`로
+- [ ] C-26 claude.ai 메모리 검토 — Settings → Memory에서 Claude가 추론해 둔 "나에 대한 요약"을 읽고 틀린 것 삭제·빠진 것 추가. 전역 지침으로 옮길 가치가 있는 항목은 `drafts/claude-md/`에 후보로. 웹 대화 원문이 필요하면 Settings → Privacy → Export data
+- [ ] C-27 kolo_pwa auto memory에서 전역 성향 추출 — `~/.claude/projects/c--Git-kolo-pwa/memory/` 23개 중 프로젝트 무관 항목(중간 보고 금지, 질문마다 명시 답변, 권한 상향 제안 금지, 스킬 프롬프트도 한국어, 완료 기준=실제 테스트+문서+CI 확인)이 `claude-md/CLAUDE.md`에 이미 있는지 대조하고, 없는 것만 후보로. Mac mini의 `~/.claude/projects/*/memory/`도 같은 방법으로
 - [ ] C-22 사용량·비용 확인 습관 — 상태줄 `$`와 claude.ai 사용량 페이지. 시험 세션 4회에 약 2달러였음. 한 달 뒤 실제 사용량을 보고 모델/effort 기본값 재검토
 
 ## 4. 결정 사항 (다시 묻지 말 것)

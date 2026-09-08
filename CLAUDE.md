@@ -1,0 +1,20 @@
+# claude-config 저장소 규칙
+
+세션 시작: `docs/HANDOFF.md` → `docs/PROGRESS.md` 순으로 읽는다.
+
+## 기본 영역과 작업 영역
+
+- **기본 영역** = 실제로 배포되는 원본: `claude-md/`, `skills/<이름>/`(`_`로 시작하지 않는 폴더), `scripts/`, `vscode/`. 여기 있는 것은 검증이 끝났고 사용자가 기본 반영을 요청한 것뿐이다.
+- **작업 영역** = `drafts/`. 새 스킬·지침 수정안·훅 초안은 전부 여기서 만든다. 승격 조건은 `drafts/README.md`.
+- 작업 중 기본 영역의 개선점이 보이면 **고치지 말고** `docs/PROGRESS.md`에 `C-NN` 항목으로 적는다. 사용자가 "기본에 반영해"라고 하기 전까지 기본 영역은 건드리지 않는다. `.claude/hooks/baseline-guard.sh`가 이를 확인 프롬프트로 강제한다.
+- 예외: 기본 영역의 오탈자·깨진 링크처럼 동작에 영향 없는 수정은 확인 프롬프트에서 사유를 말하고 승인받으면 된다.
+
+## 검증
+
+- 스킬 발동 테스트는 스크래치패드에 시나리오별 임시 git 저장소를 만들고 `claude -p "<사용자 말>" --output-format stream-json --verbose --allowedTools ...`로 새 세션을 띄워 도구 호출 로그를 확인한다(2026-09-08 dev-release에 사용한 방식). 같은 세션 안에서 스킬을 직접 호출하는 것은 발동 테스트가 아니다.
+- 문서만 바꿨으면 `npx markdownlint-cli2 "docs/*.md" README.md`. 줄 길이(MD013)는 이 저장소에서 무시한다.
+
+## 문서 갱신
+
+- 세션 끝: `docs/PROGRESS.md`(항목 상태) + `docs/HANDOFF.md`(현재 상태) 갱신.
+- 기본 영역을 바꾸면 README 구조·검토표와 설치본(`~/.claude/...`)도 같은 배치에서 맞춘다.

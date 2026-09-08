@@ -7,6 +7,9 @@
 ## 구조
 
 ```text
+CLAUDE.md                                  이 저장소 안에서 Claude가 지킬 규칙 (기본/작업 영역 구분, 검증 방법)
+.claude/hooks/baseline-guard.sh            기본 영역(claude-md·skills·scripts·vscode) 쓰기 앞에서 확인을 강제하는 저장소 전용 훅
+drafts/                                    작업 영역 — 승격 전 초안. 배포·pack 대상 아님
 docs/HANDOFF.md                            새 세션 인수인계 — 현재 상태·결정 사항 (세션 시작 시 먼저 읽기)
 docs/PROGRESS.md                           진행 보드 — 완료/할 일을 C-NN ID로 추적 (세션 끝날 때 갱신)
 claude-md/CLAUDE.md                        전역 공통 지침 → ~/.claude/CLAUDE.md
@@ -25,6 +28,17 @@ vscode/extensions.txt                      VS Code 확장 목록 (새 기기 부
 vscode/settings.json                       VS Code 사용자 설정 스냅샷 (Claude Code 확장 설정 포함)
 vscode/install.ps1 · install.sh            새 기기에서 확장 설치 + 설정 복사
 ```
+
+## 기본 영역과 작업 영역
+
+이 저장소는 **기본 영역**(실제로 `~/.claude`와 웹에 배포되는 원본)과 **작업 영역**(승격 전 초안)을 나눈다. 작업 중 떠오른 개선이 검증 없이 기본 영역에 섞여 들어가 "기본"이 흔들리는 것을 막기 위해서다.
+
+| 영역 | 경로 | 들어가는 조건 |
+| --- | --- | --- |
+| 기본 | `claude-md/`, `skills/<이름>/`(`_` 제외), `scripts/`, `vscode/` | 3시나리오 시험 통과 **+ 사용자가 "기본에 반영해"라고 요청** |
+| 작업 | `drafts/` (기본 영역과 같은 구조) | 아무 때나. `pack.sh`·설치 절차가 보지 않으므로 배포되지 않음 |
+
+강제 장치는 [.claude/hooks/baseline-guard.sh](.claude/hooks/baseline-guard.sh) — 이 저장소에서 Claude가 기본 영역 파일을 쓰려 하면(Edit/Write뿐 아니라 Bash `sed -i`·리다이렉트·`cp` 등도) 확인 프롬프트가 뜬다. 승격·오탈자 수정처럼 의도한 변경이면 승인하고, 아니면 `drafts/`로 돌아간다. 승격 절차는 [drafts/README.md](drafts/README.md).
 
 ## 어디서 무엇이 적용되나
 
