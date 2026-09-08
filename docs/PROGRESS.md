@@ -38,7 +38,7 @@
 | `settings.example.json` (권한·훅·상태줄) | 기본 | ✓ (allow 보완은 [C-11](#c-11)) | ✗ | ✗ | - | [C-11](#c-11), [C-15](#c-15)/16 |
 | `base/vscode/` 확장 목록·설정·설치 스크립트 | 기본 | ✓ v0.3.0 | ✗ (Settings Sync가 주) | - | - | [C-15](#c-15) |
 | baseline-guard 훅 (이 저장소 전용, `.claude/`) | 기본 (새 세션에서 `base/` Edit 차단 확인 2026-09-08) | 저장소 안에서만 동작 | 동일 | 동일 | - | - |
-| 개발용 스킬 `dev-workflow` | 초안 (요구사항 메모만, `drafts/skills/dev-workflow/`) | | | | | [C-13](#c-13) |
+| 개발용 스킬 `dev-workflow` | 검증 (3시나리오 통과 2026-09-09, 승격 대기 `drafts/skills/dev-workflow/`) | | | | | [C-13](#c-13) |
 | 블로그용 스킬 | 계획 (역할 구분 선행) | | | | | [C-19](#c-19) |
 | 사업기획용 스킬 | 계획 (요구사항 미정) | | | | | [C-20](#c-20) |
 | 이 저장소 CI (lint.yml + check-docs.sh) | 기본 (첫 Actions 실행 success, 2026-09-08) | 저장소 안에서만 | 동일 | 동일 | - | - |
@@ -72,7 +72,7 @@
 
 - [~] <a id="c-10"></a>C-10 새 세션 훅·상태줄 확인 — 훅 2개는 `claude -p` 새 세션으로 검증 완료(2026-09-08): baseline-guard가 `base/` Edit을, git-guardrails가 `git push`를 확인 요구로 막음. **상태줄은 대화형 세션에서만 보이므로 사용자가 새 세션을 열어 하단 표시를 확인**하면 완료
 - [ ] <a id="c-11"></a>C-11 `permissions.allow` 보완 — C-07 시험에서 `python -m py_compile`이 막혔고, `cd X && ls`는 `Read(./.env)` deny 규칙과 겹쳐 승인 프롬프트가 뜸. 자주 쓰는 검사 명령을 allow에 추가하고 예시 파일에도 반영
-- [~] <a id="c-13"></a>C-13 개발용 스킬 `dev-workflow` — 초안 전 요구사항 메모 `drafts/skills/dev-workflow/NOTES.md`(발동 문구·산출물·"파일 관리" 정의 3가지를 사용자와 결정해야 SKILL.md 착수). 참고 원본 kolo_pwa `docs/testing.md`(참조만)
+- [~] <a id="c-13"></a>C-13 개발용 스킬 `dev-workflow` — 요구사항 3가지 결정(발동 문구·산출물/결과물·파일/폴더), SKILL.md + references 2개 초안, **3시나리오 발동 시험 통과(2026-09-09)**. 기록은 `drafts/skills/dev-workflow/NOTES.md`. 사용자가 "기본에 반영해"라고 하면 `base/skills/`로 승격, v0.5.0(MINOR)
 - [ ] <a id="c-14"></a>C-14 Notification 훅 — 병렬 세션(`claude --bg`, worktree)을 실제로 쓰기 시작하면 추가. 그전엔 보류
 
 ## 3. 할 일 — 배포·운영·비개발
