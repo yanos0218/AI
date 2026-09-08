@@ -7,7 +7,14 @@
 Windows(Git Bash)·Mac·Linux 공통. `~/.claude/`는 CLI와 VS Code 확장이 같은 파일을 읽는다.
 
 ```bash
-cp -r base/skills/dev-release ~/.claude/skills/
+bash tools/install.sh --dry-run   # 무엇이 바뀔지 확인
+bash tools/install.sh             # 설치 + check-install.sh 대조
+```
+
+기존 `~/.claude/CLAUDE.md`가 다르면 `.bak.<시각>`으로 백업한 뒤 교체하고 diff 명령을 알려 준다(Mac처럼 이미 다른 내용이 있을 수 있는 기기용). 손으로 하려면 아래와 같다.
+
+```bash
+cp -r base/skills/<이름> ~/.claude/skills/
 cp base/claude-md/CLAUDE.md ~/.claude/CLAUDE.md
 mkdir -p ~/.claude/hooks && cp base/hooks/*.sh ~/.claude/hooks/
 ```

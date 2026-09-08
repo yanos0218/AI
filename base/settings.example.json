@@ -15,7 +15,19 @@
       "Bash(node --check*)",
       "Bash(python -m pytest*)",
       "Bash(npm test*)",
-      "Bash(./gradlew compileJava*)"
+      "Bash(./gradlew compileJava*)",
+      "Bash(python -m py_compile*)",
+      "Bash(npx markdownlint-cli2*)",
+      "Bash(npx shellcheck*)",
+      "Bash(bash -n*)",
+      "Bash(gh issue list*)",
+      "Bash(gh issue view*)",
+      "Bash(gh run view*)",
+      "Bash(gh run watch*)",
+      "Bash(cat *)",
+      "Bash(head *)",
+      "Bash(wc *)",
+      "Bash(grep *)"
     ],
     "deny": [
       "Read(./.env)",

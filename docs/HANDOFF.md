@@ -6,12 +6,13 @@
 
 Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원본 저장소. 개발자가 아닌 사용자가 여러 스택의 프로젝트를 오가며 Claude에게 (1) 매번 같은 배경을 다시 설명하지 않고, (2) 멋대로 진행하거나 너무 자주 묻지 않게 하고, (3) 검증 없이 "됐다"는 말을 못 하게 하고, (4) 결론만 짧게 듣도록 만든다. 저장소별 규칙은 각 저장소에 두고 여기서는 **참조만** 한다.
 
-## 현재 상태 (2026-09-09)
+## 현재 상태 (2026-09-09) · 마지막 월 점검: 없음 (첫 점검 2026-10 예정, `docs/monthly-check.md`)
 
 - 저장소: github.com/yanos0218/AI (비공개). **v0.4.0까지 릴리즈**(2026-09-08 v0.1.0 첫 컷 → v0.2.0 지침 확인 기준 변경 → v0.3.0 `base/`·`tools/` 경로 재구성 → 2026-09-09 v0.4.0 config-changelog 훅). CI(`lint.yml`) 초록. 자산별 단계·기기별 배포는 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본.
 - **Windows PC는 v0.4.0과 동일**(`tools/check-install.sh`로 확인). CLI `~/.local/bin/claude.exe` v2.1.263, VS Code 확장 13개. 훅 2개(git-guardrails·baseline-guard)는 새 `claude -p` 세션에서 차단 동작 확인, 상태줄 표시만 사용자가 대화형 세션에서 확인하면 [C-10](PROGRESS.md#c-10) 완료.
 - **Mac mini·Linux·웹(Claude.ai)은 미반영.** 설치는 `docs/install.md`. Mac은 기존 `~/.claude/CLAUDE.md`가 있을 수 있으니 덮어쓰기 전에 확인. 웹은 Release v0.4.0의 `dev-release.zip` + Project instructions에 `base/claude-md/CLAUDE.md`.
 - 설정이 다른 저장소 작업 중 흔들리지 않게 하는 구조(기본·모듈·프로젝트 층)와 이력 장치는 `docs/config-lifecycle.md`(2026-09-09). 이력 훅은 v0.4.0에서 기본 영역.
+- §2 개발·설정 항목 정리(2026-09-09): `tools/install.sh`·`test-skill.sh`, Stop 훅, 권한 목록 보완, 전역 지침 §5 조사 규칙 승격. 전부 `[Unreleased]`, Windows 재설치됨.
 - 조사 규칙 `docs/research.md` + 기록 색인 `docs/research/`(2026-09-09), 토큰 절감 절은 `docs/review-vs-official.md`. 전역 반영은 [C-49](PROGRESS.md#c-49).
 - 저장소 검토 `docs/audit-2026-09.md`(2026-09-09): 문제 7·제안 7 → 보드 [C-44](PROGRESS.md#c-44)~[C-48](PROGRESS.md#c-48). 규칙 이탈 금지 절을 저장소 CLAUDE.md에 추가, 전역판은 [C-47](PROGRESS.md#c-47).
 - dev-workflow 스킬 승격·Windows 설치(2026-09-09, `[Unreleased]`). dev-release 발동 테스트 3시나리오 통과(2026-09-08). 테스트 방법은 저장소 `CLAUDE.md` "검증" 절. 관찰: `cd X && ls` 복합 명령은 `Read(./.env)` deny 규칙과 겹쳐 승인 프롬프트가 뜨고, `python -m py_compile`은 allow 목록에 없음 → [C-11](PROGRESS.md#c-11).

@@ -1,6 +1,7 @@
 ---
 name: dev-release
 description: "변경 사항이 SemVer상 MAJOR/MINOR/PATCH 중 무엇인지 근거와 함께 판단하고, 저장소의 기존 버전 규칙(docs/versioning.md, README 버전 정책, 태그 자릿수, release-check.sh 등)을 우선 적용한 뒤 CHANGELOG 정리 → 릴리즈 노트 → 커밋 → 태그 → GitHub Release까지 릴리즈 컷을 진행한다. 사용자가 '몇 버전으로 올려야 해', '버전 올려줘', 'MAJOR/MINOR/PATCH 중 무엇으로 올릴지 알려줘', '릴리즈 컷 하자', '태그 찍어줘', '릴리즈해줘'라고 하면, 요청이 버전 판단만인지 릴리즈 실행까지인지 구분해 진행한다. 배포(서버 전송 등)만 요청했거나 저장소에 전용 배포 스킬이 있으면 그쪽을 우선한다."
+allowed-tools: Bash(git tag --list*) Bash(git log*) Bash(git diff*) Bash(git status*) Bash(gh release view*) Bash(gh run list*) Bash(gh run view*)
 ---
 
 # dev-release

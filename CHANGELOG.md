@@ -10,6 +10,9 @@
 
 ### Changed
 
+- `base/settings.example.json` — allow에 검사·조회 명령 12개 추가(`python -m py_compile`, `npx markdownlint-cli2`, `npx shellcheck`, `bash -n`, `gh issue list/view`, `gh run view/watch`, `cat`, `head`, `wc`, `grep`)
+- `base/skills/dev-release/SKILL.md` — `allowed-tools`로 읽기 전용 git·gh 명령 사전 승인
+- `base/claude-md/CLAUDE.md` §5 — 조사 규칙(공식 우선·날짜·직접 실행 검증·출처·`docs/research/`)과 "서브에이전트·시험 세션은 Sonnet"
 - `base/claude-md/CLAUDE.md` §2 — "정의된 규칙에서 스스로 벗어나지 않는다. 벗어나야 하면 근거 → 제안 → 승인 → 규칙 문서 먼저" 한 줄 추가
 
 ## [0.4.0] - 2026-09-09

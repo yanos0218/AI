@@ -1,0 +1,24 @@
+# Memory Index
+
+- [Deferred items](feedback_deferred_items.md) — track deferred work in docs/PROGRESS.md, don't proactively re-surface it
+- [Markdown formatting](feedback_markdown_formatting.md) — write .md files markdownlint-clean from the start (blank lines around headings/lists, padded table separators)
+- [Privilege boundaries](feedback_privilege_boundaries.md) — don't propose granting standing elevated access (SSH keys/PATs) to reduce friction; user declined even scoped options
+- [Local Node.js available](project_local_node_available.md) — node/npm/npx exist at C:\Program Files\nodejs (not on PATH); run the real Playwright test suite locally before deploying JS changes, not just node --check
+- [Version display decision](feedback_version_display_decision.md) — kolo_pwa's "버전" label stays kolo-vXX only; don't propose combining with the SemVer release tag
+- [Local Java available](project_local_java_available.md) — JDK 21 + gradlew work for kolo-api at C:\Program Files\Eclipse Adoptium (not on PATH); compile-check locally, but full tests still need CI (no local Docker/MariaDB)
+- [Local MariaDB available](project_local_mariadb_available.md) — MariaDB 12.3 installed at C:\Program Files\MariaDB 12.3\ (2026-08-13); run the real `./gradlew test` locally (start mariadbd.exe first) instead of relying on CI as the first DB-dependent test check
+- [Admin tab shared toolbar](feedback_admin_tab_shared_toolbar.md) — default new admin-h6q2xk tabs to hiding 새로고침/토큰 지우기 unless genuinely needed; user has flagged this repeatedly
+- [Popup scroll lock](feedback_popup_scroll_lock.md) — every modal/popup anywhere in this project must lock background scroll on open, restore on close; user asked this be remembered for all future popups
+- [Full workflow expected](feedback_full_workflow_expected.md) — verify with real tests, document, bump CACHE_NAME, commit/push (once authorized for the batch), confirm CI green, use scripts/wait-for-ci.sh instead of hand-rolled polling, and verify the live site after a container-restart deploy
+- [Local gh CLI available](project_local_gh_cli_available.md) — gh is installed+authenticated at C:\Program Files\GitHub CLI (not on PATH); check GitHub Actions status directly instead of asking the user to look
+- [Korean prompts](feedback_korean_prompts.md) — write Skill/Agent invocation prompts in Korean too, not just final chat replies
+- [Data correction workflow](feedback_data_correction_workflow.md) — for large batch real-world data fixes: parallel research agents by category, Artifact with confidence tiers, AskUserQuestion for policy per tier (not per record), apply via live API; audit every field encoding an entity's old identity when renaming, not just the obvious ones
+- [place-collector Python migration](project_place_collector_python_migration.md) — place-collector is now Python (stdlib only), Node.js version deleted; Windows needs fixed UTC+9 (no tzdata) and UTF-8 stdout reconfigure
+- [Collector scope vs insertability](feedback_collector_scope_vs_insertability.md) — never narrow a collection tool's scope to a downstream system's current write constraints; keep valid vs insertable separate, and break pipelines into decidable stages
+- [Nationwide district expansion](project_nationwide_district_expansion.md) — kolo-api now accepts all 234 nationwide 시/군/구 (romanized slugs), not just 4 curated neighborhoods; district-catalog.json is the shared source across kolo-api/kolo_pwa/place-collector
+- [Always answer inquiries](feedback_always_answer_inquiries.md) — give every embedded question an explicit direct answer, even inside longer multi-part messages; don't let implementation stand in for a verbal answer
+- [GitHub Actions storage quota](project_github_actions_storage_quota.md) — yanos0218's account has only 500MB free; check cache/artifact usage before adding any new CI caching/artifacts to kolo-api or kolo_pwa
+- [kolo_pwa core principles](feedback_kolo_pwa_core_principles.md) — check every feature against: foreign-visitor audience, offline support, PWA-only (no native), phased language default (dev=Korean, prod=user's language), Android/iOS/Web platform parity (don't skew iOS-first)
+- [Final summary only](feedback_final_summary_only.md) — don't narrate intermediate findings mid-task; show only the final result, except points needing real confirmation
+- [No direct docker access](feedback_no_direct_docker_access.md) — don't SSH or probe port 22 to the NAS at all, not even to check reachability; user runs all docker/nginx commands themselves, just hand them the exact command
+- [Audit status verification](feedback_audit_status_verification.md) — when recapping which kolo-audit findings are fixed vs left, re-verify each via grep/code check instead of a mental tally; a miscounted recap nearly misrepresented real progress

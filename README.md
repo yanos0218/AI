@@ -37,6 +37,7 @@
 | [docs/repo-standard.md](docs/repo-standard.md) | GitHub를 쓰는 모든 저장소의 최소선 체크리스트와 저장소별 현황 |
 | [docs/review-vs-official.md](docs/review-vs-official.md) | 공식 문서·커뮤니티 권장과 대조한 검토표 (반영/습관/보류) |
 | [docs/research.md](docs/research.md) · [docs/research/](docs/research/README.md) | 조사 규칙(최신·검증·출처)과 조사 기록 색인 |
+| [docs/monthly-check.md](docs/monthly-check.md) | 월 점검 체크리스트 12항목 |
 | [docs/audit-2026-09.md](docs/audit-2026-09.md) | 저장소 검토 — 문제·제안·아이디어와 커뮤니티 대조 (월 점검 때 갱신) |
 | [docs/config-lifecycle.md](docs/config-lifecycle.md) | 다른 저장소에서 작업해도 기본 설정이 유지되는 구조(기본·모듈·프로젝트 층)와 변경 이력 장치 |
 | [CHANGELOG.md](CHANGELOG.md) · [CLAUDE.md](CLAUDE.md) | 기본 영역의 버전별 변경 이력 · 이 저장소 안에서 Claude가 지킬 규칙 |
@@ -45,10 +46,12 @@
 
 | 경로 | 무엇 |
 | --- | --- |
+| [tools/install.sh](tools/install.sh) | `base/` → `~/.claude` 설치 (멱등, settings 병합, `--dry-run`). 기기 3대 공통 |
+| [tools/test-skill.sh](tools/test-skill.sh) | 스킬 발동 시험 — 시나리오 저장소에 넣고 새 세션으로 실행, 발동·비용 추출 (기본 Sonnet) |
 | [tools/pack.sh](tools/pack.sh) | ①의 스킬을 웹 업로드용 zip으로 (zip 없으면 python 폴백) |
 | [tools/check-docs.sh](tools/check-docs.sh) | 문서 줄 수 상한과 필수 파일 검사 (CI와 로컬 공용) |
 | [tools/check-install.sh](tools/check-install.sh) | 설치본 `~/.claude`가 `base/`와 같은지, 프로젝트마다 쌓인 권한·설정 이력은 무엇인지 보고 |
-| [.claude/hooks/baseline-guard.sh](.claude/hooks/baseline-guard.sh) | Claude가 `base/`를 고치려 하면 확인을 요구하는 저장소 전용 훅 |
+| [.claude/hooks/](.claude/hooks/) | 저장소 전용 훅 — `baseline-guard.sh`(`base/` 쓰기 확인), `session-end-check.sh`(보드 미갱신 알림) |
 | [.github/workflows/lint.yml](.github/workflows/lint.yml) | push마다 markdownlint·shellcheck·문서 상한 검사 |
 | [.github/dependabot.yml](.github/dependabot.yml) | 워크플로가 쓰는 액션 버전 업데이트 |
 
@@ -72,12 +75,10 @@
 기본 영역이 바뀌면 각 기기에서 다시 설치한다. 상세와 Claude.ai·VS Code 절차는 [docs/install.md](docs/install.md).
 
 ```bash
-cp -r base/skills/dev-release ~/.claude/skills/
-cp base/claude-md/CLAUDE.md ~/.claude/CLAUDE.md
-mkdir -p ~/.claude/hooks && cp base/hooks/*.sh ~/.claude/hooks/
+bash tools/install.sh            # --dry-run 으로 먼저 볼 수 있음
 ```
 
-`~/.claude/settings.json`은 `base/settings.example.json`의 `permissions`·`hooks`·`statusLine` 키를 합친다. 스킬 목록은 세션 시작 시 고정되므로 **새 세션**에서 확인한다. 어느 기기에 어느 버전이 깔렸는지는 [docs/PROGRESS.md §0](docs/PROGRESS.md#0-자산-현황--단계와-배포-상태) 표.
+CLAUDE.md·훅·스킬을 복사하고 `settings.json`에 `permissions`·`hooks`·`statusLine` 키를 합친다(기기별 `model` 등은 유지). 스킬·훅은 **새 세션**부터 적용된다. 어느 기기에 어느 버전이 깔렸는지는 [docs/PROGRESS.md §0](docs/PROGRESS.md#0-자산-현황--단계와-배포-상태) 표.
 
 ## 새 스킬 추가
 

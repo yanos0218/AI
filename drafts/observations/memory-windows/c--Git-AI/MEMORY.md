@@ -1,0 +1,6 @@
+- 세션 시작 시 저장소의 `docs/HANDOFF.md`부터 읽을 것 — 현재 상태·결정 사항. 할 일 목록은 `docs/PROGRESS.md`(`C-NN` 보드, 세션 끝날 때 갱신)
+- [사용자 프로필](user_profile.md) — 비개발자, 프로젝트마다 스택 다름, 규칙은 "날짜+사고+규칙" 형식, Claude에게 원하는 4가지
+- [claude-config 로드맵](project_claude_config_roadmap.md) — AI 저장소(비공개) 목적, 규칙 출처 저장소, 다음 스킬 계획과 원본 문서 위치
+- [참조만, 복사 금지](feedback_reference_not_copy.md) — 다른 저장소 내용은 claude-config에 복사하지 않고 가리키기만
+- [릴리즈 빈도](feedback_release_cadence.md) — 승격 제안에 컷을 붙이지 말 것. 컷은 기기 설치 직전·월 점검·명시 요청 때만
+- [규칙 준수](feedback_follow_defined_rules.md) — 정의된 규칙에서 스스로 벗어나지 말 것. 벗어나야 하면 멈추고 근거→제안→승인→문서 수정 순
