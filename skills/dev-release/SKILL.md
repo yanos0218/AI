@@ -1,40 +1,60 @@
 ---
 name: dev-release
-description: 이번 변경이 SemVer상 major/minor/patch 중 무엇인지 판단하고, 버전을 올려 릴리즈(태그, CHANGELOG, 배포)하는 절차를 안내한다. 사용자가 "버전 몇으로 올려야 해", "이거 릴리즈해줘", "버전 올리고 배포까지 해줘" 등 버전 산정이나 릴리즈를 요청할 때 사용한다.
+description: "변경 사항이 SemVer상 MAJOR/MINOR/PATCH 중 무엇인지 근거와 함께 판단하고, 저장소의 기존 버전 규칙(docs/versioning.md, README 버전 정책, 태그 자릿수, release-check.sh 등)을 우선 적용한 뒤 CHANGELOG 정리 → 릴리즈 노트 → 커밋 → 태그 → GitHub Release까지 릴리즈 컷을 진행한다. 사용자가 '몇 버전으로 올려야 해', '버전 올려줘', 'MAJOR/MINOR/PATCH 중 무엇으로 올릴지 알려줘', '릴리즈 컷 하자', '태그 찍어줘', '릴리즈해줘'라고 하면, 요청이 버전 판단만인지 릴리즈 실행까지인지 구분해 진행한다. 배포(서버 전송 등)만 요청했거나 저장소에 전용 배포 스킬이 있으면 그쪽을 우선한다."
 ---
 
 # dev-release
 
-## 언제 쓰는가
+저장소마다 버전 규칙이 다르다(자릿수, 노트 형식, 자동화 유무). **이 스킬은 기본값이고, 저장소 문서가 있으면 그쪽이 우선한다.**
 
-- "이번 변경 몇 버전으로 올려야 해?" 같은 버전 산정 질문
-- "릴리즈해줘", "태그 찍고 배포해줘" 같은 릴리즈 요청
-- PR/브랜치를 머지하기 전 버전을 확정해야 할 때
+## 0. 저장소의 기존 규칙부터 찾는다 (필수)
 
-## 1단계: 버전 산정 (SemVer)
+아래를 확인하고 발견한 것을 사용자에게 한 줄로 알린 뒤 진행한다.
 
-현재 버전을 `MAJOR.MINOR.PATCH`로 보고, 마지막 릴리즈 태그 이후의 변경사항(커밋 로그, diff)을 확인해 다음 기준으로 올릴 자리를 정한다.
+| 확인 | 의미 |
+| --- | --- |
+| `docs/versioning.md`, README의 "버전 정책 / 버전 체계 / Version Policy" 절 | 등급 기준·태그 형식·릴리즈 빈도가 여기 정의됨. 아래 §1보다 우선 |
+| `git tag --list --sort=-v:refname \| head` | 자릿수(`v1.2.3` vs `v1.2`)와 접두사 `v` — 기존 형식을 바꾸지 않는다 |
+| `CHANGELOG.md` | Keep a Changelog 형식, `[Unreleased]` 누적 여부. 없으면 만들지 여부를 확인 |
+| `.github/workflows/release*.yml`, `.github/release-notes/`, `scripts/release-check.sh` | 태그 push로 Release가 자동 생성되는지, 노트 파일을 태그 전에 만들어야 하는지, 검증 스크립트가 있는지 |
+| 버전이 박힌 파일 | `package.json`, `pyproject.toml`, 스크립트 안 `SCRIPT_VERSION`, HTML 도구 안 `vX.Y`, README 배지 / `Version History` 표 |
+| "SemVer 태그를 쓰지 않는다"는 선언 | 날짜순 CHANGELOG만 갱신하고 태그·Release는 만들지 않는다 |
 
-- **MAJOR**: 하위 호환을 깨는 변경 (공개 API/CLI 인자/설정 포맷 제거·변경, 기존 사용자 코드가 깨짐)
-- **MINOR**: 하위 호환되는 기능 추가 (새 옵션, 새 명령, 기존 동작은 그대로 유지)
-- **PATCH**: 버그 수정, 문서, 내부 리팩터링 등 동작 변경이 없는 수정
+## 1. 등급 판단
 
-여러 종류가 섞여 있으면 **가장 높은 등급**을 기준으로 올린다. 애매하면 커밋 메시지가 Conventional Commits(`feat:`, `fix:`, `BREAKING CHANGE:` 등)를 따르는지 확인해 근거로 삼는다. 판단이 서지 않으면 근거(변경된 커밋 목록과 이유)를 사용자에게 보여주고 확인을 받는다.
+마지막 태그 이후 커밋(`git log <tag>..HEAD --oneline`)과 diff를 보고 아래 순서로 판단한다.
 
-세부 판단 기준(pre-1.0 처리, 여러 변경 혼재 시 예시 등)은 `references/semver-rules.md` 참고.
+1. **먼저 BREAKING 여부를 확인한다**
+   - API/CLI/설정/데이터 스키마 비호환, 데이터 소스 전환, UI 전면 개편, `feat!:` / `BREAKING CHANGE:`가 있으면 **MAJOR**
+2. **그다음 기능 추가 여부를 확인한다**
+   - 기존 동작 유지 + 기능·메뉴·옵션 추가면 **MINOR**
+3. **그다음 수정/정리 여부를 확인한다**
+   - 버그 수정, 문구·스타일, 성능 개선, 내부 정리면 **PATCH**
+4. **여러 종류가 섞여 있으면 가장 높은 등급을 선택한다**
+   - 예: 기능 추가와 버그 수정이 같이 있으면 **MINOR**; breaking change가 하나라도 있으면 **MAJOR**
+5. **오탈자만 있거나 비기능적 변경이면 버전을 올리지 않는다**
 
-## 2단계: 릴리즈 절차
+0.y.z 단계와 판단이 갈리는 경우는 `references/semver-rules.md`를 읽는다.
 
-1. 산정한 버전을 사용자에게 확인받는다.
-2. 버전이 기록된 파일(`package.json`, `pyproject.toml` 등 프로젝트에 있는 것)을 업데이트한다.
-3. CHANGELOG가 있으면 이번 릴리즈 항목을 추가한다 (없으면 생략).
-4. 커밋한다 (예: `chore(release): vX.Y.Z`).
-5. 태그를 만든다 (`git tag vX.Y.Z`).
-6. 사용자에게 push/태그 push 여부를 확인한 뒤 진행한다 (원격에 반영되는 작업이므로 임의로 push하지 않는다).
+**근거를 먼저 보여준다** — "커밋 A·B가 기능 추가라 MINOR → `vX.Y.0` 제안" 형태로 제시하고 확인을 받은 뒤 다음 단계로 간다. 버전 판단만 요청받았으면 여기서 끝낸다.
 
-배포 플랫폼별 세부 명령(npm publish, GitHub Release 생성 등)은 `references/release-steps.md` 참고.
+## 2. 릴리즈 컷 절차
 
-## 원칙
+저장소 문서에 절차가 있으면 그것을 따른다. 없으면 아래 체크리스트를 답변에 복사해 진행 상황을 표시하며 진행한다. 명령어와 플랫폼별 세부는 `references/release-steps.md`.
 
-- 버전을 올리기 전 항상 근거(어떤 커밋/변경 때문에 이 등급인지)를 먼저 제시한다.
-- 원격에 영향을 주는 단계(push, 태그 push, 배포)는 사용자 확인 없이 진행하지 않는다.
+```text
+릴리즈 vX.Y.Z
+- [ ] 1. 테스트·체크 통과 (실행한 명령과 결과 기록)
+- [ ] 2. CHANGELOG [Unreleased] → [X.Y.Z] - YYYY-MM-DD
+- [ ] 3. 버전이 박힌 파일 전부 갱신 (§0에서 찾은 목록)
+- [ ] 4. 릴리즈 노트 작성 — references/release-notes-format.md (노트 파일을 쓰는 저장소는 태그 전에)
+- [ ] 5. 커밋 chore(release): vX.Y.Z
+- [ ] 6. ★ 사용자 확인 ★ → git tag vX.Y.Z → git push origin main vX.Y.Z
+- [ ] 7. GitHub Release 생성 또는 자동 워크플로 결과 확인, 검증 스크립트 실행
+```
+
+## 하지 않는 것
+
+- **배포마다 태그를 찍지 않는다.** 작은 수정마다 올리면 버전 번호만 의미 없이 소진된다. 사용자가 릴리즈를 요청할 때만 컷하고, 그 사이 변경은 `[Unreleased]`에 쌓는다.
+- 태그 형식·자릿수를 저장소 관례와 다르게 만들지 않는다. 이미 push된 태그는 사용자 확인 없이 지우거나 옮기지 않는다.
+- push, 태그 push, Release 생성은 사용자 확인 없이 실행하지 않는다.
