@@ -21,5 +21,7 @@
 
 1. 변경은 `CHANGELOG.md` `[Unreleased]`에 쌓는다(Keep a Changelog, 한국어).
 2. 승격이나 수정이 모이면 사용자가 컷을 요청한다. 작은 변경마다 태그를 찍지 않는다.
+   - **컷 시점은 셋뿐**: (a) 다른 기기·웹에 설치하기 직전, (b) 월 점검, (c) 사용자가 명시적으로 요청. Claude는 승격을 제안할 때 컷을 같이 제안하지 않는다 — 승격은 `[Unreleased]`에 쌓이는 것으로 끝난다.
+   - 2026-09-08~09에 승격 하나마다 컷을 해 하루 만에 v0.1.0→v0.4.0이 됐다. 등급은 규칙대로였지만 빈도가 규칙("모이면 컷")에 어긋났고, 그 사이 Mac·Linux·웹에는 하나도 설치되지 않아 번호만 앞서갔다. 이 줄이 그 재발 방지다.
 3. 컷 = CHANGELOG 확정 → `chore(release): vX.Y.Z` 커밋 → (사용자 확인) 태그·push → `bash tools/pack.sh` → `gh release create`에 `dist/*.zip` 첨부.
 4. Release의 zip이 웹(Claude.ai) 업로드용 산출물이다. 웹에 올린 버전을 `docs/PROGRESS.md` §0 배포 열에 적는다.
