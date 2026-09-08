@@ -14,7 +14,7 @@ description: "변경 사항이 SemVer상 MAJOR/MINOR/PATCH 중 무엇인지 근�
 | 확인 | 의미 |
 | --- | --- |
 | `docs/versioning.md`, README의 "버전 정책 / 버전 체계 / Version Policy" 절 | 등급 기준·태그 형식·릴리즈 빈도가 여기 정의됨. 아래 §1보다 우선 |
-| `git tag --list --sort=-v:refname \| head` | 자릿수(`v1.2.3` vs `v1.2`)와 접두사 `v` — 기존 형식을 바꾸지 않는다 |
+| `git tag --list --sort=-v:refname \| head` | 자릿수(`v1.2.3` vs `v1.2`)와 접두사 `v` — 기존 형식을 바꾸지 않는다. **태그가 하나도 없으면** 형식(자릿수·접두사·시작 번호 `0.1.0`/`1.0.0`)을 스스로 정하지 않고 사용자에게 묻는다 |
 | `CHANGELOG.md` | Keep a Changelog 형식, `[Unreleased]` 누적 여부. 없으면 만들지 여부를 확인 |
 | `.github/workflows/release*.yml`, `.github/release-notes/`, `scripts/release-check.sh` | 태그 push로 Release가 자동 생성되는지, 노트 파일을 태그 전에 만들어야 하는지, 검증 스크립트가 있는지 |
 | 버전이 박힌 파일 | `package.json`, `pyproject.toml`, 스크립트 안 `SCRIPT_VERSION`, HTML 도구 안 `vX.Y`, README 배지 / `Version History` 표 |
@@ -37,6 +37,8 @@ description: "변경 사항이 SemVer상 MAJOR/MINOR/PATCH 중 무엇인지 근�
 0.y.z 단계와 판단이 갈리는 경우는 `references/semver-rules.md`를 읽는다.
 
 **근거를 먼저 보여준다** — "커밋 A·B가 기능 추가라 MINOR → `vX.Y.0` 제안" 형태로 제시하고 확인을 받은 뒤 다음 단계로 간다. 버전 판단만 요청받았으면 여기서 끝낸다.
+
+태그도 CHANGELOG도 없는 저장소면 등급(MAJOR/MINOR/PATCH)과 근거까지만 말하고, 구체 번호를 제안하기 전에 두 가지를 먼저 묻는다: (1) 태그 형식과 시작 번호, (2) CHANGELOG를 만들지 여부.
 
 ## 2. 릴리즈 컷 절차
 
