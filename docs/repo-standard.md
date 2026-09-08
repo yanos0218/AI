@@ -18,8 +18,8 @@
 
 ## 현황 (2026-09-08)
 
-| 저장소 | 1 문서 CI | 2 테스트 CI | 3 CHANGELOG | 4 CLAUDE.md | 5 Issues | 6 보드 | 7 Dependabot |
-| --- | --- | --- | --- | --- | --- | --- | --- |
+| 저장소 | 1 문서 CI | 2 테스트 CI | 3 CHANGELOG | 4 CLAUDE.md | 5 Issues | 6 보드 | 7 Dependabot | 비고 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | kolo_pwa | ✓ (`test.yml` 안) | ✓ Playwright | ✓ | ✓ | ✗ | ✓ | ✓ |
 | kolo-api | ✓ `markdownlint.yml` | ✓ `build.yml` | ✓ | ✓ | ✗ | kolo_pwa 보드 공용 | ✓ |
 | OpenClaw | ✓ `lint.yml` | - (문서 시스템) | ✓ | `workspace/AGENTS.md` (CLAUDE.md는 `@AGENTS.md` import로 연결 가능) | ✗ | ? | ✗ |
