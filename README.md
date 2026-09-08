@@ -7,7 +7,8 @@
 ## 구조
 
 ```text
-docs/HANDOFF.md                            새 세션 인수인계 — 현재 상태·다음 할 일·결정 사항 (세션 시작 시 먼저 읽기)
+docs/HANDOFF.md                            새 세션 인수인계 — 현재 상태·결정 사항 (세션 시작 시 먼저 읽기)
+docs/PROGRESS.md                           진행 보드 — 완료/할 일을 C-NN ID로 추적 (세션 끝날 때 갱신)
 claude-md/CLAUDE.md                        전역 공통 지침 → ~/.claude/CLAUDE.md
 skills/dev-release/                        SemVer 등급 판단 + 릴리즈 컷 절차
   ├─ SKILL.md
@@ -133,6 +134,26 @@ Claude Code 확장 자체 설정(`claudeCode.*`)은 VS Code 설정에, 허용 �
 | 병렬 | 샌드박스 | 보류 | Windows 미지원(WSL2만). Mac/Linux에서는 `/sandbox`로 켜면 명령 승인이 더 줄어듦 |
 | 알림 | 입력 대기 시 소리/알림 훅 | 보류 | 병렬 세션을 돌리기 시작하면 `Notification` 훅 추가 |
 
+## GitHub 활용
+
+Claude와 GitHub를 엮는 방법은 크게 넷이다. 아래는 **사용자 저장소 현황(2026-09-08 `gh`로 조사)**과 대조한 결과이며, 상태 표기는 위 검토표와 같다(**결정 필요**는 사용자 판단이 있어야 하는 것).
+
+현황: 저장소 11개 전부 비공개, GitHub Free 플랜(브랜치 보호 불가 — Pro 필요). 이슈 0개(백로그는 각 저장소 `docs/PROGRESS.md`의 `P-NN`). PR은 kolo_pwa·kolo-api가 Dependabot뿐이고 OpenClaw만 Codex(OpenAI 클라우드 에이전트)가 만든 PR 18개 — 즉 사람이 브랜치→PR을 쓰는 습관은 없고 `main` 직접 push. Actions는 kolo_pwa(`test.yml` 경로 필터로 분 절약, `release.yml` 태그 push→Release)·OpenClaw(`lint.yml`, `release.yml`)에 있고 Release는 각각 30·42개.
+
+| 방법 | 무엇을 해주나 | 상태 | 비고 |
+| --- | --- | --- | --- |
+| `gh` CLI를 Claude가 직접 사용 | PR·이슈·Actions 결과·Release 조회/생성. MCP보다 토큰이 적게 듦 | 반영 | `permissions.allow`에 `gh pr view`·`gh run list`·`gh release view` 사전 허용. dev-release가 `gh release create`·`gh run list`를 씀 |
+| 태그 push → Release 자동 생성 | 릴리즈 노트 파일을 태그 전에 커밋하면 Actions가 Release를 만듦 | 반영 | kolo_pwa·OpenClaw에 이미 있음. dev-release §0이 워크플로 존재를 감지해 절차를 맞춤 |
+| 이 저장소를 설정의 원본으로 | `~/.claude`를 기기마다 손으로 맞추지 않고 clone → 설치 스크립트 | 반영 | 커뮤니티 dotfiles 방식과 동일. Mac·Linux 반영은 `docs/PROGRESS.md` C-15/16 |
+| **Claude Code on the web** (`claude.ai/code`) | 브라우저·폰에서 지시 → 클라우드 VM이 저장소를 clone해 작업 → PR 생성. `claude --cloud "..."`로 터미널에서 보내고 `--teleport`로 받아옴. PR의 CI 실패·리뷰 코멘트를 자동 수정(auto-fix)도 가능 | **결정 필요** | Pro/Max 가능, 별도 VM 비용 없음(플랜 한도 공유). OpenClaw에서 Codex로 하던 "클라우드가 PR 만들기"의 Claude 버전. 저장소 `CLAUDE.md`·`.claude/`는 적용되지만 `~/.claude`는 전달 안 됨 |
+| **Claude Code GitHub Actions** (`@claude` 멘션) | 이슈·PR 코멘트에 `@claude ...`라고 쓰면 Actions 러너에서 Claude가 코드를 고치고 커밋·PR. `prompt`를 주면 일정(cron)·이벤트 자동 실행도 가능 | **결정 필요** | `/install-github-app`으로 5분 설치. 구독 토큰(`claude setup-token`)이면 API 과금 없이 플랜 한도 사용, 단 Actions 분은 소모(비공개 저장소 월 한도 있음). 이슈를 안 쓰고 1인이라 지금은 이득이 작다 — PR 단위 작업이 자리 잡은 뒤 |
+| PR 자동 리뷰 — Code Review(관리형) | PR마다 다중 에이전트가 검토해 인라인 코멘트 | 보류 | Team/Enterprise 전용, 건당 15~25달러. 개인은 로컬 `/code-review`(무료, 세션 한도) 또는 `/code-review ultra`(크레딧)로 대체 |
+| 브랜치 → PR → merge 습관 | 위 두 "결정 필요" 항목의 전제. 리뷰 코멘트·auto-fix·`@claude`가 전부 PR 위에서 동작 | 습관 | kolo_pwa `CONTRIBUTING.md`가 GitHub Flow를 정해 뒀지만 1인이라 강제 안 함. 브랜치 보호는 Free 플랜에서 불가 |
+| GitHub 이슈를 백로그로 | 커뮤니티는 `gh issue create`로 할 일을 만들고 `@claude`에 넘기는 흐름을 씀 | 보류 | 사용자 저장소는 `docs/PROGRESS.md` + `P-NN`이 확정. 바꾸지 않는다 |
+| 이 저장소 CI | markdownlint·shellcheck | 할 일 | `docs/PROGRESS.md` C-12 |
+
+추천 순서: PR 습관(브랜치에서 작업 → `gh pr create` → merge)을 먼저 한 저장소에서 시도하고, 그게 편하면 Claude Code on the web을 켠다. `@claude` Actions는 이슈를 쓰기 시작할 때.
+
 ## 새 스킬 추가
 
 1. `skills/_template/`을 복사해 이름을 바꾼다.
@@ -161,6 +182,8 @@ Claude Code 확장 자체 설정(`claudeCode.*`)은 VS Code 설정에, 허용 �
 - [Agent Skills 공식 — 작성 모범 사례](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices), [anthropics/skills](https://github.com/anthropics/skills)
 - [Claude 도움말 — 스킬 사용](https://support.claude.com/en/articles/12512180-use-skills-in-claude), [Claude Design 시작하기](https://support.claude.com/en/articles/14604416-get-started-with-claude-design)
 - [VS Code — Settings Sync](https://code.visualstudio.com/docs/configure/settings-sync)
+- [Claude Code 공식 — GitHub Actions](https://code.claude.com/docs/en/github-actions), [Code Review](https://code.claude.com/docs/en/code-review), [Claude Code on the web](https://code.claude.com/docs/en/claude-code-on-the-web)
+- [Dale Seo — Claude Code GitHub Actions 사용법](https://daleseo.com/claude-code-action/), [Hyperithm — Claude Code 심화 활용법](https://tech.hyperithm.com/claude_code_guides_2), [doug-skinner/github-cli-claude-skill](https://github.com/doug-skinner/github-cli-claude-skill)
 - [HumanLayer — Writing a good CLAUDE.md](https://www.humanlayer.dev/blog/writing-a-good-claude-md), [Writing a CLAUDE.md that Claude actually follows](https://dev.to/peterverse180/writing-a-claudemd-that-claude-actually-follows-4llo)
 - [mattpocock/skills — git-guardrails](https://github.com/mattpocock/skills/blob/main/skills/misc/git-guardrails-claude-code/SKILL.md), [claude-code-dotfiles](https://github.com/elizabethfuentes12/claude-code-dotfiles)
 - [hesreallyhim/awesome-claude-code](https://github.com/hesreallyhim/awesome-claude-code), [josix/awesome-claude-md](https://github.com/josix/awesome-claude-md)

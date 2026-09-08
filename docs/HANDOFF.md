@@ -1,6 +1,6 @@
 # 인수인계 — claude-config
 
-새 세션을 시작할 때 이 파일을 먼저 읽는다. 세션이 끝날 때 "현재 상태"와 "다음 할 일"을 갱신한다.
+새 세션을 시작할 때 이 파일을 먼저 읽고, 할 일은 [PROGRESS.md](PROGRESS.md)에서 본다. 세션이 끝날 때 "현재 상태"와 PROGRESS.md를 갱신한다.
 
 ## 목적 (변하지 않음)
 
@@ -8,19 +8,16 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 
 ## 현재 상태 (2026-09-08)
 
-- 저장소: github.com/yanos0218/AI (비공개), `main` = `fa41141`. 작업 트리 깨끗함.
+- 저장소: github.com/yanos0218/AI (비공개), `main` = `d5a3fc1`. 미커밋: `skills/dev-release/SKILL.md`(태그 없는 저장소 규칙 추가), `docs/PROGRESS.md`(신규), README(GitHub 활용 절), 이 파일.
+- **dev-release 발동 테스트 완료(2026-09-08)** — README 시험 시나리오 3개를 스크래치패드에 임시 git 저장소로 만들고 `claude -p "..." --output-format stream-json --verbose` 새 세션으로 실행. A(versioning.md)·B(두 자리 태그) 통과. C(태그·CHANGELOG 없음)는 처음에 `v0.1.0`을 스스로 정해 실패 → SKILL.md §0·§1에 "태그 없으면 형식·시작 번호와 CHANGELOG 생성 여부를 먼저 묻는다" 추가 후 재시험 통과. 설치본 `~/.claude/skills/dev-release/`에도 복사됨.
+- 테스트 중 관찰: `cd X && ls -la` 같은 복합 명령은 settings의 `Read(./.env)` deny 규칙 때문에 승인 프롬프트가 뜸(스킬 문제 아님, 모델이 `git -C`·Glob으로 우회함). `python -m py_compile`은 allow 목록에 없어 막힘.
 - Windows PC에 설치 완료: `~/.claude/CLAUDE.md`, `~/.claude/skills/dev-release/`, `~/.claude/hooks/{git-guardrails,statusline}.sh`, `~/.claude/settings.json`(권한 allow/deny·훅·상태줄), CLI `~/.local/bin/claude.exe` v2.1.263, VS Code 확장 13개 선별 설치.
 - **Mac mini·Linux는 아직 미반영** — `scripts/hooks/*.sh` 복사 + `scripts/settings.example.json`의 `permissions`/`hooks`/`statusLine` 키를 각자 `settings.json`에 합치면 된다. Mac은 `~/.claude/CLAUDE.md`가 이미 있을 수 있으니 덮어쓰기 전에 내용 확인.
 - 웹(Claude.ai)에는 아직 아무것도 안 올림 — `bash scripts/pack.sh` → Customize → Skills 업로드, Project instructions에 `claude-md/CLAUDE.md` 붙여넣기.
 
-## 다음 할 일 (추천순)
+## 다음 할 일
 
-1. **dev-release 스킬 발동 테스트** — README "dev-release 시험 시나리오" 3개. 아무 git 저장소에서 "이번 변경 몇 버전으로 올려야 해?"라고 묻고 §0(저장소 규칙 감지) → 근거 제시 → 릴리즈는 실행 안 함을 확인. 실패하면 description 문구나 SKILL.md 구조를 고친다.
-2. 새 세션에서 상태줄·훅이 실제로 보이는지 확인(`git push` 시도 시 확인 프롬프트, 하단에 `[모델] 폴더 (브랜치) | ▓░ % | $`).
-3. 개발용 스킬(파일 관리, 테스트 방법 정의) — 참고 원본: kolo_pwa `docs/testing.md`(복사 금지, 참조만). `skills/_template` 구조로.
-4. 블로그용 스킬 — OpenClaw `core/definitions/modes/blog.md`·`core/playbooks/blog-*.md`에 문체·포맷 확정돼 있음. 단 OpenClaw 원칙은 "Claude Code가 블로그를 직접 쓰지 않는다"이므로, 전역 스킬로 만들기 전에 역할 구분을 사용자와 정리.
-5. 사업기획용 스킬 — 요구사항 미정, 먼저 구체화 대화.
-6. Mac·Linux 반영, 웹 업로드.
+[PROGRESS.md](PROGRESS.md) §2·§3의 `C-NN` 항목. 추천 순서: C-09(커밋) → C-10(상태줄·훅 확인) → C-18(GitHub 활용 결정, 사용자 판단) → C-13(개발용 스킬) → C-15/16/17(Mac·Linux·웹 반영).
 
 ## 결정 사항 (다시 묻지 말 것)
 
