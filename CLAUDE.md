@@ -14,6 +14,13 @@
 - 스킬 발동 테스트는 스크래치패드에 시나리오별 임시 git 저장소를 만들고 `claude -p "<사용자 말>" --output-format stream-json --verbose --allowedTools ...`로 새 세션을 띄워 도구 호출 로그를 확인한다(2026-09-08 dev-release에 사용한 방식). 같은 세션 안에서 스킬을 직접 호출하는 것은 발동 테스트가 아니다.
 - 문서만 바꿨으면 `npx markdownlint-cli2 "docs/*.md" README.md`. 줄 길이(MD013)는 이 저장소에서 무시한다.
 
+## 문서 규칙
+
+- 파일마다 역할이 하나다. README = 입구(구조·설치 요약·링크). HANDOFF = 지금 상황. PROGRESS = 단계·배포·할 일. 상세 주제는 `docs/<주제>.md` 하나씩.
+- 줄 수 상한(`.github/scripts/check-docs.sh`가 CI에서 검사): README 120, 이 파일 60, `claude-md/CLAUDE.md` 200, HANDOFF 60, PROGRESS 300, SKILL.md 80. 넘으면 줄이는 게 아니라 **분리**한다 — README는 `docs/`로, PROGRESS는 kolo_pwa처럼 항목을 `docs/progress/C-NN.md`로.
+- 새 주제를 README에 절로 추가하지 않는다. `docs/`에 파일을 만들고 README 구조 목록에 한 줄 + 링크.
+- 형식: markdownlint 통과(MD013 제외), Keep a Changelog, 릴리즈 노트는 음슴체, 표는 헤더 구분선 정렬.
+
 ## 문서 갱신
 
 - 세션 끝: `docs/PROGRESS.md`(§0 자산 현황표의 단계·배포 열 + 항목 상태) + `docs/HANDOFF.md`(현재 상태) 갱신.

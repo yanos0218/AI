@@ -1,0 +1,33 @@
+name: Lint
+
+# 문서·스크립트 저장소라 검사도 가볍다: markdownlint, shellcheck, 문서 상한(check-docs.sh).
+# 전부 러너에 일회성으로 설치하고 저장소에는 의존성을 두지 않는다.
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: markdownlint
+        uses: DavidAnson/markdownlint-cli2-action@v24
+        with:
+          globs: |
+            **/*.md
+            !node_modules
+            !dist
+
+      - name: shellcheck
+        run: |
+          sudo apt-get update -q && sudo apt-get install -y -q shellcheck
+          shellcheck -S warning scripts/hooks/*.sh scripts/pack.sh .claude/hooks/*.sh .github/scripts/*.sh vscode/install.sh
+
+      - name: 문서 상한·필수 파일
+        run: bash .github/scripts/check-docs.sh

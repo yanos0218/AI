@@ -38,7 +38,7 @@
 | 개발용 스킬 (파일 관리·테스트 정의) | 계획 | | | | | C-13 |
 | 블로그용 스킬 | 계획 (역할 구분 선행) | | | | | C-19 |
 | 사업기획용 스킬 | 계획 (요구사항 미정) | | | | | C-20 |
-| 이 저장소 CI (markdownlint·shellcheck) | 계획 | | | | | C-12 |
+| 이 저장소 CI (lint.yml + check-docs.sh) | 검증 (로컬 통과, 첫 Actions 실행 확인 전) | 저장소 안에서만 | 동일 | 동일 | - | push 후 `gh run list` 확인 → 기본 |
 | 성향 데이터 → 전역 지침 후보 | 계획 | | | | | C-25/26/27 |
 | GitHub 활용 (web·`@claude` Actions) | 결정 대기 | | | | | C-18 |
 
@@ -54,7 +54,10 @@
 - [x] C-08 GitHub 활용 현황 조사 + 선택지 정리(README "GitHub 활용") (2026-09-08)
 - [x] C-23 기본 영역/작업 영역 분리 — 저장소 `CLAUDE.md`, `drafts/`, `.claude/hooks/baseline-guard.sh`(기본 영역 쓰기 확인 강제) (2026-09-08)
 - [x] C-28 버전·릴리즈 규칙 + 첫 컷 — `docs/versioning.md`·`CHANGELOG.md` 신설, `v0.1.0` 태그·push·GitHub Release(`dev-release.zip` 첨부) 완료 (2026-09-08)
-- [x] C-30 GitHub 기능 전체 대비 사용 수준 검토 — README "GitHub 기능 전체 대비 사용 수준" 표. 결론: 전부 쓸 필요 없음, 현재가 1인 권장 수준 (2026-09-08)
+- [x] C-12 이 저장소 CI — `.github/workflows/lint.yml`(markdownlint·shellcheck·문서 상한), `.github/dependabot.yml`. 로컬에서 세 검사 통과, 첫 Actions 실행 결과는 push 후 확인 (2026-09-08)
+- [x] C-33 README 입구화 + 문서 규칙 — 230줄 README를 111줄로, 설치·검토표·GitHub은 `docs/`로 분리. 문서별 줄 수 상한을 CLAUDE.md에 정하고 `check-docs.sh`로 CI 검사 (2026-09-08)
+- [x] C-30 GitHub 기능 전체 대비 사용 수준 검토 — `docs/github.md` 표. 결론: 전부 쓸 필요 없음, 현재가 1인 권장 수준 (2026-09-08)
+ — README "GitHub 기능 전체 대비 사용 수준" 표. 결론: 전부 쓸 필요 없음, 현재가 1인 권장 수준 (2026-09-08)
 - [x] C-24 사용자 성향 데이터 활용 방안 조사 — 로컬 세션 기록·auto memory·claude.ai 메모리·`/insights` 검토, 결론은 C-25~C-27 (2026-09-08)
 
 ## 2. 할 일 — 개발·설정
@@ -62,7 +65,6 @@
 - [ ] C-09 미커밋 변경 커밋 — `skills/dev-release/SKILL.md`, `docs/PROGRESS.md`, `docs/HANDOFF.md`, README
 - [ ] C-10 새 세션에서 상태줄·훅 실제 동작 확인 — `git push` 시도 시 확인 프롬프트, 하단 `[모델] 폴더 (브랜치) | ▓░ % | $`
 - [ ] C-11 `permissions.allow` 보완 — C-07 시험에서 `python -m py_compile`이 막혔고, `cd X && ls`는 `Read(./.env)` deny 규칙과 겹쳐 승인 프롬프트가 뜸. 자주 쓰는 검사 명령을 allow에 추가하고 예시 파일에도 반영
-- [ ] C-12 이 저장소 CI — markdownlint + shellcheck를 GitHub Actions로 (kolo_pwa `test.yml`의 경로 필터 방식 참고, 복사 금지). Actions 분은 문서 변경만이라 소액
 - [ ] C-13 개발용 스킬(파일 관리, 테스트 방법 정의) — 참고 원본 kolo_pwa `docs/testing.md`(참조만). `skills/_template` 구조, 3시나리오 시험 후 완료
 - [ ] C-29 `scripts/pack.sh`가 Windows Git Bash에서 실패 — `zip: command not found`(v0.1.0 컷 중 발견). 기본 영역 수정이므로 초안을 `drafts/scripts/pack.sh`에: `zip`이 없으면 `python -c zipfile`로 폴백(제외 규칙 동일). 이번 zip은 같은 규칙의 python 명령으로 임시 생성
 - [ ] C-14 Notification 훅 — 병렬 세션(`claude --bg`, worktree)을 실제로 쓰기 시작하면 추가. 그전엔 보류
@@ -72,6 +74,7 @@
 - [ ] C-15 Mac mini 반영 — `scripts/hooks/*.sh` 복사, `settings.example.json`의 `permissions`/`hooks`/`statusLine` 합치기. 기존 `~/.claude/CLAUDE.md` 내용 확인 후 덮어쓰기. 사용자가 직접 진행
 - [ ] C-16 Linux(Rocky) 반영 — C-15와 동일 절차. jq 없어도 상태줄은 python/node 폴백
 - [ ] C-17 Claude.ai 웹 업로드 — `bash scripts/pack.sh` → Customize → Skills 업로드, Project instructions에 `claude-md/CLAUDE.md` 붙여넣기. 이후 CLAUDE.md를 고칠 때마다 다시 붙여넣어야 함(README "규칙을 고칠 때")
+- [ ] C-34 GitHub Issues 사용 결정 — Issues는 **무료**(비공개 포함). 제안: 이 저장소에서 한 달 시험 — "작업 중 발견한 문제"(C-29 같은 것)만 Issue로, 계획·상태는 PROGRESS 유지, PROGRESS 항목에 `#N` 링크. 효과 있으면 다른 저장소로. `gh issue list/view`를 permissions.allow에 추가(C-11과 함께)
 - [ ] C-31 Dependabot 알림 켜기 — AI·OpenClaw·Script·Etc 저장소 Settings → Security → Dependabot alerts. 무료, 사용자가 클릭(외부 서비스 설정 변경이라 Claude가 대신 켜지 않음)
 - [ ] C-32 GitHub 2FA 켜져 있는지 확인 — Settings → Password and authentication
 - [ ] C-18 GitHub 활용 결정 — README "GitHub 활용" 표의 "결정 필요" 2건: (1) Claude Code on the web으로 PR 만들기(Codex 클라우드 PR 방식 대체), (2) `@claude` GitHub Actions 설치 여부. 둘 다 PR 단위 작업 습관이 전제

@@ -1,0 +1,7 @@
+version: 2
+updates:
+  # 저장소 자체에는 의존성 트리가 없다. 워크플로가 쓰는 액션 버전만 추적한다.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
