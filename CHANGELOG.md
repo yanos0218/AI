@@ -1,0 +1,25 @@
+# Changelog
+
+형식은 [Keep a Changelog](https://keepachangelog.com/ko/1.1.0/), 버전은 [docs/versioning.md](docs/versioning.md).
+
+## [Unreleased]
+
+## [0.1.0] - 2026-09-08
+
+첫 릴리즈. Windows에만 설치된 상태.
+
+### Added
+
+- 전역 공통 지침 `claude-md/CLAUDE.md` — 언어·답변·확인 기준·검증·컨텍스트·문서 동기화·Git·코드 8개 절
+- `skills/dev-release/` — SemVer 등급 판단 + 릴리즈 컷 절차, references 3개. 새 세션 3시나리오 발동 테스트 통과
+- `scripts/hooks/git-guardrails.sh` — push·reset --hard·clean -f·--no-verify·publish 등 앞에서 확인 프롬프트 강제
+- `scripts/hooks/statusline.sh` — 모델·브랜치·컨텍스트 사용률·비용 상태줄
+- `scripts/settings.example.json` — 권한 allow/deny, 훅, 상태줄 예시
+- `scripts/pack.sh` — 스킬을 웹 업로드용 zip으로
+- `vscode/` — 선별 확장 13개 목록, 설정 스냅샷, 설치 스크립트(Windows·Mac/Linux)
+- `skills/_template/` — 새 스킬 틀
+- 저장소 운영: `docs/HANDOFF.md`(인수인계), `docs/PROGRESS.md`(자산 현황표 + `C-NN` 보드), `CLAUDE.md`(기본/작업 영역 규칙), `drafts/`(승격 전 초안), `.claude/hooks/baseline-guard.sh`(기본 영역 쓰기 확인 강제)
+- README — 표면별 적용 범위, 설치, 공식 문서 대비 검토표, GitHub 활용 선택지
+
+[Unreleased]: https://github.com/yanos0218/AI/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/yanos0218/AI/releases/tag/v0.1.0
