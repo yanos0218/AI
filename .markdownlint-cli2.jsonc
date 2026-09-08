@@ -1,0 +1,4 @@
+{
+  // 수집한 원자료(auto memory 복사본)는 손대지 않으므로 린트 제외. 설정 자체는 .markdownlint.jsonc
+  "ignores": ["node_modules/**", "dist/**", "drafts/observations/memory-*/**"]
+}
