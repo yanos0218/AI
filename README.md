@@ -24,6 +24,7 @@ vscode/                      새 기기에 VS Code 확장·설정을 맞추는 �
 
 ```text
 drafts/                      초안. 기본 영역과 같은 구조로 두고, 시험을 통과하면 ①로 옮긴다
+drafts/observations/         세션마다 관찰한 사용자 요청·대화 방식(원자료). 반복되는 것만 지침 후보로
 skills/_template/            새 스킬을 시작할 때 복사하는 틀
 ```
 
@@ -35,6 +36,7 @@ docs/PROGRESS.md             진행 보드 — 자산별 단계(계획→초안�
 docs/versioning.md           이 저장소의 버전·릴리즈 규칙
 docs/install.md              기기·웹별 설치 상세
 docs/github.md               GitHub를 어디까지 쓰는지, Claude와 어떻게 엮는지
+docs/repo-standard.md        GitHub를 쓰는 모든 저장소의 최소선 체크리스트와 저장소별 현황
 docs/review-vs-official.md   공식 문서·커뮤니티 권장과 대조한 검토표 (반영/습관/보류)
 CHANGELOG.md                 기본 영역의 버전별 변경 이력
 CLAUDE.md                    이 저장소 안에서 Claude가 지킬 규칙 (기본/작업 영역, 문서 상한, 검증 방법)
