@@ -30,7 +30,7 @@
 
 | 자산 | 단계 | Windows | Mac mini | Linux | 웹(Claude.ai) | 다음 행동 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 전역 지침 `base/claude-md/CLAUDE.md` | 기본 | ✓ v0.2.0 | ? (기존 파일 확인 필요) | ✗ | ✗ (Project instructions) | [C-15](#c-15)/16/17 |
+| 전역 지침 `base/claude-md/CLAUDE.md` | 기본 | ✓ v0.4.0+미릴리즈 1줄 | ? (기존 파일 확인 필요) | ✗ | ✗ (Project instructions) | [C-15](#c-15)/16/17 |
 | dev-release 스킬 | 기본 (3시나리오 통과 2026-09-08) | ✓ v0.1.0 | ✗ | ✗ | ✗ (Release v0.1.0의 `dev-release.zip` 업로드) | [C-15](#c-15)/16/17 |
 | git-guardrails 훅 | 기본 (새 세션 push 차단 확인 2026-09-08) | ✓ | ✗ | ✗ | - | [C-10](#c-10), [C-15](#c-15)/16 |
 | config-changelog 훅 | 기본 (임시 HOME 7케이스 통과, 2026-09-09) | ✓ v0.4.0 | ✗ | ✗ | - | [C-15](#c-15)/16 |
@@ -38,7 +38,7 @@
 | `settings.example.json` (권한·훅·상태줄) | 기본 | ✓ (allow 보완은 [C-11](#c-11)) | ✗ | ✗ | - | [C-11](#c-11), [C-15](#c-15)/16 |
 | `base/vscode/` 확장 목록·설정·설치 스크립트 | 기본 | ✓ v0.3.0 | ✗ (Settings Sync가 주) | - | - | [C-15](#c-15) |
 | baseline-guard 훅 (이 저장소 전용, `.claude/`) | 기본 (새 세션에서 `base/` Edit 차단 확인 2026-09-08) | 저장소 안에서만 동작 | 동일 | 동일 | - | - |
-| 개발용 스킬 `dev-workflow` | 검증 (3시나리오 통과 2026-09-09, 승격 대기 `drafts/skills/dev-workflow/`) | | | | | [C-13](#c-13) |
+| dev-workflow 스킬 | 기본 (3시나리오 통과 2026-09-09, 미릴리즈) | ✓ | ✗ | ✗ | ✗ | [C-15](#c-15)/16/17 |
 | 블로그용 스킬 | 계획 (역할 구분 선행) | | | | | [C-19](#c-19) |
 | 사업기획용 스킬 | 계획 (요구사항 미정) | | | | | [C-20](#c-20) |
 | 이 저장소 CI (lint.yml + check-docs.sh) | 기본 (첫 Actions 실행 success, 2026-09-08) | 저장소 안에서만 | 동일 | 동일 | - | - |
@@ -57,6 +57,8 @@
 - [x] <a id="c-08"></a>C-08 GitHub 활용 현황 조사 + 선택지 정리(README "GitHub 활용") (2026-09-08)
 - [x] <a id="c-23"></a>C-23 기본 영역/작업 영역 분리 — 저장소 `CLAUDE.md`, `drafts/`, `.claude/hooks/baseline-guard.sh`(기본 영역 쓰기 확인 강제) (2026-09-08)
 - [x] <a id="c-28"></a>C-28 버전·릴리즈 규칙 + 첫 컷 — `docs/versioning.md`·`CHANGELOG.md` 신설, `v0.1.0` 태그·push·GitHub Release(`dev-release.zip` 첨부) 완료 (2026-09-08)
+- [x] <a id="c-13"></a>C-13 개발용 스킬 `dev-workflow` — 요구사항 3가지 결정, 초안, 3시나리오 통과, 사용자 승인으로 `base/skills/` 승격·Windows 설치. 상세 [docs/progress/C-13.md](progress/C-13.md) (2026-09-09)
+- [x] <a id="c-47"></a>C-47 전역 지침 §2 "규칙 이탈 금지" 한 줄 승격, Windows 설치, `[Unreleased]` (2026-09-09)
 - [x] <a id="c-41"></a>C-41 config-changelog 훅 승격 — 사용자 승인, `base/hooks/` + `settings.example.json` PostToolUse 등록, Windows 설치, v0.4.0 (2026-09-09)
 - [x] <a id="c-39"></a>C-39 경로 재구성 — 기본 영역을 `base/`, 도구를 `tools/`로. 훅·pack.sh·CI·문서 일괄 갱신, v0.3.0 (2026-09-08)
 - [x] <a id="c-40"></a>C-40 PROGRESS 운영 규칙 — 열린 항목 + 최근 30일 완료만, 오래된 완료는 월별 아카이브, 상세는 파일, 문제는 Issue (2026-09-08)
@@ -72,12 +74,13 @@
 
 - [~] <a id="c-10"></a>C-10 새 세션 훅·상태줄 확인 — 훅 2개는 `claude -p` 새 세션으로 검증 완료(2026-09-08): baseline-guard가 `base/` Edit을, git-guardrails가 `git push`를 확인 요구로 막음. **상태줄은 대화형 세션에서만 보이므로 사용자가 새 세션을 열어 하단 표시를 확인**하면 완료
 - [ ] <a id="c-11"></a>C-11 `permissions.allow` 보완 — C-07 시험에서 `python -m py_compile`이 막혔고, `cd X && ls`는 `Read(./.env)` deny 규칙과 겹쳐 승인 프롬프트가 뜸. 자주 쓰는 검사 명령을 allow에 추가하고 예시 파일에도 반영. 스킬 `allowed-tools` 프런트매터로 dev-release의 `git tag`·`gh release view` 사전 승인도 같이(검토 S7)
-- [~] <a id="c-13"></a>C-13 개발용 스킬 `dev-workflow` — 요구사항 3가지 결정(발동 문구·산출물/결과물·파일/폴더), SKILL.md + references 2개 초안, **3시나리오 발동 시험 통과(2026-09-09)**. 기록은 `drafts/skills/dev-workflow/NOTES.md`. 사용자가 "기본에 반영해"라고 하면 `base/skills/`로 승격해 `[Unreleased]`에 적는다. 컷은 versioning.md의 컷 시점(다음 기기 설치 직전·월 점검·요청)에
 - [ ] <a id="c-44"></a>C-44 `tools/install.sh` — 멱등 설치 스크립트: base/ → ~/.claude 복사, settings.json에 permissions·hooks·statusLine 키 병합(기기별 키 유지), 끝에 `check-install.sh`. Mac·Linux 반영(C-15/16)은 이 스크립트로. 검토 P1
 - [ ] <a id="c-45"></a>C-45 플러그인화 검토 — base/skills+hooks를 `.claude-plugin/plugin.json`+`hooks/hooks.json`으로 묶고 이 저장소를 개인 마켓플레이스로(`claude plugin install`/`update`). CLAUDE.md·permissions·statusLine은 못 실으므로 install.sh와 병행. Mac 설치 때 이득 판단. 검토 S1
 - [ ] <a id="c-46"></a>C-46 `tools/test-skill.sh <스킬> <시나리오 폴더>` — 시나리오 저장소의 `.claude/skills/`에 초안을 넣고 `claude -p`로 돌린 뒤 Skill 호출·최종 답변을 추출. 오늘 손으로 두 번 한 절차의 스크립트화. 검토 P6
-- [ ] <a id="c-47"></a>C-47 전역 지침 수정안 — §2에 "정의된 규칙에서 스스로 벗어나지 않는다, 벗어나야 하면 제안 → 승인 → 규칙 문서 먼저" 한 줄(`drafts/claude-md/CLAUDE.md`). 승인 시 `[Unreleased]`에 적고 컷은 컷 시점에. 검토 P3
 - [ ] <a id="c-48"></a>C-48 Stop 훅(이 저장소 전용) — 세션 종료 시 PROGRESS·HANDOFF가 이번 세션에 수정됐는지 `git diff --name-only`로 보고 안 됐으면 한 줄 알림. 소음이면 끔. 검토 S2
+- [ ] <a id="c-49"></a>C-49 전역 지침 수정안 — §5에 조사 규칙(공식 우선·날짜·직접 실행 검증·출처·`docs/research/` 기록)과 "서브에이전트·시험 세션은 Sonnet" (`drafts/claude-md/CLAUDE.md`). 승인 시 `[Unreleased]`. 규칙 본문은 `docs/research.md`
+- [ ] <a id="c-50"></a>C-50 조사 기록 운영 — `docs/research/README.md` 색인 신설(소급 7건). 새 조사는 규칙대로 파일 추가, "다시 볼 시점" 지난 것은 월 점검 때 재조사
+- [ ] <a id="c-51"></a>C-51 시험·서브에이전트 모델 기본값 — `tools/test-skill.sh`(C-46)에 `--model claude-sonnet-5` 기본, 발동 시험 1회 비용 절반 이하 목표. 실제 비용은 시험 결과의 `cost`로 기록
 - [ ] <a id="c-14"></a>C-14 Notification 훅 — 병렬 세션(`claude --bg`, worktree)을 실제로 쓰기 시작하면 추가. 그전엔 보류
 
 ## 3. 할 일 — 배포·운영·비개발

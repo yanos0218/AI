@@ -4,6 +4,14 @@
 
 ## [Unreleased]
 
+### Added
+
+- `base/skills/dev-workflow/` — 저장소의 파일·폴더 구조와 테스트 방법을 정하고, 작업 뒤 테스트 실행 증거를 보고하는 스킬. 발동 문구 7개, references 2개. 3시나리오 발동 시험 통과(기록 `docs/progress/C-13.md`)
+
+### Changed
+
+- `base/claude-md/CLAUDE.md` §2 — "정의된 규칙에서 스스로 벗어나지 않는다. 벗어나야 하면 근거 → 제안 → 승인 → 규칙 문서 먼저" 한 줄 추가
+
 ## [0.4.0] - 2026-09-09
 
 ### Added

@@ -12,8 +12,9 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 - **Windows PC는 v0.4.0과 동일**(`tools/check-install.sh`로 확인). CLI `~/.local/bin/claude.exe` v2.1.263, VS Code 확장 13개. 훅 2개(git-guardrails·baseline-guard)는 새 `claude -p` 세션에서 차단 동작 확인, 상태줄 표시만 사용자가 대화형 세션에서 확인하면 [C-10](PROGRESS.md#c-10) 완료.
 - **Mac mini·Linux·웹(Claude.ai)은 미반영.** 설치는 `docs/install.md`. Mac은 기존 `~/.claude/CLAUDE.md`가 있을 수 있으니 덮어쓰기 전에 확인. 웹은 Release v0.4.0의 `dev-release.zip` + Project instructions에 `base/claude-md/CLAUDE.md`.
 - 설정이 다른 저장소 작업 중 흔들리지 않게 하는 구조(기본·모듈·프로젝트 층)와 이력 장치는 `docs/config-lifecycle.md`(2026-09-09). 이력 훅은 v0.4.0에서 기본 영역.
+- 조사 규칙 `docs/research.md` + 기록 색인 `docs/research/`(2026-09-09), 토큰 절감 절은 `docs/review-vs-official.md`. 전역 반영은 [C-49](PROGRESS.md#c-49).
 - 저장소 검토 `docs/audit-2026-09.md`(2026-09-09): 문제 7·제안 7 → 보드 [C-44](PROGRESS.md#c-44)~[C-48](PROGRESS.md#c-48). 규칙 이탈 금지 절을 저장소 CLAUDE.md에 추가, 전역판은 [C-47](PROGRESS.md#c-47).
-- dev-workflow 스킬 초안이 3시나리오 통과(2026-09-09), `drafts/skills/dev-workflow/`에서 승격 대기([C-13](PROGRESS.md#c-13)). dev-release 발동 테스트 3시나리오 통과(2026-09-08). 테스트 방법은 저장소 `CLAUDE.md` "검증" 절. 관찰: `cd X && ls` 복합 명령은 `Read(./.env)` deny 규칙과 겹쳐 승인 프롬프트가 뜨고, `python -m py_compile`은 allow 목록에 없음 → [C-11](PROGRESS.md#c-11).
+- dev-workflow 스킬 승격·Windows 설치(2026-09-09, `[Unreleased]`). dev-release 발동 테스트 3시나리오 통과(2026-09-08). 테스트 방법은 저장소 `CLAUDE.md` "검증" 절. 관찰: `cd X && ls` 복합 명령은 `Read(./.env)` deny 규칙과 겹쳐 승인 프롬프트가 뜨고, `python -m py_compile`은 allow 목록에 없음 → [C-11](PROGRESS.md#c-11).
 
 ## 다음 할 일
 
