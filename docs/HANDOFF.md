@@ -1,0 +1,31 @@
+# 인수인계 — claude-config
+
+새 세션을 시작할 때 이 파일을 먼저 읽는다. 세션이 끝날 때 "현재 상태"와 "다음 할 일"을 갱신한다.
+
+## 목적 (변하지 않음)
+
+Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원본 저장소. 개발자가 아닌 사용자가 여러 스택의 프로젝트를 오가며 Claude에게 (1) 매번 같은 배경을 다시 설명하지 않고, (2) 멋대로 진행하거나 너무 자주 묻지 않게 하고, (3) 검증 없이 "됐다"는 말을 못 하게 하고, (4) 결론만 짧게 듣도록 만든다. 저장소별 규칙은 각 저장소에 두고 여기서는 **참조만** 한다.
+
+## 현재 상태 (2026-09-08)
+
+- 저장소: github.com/yanos0218/AI (비공개), `main` = `fa41141`. 작업 트리 깨끗함.
+- Windows PC에 설치 완료: `~/.claude/CLAUDE.md`, `~/.claude/skills/dev-release/`, `~/.claude/hooks/{git-guardrails,statusline}.sh`, `~/.claude/settings.json`(권한 allow/deny·훅·상태줄), CLI `~/.local/bin/claude.exe` v2.1.263, VS Code 확장 13개 선별 설치.
+- **Mac mini·Linux는 아직 미반영** — `scripts/hooks/*.sh` 복사 + `scripts/settings.example.json`의 `permissions`/`hooks`/`statusLine` 키를 각자 `settings.json`에 합치면 된다. Mac은 `~/.claude/CLAUDE.md`가 이미 있을 수 있으니 덮어쓰기 전에 내용 확인.
+- 웹(Claude.ai)에는 아직 아무것도 안 올림 — `bash scripts/pack.sh` → Customize → Skills 업로드, Project instructions에 `claude-md/CLAUDE.md` 붙여넣기.
+
+## 다음 할 일 (추천순)
+
+1. **dev-release 스킬 발동 테스트** — README "dev-release 시험 시나리오" 3개. 아무 git 저장소에서 "이번 변경 몇 버전으로 올려야 해?"라고 묻고 §0(저장소 규칙 감지) → 근거 제시 → 릴리즈는 실행 안 함을 확인. 실패하면 description 문구나 SKILL.md 구조를 고친다.
+2. 새 세션에서 상태줄·훅이 실제로 보이는지 확인(`git push` 시도 시 확인 프롬프트, 하단에 `[모델] 폴더 (브랜치) | ▓░ % | $`).
+3. 개발용 스킬(파일 관리, 테스트 방법 정의) — 참고 원본: kolo_pwa `docs/testing.md`(복사 금지, 참조만). `skills/_template` 구조로.
+4. 블로그용 스킬 — OpenClaw `core/definitions/modes/blog.md`·`core/playbooks/blog-*.md`에 문체·포맷 확정돼 있음. 단 OpenClaw 원칙은 "Claude Code가 블로그를 직접 쓰지 않는다"이므로, 전역 스킬로 만들기 전에 역할 구분을 사용자와 정리.
+5. 사업기획용 스킬 — 요구사항 미정, 먼저 구체화 대화.
+6. Mac·Linux 반영, 웹 업로드.
+
+## 결정 사항 (다시 묻지 말 것)
+
+- 다른 저장소 내용은 복사하지 않고 참조만.
+- 강제가 필요한 규칙은 CLAUDE.md 문장이 아니라 훅으로.
+- VS Code 동기화는 내장 Settings Sync가 주, `vscode/`는 부트스트랩·백업. Prettier/ESLint/GitLens는 저장소에 설정 파일이 생길 때까지 보류.
+- 에이전트 팀·샌드박스(Windows 미지원)·LSP 플러그인·알림 훅은 보류. 병렬 작업은 설정이 아니라 습관 항목.
+- 커밋은 사용자가 요청할 때만. push·배포·삭제는 확인 후.

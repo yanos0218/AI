@@ -7,6 +7,7 @@
 ## 구조
 
 ```text
+docs/HANDOFF.md                            새 세션 인수인계 — 현재 상태·다음 할 일·결정 사항 (세션 시작 시 먼저 읽기)
 claude-md/CLAUDE.md                        전역 공통 지침 → ~/.claude/CLAUDE.md
 skills/dev-release/                        SemVer 등급 판단 + 릴리즈 컷 절차
   ├─ SKILL.md
