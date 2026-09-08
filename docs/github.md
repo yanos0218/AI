@@ -8,13 +8,13 @@ Claude와 GitHub를 엮는 방법은 크게 넷이다. 아래는 **사용자 저
 | --- | --- | --- | --- |
 | `gh` CLI를 Claude가 직접 사용 | PR·이슈·Actions 결과·Release 조회/생성. MCP보다 토큰이 적게 듦 | 반영 | `permissions.allow`에 `gh pr view`·`gh run list`·`gh release view` 사전 허용. dev-release가 `gh release create`·`gh run list`를 씀 |
 | 태그 push → Release 자동 생성 | 릴리즈 노트 파일을 태그 전에 커밋하면 Actions가 Release를 만듦 | 반영 | kolo_pwa·OpenClaw에 이미 있음. dev-release §0이 워크플로 존재를 감지해 절차를 맞춤 |
-| 이 저장소를 설정의 원본으로 | `~/.claude`를 기기마다 손으로 맞추지 않고 clone → 설치 스크립트 | 반영 | 커뮤니티 dotfiles 방식과 동일. Mac·Linux 반영은 `docs/PROGRESS.md` C-15/16 |
+| 이 저장소를 설정의 원본으로 | `~/.claude`를 기기마다 손으로 맞추지 않고 clone → 설치 스크립트 | 반영 | 커뮤니티 dotfiles 방식과 동일. Mac·Linux 반영은 `docs/PROGRESS.md` [C-15](PROGRESS.md#c-15)/16 |
 | **Claude Code on the web** (`claude.ai/code`) | 브라우저·폰에서 지시 → 클라우드 VM이 저장소를 clone해 작업 → PR 생성. `claude --cloud "..."`로 터미널에서 보내고 `--teleport`로 받아옴. PR의 CI 실패·리뷰 코멘트를 자동 수정(auto-fix)도 가능 | **결정 필요** | Pro/Max 가능, 별도 VM 비용 없음(플랜 한도 공유). OpenClaw에서 Codex로 하던 "클라우드가 PR 만들기"의 Claude 버전. 저장소 `CLAUDE.md`·`.claude/`는 적용되지만 `~/.claude`는 전달 안 됨 |
 | **Claude Code GitHub Actions** (`@claude` 멘션) | 이슈·PR 코멘트에 `@claude ...`라고 쓰면 Actions 러너에서 Claude가 코드를 고치고 커밋·PR. `prompt`를 주면 일정(cron)·이벤트 자동 실행도 가능 | **결정 필요** | `/install-github-app`으로 5분 설치. 구독 토큰(`claude setup-token`)이면 API 과금 없이 플랜 한도 사용, 단 Actions 분은 소모(비공개 저장소 월 한도 있음). 이슈를 안 쓰고 1인이라 지금은 이득이 작다 — PR 단위 작업이 자리 잡은 뒤 |
 | PR 자동 리뷰 — Code Review(관리형) | PR마다 다중 에이전트가 검토해 인라인 코멘트 | 보류 | Team/Enterprise 전용, 건당 15~25달러. 개인은 로컬 `/code-review`(무료, 세션 한도) 또는 `/code-review ultra`(크레딧)로 대체 |
 | 브랜치 → PR → merge 습관 | 위 두 "결정 필요" 항목의 전제. 리뷰 코멘트·auto-fix·`@claude`가 전부 PR 위에서 동작 | 습관 | kolo_pwa `CONTRIBUTING.md`가 GitHub Flow를 정해 뒀지만 1인이라 강제 안 함. 브랜치 보호는 Free 플랜에서 불가 |
 | GitHub 이슈를 백로그로 | 커뮤니티는 `gh issue create`로 할 일을 만들고 `@claude`에 넘기는 흐름을 씀 | 보류 | 사용자 저장소는 `docs/PROGRESS.md` + `P-NN`이 확정. 바꾸지 않는다 |
-| 이 저장소 CI | markdownlint·shellcheck | 할 일 | `docs/PROGRESS.md` C-12 |
+| 이 저장소 CI | markdownlint·shellcheck | 할 일 | `docs/PROGRESS.md` [C-12](PROGRESS.md#c-12) |
 
 추천 순서: PR 습관(브랜치에서 작업 → `gh pr create` → merge)을 먼저 한 저장소에서 시도하고, 그게 편하면 Claude Code on the web을 켠다. `@claude` Actions는 이슈를 쓰기 시작할 때.
 
@@ -26,7 +26,7 @@ Claude와 GitHub를 엮는 방법은 크게 넷이다. 아래는 **사용자 저
 | --- | --- | --- | --- |
 | 저장소·커밋·push | 11개 저장소, Conventional Commits | 쓴다 | 백업·이력의 기본 |
 | Releases·태그 | kolo_pwa 30, OpenClaw 42, 이 저장소 v0.1.0 | 쓴다 | 어느 기기에 어느 버전이 깔렸는지의 기준점. zip 첨부로 웹 업로드 산출물도 보관 |
-| Actions | kolo_pwa test·release, OpenClaw lint·release | 쓴다 | 월 2,000분 한도. kolo_pwa처럼 경로 필터로 절약. 이 저장소는 C-12 |
+| Actions | kolo_pwa test·release, OpenClaw lint·release | 쓴다 | 월 2,000분 한도. kolo_pwa처럼 경로 필터로 절약. 이 저장소는 [C-12](PROGRESS.md#c-12) |
 | Dependabot 알림 | kolo_pwa·kolo-api만 켜짐 | **켠다** | 무료, 저장소 Settings → Security 클릭 1회. AI·OpenClaw·Script·Etc는 꺼져 있음 |
 | Dependabot 버전 업데이트 | kolo_pwa(actions만) | 유지 | 의존성 트리가 있는 저장소만 |
 | PR | 사람이 만든 PR 없음(Codex·Dependabot뿐) | 필요할 때 | Claude 클라우드·`@claude`·리뷰 코멘트가 전부 PR 위에서 도니, 그걸 쓰기로 하면 같이 시작 |
@@ -69,7 +69,7 @@ Claude와 GitHub를 엮는 방법은 크게 넷이다. 아래는 **사용자 저
 | 폴링은 스크립트로, 15초 간격 | `gh run view` 타이트 루프가 API 한도를 소진하는 문제(Claude Code 알려진 버그) | kolo_pwa `scripts/wait-for-ci.sh`. 다른 저장소에서는 `gh run watch` |
 | 월 사용량 확인 | 한도 근접을 미리 봄 | Settings → Billing and plans → Usage. `gh api users/<id>/settings/billing/actions`는 `user` 스코프 필요 |
 
-현재 kolo_pwa·kolo-api가 최근 30일에 각각 100회 이상 실행됐다(`gh run list` 상한). 분 단위 실제 사용량은 Billing 페이지에서 봐야 한다(C-38).
+현재 kolo_pwa·kolo-api가 최근 30일에 각각 100회 이상 실행됐다(`gh run list` 상한). 분 단위 실제 사용량은 Billing 페이지에서 봐야 한다([C-38](PROGRESS.md#c-38)).
 
 ## 참고한 자료
 

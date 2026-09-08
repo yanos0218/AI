@@ -1,4 +1,6 @@
 {
   // 한국어 산문은 줄이 길어지므로 줄 길이 규칙은 끈다
-  "MD013": false
+  "MD013": false,
+  // 항목 ID 앵커(<a id="c-nn"></a>)만 허용
+  "MD033": { "allowed_elements": ["a"] }
 }

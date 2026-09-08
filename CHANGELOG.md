@@ -4,6 +4,20 @@
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-09-08
+
+설치 경로가 바뀌었다. 재설치 명령은 `docs/install.md`.
+
+### Changed
+
+- 기본 영역을 `base/` 한 폴더로 모음 — `claude-md/`→`base/claude-md/`, `skills/`→`base/skills/`, `scripts/hooks/`→`base/hooks/`, `scripts/settings.example.json`→`base/settings.example.json`, `vscode/`→`base/vscode/`
+- 도구를 `tools/`로 — `scripts/pack.sh`→`tools/pack.sh`, `.github/scripts/check-docs.sh`→`tools/check-docs.sh`
+- `baseline-guard.sh`가 `base/` 접두사 하나로 판단
+
+### Fixed
+
+- `tools/pack.sh` — `zip`이 없는 환경(Windows Git Bash)에서 python zipfile로 폴백 (C-29)
+
 ## [0.2.0] - 2026-09-08
 
 확인 기준이 바뀌었으므로 기기마다 `claude-md/CLAUDE.md`를 다시 설치해야 한다.
@@ -31,6 +45,7 @@
 - 저장소 운영: `docs/HANDOFF.md`(인수인계), `docs/PROGRESS.md`(자산 현황표 + `C-NN` 보드), `CLAUDE.md`(기본/작업 영역 규칙), `drafts/`(승격 전 초안), `.claude/hooks/baseline-guard.sh`(기본 영역 쓰기 확인 강제)
 - README — 표면별 적용 범위, 설치, 공식 문서 대비 검토표, GitHub 활용 선택지
 
-[Unreleased]: https://github.com/yanos0218/AI/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/yanos0218/AI/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/yanos0218/AI/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/yanos0218/AI/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/yanos0218/AI/releases/tag/v0.1.0

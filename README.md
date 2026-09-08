@@ -6,51 +6,47 @@
 
 ## 구조 — 네 묶음
 
-이 저장소의 파일은 역할이 넷으로 나뉜다. **①만 실제로 배포**되고, 나머지는 ①을 만들고 지키기 위한 것이다.
+파일은 역할이 넷으로 나뉜다. **①만 실제로 배포**되고, 나머지는 ①을 만들고 지키기 위한 것이다. 폴더 이름이 곧 영역이다.
 
-### ① 배포되는 것 (기본 영역)
+### ① `base/` — 배포되는 것 (기본 영역)
 
-검증을 마치고 사용자가 반영을 요청한 것만 들어온다. `~/.claude`와 Claude.ai에 복사되는 원본.
+검증을 마치고 사용자가 반영을 요청한 것만 들어온다. `~/.claude`와 Claude.ai에 복사되는 원본. Claude가 여기를 고치려 하면 [baseline-guard.sh](.claude/hooks/baseline-guard.sh)가 확인을 요구한다.
 
-```text
-claude-md/CLAUDE.md          모든 프로젝트에 적용되는 공통 지침 (언어, 답변 방식, 확인 기준, 검증, Git)
-skills/dev-release/          "버전 올려줘 / 릴리즈 하자"에 발동하는 릴리즈 절차 스킬
-scripts/hooks/               Claude가 위험한 명령을 실행하기 전 확인을 강제하는 훅, 상태줄 스크립트
-scripts/settings.example.json  ~/.claude/settings.json 예시 (허용·거부 명령, 훅, 상태줄)
-vscode/                      새 기기에 VS Code 확장·설정을 맞추는 목록과 스크립트
-```
+| 경로 | 무엇 |
+| --- | --- |
+| [base/claude-md/CLAUDE.md](base/claude-md/CLAUDE.md) | 모든 프로젝트에 적용되는 공통 지침 (언어, 답변 방식, 확인 기준, 검증, Git) |
+| [base/skills/dev-release/](base/skills/dev-release/SKILL.md) | "버전 올려줘 / 릴리즈 하자"에 발동하는 릴리즈 절차 스킬 |
+| [base/hooks/](base/hooks/) | 위험한 명령 앞 확인을 강제하는 `git-guardrails.sh`, 상태줄 `statusline.sh` |
+| [base/settings.example.json](base/settings.example.json) | `~/.claude/settings.json` 예시 (허용·거부 명령, 훅, 상태줄) |
+| [base/vscode/](base/vscode/) | 새 기기에 VS Code 확장·설정을 맞추는 목록과 스크립트 |
+| [base/skills/_template/](base/skills/_template/SKILL.md) | 새 스킬을 시작할 때 복사하는 틀 (배포 제외) |
 
-### ② 만드는 중인 것 (작업 영역)
+### ② `drafts/` — 만드는 중인 것 (작업 영역)
 
-```text
-drafts/                      초안. 기본 영역과 같은 구조로 두고, 시험을 통과하면 ①로 옮긴다
-drafts/observations/         세션마다 관찰한 사용자 요청·대화 방식(원자료). 반복되는 것만 지침 후보로
-skills/_template/            새 스킬을 시작할 때 복사하는 틀
-```
+`base/`와 같은 구조로 초안을 두고, 시험을 통과하면 ①로 옮긴다. 배포·pack 대상이 아니다. 승격 절차는 [drafts/README.md](drafts/README.md). [drafts/observations/](drafts/observations/)는 세션마다 관찰한 사용자 요청·대화 방식(원자료)이다.
 
-### ③ 이 저장소를 운영하기 위한 문서
+### ③ `docs/` — 이 저장소를 운영하기 위한 문서
 
-```text
-docs/HANDOFF.md              Claude가 새 대화를 시작할 때 읽는 "지금 상황" 메모 — 무엇이 어디까지 됐고 무엇을 결정했는지
-docs/PROGRESS.md             진행 보드 — 자산별 단계(계획→초안→검증→기본)와 기기별 배포 상태, 할 일 C-NN
-docs/versioning.md           이 저장소의 버전·릴리즈 규칙
-docs/install.md              기기·웹별 설치 상세
-docs/github.md               GitHub를 어디까지 쓰는지, Claude와 어떻게 엮는지
-docs/repo-standard.md        GitHub를 쓰는 모든 저장소의 최소선 체크리스트와 저장소별 현황
-docs/review-vs-official.md   공식 문서·커뮤니티 권장과 대조한 검토표 (반영/습관/보류)
-CHANGELOG.md                 기본 영역의 버전별 변경 이력
-CLAUDE.md                    이 저장소 안에서 Claude가 지킬 규칙 (기본/작업 영역, 문서 상한, 검증 방법)
-```
+| 경로 | 무엇 |
+| --- | --- |
+| [docs/HANDOFF.md](docs/HANDOFF.md) | Claude가 새 대화를 시작할 때 읽는 "지금 상황" 메모 — 무엇이 어디까지 됐고 무엇을 결정했는지 |
+| [docs/PROGRESS.md](docs/PROGRESS.md) | 진행 보드 — 자산별 단계(계획→초안→검증→기본)와 기기별 배포 상태, 할 일 `C-NN` |
+| [docs/versioning.md](docs/versioning.md) | 이 저장소의 버전·릴리즈 규칙 |
+| [docs/install.md](docs/install.md) | 기기·웹별 설치 상세 |
+| [docs/github.md](docs/github.md) | GitHub를 어디까지 쓰는지, Actions 한도, Claude와 어떻게 엮는지 |
+| [docs/repo-standard.md](docs/repo-standard.md) | GitHub를 쓰는 모든 저장소의 최소선 체크리스트와 저장소별 현황 |
+| [docs/review-vs-official.md](docs/review-vs-official.md) | 공식 문서·커뮤니티 권장과 대조한 검토표 (반영/습관/보류) |
+| [CHANGELOG.md](CHANGELOG.md) · [CLAUDE.md](CLAUDE.md) | 기본 영역의 버전별 변경 이력 · 이 저장소 안에서 Claude가 지킬 규칙 |
 
-### ④ 자동화·검사
+### ④ `tools/`, `.claude/`, `.github/` — 자동화·검사
 
-```text
-.claude/hooks/baseline-guard.sh  Claude가 ①을 고치려 하면 확인을 요구하는 저장소 전용 훅
-.github/workflows/lint.yml       push마다 markdownlint·shellcheck·문서 상한 검사
-.github/scripts/check-docs.sh    문서 줄 수 상한과 필수 파일 검사 (CI와 로컬 공용)
-.github/dependabot.yml           워크플로가 쓰는 액션 버전 업데이트
-scripts/pack.sh                  ①의 스킬을 웹 업로드용 zip으로 (Windows는 C-29 참고)
-```
+| 경로 | 무엇 |
+| --- | --- |
+| [tools/pack.sh](tools/pack.sh) | ①의 스킬을 웹 업로드용 zip으로 (zip 없으면 python 폴백) |
+| [tools/check-docs.sh](tools/check-docs.sh) | 문서 줄 수 상한과 필수 파일 검사 (CI와 로컬 공용) |
+| [.claude/hooks/baseline-guard.sh](.claude/hooks/baseline-guard.sh) | Claude가 `base/`를 고치려 하면 확인을 요구하는 저장소 전용 훅 |
+| [.github/workflows/lint.yml](.github/workflows/lint.yml) | push마다 markdownlint·shellcheck·문서 상한 검사 |
+| [.github/dependabot.yml](.github/dependabot.yml) | 워크플로가 쓰는 액션 버전 업데이트 |
 
 ## 어디서 무엇이 적용되나
 
@@ -72,25 +68,16 @@ scripts/pack.sh                  ①의 스킬을 웹 업로드용 zip으로 (Wi
 기본 영역이 바뀌면 각 기기에서 다시 설치한다. 상세와 Claude.ai·VS Code 절차는 [docs/install.md](docs/install.md).
 
 ```bash
-cp -r skills/dev-release ~/.claude/skills/
-cp claude-md/CLAUDE.md ~/.claude/CLAUDE.md
-mkdir -p ~/.claude/hooks && cp scripts/hooks/*.sh ~/.claude/hooks/
+cp -r base/skills/dev-release ~/.claude/skills/
+cp base/claude-md/CLAUDE.md ~/.claude/CLAUDE.md
+mkdir -p ~/.claude/hooks && cp base/hooks/*.sh ~/.claude/hooks/
 ```
 
-`~/.claude/settings.json`은 `scripts/settings.example.json`의 `permissions`·`hooks`·`statusLine` 키를 합친다. 스킬 목록은 세션 시작 시 고정되므로 **새 세션**에서 확인한다. 어느 기기에 어느 버전이 깔렸는지는 [docs/PROGRESS.md](docs/PROGRESS.md) §0 표.
-
-## 기본 영역과 작업 영역
-
-| 영역 | 경로 | 들어가는 조건 |
-| --- | --- | --- |
-| 기본 | `claude-md/`, `skills/<이름>/`(`_` 제외), `scripts/`, `vscode/` | 3시나리오 시험 통과 **+ 사용자가 "기본에 반영해"라고 요청** |
-| 작업 | `drafts/` | 아무 때나. `pack.sh`·설치 절차가 보지 않으므로 배포되지 않음 |
-
-작업 중 떠오른 개선이 검증 없이 기본 영역에 섞이는 것을 막기 위한 구분이다. [baseline-guard.sh](.claude/hooks/baseline-guard.sh)가 기본 영역 쓰기(Edit/Write와 Bash `sed -i`·리다이렉트·`cp`·`git mv`) 앞에서 확인 프롬프트를 띄운다. 승격 절차는 [drafts/README.md](drafts/README.md).
+`~/.claude/settings.json`은 `base/settings.example.json`의 `permissions`·`hooks`·`statusLine` 키를 합친다. 스킬 목록은 세션 시작 시 고정되므로 **새 세션**에서 확인한다. 어느 기기에 어느 버전이 깔렸는지는 [docs/PROGRESS.md §0](docs/PROGRESS.md#0-자산-현황--단계와-배포-상태) 표.
 
 ## 새 스킬 추가
 
-1. `skills/_template/`을 복사해 이름을 바꾼다.
+1. `base/skills/_template/`을 `drafts/skills/<이름>/`으로 복사한다.
 2. `SKILL.md`는 A4 한 장(50~60줄) 이내. 긴 자료는 `references/`로 빼고 SKILL.md에 "언제 읽을지"만 적는다. 참조는 한 단계만.
 3. frontmatter `description`에 **사용자가 실제로 쓰는 말투**("~해줘", "~하자")를 따옴표로 넣고 3인칭으로 쓴다 — 이것이 발동 기준이다.
 4. 날짜·특정 저장소 사례 같은 시점 의존 정보는 넣지 않는다. 필요하면 "저장소 문서 참고"로 가리킨다.
@@ -106,8 +93,8 @@ mkdir -p ~/.claude/hooks && cp scripts/hooks/*.sh ~/.claude/hooks/
 
 ## 규칙과 문서를 고칠 때
 
-- 어떤 저장소에서든 같은 지적을 두 번 받거나 실수가 실제 문제로 이어졌으면, 저장소 전용이면 그 저장소 `CLAUDE.md`에, 저장소를 가리지 않으면 `claude-md/CLAUDE.md`에 기록한다.
+- 어떤 저장소에서든 같은 지적을 두 번 받거나 실수가 실제 문제로 이어졌으면, 저장소 전용이면 그 저장소 `CLAUDE.md`에, 저장소를 가리지 않으면 `base/claude-md/CLAUDE.md`에 기록한다.
 - 줄을 추가할 때 "이 줄이 없으면 Claude가 실제로 실수하는가?"에 예일 때만. 반드시 지켜져야 하는 것은 CLAUDE.md 문장이 아니라 훅으로 만든다.
-- `claude-md/CLAUDE.md`를 고쳤으면 `~/.claude/CLAUDE.md`로 다시 복사한다(Mac·Windows 각각). 웹용은 Project instructions도 갱신.
+- `base/claude-md/CLAUDE.md`를 고쳤으면 `~/.claude/CLAUDE.md`로 다시 복사한다(Mac·Windows 각각). 웹용은 Project instructions도 갱신.
 
 - README는 **입구**다. 새 주제는 `docs/`에 파일을 만들고 README에는 구조 목록 한 줄과 링크만 추가한다. 문서별 줄 수 상한은 `CLAUDE.md`에 있고 CI가 검사한다.

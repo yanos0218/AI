@@ -4,7 +4,7 @@
 
 ## 기본 영역과 작업 영역
 
-- **기본 영역** = 실제로 배포되는 원본: `claude-md/`, `skills/<이름>/`(`_`로 시작하지 않는 폴더), `scripts/`, `vscode/`. 여기 있는 것은 검증이 끝났고 사용자가 기본 반영을 요청한 것뿐이다.
+- **기본 영역** = `base/` (실제로 배포되는 원본). `base/skills/_*`는 틀이라 예외. 여기 있는 것은 검증이 끝났고 사용자가 기본 반영을 요청한 것뿐이다.
 - **작업 영역** = `drafts/`. 새 스킬·지침 수정안·훅 초안은 전부 여기서 만든다. 승격 조건은 `drafts/README.md`.
 - 작업 중 기본 영역의 개선점이 보이면 **고치지 말고** `docs/PROGRESS.md`에 `C-NN` 항목으로 적는다. 사용자가 "기본에 반영해"라고 하기 전까지 기본 영역은 건드리지 않는다. `.claude/hooks/baseline-guard.sh`가 이를 확인 프롬프트로 강제한다.
 - 예외: 기본 영역의 오탈자·깨진 링크처럼 동작에 영향 없는 수정은 확인 프롬프트에서 사유를 말하고 승인받으면 된다.
@@ -17,9 +17,10 @@
 ## 문서 규칙
 
 - 파일마다 역할이 하나다. README = 입구(구조·설치 요약·링크). HANDOFF = 지금 상황. PROGRESS = 단계·배포·할 일. 상세 주제는 `docs/<주제>.md` 하나씩.
-- 줄 수 상한(`.github/scripts/check-docs.sh`가 CI에서 검사): README 120, 이 파일 60, `claude-md/CLAUDE.md` 200, HANDOFF 60, PROGRESS 300, SKILL.md 80. 넘으면 줄이는 게 아니라 **분리**한다 — README는 `docs/`로, PROGRESS는 kolo_pwa처럼 항목을 `docs/progress/C-NN.md`로.
+- 줄 수 상한(`tools/check-docs.sh`가 CI에서 검사): README 120, 이 파일 60, `base/claude-md/CLAUDE.md` 200, HANDOFF 60, PROGRESS 300, SKILL.md 80. 넘으면 줄이는 게 아니라 **분리**한다 — README는 `docs/`로, PROGRESS는 kolo_pwa처럼 항목을 `docs/progress/C-NN.md`로.
 - 새 주제를 README에 절로 추가하지 않는다. `docs/`에 파일을 만들고 README 구조 목록에 한 줄 + 링크.
 - 형식: markdownlint 통과(MD013 제외), Keep a Changelog, 릴리즈 노트는 음슴체, 표는 헤더 구분선 정렬.
+- 링크: 파일·폴더 경로와 `C-NN` 항목은 항상 클릭되는 링크로 쓴다. `C-NN`은 `docs/PROGRESS.md#c-nn`(항목 줄의 `<a id="c-nn">` 앵커). 코드 블록 안에는 링크가 안 되므로 구조 목록은 표로.
 
 ## 문서 갱신
 

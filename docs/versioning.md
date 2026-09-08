@@ -9,7 +9,7 @@
 
 ## 등급
 
-기본 영역(`claude-md/`, `skills/<이름>/`, `scripts/`, `vscode/`)의 변경만 등급에 반영한다. `docs/`, `drafts/`, `.claude/`, README만 바뀐 것은 버전을 올리지 않는다.
+기본 영역(`base/claude-md/`, `base/skills/<이름>/`, `scripts/`, `base/vscode/`)의 변경만 등급에 반영한다. `docs/`, `drafts/`, `.claude/`, README만 바뀐 것은 버전을 올리지 않는다.
 
 | 등급 | 조건 | 예 |
 | --- | --- | --- |
@@ -21,5 +21,5 @@
 
 1. 변경은 `CHANGELOG.md` `[Unreleased]`에 쌓는다(Keep a Changelog, 한국어).
 2. 승격이나 수정이 모이면 사용자가 컷을 요청한다. 작은 변경마다 태그를 찍지 않는다.
-3. 컷 = CHANGELOG 확정 → `chore(release): vX.Y.Z` 커밋 → (사용자 확인) 태그·push → `bash scripts/pack.sh` → `gh release create`에 `dist/*.zip` 첨부.
+3. 컷 = CHANGELOG 확정 → `chore(release): vX.Y.Z` 커밋 → (사용자 확인) 태그·push → `bash tools/pack.sh` → `gh release create`에 `dist/*.zip` 첨부.
 4. Release의 zip이 웹(Claude.ai) 업로드용 산출물이다. 웹에 올린 버전을 `docs/PROGRESS.md` §0 배포 열에 적는다.

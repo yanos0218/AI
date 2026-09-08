@@ -1,6 +1,6 @@
 # 새 Windows 기기에서 VS Code 확장·설정을 한 번에 맞추는 스크립트.
 # 평소 동기화는 VS Code Settings Sync가 담당하고, 이 스크립트는 "처음 세팅"과 "Sync가 꺼진 기기" 용도다.
-# 실행: pwsh -File vscode/install.ps1
+# 실행: pwsh -File base/vscode/install.ps1
 $ErrorActionPreference = "Stop"
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path
 
@@ -16,7 +16,7 @@ Get-Content (Join-Path $here "extensions.txt") | Where-Object { $_ -and -not $_.
 
 $target = Join-Path $env:APPDATA "Code\User\settings.json"
 if (Test-Path $target) {
-  Write-Host "== settings.json 이미 있음 → 덮어쓰지 않음. 필요한 키는 vscode/settings.json에서 직접 옮기세요: $target"
+  Write-Host "== settings.json 이미 있음 → 덮어쓰지 않음. 필요한 키는 base/vscode/settings.json에서 직접 옮기세요: $target"
 } else {
   New-Item -ItemType Directory -Force (Split-Path $target) | Out-Null
   Copy-Item (Join-Path $here "settings.json") $target

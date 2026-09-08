@@ -7,24 +7,24 @@
 Windows(Git Bash)·Mac·Linux 공통. `~/.claude/`는 CLI와 VS Code 확장이 같은 파일을 읽는다.
 
 ```bash
-cp -r skills/dev-release ~/.claude/skills/
-cp claude-md/CLAUDE.md ~/.claude/CLAUDE.md
-mkdir -p ~/.claude/hooks && cp scripts/hooks/*.sh ~/.claude/hooks/
+cp -r base/skills/dev-release ~/.claude/skills/
+cp base/claude-md/CLAUDE.md ~/.claude/CLAUDE.md
+mkdir -p ~/.claude/hooks && cp base/hooks/*.sh ~/.claude/hooks/
 ```
 
-`~/.claude/settings.json`이 없으면 `scripts/settings.example.json`을 복사하고, 있으면 `permissions`·`hooks`·`statusLine` 키를 합친다(`model` 등 기기별 값은 기존 것 유지). `$schema` 덕에 VS Code에서 자동완성·검증이 된다. 상태줄 스크립트는 jq → python → node 순으로 있는 것을 쓰므로 Linux에 jq가 없어도 된다. 스킬 목록은 세션 시작 시 고정되므로 복사 후 **새 세션**에서 확인한다.
+`~/.claude/settings.json`이 없으면 `base/settings.example.json`을 복사하고, 있으면 `permissions`·`hooks`·`statusLine` 키를 합친다(`model` 등 기기별 값은 기존 것 유지). `$schema` 덕에 VS Code에서 자동완성·검증이 된다. 상태줄 스크립트는 jq → python → node 순으로 있는 것을 쓰므로 Linux에 jq가 없어도 된다. 스킬 목록은 세션 시작 시 고정되므로 복사 후 **새 세션**에서 확인한다.
 
 ## Claude.ai (웹 · 데스크톱 · Cowork)
 
-1. `bash scripts/pack.sh` → `dist/<스킬이름>.zip` 생성
+1. `bash tools/pack.sh` → `dist/<스킬이름>.zip` 생성
 2. Claude.ai **Customize → Skills → + → Upload a skill**에서 zip 업로드
-3. 공통 지침은 프로젝트(Project)의 **Project instructions**에 `claude-md/CLAUDE.md` 내용을 붙여넣어 대체
+3. 공통 지침은 프로젝트(Project)의 **Project instructions**에 `base/claude-md/CLAUDE.md` 내용을 붙여넣어 대체
 
 ## VS Code
 
 **평소 동기화는 VS Code 내장 Settings Sync**(계정 메뉴 → *Backup and Sync Settings*, GitHub 계정)로 한다. 설정·단축키·스니펫·확장·UI 상태·프로필이 계정 단위로 자동 반영되고, 경로 같은 기계 종속 설정은 알아서 제외된다. 커뮤니티에서도 개인 사용자는 Settings Sync, 팀·재현성이 필요하면 dotfiles 저장소를 쓰는 게 일반적이다.
 
-이 저장소의 `vscode/`는 **Settings Sync를 보완**한다.
+이 저장소의 `base/vscode/`는 **Settings Sync를 보완**한다.
 
 - `extensions.txt` — **선별한** 확장 목록. 새 기기 부트스트랩용이며, 손으로 관리한다(`code --list-extensions` 결과를 그대로 덮어쓰지 않는다).
 - `settings.json` — 사용자 설정 스냅샷(Claude Code 확장 설정 포함).

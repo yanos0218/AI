@@ -30,7 +30,7 @@ jobs:
       - name: shellcheck
         run: |
           sudo apt-get update -q && sudo apt-get install -y -q shellcheck
-          shellcheck -S warning scripts/hooks/*.sh scripts/pack.sh .claude/hooks/*.sh .github/scripts/*.sh vscode/install.sh
+          shellcheck -S warning base/hooks/*.sh base/vscode/install.sh tools/*.sh .claude/hooks/*.sh
 
       - name: 문서 상한·필수 파일
-        run: bash .github/scripts/check-docs.sh
+        run: bash tools/check-docs.sh
