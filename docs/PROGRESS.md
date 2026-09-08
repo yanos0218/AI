@@ -71,8 +71,13 @@
 ## 2. 할 일 — 개발·설정
 
 - [~] <a id="c-10"></a>C-10 새 세션 훅·상태줄 확인 — 훅 2개는 `claude -p` 새 세션으로 검증 완료(2026-09-08): baseline-guard가 `base/` Edit을, git-guardrails가 `git push`를 확인 요구로 막음. **상태줄은 대화형 세션에서만 보이므로 사용자가 새 세션을 열어 하단 표시를 확인**하면 완료
-- [ ] <a id="c-11"></a>C-11 `permissions.allow` 보완 — C-07 시험에서 `python -m py_compile`이 막혔고, `cd X && ls`는 `Read(./.env)` deny 규칙과 겹쳐 승인 프롬프트가 뜸. 자주 쓰는 검사 명령을 allow에 추가하고 예시 파일에도 반영
+- [ ] <a id="c-11"></a>C-11 `permissions.allow` 보완 — C-07 시험에서 `python -m py_compile`이 막혔고, `cd X && ls`는 `Read(./.env)` deny 규칙과 겹쳐 승인 프롬프트가 뜸. 자주 쓰는 검사 명령을 allow에 추가하고 예시 파일에도 반영. 스킬 `allowed-tools` 프런트매터로 dev-release의 `git tag`·`gh release view` 사전 승인도 같이(검토 S7)
 - [~] <a id="c-13"></a>C-13 개발용 스킬 `dev-workflow` — 요구사항 3가지 결정(발동 문구·산출물/결과물·파일/폴더), SKILL.md + references 2개 초안, **3시나리오 발동 시험 통과(2026-09-09)**. 기록은 `drafts/skills/dev-workflow/NOTES.md`. 사용자가 "기본에 반영해"라고 하면 `base/skills/`로 승격해 `[Unreleased]`에 적는다. 컷은 versioning.md의 컷 시점(다음 기기 설치 직전·월 점검·요청)에
+- [ ] <a id="c-44"></a>C-44 `tools/install.sh` — 멱등 설치 스크립트: base/ → ~/.claude 복사, settings.json에 permissions·hooks·statusLine 키 병합(기기별 키 유지), 끝에 `check-install.sh`. Mac·Linux 반영(C-15/16)은 이 스크립트로. 검토 P1
+- [ ] <a id="c-45"></a>C-45 플러그인화 검토 — base/skills+hooks를 `.claude-plugin/plugin.json`+`hooks/hooks.json`으로 묶고 이 저장소를 개인 마켓플레이스로(`claude plugin install`/`update`). CLAUDE.md·permissions·statusLine은 못 실으므로 install.sh와 병행. Mac 설치 때 이득 판단. 검토 S1
+- [ ] <a id="c-46"></a>C-46 `tools/test-skill.sh <스킬> <시나리오 폴더>` — 시나리오 저장소의 `.claude/skills/`에 초안을 넣고 `claude -p`로 돌린 뒤 Skill 호출·최종 답변을 추출. 오늘 손으로 두 번 한 절차의 스크립트화. 검토 P6
+- [ ] <a id="c-47"></a>C-47 전역 지침 수정안 — §2에 "정의된 규칙에서 스스로 벗어나지 않는다, 벗어나야 하면 제안 → 승인 → 규칙 문서 먼저" 한 줄(`drafts/claude-md/CLAUDE.md`). 승인 시 `[Unreleased]`에 적고 컷은 컷 시점에. 검토 P3
+- [ ] <a id="c-48"></a>C-48 Stop 훅(이 저장소 전용) — 세션 종료 시 PROGRESS·HANDOFF가 이번 세션에 수정됐는지 `git diff --name-only`로 보고 안 됐으면 한 줄 알림. 소음이면 끔. 검토 S2
 - [ ] <a id="c-14"></a>C-14 Notification 훅 — 병렬 세션(`claude --bg`, worktree)을 실제로 쓰기 시작하면 추가. 그전엔 보류
 
 ## 3. 할 일 — 배포·운영·비개발
@@ -94,7 +99,7 @@
 - [ ] <a id="c-21"></a>C-21 정기 점검 루틴 정의 — 월 1회: `claude --version` 업데이트 확인, 스킬 3시나리오 재시험, 메모리(`~/.claude/projects/*/memory`) 정리, README 검토표 갱신. 항목이 정해지면 HANDOFF에 "마지막 점검일"을 두고 세션 시작 시 제안만 받음
 - [ ] <a id="c-25"></a>C-25 `/insights` 실행 — 대화형 세션에서 `/insights`를 치면 최근 30일 로컬 세션을 분석해 마찰 지점과 CLAUDE.md 제안을 HTML로 보여줌(외부 전송 없음). Windows는 kolo_pwa 3세션뿐이라 결과가 얕을 수 있음. **Mac mini에서 실행**해야 OpenClaw 기록까지 반영됨. 결과에서 쓸 만한 제안은 `drafts/claude-md/`로
 - [ ] <a id="c-26"></a>C-26 claude.ai 메모리 검토 — Settings → Memory에서 Claude가 추론해 둔 "나에 대한 요약"을 읽고 틀린 것 삭제·빠진 것 추가. 전역 지침으로 옮길 가치가 있는 항목은 `drafts/claude-md/`에 후보로. 웹 대화 원문이 필요하면 Settings → Privacy → Export data
-- [ ] <a id="c-27"></a>C-27 kolo_pwa auto memory에서 전역 성향 추출 — `~/.claude/projects/c--Git-kolo-pwa/memory/` 23개 중 프로젝트 무관 항목(중간 보고 금지, 질문마다 명시 답변, 권한 상향 제안 금지, 스킬 프롬프트도 한국어, 완료 기준=실제 테스트+문서+CI 확인)이 `base/claude-md/CLAUDE.md`에 이미 있는지 대조하고, 없는 것만 후보로. Mac mini의 `~/.claude/projects/*/memory/`도 같은 방법으로
+- [ ] <a id="c-27"></a>C-27 auto memory 수집 — 월 점검 때 각 기기의 `~/.claude/projects/*/memory/*.md`를 `drafts/observations/memory-<기기>/`로 복사(검토 P5). kolo_pwa auto memory에서 전역 성향 추출 — `~/.claude/projects/c--Git-kolo-pwa/memory/` 23개 중 프로젝트 무관 항목(중간 보고 금지, 질문마다 명시 답변, 권한 상향 제안 금지, 스킬 프롬프트도 한국어, 완료 기준=실제 테스트+문서+CI 확인)이 `base/claude-md/CLAUDE.md`에 이미 있는지 대조하고, 없는 것만 후보로. Mac mini의 `~/.claude/projects/*/memory/`도 같은 방법으로
 - [ ] <a id="c-22"></a>C-22 사용량·비용 확인 습관 — 상태줄 `$`와 claude.ai 사용량 페이지. 시험 세션 4회에 약 2달러였음. 한 달 뒤 실제 사용량을 보고 모델/effort 기본값 재검토
 
 ## 4. 결정 사항 (다시 묻지 말 것)

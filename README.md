@@ -36,6 +36,7 @@
 | [docs/github.md](docs/github.md) | GitHub를 어디까지 쓰는지, Actions 한도, Claude와 어떻게 엮는지 |
 | [docs/repo-standard.md](docs/repo-standard.md) | GitHub를 쓰는 모든 저장소의 최소선 체크리스트와 저장소별 현황 |
 | [docs/review-vs-official.md](docs/review-vs-official.md) | 공식 문서·커뮤니티 권장과 대조한 검토표 (반영/습관/보류) |
+| [docs/audit-2026-09.md](docs/audit-2026-09.md) | 저장소 검토 — 문제·제안·아이디어와 커뮤니티 대조 (월 점검 때 갱신) |
 | [docs/config-lifecycle.md](docs/config-lifecycle.md) | 다른 저장소에서 작업해도 기본 설정이 유지되는 구조(기본·모듈·프로젝트 층)와 변경 이력 장치 |
 | [CHANGELOG.md](CHANGELOG.md) · [CLAUDE.md](CLAUDE.md) | 기본 영역의 버전별 변경 이력 · 이 저장소 안에서 Claude가 지킬 규칙 |
 
