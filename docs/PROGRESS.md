@@ -82,6 +82,9 @@
 - [ ] <a id="c-35"></a>C-35 저장소 표준 적용 — `docs/repo-standard.md` 체크리스트를 Script·Etc에 맞추고(다음에 열 때), 표준을 자동으로 맞춰 주는 `repo-setup` 스킬을 초안으로(계획). 전역 지침에 "세션당 한 번 제안" 줄 추가는 C-37에 포함
 - [ ] <a id="c-36"></a>C-36 세션 관찰 기록 — 세션 끝에 `drafts/observations/YYYY-MM-DD.md`에 요청·대화·작업 방식 관찰을 적고, 월 1회(C-21) 반복되는 것만 `drafts/claude-md/` 후보로. 첫 기록 2026-09-08 작성됨. 다른 저장소는 auto memory(`feedback_*`)가 같은 역할
 - [ ] <a id="c-38"></a>C-38 Actions 월 사용량 확인 — Settings → Billing → Usage에서 분·저장소 사용량. kolo_pwa·kolo-api가 30일 100회 이상 실행. 2,000분의 절반을 넘으면 kolo-api `build.yml`에도 docs-only 감지 추가
+- [ ] <a id="c-41"></a>C-41 config-changelog 훅 승격 결정 — `drafts/hooks/config-changelog.sh`(PostToolUse, `~/.claude` 설정 편집을 `~/.claude/config-changelog.md`에 기록). 임시 HOME 9케이스 통과. 승인 시 `base/hooks/` + `base/settings.example.json`의 hooks에 추가 → MINOR
+- [ ] <a id="c-42"></a>C-42 모듈 규칙 `base/rules/` 도입 — 기본 CLAUDE.md를 건드리지 않고 주제별 규칙 파일을 `~/.claude/rules/`에 붙였다 떼는 구조. 첫 후보가 생기면(관찰·auto memory에서 반복된 것) 폴더와 설치 명령 추가
+- [ ] <a id="c-43"></a>C-43 월 점검(C-21)에 추가: `bash tools/check-install.sh` 실행 → DIFF는 base 반영/재설치 결정, `settings.local.json`에 2개 저장소 이상 반복된 권한은 `base/settings.example.json` 승격, `config-changelog.md`는 `drafts/observations/`로 복사
 - [ ] <a id="c-31"></a>C-31 Dependabot 알림 켜기 — AI·OpenClaw·Script·Etc 저장소 Settings → Security → Dependabot alerts. 무료, 사용자가 클릭(외부 서비스 설정 변경이라 Claude가 대신 켜지 않음)
 - [ ] <a id="c-32"></a>C-32 GitHub 2FA 켜져 있는지 확인 — Settings → Password and authentication
 - [ ] <a id="c-18"></a>C-18 GitHub 활용 결정 — README "GitHub 활용" 표의 "결정 필요" 2건: (1) Claude Code on the web으로 PR 만들기(Codex 클라우드 PR 방식 대체), (2) `@claude` GitHub Actions 설치 여부. 둘 다 PR 단위 작업 습관이 전제

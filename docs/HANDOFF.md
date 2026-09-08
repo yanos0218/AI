@@ -6,15 +6,13 @@
 
 Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원본 저장소. 개발자가 아닌 사용자가 여러 스택의 프로젝트를 오가며 Claude에게 (1) 매번 같은 배경을 다시 설명하지 않고, (2) 멋대로 진행하거나 너무 자주 묻지 않게 하고, (3) 검증 없이 "됐다"는 말을 못 하게 하고, (4) 결론만 짧게 듣도록 만든다. 저장소별 규칙은 각 저장소에 두고 여기서는 **참조만** 한다.
 
-## 현재 상태 (2026-09-08)
+## 현재 상태 (2026-09-09)
 
-- 저장소: github.com/yanos0218/AI (비공개), `main` = `d5a3fc1`. **v0.1.0 릴리즈 완료(2026-09-08)**. 이후 로컬 커밋: GitHub 검토표, README 입구화(230→111줄, `docs/install.md`·`github.md`·`review-vs-official.md` 분리), CI(`lint.yml`)·문서 상한 검사·dependabot. **v0.2.0 릴리즈(2026-09-08)** — 전역 지침 확인 기준 변경([C-37](PROGRESS.md#c-37)) 승격. Windows 설치본 갱신됨, Mac·Linux·웹은 미반영. 저장소 표준(`docs/repo-standard.md`)·관찰 기록(`drafts/observations/`) 신설.
-- **dev-release 발동 테스트 완료(2026-09-08)** — README 시험 시나리오 3개를 스크래치패드에 임시 git 저장소로 만들고 `claude -p "..." --output-format stream-json --verbose` 새 세션으로 실행. A(versioning.md)·B(두 자리 태그) 통과. C(태그·CHANGELOG 없음)는 처음에 `v0.1.0`을 스스로 정해 실패 → SKILL.md §0·§1에 "태그 없으면 형식·시작 번호와 CHANGELOG 생성 여부를 먼저 묻는다" 추가 후 재시험 통과. 설치본 `~/.claude/skills/dev-release/`에도 복사됨.
-- 테스트 중 관찰: `cd X && ls -la` 같은 복합 명령은 settings의 `Read(./.env)` deny 규칙 때문에 승인 프롬프트가 뜸(스킬 문제 아님, 모델이 `git -C`·Glob으로 우회함). `python -m py_compile`은 allow 목록에 없어 막힘.
-- 자산별 단계(계획/초안/검증/기본)와 표면별 배포 상태는 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본. 아래 두 줄은 요약.
-- Windows PC에 설치 완료: `~/.claude/CLAUDE.md`, `~/.claude/skills/dev-release/`, `~/.claude/hooks/{git-guardrails,statusline}.sh`, `~/.claude/settings.json`(권한 allow/deny·훅·상태줄), CLI `~/.local/bin/claude.exe` v2.1.263, VS Code 확장 13개 선별 설치.
-- **Mac mini·Linux는 아직 미반영** — `base/hooks/*.sh` 복사 + `base/settings.example.json`의 `permissions`/`hooks`/`statusLine` 키를 각자 `settings.json`에 합치면 된다. Mac은 `~/.claude/CLAUDE.md`가 이미 있을 수 있으니 덮어쓰기 전에 내용 확인.
-- 웹(Claude.ai)에는 아직 아무것도 안 올림 — `bash tools/pack.sh` → Customize → Skills 업로드, Project instructions에 `base/claude-md/CLAUDE.md` 붙여넣기.
+- 저장소: github.com/yanos0218/AI (비공개). **v0.3.0까지 릴리즈**(2026-09-08: v0.1.0 첫 컷 → v0.2.0 지침 확인 기준 변경 → v0.3.0 `base/`·`tools/` 경로 재구성). CI(`lint.yml`) 초록. 자산별 단계·기기별 배포는 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본.
+- **Windows PC는 v0.3.0과 동일**(`tools/check-install.sh`로 확인). CLI `~/.local/bin/claude.exe` v2.1.263, VS Code 확장 13개. 훅 2개(git-guardrails·baseline-guard)는 새 `claude -p` 세션에서 차단 동작 확인, 상태줄 표시만 사용자가 대화형 세션에서 확인하면 [C-10](PROGRESS.md#c-10) 완료.
+- **Mac mini·Linux·웹(Claude.ai)은 미반영.** 설치는 `docs/install.md`. Mac은 기존 `~/.claude/CLAUDE.md`가 있을 수 있으니 덮어쓰기 전에 확인. 웹은 Release v0.3.0의 `dev-release.zip` + Project instructions에 `base/claude-md/CLAUDE.md`.
+- 설정이 다른 저장소 작업 중 흔들리지 않게 하는 구조(기본·모듈·프로젝트 층)와 이력 장치는 `docs/config-lifecycle.md`(2026-09-09). 이력 훅은 초안(`drafts/hooks/config-changelog.sh`, [C-41](PROGRESS.md#c-41) 결정 대기).
+- dev-release 발동 테스트 3시나리오 통과(2026-09-08). 테스트 방법은 저장소 `CLAUDE.md` "검증" 절. 관찰: `cd X && ls` 복합 명령은 `Read(./.env)` deny 규칙과 겹쳐 승인 프롬프트가 뜨고, `python -m py_compile`은 allow 목록에 없음 → [C-11](PROGRESS.md#c-11).
 
 ## 다음 할 일
 

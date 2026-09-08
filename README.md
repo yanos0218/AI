@@ -36,6 +36,7 @@
 | [docs/github.md](docs/github.md) | GitHub를 어디까지 쓰는지, Actions 한도, Claude와 어떻게 엮는지 |
 | [docs/repo-standard.md](docs/repo-standard.md) | GitHub를 쓰는 모든 저장소의 최소선 체크리스트와 저장소별 현황 |
 | [docs/review-vs-official.md](docs/review-vs-official.md) | 공식 문서·커뮤니티 권장과 대조한 검토표 (반영/습관/보류) |
+| [docs/config-lifecycle.md](docs/config-lifecycle.md) | 다른 저장소에서 작업해도 기본 설정이 유지되는 구조(기본·모듈·프로젝트 층)와 변경 이력 장치 |
 | [CHANGELOG.md](CHANGELOG.md) · [CLAUDE.md](CLAUDE.md) | 기본 영역의 버전별 변경 이력 · 이 저장소 안에서 Claude가 지킬 규칙 |
 
 ### ④ `tools/`, `.claude/`, `.github/` — 자동화·검사
@@ -44,6 +45,7 @@
 | --- | --- |
 | [tools/pack.sh](tools/pack.sh) | ①의 스킬을 웹 업로드용 zip으로 (zip 없으면 python 폴백) |
 | [tools/check-docs.sh](tools/check-docs.sh) | 문서 줄 수 상한과 필수 파일 검사 (CI와 로컬 공용) |
+| [tools/check-install.sh](tools/check-install.sh) | 설치본 `~/.claude`가 `base/`와 같은지, 프로젝트마다 쌓인 권한·설정 이력은 무엇인지 보고 |
 | [.claude/hooks/baseline-guard.sh](.claude/hooks/baseline-guard.sh) | Claude가 `base/`를 고치려 하면 확인을 요구하는 저장소 전용 훅 |
 | [.github/workflows/lint.yml](.github/workflows/lint.yml) | push마다 markdownlint·shellcheck·문서 상한 검사 |
 | [.github/dependabot.yml](.github/dependabot.yml) | 워크플로가 쓰는 액션 버전 업데이트 |
