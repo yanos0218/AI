@@ -38,7 +38,7 @@
 | 개발용 스킬 (파일 관리·테스트 정의) | 계획 | | | | | C-13 |
 | 블로그용 스킬 | 계획 (역할 구분 선행) | | | | | C-19 |
 | 사업기획용 스킬 | 계획 (요구사항 미정) | | | | | C-20 |
-| 이 저장소 CI (lint.yml + check-docs.sh) | 검증 (로컬 통과, 첫 Actions 실행 확인 전) | 저장소 안에서만 | 동일 | 동일 | - | push 후 `gh run list` 확인 → 기본 |
+| 이 저장소 CI (lint.yml + check-docs.sh) | 기본 (첫 Actions 실행 success, 2026-09-08) | 저장소 안에서만 | 동일 | 동일 | - | - |
 | 성향 데이터 → 전역 지침 후보 | 초안 (`drafts/observations/`) | | | | | C-25/26/27/36 |
 | GitHub 활용 (web·`@claude` Actions) | 결정 대기 | | | | | C-18 |
 
