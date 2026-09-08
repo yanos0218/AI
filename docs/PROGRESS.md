@@ -78,6 +78,8 @@
 - [ ] C-34 GitHub Issues 사용 결정 — Issues는 **무료**(비공개 포함). 제안: 이 저장소에서 한 달 시험 — "작업 중 발견한 문제"(C-29 같은 것)만 Issue로, 계획·상태는 PROGRESS 유지, PROGRESS 항목에 `#N` 링크. 효과 있으면 다른 저장소로. `gh issue list/view`를 permissions.allow에 추가(C-11과 함께)
 - [ ] C-35 저장소 표준 적용 — `docs/repo-standard.md` 체크리스트를 Script·Etc에 맞추고(다음에 열 때), 표준을 자동으로 맞춰 주는 `repo-setup` 스킬을 초안으로(계획). 전역 지침에 "세션당 한 번 제안" 줄 추가는 C-37에 포함
 - [ ] C-36 세션 관찰 기록 — 세션 끝에 `drafts/observations/YYYY-MM-DD.md`에 요청·대화·작업 방식 관찰을 적고, 월 1회(C-21) 반복되는 것만 `drafts/claude-md/` 후보로. 첫 기록 2026-09-08 작성됨. 다른 저장소는 auto memory(`feedback_*`)가 같은 역할
+- [ ] C-39 **경로 재구성 결정** — 기본 영역을 `base/` 한 접두사로 모으는 안(`base/claude-md`, `base/skills`, `base/hooks`, `base/settings.example.json`, `base/vscode`), 도구는 `tools/`(pack.sh, check-docs.sh), `drafts/`는 `base/`와 같은 구조. 훅 패턴·pack.sh·설치 문서·README가 같이 바뀌므로 승인 후 한 번에, v0.3.0
+- [ ] C-40 PROGRESS 운영 규칙 — 열린 항목 + 최근 30일 완료만 남기고, 그보다 오래된 완료는 월 점검(C-21) 때 `docs/progress/archive-YYYY-MM.md`로 이동. 3줄 넘는 상세는 `docs/progress/C-NN.md`. 열린 항목 100개 이상이거나 병렬 세션을 쓰게 되면 beads(git 기반 에이전트용 트래커) 검토
 - [ ] C-38 Actions 월 사용량 확인 — Settings → Billing → Usage에서 분·저장소 사용량. kolo_pwa·kolo-api가 30일 100회 이상 실행. 2,000분의 절반을 넘으면 kolo-api `build.yml`에도 docs-only 감지 추가
 - [ ] C-31 Dependabot 알림 켜기 — AI·OpenClaw·Script·Etc 저장소 Settings → Security → Dependabot alerts. 무료, 사용자가 클릭(외부 서비스 설정 변경이라 Claude가 대신 켜지 않음)
 - [ ] C-32 GitHub 2FA 켜져 있는지 확인 — Settings → Password and authentication
