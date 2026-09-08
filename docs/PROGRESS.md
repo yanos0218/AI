@@ -33,6 +33,7 @@
 | 전역 지침 `base/claude-md/CLAUDE.md` | 기본 | ✓ v0.2.0 | ? (기존 파일 확인 필요) | ✗ | ✗ (Project instructions) | [C-15](#c-15)/16/17 |
 | dev-release 스킬 | 기본 (3시나리오 통과 2026-09-08) | ✓ v0.1.0 | ✗ | ✗ | ✗ (Release v0.1.0의 `dev-release.zip` 업로드) | [C-15](#c-15)/16/17 |
 | git-guardrails 훅 | 기본 (새 세션 push 차단 확인 2026-09-08) | ✓ | ✗ | ✗ | - | [C-10](#c-10), [C-15](#c-15)/16 |
+| config-changelog 훅 | 기본 (임시 HOME 7케이스 통과, 2026-09-09) | ✓ v0.4.0 | ✗ | ✗ | - | [C-15](#c-15)/16 |
 | statusline 훅 | 기본 | ✓ (표시 확인은 [C-10](#c-10), 사용자) | ✗ | ✗ | - | [C-10](#c-10), [C-15](#c-15)/16 |
 | `settings.example.json` (권한·훅·상태줄) | 기본 | ✓ (allow 보완은 [C-11](#c-11)) | ✗ | ✗ | - | [C-11](#c-11), [C-15](#c-15)/16 |
 | `base/vscode/` 확장 목록·설정·설치 스크립트 | 기본 | ✓ v0.3.0 | ✗ (Settings Sync가 주) | - | - | [C-15](#c-15) |
@@ -56,6 +57,7 @@
 - [x] <a id="c-08"></a>C-08 GitHub 활용 현황 조사 + 선택지 정리(README "GitHub 활용") (2026-09-08)
 - [x] <a id="c-23"></a>C-23 기본 영역/작업 영역 분리 — 저장소 `CLAUDE.md`, `drafts/`, `.claude/hooks/baseline-guard.sh`(기본 영역 쓰기 확인 강제) (2026-09-08)
 - [x] <a id="c-28"></a>C-28 버전·릴리즈 규칙 + 첫 컷 — `docs/versioning.md`·`CHANGELOG.md` 신설, `v0.1.0` 태그·push·GitHub Release(`dev-release.zip` 첨부) 완료 (2026-09-08)
+- [x] <a id="c-41"></a>C-41 config-changelog 훅 승격 — 사용자 승인, `base/hooks/` + `settings.example.json` PostToolUse 등록, Windows 설치, v0.4.0 (2026-09-09)
 - [x] <a id="c-39"></a>C-39 경로 재구성 — 기본 영역을 `base/`, 도구를 `tools/`로. 훅·pack.sh·CI·문서 일괄 갱신, v0.3.0 (2026-09-08)
 - [x] <a id="c-40"></a>C-40 PROGRESS 운영 규칙 — 열린 항목 + 최근 30일 완료만, 오래된 완료는 월별 아카이브, 상세는 파일, 문제는 Issue (2026-09-08)
 - [x] <a id="c-29"></a>C-29 `tools/pack.sh` Windows 실패 — `zip` 없으면 python zipfile 폴백. 로컬 실행 확인 (2026-09-08)
@@ -82,7 +84,6 @@
 - [ ] <a id="c-35"></a>C-35 저장소 표준 적용 — `docs/repo-standard.md` 체크리스트를 Script·Etc에 맞추고(다음에 열 때), 표준을 자동으로 맞춰 주는 `repo-setup` 스킬을 초안으로(계획). 전역 지침에 "세션당 한 번 제안" 줄 추가는 C-37에 포함
 - [ ] <a id="c-36"></a>C-36 세션 관찰 기록 — 세션 끝에 `drafts/observations/YYYY-MM-DD.md`에 요청·대화·작업 방식 관찰을 적고, 월 1회(C-21) 반복되는 것만 `drafts/claude-md/` 후보로. 첫 기록 2026-09-08 작성됨. 다른 저장소는 auto memory(`feedback_*`)가 같은 역할
 - [ ] <a id="c-38"></a>C-38 Actions 월 사용량 확인 — Settings → Billing → Usage에서 분·저장소 사용량. kolo_pwa·kolo-api가 30일 100회 이상 실행. 2,000분의 절반을 넘으면 kolo-api `build.yml`에도 docs-only 감지 추가
-- [ ] <a id="c-41"></a>C-41 config-changelog 훅 승격 결정 — `drafts/hooks/config-changelog.sh`(PostToolUse, `~/.claude` 설정 편집을 `~/.claude/config-changelog.md`에 기록). 임시 HOME 9케이스 통과. 승인 시 `base/hooks/` + `base/settings.example.json`의 hooks에 추가 → MINOR
 - [ ] <a id="c-42"></a>C-42 모듈 규칙 `base/rules/` 도입 — 기본 CLAUDE.md를 건드리지 않고 주제별 규칙 파일을 `~/.claude/rules/`에 붙였다 떼는 구조. 첫 후보가 생기면(관찰·auto memory에서 반복된 것) 폴더와 설치 명령 추가
 - [ ] <a id="c-43"></a>C-43 월 점검(C-21)에 추가: `bash tools/check-install.sh` 실행 → DIFF는 base 반영/재설치 결정, `settings.local.json`에 2개 저장소 이상 반복된 권한은 `base/settings.example.json` 승격, `config-changelog.md`는 `drafts/observations/`로 복사
 - [ ] <a id="c-31"></a>C-31 Dependabot 알림 켜기 — AI·OpenClaw·Script·Etc 저장소 Settings → Security → Dependabot alerts. 무료, 사용자가 클릭(외부 서비스 설정 변경이라 Claude가 대신 켜지 않음)

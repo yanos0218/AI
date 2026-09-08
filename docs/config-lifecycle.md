@@ -22,7 +22,7 @@
 
 | 장치 | 무엇 | 상태 |
 | --- | --- | --- |
-| `config-changelog` 훅 | Claude가 `~/.claude/{CLAUDE.md, settings*.json, rules/, hooks/}`를 편집하면 `~/.claude/config-changelog.md`에 시각·도구·대상·작업 폴더를 한 줄 기록. 막지 않고 남기기만 | 초안 `drafts/hooks/config-changelog.sh`, 승격 결정 [C-41](PROGRESS.md#c-41) |
+| `config-changelog` 훅 | Claude가 `~/.claude/{CLAUDE.md, settings*.json, rules/, hooks/}`를 편집하면 `~/.claude/config-changelog.md`에 시각·도구·대상·작업 폴더를 한 줄 기록. 막지 않고 남기기만 | 기본 `base/hooks/config-changelog.sh` (v0.4.0), `settings.example.json`의 PostToolUse에 등록 |
 | `tools/check-install.sh` | 설치본과 `base/` 대조(DIFF/MISSING), `rules/` 목록, 프로젝트별 `settings.local.json`에 쌓인 권한 목록, 변경 이력 꼬리 20줄 | 사용 가능 |
 | 월 점검 ([C-21](PROGRESS.md#c-21)) | 위 둘의 출력을 보고 결정: 여러 저장소에 반복된 권한 → `base/settings.example.json` 승격, 좋은 변경 → `base/`에 반영 후 재설치, 나쁜 변경 → 재설치로 되돌림 | 규칙 |
 

@@ -4,6 +4,13 @@
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-09-09
+
+### Added
+
+- `base/hooks/config-changelog.sh` — PostToolUse 훅. Claude가 `~/.claude`의 CLAUDE.md·settings*.json·rules/·hooks/를 편집하면 `~/.claude/config-changelog.md`에 시각·도구·대상·작업 폴더를 기록(막지 않음). `base/settings.example.json`의 `hooks.PostToolUse`에 등록
+- `tools/check-install.sh` — 설치본↔`base/` 대조, `rules/`·프로젝트 로컬 권한·변경 이력 보고
+
 ## [0.3.0] - 2026-09-08
 
 설치 경로가 바뀌었다. 재설치 명령은 `docs/install.md`.
@@ -45,7 +52,8 @@
 - 저장소 운영: `docs/HANDOFF.md`(인수인계), `docs/PROGRESS.md`(자산 현황표 + `C-NN` 보드), `CLAUDE.md`(기본/작업 영역 규칙), `drafts/`(승격 전 초안), `.claude/hooks/baseline-guard.sh`(기본 영역 쓰기 확인 강제)
 - README — 표면별 적용 범위, 설치, 공식 문서 대비 검토표, GitHub 활용 선택지
 
-[Unreleased]: https://github.com/yanos0218/AI/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/yanos0218/AI/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/yanos0218/AI/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/yanos0218/AI/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/yanos0218/AI/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/yanos0218/AI/releases/tag/v0.1.0

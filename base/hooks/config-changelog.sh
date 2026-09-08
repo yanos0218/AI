@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# PostToolUse(Edit|Write|MultiEdit|Bash|PowerShell) 훅 — 전역용 초안.
+# PostToolUse(Edit|Write|MultiEdit|Bash|PowerShell) 훅 — 전역용.
 # Claude가 사용자 설정(~/.claude/CLAUDE.md, settings*.json, rules/, hooks/)을 건드리면
 # ~/.claude/config-changelog.md 에 한 줄 남긴다: 시각 | 도구 | 대상 | 작업 폴더.
 # 목적: 다른 저장소에서 작업하다 설정이 바뀌어도 "언제 무엇이" 바뀌었는지 남겨,
