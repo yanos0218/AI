@@ -39,6 +39,8 @@
 | `base/vscode/` 확장 목록·설정·설치 스크립트 | 기본 | ✓ v0.3.0 | ✗ (Settings Sync가 주) | - | - | [C-15](#c-15) |
 | baseline-guard·session-end-check 훅 (이 저장소 전용, `.claude/`) | 기본 (새 세션 차단 확인 2026-09-08 / 트리 상태 시험 2026-09-09) | 저장소 안에서만 동작 | 동일 | 동일 | - | - |
 | dev-workflow 스킬 | 기본 (3시나리오 통과 2026-09-09, 미릴리즈) | ✓ | ✗ | ✗ | ✗ | [C-15](#c-15)/16/17 |
+| 모듈 규칙 `base/rules/docs-format.md` | 기본 (미릴리즈) | ✓ | ✗ | ✗ | - | [C-15](#c-15)/16 |
+| repo-setup 스킬 | 검증 (1/3 시나리오, `drafts/skills/repo-setup/`) | | | | | [C-35](#c-35) |
 | 블로그용 스킬 | 계획 (역할 구분 선행) | | | | | [C-19](#c-19) |
 | 사업기획용 스킬 | 계획 (요구사항 미정) | | | | | [C-20](#c-20) |
 | 이 저장소 CI (lint.yml + check-docs.sh) | 기본 (첫 Actions 실행 success, 2026-09-08) | 저장소 안에서만 | 동일 | 동일 | - | - |
@@ -57,6 +59,10 @@
 - [x] <a id="c-08"></a>C-08 GitHub 활용 현황 조사 + 선택지 정리(README "GitHub 활용") (2026-09-08)
 - [x] <a id="c-23"></a>C-23 기본 영역/작업 영역 분리 — 저장소 `CLAUDE.md`, `drafts/`, `.claude/hooks/baseline-guard.sh`(기본 영역 쓰기 확인 강제) (2026-09-08)
 - [x] <a id="c-28"></a>C-28 버전·릴리즈 규칙 + 첫 컷 — `docs/versioning.md`·`CHANGELOG.md` 신설, `v0.1.0` 태그·push·GitHub Release(`dev-release.zip` 첨부) 완료 (2026-09-08)
+- [x] <a id="c-31"></a>C-31 Dependabot 알림 — 사용자가 켬, `gh api`로 6개 저장소 전부 on 확인 (2026-09-09)
+- [x] <a id="c-32"></a>C-32 GitHub 2FA — Enabled(패스키) 확인 (2026-09-09)
+- [x] <a id="c-38"></a>C-38 Actions 사용량 — 9/1~9/8 총 $0.48 ≈ 60분(OpenClaw 35·kolo-api 18·AI 5·kolo_pwa 2), 월 환산 225분 = 한도의 11%. 청구 $0. docs-only 감지 추가 불필요 (2026-09-09)
+- [x] <a id="c-42"></a>C-42 모듈 규칙 `base/rules/docs-format.md` 첫 모듈(문서 형식), `install.sh`가 `~/.claude/rules/`에 설치. `[Unreleased]` (2026-09-09)
 - [x] <a id="c-11"></a>C-11 `permissions.allow` 보완 12개 + dev-release `allowed-tools`. `cd X && ls` 복합 명령 프롬프트는 allow로 못 막음(설계상) (2026-09-09)
 - [x] <a id="c-44"></a>C-44 `tools/install.sh` — 멱등 설치·settings 병합·CLAUDE.md 백업. 임시 HOME에서 dry-run·설치·2회·백업·기기 키 유지 시험 통과 (2026-09-09)
 - [x] <a id="c-46"></a>C-46 `tools/test-skill.sh` — 시나리오 D로 시험, Sonnet 기본 $0.21(Opus $0.53 대비) (2026-09-09)
@@ -91,17 +97,13 @@
 - [ ] <a id="c-15"></a>C-15 Mac mini 반영 — `base/hooks/*.sh` 복사, `settings.example.json`의 `permissions`/`hooks`/`statusLine` 합치기. 기존 `~/.claude/CLAUDE.md` 내용 확인 후 덮어쓰기. 사용자가 직접 진행
 - [ ] <a id="c-16"></a>C-16 Linux(Rocky) 반영 — C-15와 동일 절차. jq 없어도 상태줄은 python/node 폴백
 - [ ] <a id="c-17"></a>C-17 Claude.ai 웹 업로드 — `bash tools/pack.sh` → Customize → Skills 업로드, Project instructions에 `base/claude-md/CLAUDE.md` 붙여넣기. 이후 CLAUDE.md를 고칠 때마다 다시 붙여넣어야 함(README "규칙을 고칠 때")
-- [ ] <a id="c-34"></a>C-34 GitHub Issues 사용 결정 — Issues는 **무료**(비공개 포함). 제안: 이 저장소에서 한 달 시험 — "작업 중 발견한 문제"(C-29 같은 것)만 Issue로, 계획·상태는 PROGRESS 유지, PROGRESS 항목에 `#N` 링크. 효과 있으면 다른 저장소로. `gh issue list/view`를 permissions.allow에 추가(C-11과 함께)
-- [ ] <a id="c-35"></a>C-35 저장소 표준 적용 — `docs/repo-standard.md` 체크리스트를 Script·Etc에 맞추고(다음에 열 때), 표준을 자동으로 맞춰 주는 `repo-setup` 스킬을 초안으로(계획). 전역 지침에 "세션당 한 번 제안" 줄 추가는 C-37에 포함
-- [ ] <a id="c-38"></a>C-38 Actions 월 사용량 확인 — Settings → Billing → Usage에서 분·저장소 사용량. kolo_pwa·kolo-api가 30일 100회 이상 실행. 2,000분의 절반을 넘으면 kolo-api `build.yml`에도 docs-only 감지 추가
-- [ ] <a id="c-42"></a>C-42 모듈 규칙 `base/rules/` 도입 — 기본 CLAUDE.md를 건드리지 않고 주제별 규칙 파일을 `~/.claude/rules/`에 붙였다 떼는 구조. 첫 후보가 생기면(관찰·auto memory에서 반복된 것) 폴더와 설치 명령 추가
-- [ ] <a id="c-31"></a>C-31 Dependabot 알림 켜기 — AI·OpenClaw·Script·Etc 저장소 Settings → Security → Dependabot alerts. 무료, 사용자가 클릭(외부 서비스 설정 변경이라 Claude가 대신 켜지 않음)
-- [ ] <a id="c-32"></a>C-32 GitHub 2FA 켜져 있는지 확인 — Settings → Password and authentication
-- [ ] <a id="c-18"></a>C-18 GitHub 활용 결정 — README "GitHub 활용" 표의 "결정 필요" 2건: (1) Claude Code on the web으로 PR 만들기(Codex 클라우드 PR 방식 대체), (2) `@claude` GitHub Actions 설치 여부. 둘 다 PR 단위 작업 습관이 전제
+- [~] <a id="c-34"></a>C-34 GitHub Issues 시험 시작 — 첫 Issue [#1](https://github.com/yanos0218/AI/issues/1)(복합 명령 승인 프롬프트). 규칙: 작업 중 발견한 문제는 Issue, 계획·상태는 이 보드, 항목에 `#N`. 한 달 뒤(10월 점검) 유지 여부 판단 (2026-09-09)
+- [~] <a id="c-35"></a>C-35 저장소 표준 적용 — `repo-setup` 스킬 초안(`drafts/skills/repo-setup/`), Script 클론에서 1시나리오 통과(Sonnet $0.27, 9항목 판정표 + **이력 속 개인키 발견**). 상세 [docs/progress/C-35.md](progress/C-35.md). Script·Etc에 실제 적용은 사용자 결정 후(다른 저장소 push) (2026-09-09)
+- [ ] <a id="c-18"></a>C-18 GitHub 활용 결정 — **추천(2026-09-09)**: (1) Claude Code on the web을 OpenClaw에서 먼저(Codex 클라우드 PR을 대체, Actions 분 소모 없음, 폰에서 지시·auto-fix). (2) `@claude` Actions는 보류(이슈 미사용, Actions 분·토큰 이중 소모). 전제인 PR 습관은 OpenClaw에 이미 있음(PR 18개). 사용자 결정 대기
 - [ ] <a id="c-19"></a>C-19 블로그용 스킬 — 원본은 OpenClaw `core/definitions/modes/blog.md`·`core/playbooks/blog-*.md`(참조만). OpenClaw 원칙 "Claude Code가 블로그를 직접 쓰지 않는다"와 충돌하므로, 스킬화 전에 **역할 구분을 먼저 정리**(초안은 누가, 검수는 누가)
 - [ ] <a id="c-20"></a>C-20 사업기획용 스킬 — 요구사항 미정. 먼저 "어떤 산출물(시장 조사·경쟁 분석·사업계획서 초안 중 무엇)을 어떤 형식으로" 구체화 대화
 - [ ] <a id="c-25"></a>C-25 `/insights` 실행 — 대화형 세션에서 `/insights`를 치면 최근 30일 로컬 세션을 분석해 마찰 지점과 CLAUDE.md 제안을 HTML로 보여줌(외부 전송 없음). Windows는 kolo_pwa 3세션뿐이라 결과가 얕을 수 있음. **Mac mini에서 실행**해야 OpenClaw 기록까지 반영됨. 결과에서 쓸 만한 제안은 `drafts/claude-md/`로
-- [ ] <a id="c-26"></a>C-26 claude.ai 메모리 검토 — Settings → Memory에서 Claude가 추론해 둔 "나에 대한 요약"을 읽고 틀린 것 삭제·빠진 것 추가. 전역 지침으로 옮길 가치가 있는 항목은 `drafts/claude-md/`에 후보로. 웹 대화 원문이 필요하면 Settings → Privacy → Export data
+- [~] <a id="c-26"></a>C-26 claude.ai 메모리 검토 — 사용자가 데이터 내보내기 요청함(2026-09-08 manifest, 5개 zip). **`memories-000.zip`(가능하면 `conversations-000.zip`도)을 내려받아 `drafts/observations/claude-ai-export/`에 넣어 주면** 분석. 내보내기 URL은 1회용이라 Claude가 직접 받지 않음
 - [~] <a id="c-27"></a>C-27 auto memory 수집 — Windows 첫 수집 완료(`drafts/observations/memory-windows/`, 29개, 2026-09-09). Mac은 C-15 때. 전역 성향 추출은 월 점검 5번에서
 - [ ] <a id="c-22"></a>C-22 사용량·비용 확인 습관 — 상태줄 `$`와 claude.ai 사용량 페이지. 시험 세션 4회에 약 2달러였음. 한 달 뒤 실제 사용량을 보고 모델/effort 기본값 재검토
 

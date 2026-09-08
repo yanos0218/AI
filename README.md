@@ -18,6 +18,7 @@
 | [base/skills/dev-release/](base/skills/dev-release/SKILL.md) | "버전 올려줘 / 릴리즈 하자"에 발동하는 릴리즈 절차 스킬 |
 | [base/hooks/](base/hooks/) | 위험한 명령 앞 확인을 강제하는 `git-guardrails.sh`, 상태줄 `statusline.sh`, 설정 변경 이력 `config-changelog.sh` |
 | [base/settings.example.json](base/settings.example.json) | `~/.claude/settings.json` 예시 (허용·거부 명령, 훅, 상태줄) |
+| [base/rules/](base/rules/) | 모듈 규칙 — 기본 지침을 건드리지 않고 주제별로 붙이는 파일. `~/.claude/rules/`에 설치 |
 | [base/vscode/](base/vscode/) | 새 기기에 VS Code 확장·설정을 맞추는 목록과 스크립트 |
 | [base/skills/_template/](base/skills/_template/SKILL.md) | 새 스킬을 시작할 때 복사하는 틀 (배포 제외) |
 

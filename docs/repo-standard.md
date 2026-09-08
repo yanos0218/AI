@@ -23,8 +23,8 @@
 | kolo_pwa | ✓ (`test.yml` 안) | ✓ Playwright | ✓ | ✓ | ✗ | ✓ | ✓ |
 | kolo-api | ✓ `markdownlint.yml` | ✓ `build.yml` | ✓ | ✓ | ✗ | kolo_pwa 보드 공용 | ✓ |
 | OpenClaw | ✓ `lint.yml` | - (문서 시스템) | ✓ | `workspace/AGENTS.md` (CLAUDE.md는 `@AGENTS.md` import로 연결 가능) | ✗ | ? | ✗ |
-| AI (이 저장소) | ✓ `lint.yml` | ✓ shellcheck·문서 상한 | ✓ | ✓ | 시험 예정 ([C-34](PROGRESS.md#c-34)) | ✓ | ✗ |
-| Script | ✗ | ✗ (shellcheck 후보) | ✗ | ✗ | ✗ | ✗ | ✗ |
-| Etc | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
+| AI (이 저장소) | ✓ `lint.yml` | ✓ shellcheck·문서 상한 | ✓ | ✓ | 시험 중 [#1](https://github.com/yanos0218/AI/issues/1) | ✓ | ✓ | |
+| Script | ✗ | ✗ (shellcheck 후보) | ✗ | ✗ | ✗ | ✗ | ✓ | **이력에 개인키** ([C-35](progress/C-35.md)) |
+| Etc | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ | |
 
-Script·Etc는 활동이 적어(마지막 push 2026-06) 다음에 열 때 표준을 맞추면 된다. 이 표준을 자동으로 맞춰 주는 스킬(`repo-setup`)은 [C-35](PROGRESS.md#c-35).
+Script·Etc는 활동이 적어(마지막 push 2026-06) 보관/최소/전부 중 사용자가 고른다. 자동으로 맞춰 주는 `repo-setup` 스킬은 초안·1시나리오 통과([C-35](progress/C-35.md)).

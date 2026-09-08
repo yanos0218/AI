@@ -34,6 +34,13 @@ for d in base/skills/*/; do
   run rm -rf "$CLAUDE_HOME/skills/$n"; run cp -r "$d" "$CLAUDE_HOME/skills/$n"; say "  skill 설치: $n"
 done
 
+# 3b. rules (모듈 규칙) — base/rules/*.md → ~/.claude/rules/
+if ls base/rules/*.md >/dev/null 2>&1; then
+  run mkdir -p "$CLAUDE_HOME/rules"
+  for f in base/rules/*.md; do run cp "$f" "$CLAUDE_HOME/rules/"; done
+  say "  rules 설치: $(ls base/rules | tr '\n' ' ')"
+fi
+
 # 4. settings.json 병합 — permissions·hooks·statusLine 은 base 값으로, 나머지 키(model 등)는 유지
 if [ "$DRY" = 1 ]; then say "  (dry) settings.json 병합: permissions·hooks·statusLine"; else
 python - "$CLAUDE_HOME/settings.json" base/settings.example.json <<'PY'
