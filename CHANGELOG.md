@@ -4,6 +4,16 @@
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-09-08
+
+확인 기준이 바뀌었으므로 기기마다 `claude-md/CLAUDE.md`를 다시 설치해야 한다.
+
+### Changed
+
+- `claude-md/CLAUDE.md` §3 — 작업 단위가 끝난 로컬 커밋은 묻지 않고 한다. 배치 = 사용자 메시지 하나, "진행해줘"처럼 끝을 지정하면 그 끝까지 재확인하지 않는다. 외부 서비스 쓰기에 저장소 설정 변경 포함
+- `claude-md/CLAUDE.md` §5 — GitHub 저장소가 저장소 표준(`docs/repo-standard.md`)에 미달하면 세션당 한 번만 제안
+- `claude-md/CLAUDE.md` §7 — "커밋은 요청할 때만" → "작업 단위마다"
+
 ## [0.1.0] - 2026-09-08
 
 첫 릴리즈. Windows에만 설치된 상태.
@@ -21,5 +31,6 @@
 - 저장소 운영: `docs/HANDOFF.md`(인수인계), `docs/PROGRESS.md`(자산 현황표 + `C-NN` 보드), `CLAUDE.md`(기본/작업 영역 규칙), `drafts/`(승격 전 초안), `.claude/hooks/baseline-guard.sh`(기본 영역 쓰기 확인 강제)
 - README — 표면별 적용 범위, 설치, 공식 문서 대비 검토표, GitHub 활용 선택지
 
-[Unreleased]: https://github.com/yanos0218/AI/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/yanos0218/AI/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/yanos0218/AI/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/yanos0218/AI/releases/tag/v0.1.0

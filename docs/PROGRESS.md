@@ -28,7 +28,7 @@
 
 | 자산 | 단계 | Windows | Mac mini | Linux | 웹(Claude.ai) | 다음 행동 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 전역 지침 `claude-md/CLAUDE.md` | 기본 | ✓ v0.1.0 | ? (기존 파일 확인 필요) | ✗ | ✗ (Project instructions) | C-15/16/17 |
+| 전역 지침 `claude-md/CLAUDE.md` | 기본 | ✓ v0.2.0 | ? (기존 파일 확인 필요) | ✗ | ✗ (Project instructions) | C-15/16/17 |
 | dev-release 스킬 | 기본 (3시나리오 통과 2026-09-08) | ✓ v0.1.0 | ✗ | ✗ | ✗ (Release v0.1.0의 `dev-release.zip` 업로드) | C-15/16/17 |
 | git-guardrails 훅 | 기본 | ✓ (새 세션 확인은 C-10) | ✗ | ✗ | - | C-10, C-15/16 |
 | statusline 훅 | 기본 | ✓ (새 세션 확인은 C-10) | ✗ | ✗ | - | C-10, C-15/16 |
@@ -39,7 +39,7 @@
 | 블로그용 스킬 | 계획 (역할 구분 선행) | | | | | C-19 |
 | 사업기획용 스킬 | 계획 (요구사항 미정) | | | | | C-20 |
 | 이 저장소 CI (lint.yml + check-docs.sh) | 검증 (로컬 통과, 첫 Actions 실행 확인 전) | 저장소 안에서만 | 동일 | 동일 | - | push 후 `gh run list` 확인 → 기본 |
-| 성향 데이터 → 전역 지침 후보 | 초안 (`drafts/observations/`, `drafts/claude-md/`) | | | | | C-25/26/27/36/37 |
+| 성향 데이터 → 전역 지침 후보 | 초안 (`drafts/observations/`) | | | | | C-25/26/27/36 |
 | GitHub 활용 (web·`@claude` Actions) | 결정 대기 | | | | | C-18 |
 
 ## 1. 완료
@@ -54,6 +54,7 @@
 - [x] C-08 GitHub 활용 현황 조사 + 선택지 정리(README "GitHub 활용") (2026-09-08)
 - [x] C-23 기본 영역/작업 영역 분리 — 저장소 `CLAUDE.md`, `drafts/`, `.claude/hooks/baseline-guard.sh`(기본 영역 쓰기 확인 강제) (2026-09-08)
 - [x] C-28 버전·릴리즈 규칙 + 첫 컷 — `docs/versioning.md`·`CHANGELOG.md` 신설, `v0.1.0` 태그·push·GitHub Release(`dev-release.zip` 첨부) 완료 (2026-09-08)
+- [x] C-37 전역 지침 수정안 승격 — 확인 기준(로컬 커밋 묻지 않음, 배치=메시지 하나, 표준 미달 세션당 한 번 제안). 사용자 승인 후 `drafts/claude-md/` → `claude-md/`, v0.2.0 (2026-09-08)
 - [x] C-12 이 저장소 CI — `.github/workflows/lint.yml`(markdownlint·shellcheck·문서 상한), `.github/dependabot.yml`. 로컬에서 세 검사 통과, 첫 Actions 실행 결과는 push 후 확인 (2026-09-08)
 - [x] C-33 README 입구화 + 문서 규칙 — 230줄 README를 111줄로, 설치·검토표·GitHub은 `docs/`로 분리. 문서별 줄 수 상한을 CLAUDE.md에 정하고 `check-docs.sh`로 CI 검사 (2026-09-08)
 - [x] C-30 GitHub 기능 전체 대비 사용 수준 검토 — `docs/github.md` 표. 결론: 전부 쓸 필요 없음, 현재가 1인 권장 수준 (2026-09-08)
@@ -77,7 +78,6 @@
 - [ ] C-34 GitHub Issues 사용 결정 — Issues는 **무료**(비공개 포함). 제안: 이 저장소에서 한 달 시험 — "작업 중 발견한 문제"(C-29 같은 것)만 Issue로, 계획·상태는 PROGRESS 유지, PROGRESS 항목에 `#N` 링크. 효과 있으면 다른 저장소로. `gh issue list/view`를 permissions.allow에 추가(C-11과 함께)
 - [ ] C-35 저장소 표준 적용 — `docs/repo-standard.md` 체크리스트를 Script·Etc에 맞추고(다음에 열 때), 표준을 자동으로 맞춰 주는 `repo-setup` 스킬을 초안으로(계획). 전역 지침에 "세션당 한 번 제안" 줄 추가는 C-37에 포함
 - [ ] C-36 세션 관찰 기록 — 세션 끝에 `drafts/observations/YYYY-MM-DD.md`에 요청·대화·작업 방식 관찰을 적고, 월 1회(C-21) 반복되는 것만 `drafts/claude-md/` 후보로. 첫 기록 2026-09-08 작성됨. 다른 저장소는 auto memory(`feedback_*`)가 같은 역할
-- [ ] C-37 **전역 지침 수정안 결정** — `drafts/claude-md/CLAUDE.md`에 4가지: (1) 로컬 커밋은 묻지 않음, (2) 배치 = 메시지 하나, "진행해줘"면 끝까지 재확인 없음, (3) 저장소 표준 미달 세션당 한 번 제안, (4) §7 커밋 규칙 문구. 승인 시 기본 영역 승격 → 확인 기준이 바뀌므로 등급은 MAJOR 성격이나 v1.0.0 전이라 `v0.2.0`
 - [ ] C-38 Actions 월 사용량 확인 — Settings → Billing → Usage에서 분·저장소 사용량. kolo_pwa·kolo-api가 30일 100회 이상 실행. 2,000분의 절반을 넘으면 kolo-api `build.yml`에도 docs-only 감지 추가
 - [ ] C-31 Dependabot 알림 켜기 — AI·OpenClaw·Script·Etc 저장소 Settings → Security → Dependabot alerts. 무료, 사용자가 클릭(외부 서비스 설정 변경이라 Claude가 대신 켜지 않음)
 - [ ] C-32 GitHub 2FA 켜져 있는지 확인 — Settings → Password and authentication
