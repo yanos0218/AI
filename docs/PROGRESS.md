@@ -95,7 +95,7 @@
 
 - [~] <a id="c-10"></a>C-10 새 세션 훅·상태줄 확인 — 훅 2개는 `claude -p` 새 세션으로 검증 완료(2026-09-08): baseline-guard가 `base/` Edit을, git-guardrails가 `git push`를 확인 요구로 막음. 상태줄은 **터미널 CLI에서만** 렌더링되고 VS Code 확장 채팅 패널에는 안 나옴(공식 문서 statusline·vs-code, 2026-09-09 확인 — 패널은 컨텍스트 표시기·`/usage`가 대신). 확인은 **Windows 터미널(`claude.exe`)** 에서. Mac은 PATH에 CLI가 없지만 VS Code 확장 내장 바이너리(`~/.vscode/extensions/anthropic.claude-code-*/resources/native-binary/claude`, 2.1.266 확인)로 터미널 실행 가능
 - [ ] <a id="c-52"></a>C-52 `claude plugin validate base/skills`를 검증 절차에 — 플러그인화 없이도 스킬 디렉터리 검사 통과 확인(2026-09-09, 2.1.266). 저장소 `CLAUDE.md` "검증" 절과 `tools/test-skill.sh` 앞단에 넣을지, CI는 `claude` 설치 비용 때문에 보류
-- [ ] <a id="c-53"></a>C-53 릴리즈 전 자격증명 점검 — 전역 §7에 "토큰은 채팅에 붙여넣으라고 하지 않는다, `gh auth login`으로 사용자가 직접" 한 줄, dev-release `release-steps.md`에 0단계 `gh auth status`, `check-install.sh`에 VS Code 확장 대조. 근거: 2026-09-09 OpenClaw 세션 토큰 노출(`/insights`). 초안은 `drafts/`, 승격은 사용자 요청 시
+- [~] <a id="c-53"></a>C-53 릴리즈 전 자격증명 점검 — **초안 완료(2026-09-09)**: `drafts/claude-md/CLAUDE.md` §7 한 줄(`diff base/claude-md/CLAUDE.md drafts/claude-md/CLAUDE.md`), `drafts/skills/dev-release/` 체크리스트 0단계 + `release-steps.md` `gh auth status`. `tools/check-install.sh` VS Code 확장 대조는 기본 영역 밖이라 바로 반영(Mac 13/13 same, 누락 시나리오 exit 1 확인). 근거: 2026-09-09 OpenClaw 세션 토큰 노출(`/insights`). **승격은 사용자 "기본에 반영해" 요청 시**
 - [ ] <a id="c-14"></a>C-14 Notification 훅 — 병렬 세션(`claude --bg`, worktree)을 실제로 쓰기 시작하면 추가. 그전엔 보류
 
 ## 3. 할 일 — 배포·운영·비개발

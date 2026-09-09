@@ -47,6 +47,23 @@ if [ -d "$CLAUDE_HOME/rules" ] && ls "$CLAUDE_HOME/rules"/*.md >/dev/null 2>&1; 
   done
 else echo "  (없음)"; fi
 
+section "VS Code 확장 ↔ base/vscode/extensions.txt (목록은 최소 보장. 밖에 더 있는 것은 정상)"
+CODE="$(command -v code || true)"
+[ -z "$CODE" ] && [ -x "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" ] && CODE="/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
+if [ -z "$CODE" ]; then echo "  (code 명령 없음 — VS Code에서 'Shell Command: Install code command')"
+else
+  installed="$("$CODE" --list-extensions 2>/dev/null | tr '[:upper:]' '[:lower:]')"
+  missing=0; total=0
+  while read -r ext; do
+    ext="${ext%%#*}"; ext="$(echo "$ext" | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')"; [ -z "$ext" ] && continue
+    total=$((total+1))
+    if ! grep -qx "$ext" <<<"$installed"; then echo "  MISSING  $ext"; missing=$((missing+1)); fi
+  done < base/vscode/extensions.txt
+  extra=$(( $(grep -c . <<<"$installed") - total + missing ))
+  if [ "$missing" = 0 ]; then echo "  same     기본 목록 ${total}개 전부 설치됨 (목록 밖 ${extra}개는 그대로 둔다)"
+  else drift=1; echo "  → 빠진 ${missing}개는 bash base/vscode/install.sh 로 채운다"; fi
+fi
+
 section "프로젝트별 로컬 설정 — '항상 허용' 클릭이 쌓이는 곳. 여러 저장소에 반복되면 base/settings.example.json 승격 후보"
 found=0
 for f in "$PROJECTS_ROOT"/*/.claude/settings.local.json; do

@@ -11,6 +11,7 @@
 
 ### Changed
 
+- `tools/check-install.sh` — VS Code 확장을 `base/vscode/extensions.txt`와 대조해 빠진 것을 MISSING으로 보고(목록 밖 확장은 개수만). Mac은 `code`가 PATH에 없으면 앱 내장 경로 사용
 - `base/settings.example.json` — allow에 검사·조회 명령 12개 추가(`python -m py_compile`, `npx markdownlint-cli2`, `npx shellcheck`, `bash -n`, `gh issue list/view`, `gh run view/watch`, `cat`, `head`, `wc`, `grep`)
 - `base/skills/dev-release/SKILL.md` — `allowed-tools`로 읽기 전용 git·gh 명령 사전 승인
 - `base/claude-md/CLAUDE.md` §5 — 조사 규칙(공식 우선·날짜·직접 실행 검증·출처·`docs/research/`)과 "서브에이전트·시험 세션은 Sonnet"
