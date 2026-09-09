@@ -59,7 +59,7 @@
 - [x] <a id="c-08"></a>C-08 GitHub 활용 현황 조사 + 선택지 정리(README "GitHub 활용") (2026-09-08)
 - [x] <a id="c-23"></a>C-23 기본 영역/작업 영역 분리 — 저장소 `CLAUDE.md`, `drafts/`, `.claude/hooks/baseline-guard.sh`(기본 영역 쓰기 확인 강제) (2026-09-08)
 - [x] <a id="c-28"></a>C-28 버전·릴리즈 규칙 + 첫 컷 — `docs/versioning.md`·`CHANGELOG.md` 신설, `v0.1.0` 태그·push·GitHub Release(`dev-release.zip` 첨부) 완료 (2026-09-08)
-- [x] <a id="c-15"></a>C-15 Mac mini 반영 — `tools/install.sh`로 설치(기존 `~/.claude/CLAUDE.md` 없어 백업 불필요), `check-install.sh` 일치, 상태줄 훅 샘플 입력으로 실행 확인. 설치 중 `python` 호출이 Mac에서 실패 → `tools/*.sh` 4개를 python3 우선으로 수정(983d6bb). 표시 확인은 [C-10](#c-10) (2026-09-09)
+- [x] <a id="c-15"></a>C-15 Mac mini 반영 — `tools/install.sh`로 설치(기존 `~/.claude/CLAUDE.md` 없어 백업 불필요), `check-install.sh` 일치, 상태줄 훅 샘플 입력으로 실행 확인. 설치 중 `python` 호출이 Mac에서 실패 → `tools/*.sh` 4개를 python3 우선으로 수정(983d6bb, [#2](https://github.com/yanos0218/AI/issues/2)). VS Code 확장 13개는 `base/vscode/install.sh`로 맞춤 (2026-09-09)
 - [x] <a id="c-26"></a>C-26 claude.ai 메모리 검토 — 내보내기 확인. 웹=사업기획 용도, `claude-setup` 메모리의 경로가 낡음(사용자가 정정), 프로필에 비개발자·한국어·결론 먼저 추가 권장. C-20 산출물 단서 확보. 기록 `drafts/observations/2026-09-09-claude-ai-memory.md` (2026-09-09)
 - [x] <a id="c-18"></a>C-18 GitHub 활용 결정 — Claude Code on the web을 OpenClaw에서 채택, `@claude` Actions 보류. **이 저장소 몫은 결정·절차(`docs/github.md`)까지.** 실행(`/web-setup`, OpenClaw `CLAUDE.md` PR, 첫 세션)은 OpenClaw 저장소 일 (2026-09-09)
 - [x] <a id="c-31"></a>C-31 Dependabot 알림 — 사용자가 켬, `gh api`로 6개 저장소 전부 on 확인 (2026-09-09)
@@ -99,7 +99,7 @@
 
 - [ ] <a id="c-16"></a>C-16 Linux(Rocky) 반영 — `bash tools/install.sh --dry-run` → `install.sh`([C-15](#c-15)와 동일). jq 없어도 상태줄은 python/node 폴백
 - [ ] <a id="c-17"></a>C-17 Claude.ai 웹 업로드 — `bash tools/pack.sh` → Customize → Skills 업로드, Project instructions에 `base/claude-md/CLAUDE.md` 붙여넣기. 이후 CLAUDE.md를 고칠 때마다 다시 붙여넣어야 함(README "규칙을 고칠 때")
-- [~] <a id="c-34"></a>C-34 GitHub Issues 시험 시작 — 첫 Issue [#1](https://github.com/yanos0218/AI/issues/1)(복합 명령 승인 프롬프트). 규칙: 작업 중 발견한 문제는 Issue, 계획·상태는 이 보드, 항목에 `#N`. 한 달 뒤(10월 점검) 유지 여부 판단 (2026-09-09)
+- [~] <a id="c-34"></a>C-34 GitHub Issues 시험 시작 — 첫 Issue [#1](https://github.com/yanos0218/AI/issues/1)(복합 명령 승인 프롬프트), [#2](https://github.com/yanos0218/AI/issues/2)(tools python3, 열고 바로 닫음). 규칙: 작업 중 발견한 문제는 Issue, 계획·상태는 이 보드, 항목에 `#N`. 한 달 뒤(10월 점검) 유지 여부 판단 (2026-09-09)
 - [~] <a id="c-35"></a>C-35 `repo-setup` 스킬 검증 — 1/3 시나리오 통과(Script 클론). 남은 시험: 자체 표준 있는 저장소, 배포 요청 미발동. **이 저장소 몫은 표준(`docs/repo-standard.md`)과 스킬까지.** Script(개인키 처리·최소 표준)·Etc 적용은 그 저장소 일 — 추천 순서는 [docs/progress/C-35.md](progress/C-35.md), 착수는 사용자 지시 시
 - [ ] <a id="c-19"></a>C-19 블로그용 스킬 — 원본은 OpenClaw `core/definitions/modes/blog.md`·`core/playbooks/blog-*.md`(참조만). OpenClaw 원칙 "Claude Code가 블로그를 직접 쓰지 않는다"와 충돌하므로, 스킬화 전에 **역할 구분을 먼저 정리**(초안은 누가, 검수는 누가)
 - [ ] <a id="c-20"></a>C-20 사업기획용 스킬 — 웹 메모리에서 산출물 단서 확보(구조화된 기획 문서·경쟁 분석 표·인력/일정 견적). 스킬은 "셋 중 무엇을 어떤 틀로"를 묻고 시작. 제품 세부는 스킬에 넣지 않음. 초안 착수는 사용자 지시 시
