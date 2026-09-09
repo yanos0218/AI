@@ -44,11 +44,12 @@
 | 블로그용 스킬 | 계획 (역할 구분 선행) | | | | | [C-19](#c-19) |
 | 사업기획용 스킬 | 계획 (요구사항 미정) | | | | | [C-20](#c-20) |
 | 이 저장소 CI (lint.yml + check-docs.sh) | 기본 (첫 Actions 실행 success, 2026-09-08) | 저장소 안에서만 | 동일 | 동일 | - | - |
-| 성향 데이터 → 전역 지침 후보 | 초안 (`drafts/observations/`) | | | | | [C-25](#c-25)/26/27/36 |
+| 성향 데이터 → 전역 지침 후보 | 초안 (`drafts/observations/`, `/insights` 후보 1건 → [C-53](#c-53)) | | | | | [C-27](#c-27)/53, 월 점검 |
 | GitHub 활용 (web·`@claude` Actions) | 결정 대기 | | | | | [C-18](#c-18) |
 
 ## 1. 완료
 
+- [x] <a id="c-25"></a>C-25 `/insights` Mac 첫 실행 — `claude -p "/insights"`로 비대화형 동작 확인. 3세션 23메시지라 얕음. 제안 7개 중 채택 후보 1(릴리즈 전 `gh auth` 점검·토큰 붙여넣기 금지 → [C-53](#c-53)), 나머지는 기존 장치로 충분. 원자료 `drafts/observations/2026-09-09-insights-mac/`, 판정 `drafts/claude-md/2026-09-09-insights-candidates.md`. 다음 실행은 10월 점검 (2026-09-09)
 - [x] <a id="c-45"></a>C-45 플러그인화 검토 — **보류.** 플러그인은 스킬·훅만 싣고 전역 지침·rules·permissions·statusLine은 못 실어 `install.sh`가 어차피 남음. 1인·3기기에선 설치 경로·버전이 둘로 늘기만 함. 근거·재검토 조건은 [docs/research/plugins.md](research/plugins.md) (2026-09-09)
 - [x] <a id="c-01"></a>C-01 전역 지침 `base/claude-md/CLAUDE.md` 작성, Windows `~/.claude/CLAUDE.md`에 설치 (2026-09-08)
 - [x] <a id="c-02"></a>C-02 dev-release 스킬 + references 3개 (2026-09-08)
@@ -94,6 +95,7 @@
 
 - [~] <a id="c-10"></a>C-10 새 세션 훅·상태줄 확인 — 훅 2개는 `claude -p` 새 세션으로 검증 완료(2026-09-08): baseline-guard가 `base/` Edit을, git-guardrails가 `git push`를 확인 요구로 막음. 상태줄은 **터미널 CLI에서만** 렌더링되고 VS Code 확장 채팅 패널에는 안 나옴(공식 문서 statusline·vs-code, 2026-09-09 확인 — 패널은 컨텍스트 표시기·`/usage`가 대신). 확인은 **Windows 터미널(`claude.exe`)** 에서. Mac은 PATH에 CLI가 없지만 VS Code 확장 내장 바이너리(`~/.vscode/extensions/anthropic.claude-code-*/resources/native-binary/claude`, 2.1.266 확인)로 터미널 실행 가능
 - [ ] <a id="c-52"></a>C-52 `claude plugin validate base/skills`를 검증 절차에 — 플러그인화 없이도 스킬 디렉터리 검사 통과 확인(2026-09-09, 2.1.266). 저장소 `CLAUDE.md` "검증" 절과 `tools/test-skill.sh` 앞단에 넣을지, CI는 `claude` 설치 비용 때문에 보류
+- [ ] <a id="c-53"></a>C-53 릴리즈 전 자격증명 점검 — 전역 §7에 "토큰은 채팅에 붙여넣으라고 하지 않는다, `gh auth login`으로 사용자가 직접" 한 줄, dev-release `release-steps.md`에 0단계 `gh auth status`, `check-install.sh`에 VS Code 확장 대조. 근거: 2026-09-09 OpenClaw 세션 토큰 노출(`/insights`). 초안은 `drafts/`, 승격은 사용자 요청 시
 - [ ] <a id="c-14"></a>C-14 Notification 훅 — 병렬 세션(`claude --bg`, worktree)을 실제로 쓰기 시작하면 추가. 그전엔 보류
 
 ## 3. 할 일 — 배포·운영·비개발
@@ -104,7 +106,6 @@
 - [~] <a id="c-35"></a>C-35 `repo-setup` 스킬 검증 — 1/3 시나리오 통과(Script 클론). 남은 시험: 자체 표준 있는 저장소, 배포 요청 미발동. **이 저장소 몫은 표준(`docs/repo-standard.md`)과 스킬까지.** Script(개인키 처리·최소 표준)·Etc 적용은 그 저장소 일 — 추천 순서는 [docs/progress/C-35.md](progress/C-35.md), 착수는 사용자 지시 시
 - [ ] <a id="c-19"></a>C-19 블로그용 스킬 — 원본은 OpenClaw `core/definitions/modes/blog.md`·`core/playbooks/blog-*.md`(참조만). OpenClaw 원칙 "Claude Code가 블로그를 직접 쓰지 않는다"와 충돌하므로, 스킬화 전에 **역할 구분을 먼저 정리**(초안은 누가, 검수는 누가)
 - [ ] <a id="c-20"></a>C-20 사업기획용 스킬 — 웹 메모리에서 산출물 단서 확보(구조화된 기획 문서·경쟁 분석 표·인력/일정 견적). 스킬은 "셋 중 무엇을 어떤 틀로"를 묻고 시작. 제품 세부는 스킬에 넣지 않음. 초안 착수는 사용자 지시 시
-- [ ] <a id="c-25"></a>C-25 `/insights` 실행 — 대화형 세션에서 `/insights`를 치면 최근 30일 로컬 세션을 분석해 마찰 지점과 CLAUDE.md 제안을 HTML로 보여줌(외부 전송 없음). Windows는 kolo_pwa 3세션뿐이라 결과가 얕을 수 있음. **Mac mini에서 실행**해야 OpenClaw 기록까지 반영됨(확장 패널에서 안 되면 내장 바이너리로 터미널 세션, [C-10](#c-10) 경로). 결과에서 쓸 만한 제안은 `drafts/claude-md/`로
 - [~] <a id="c-27"></a>C-27 auto memory 수집 — Windows 첫 수집 완료(`drafts/observations/memory-windows/`, 29개, 2026-09-09). Mac 수집 완료(`drafts/observations/memory-mac/`, 4개 — OpenClaw 맥락·릴리즈 절차·gh 설치, 2026-09-09). 전역 성향 추출은 월 점검 5번에서
 - [ ] <a id="c-22"></a>C-22 사용량·비용 확인 습관 — 상태줄 `$`와 claude.ai 사용량 페이지. 시험 세션 4회에 약 2달러였음. 한 달 뒤 실제 사용량을 보고 모델/effort 기본값 재검토
 

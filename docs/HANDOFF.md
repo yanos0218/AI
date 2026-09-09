@@ -17,12 +17,13 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 - §2 개발·설정 항목 정리(2026-09-09): `tools/install.sh`·`test-skill.sh`, Stop 훅, 권한 목록 보완, 전역 지침 §5 조사 규칙 승격. 전부 `[Unreleased]`, Windows 재설치됨.
 - 조사 규칙 `docs/research.md` + 기록 색인 `docs/research/`(2026-09-09), 토큰 절감 절은 `docs/review-vs-official.md`. 전역 반영은 [C-49](PROGRESS.md#c-49).
 - **[C-45](PROGRESS.md#c-45) 플러그인화 보류(2026-09-09)** — 플러그인은 스킬·훅만 싣고 지침·rules·permissions·statusLine은 못 실어 `install.sh`가 남음. 근거 `docs/research/plugins.md`. 부산물: `claude plugin validate base/skills` 통과 → [C-52](PROGRESS.md#c-52).
+- **[C-25](PROGRESS.md#c-25) `/insights` Mac 실행 완료(2026-09-09)** — 3세션뿐이라 얕음. 남은 후보는 릴리즈 전 `gh auth` 점검·토큰 붙여넣기 금지 → [C-53](PROGRESS.md#c-53). OpenClaw 세션에서 GitHub 토큰이 채팅에 노출됨 → **재발급 여부 사용자 확인 필요**.
 - 저장소 검토 `docs/audit-2026-09.md`(2026-09-09): 문제 7·제안 7 → 보드 [C-44](PROGRESS.md#c-44)~[C-48](PROGRESS.md#c-48). 규칙 이탈 금지 절을 저장소 CLAUDE.md에 추가, 전역판은 [C-47](PROGRESS.md#c-47).
 - dev-workflow 스킬 승격·Windows 설치(2026-09-09, `[Unreleased]`). dev-release 발동 테스트 3시나리오 통과(2026-09-08). 테스트 방법은 저장소 `CLAUDE.md` "검증" 절. 관찰: `cd X && ls` 복합 명령은 `Read(./.env)` deny 규칙과 겹쳐 승인 프롬프트가 뜨고, `python -m py_compile`은 allow 목록에 없음 → [C-11](PROGRESS.md#c-11).
 
 ## 다음 할 일
 
-[PROGRESS.md](PROGRESS.md) §2·§3의 `C-NN` 항목. 추천 순서: [C-25](PROGRESS.md#c-25)(`/insights`, Mac에서) → v0.5.0 컷 직후 [C-16](PROGRESS.md#c-16)/17(Linux·웹 반영, 컷 시점 (a)) → [C-10](PROGRESS.md#c-10)(상태줄 육안, Windows 터미널) → [C-35](PROGRESS.md#c-35)(repo-setup 남은 시험, 사용자 지시 시).
+[PROGRESS.md](PROGRESS.md) §2·§3의 `C-NN` 항목. 추천 순서: [C-53](PROGRESS.md#c-53)(릴리즈 전 자격증명 점검 초안, 기기 무관) → v0.5.0 컷 직후 [C-16](PROGRESS.md#c-16)/17(Linux·웹 반영, 컷 시점 (a)) → [C-10](PROGRESS.md#c-10)(상태줄 육안, Windows 터미널) → [C-35](PROGRESS.md#c-35)(repo-setup 남은 시험, 사용자 지시 시).
 
 ## 결정 사항 (다시 묻지 말 것)
 
