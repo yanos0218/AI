@@ -51,7 +51,7 @@ mkdir -p ~/.claude/hooks && cp base/hooks/*.sh ~/.claude/hooks/
 | Mac 전용 | swift-vscode | Xcode가 있는 Mac에서만 의미. Windows 목록에서 제외 |
 | 보류 | Prettier, ESLint, GitLens, EditorConfig | 저장소에 설정 파일(`.prettierrc`, `eslint.config.js`, `.editorconfig`)이 없어 켜면 CI와 다른 기준으로 잔소리만 함. 프로젝트에 설정이 생기면 그때 추가 |
 
-이미 설치돼 있는 제외 대상은 `code --uninstall-extension <id>`로 지운다. Settings Sync가 켜져 있으면 Mac에도 같이 반영되니, Mac에서 쓰는 것(swift 등)은 Mac에서 다시 설치한다.
+"제외"는 기본 목록에 넣지 않는다는 뜻이지 지우라는 뜻이 아니다. 기본 목록 밖에 이미 설치된 확장(의존 확장, 기기별로 쓰는 것)은 문제를 일으키지 않는 한 그대로 둔다(2026-09-09 결정). `install.sh`는 설치만 하고 삭제하지 않으며, `check-install.sh`도 VS Code 확장은 대조하지 않는다. Settings Sync가 켜져 있으면 Mac에도 같이 반영되니, Mac에서 쓰는 것(swift 등)은 Mac에서 다시 설치한다.
 
 ## Claude Code CLI (터미널)
 
