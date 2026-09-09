@@ -19,6 +19,7 @@
 
 ### Fixed
 
+- `tools/test-skill.sh` — `--tools`를 공백으로 쪼개 넘겨 `Bash(gh *)` 같은 규칙이 깨졌음 → 쉼표 구분·배열 전달. 같은 이름 스킬이 `~/.claude/skills/`에 있으면 설치본이 초안을 가리므로 시험 동안 `~/.claude/skill-test-aside/`로 비켜 둠([#3](https://github.com/yanos0218/AI/issues/3))
 - `tools/install.sh`·`check-install.sh`·`test-skill.sh`·`pack.sh` — `python3`를 먼저 찾고 없을 때 `python`. Mac/Linux엔 `python`이 없어 settings.json 병합이 조용히 건너뛰어졌음(Mac 반영 중 발견)
 
 ## [0.4.0] - 2026-09-09
