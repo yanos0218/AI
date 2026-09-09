@@ -8,12 +8,12 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 
 ## 현재 상태 (2026-09-09) · 마지막 월 점검: 없음 (첫 점검 2026-10 예정, `docs/monthly-check.md`)
 
-- 저장소: github.com/yanos0218/AI (비공개). **v0.5.0까지 릴리즈**(2026-09-08 v0.1.0 첫 컷 → v0.2.0 지침 확인 기준 변경 → v0.3.0 `base/`·`tools/` 경로 재구성 → 2026-09-09 v0.4.0 config-changelog 훅 → v0.5.0 rules 모듈·dev-workflow·지침 §2·§5·§7, Linux·웹 설치 직전 컷). CI(`lint.yml`) 초록. 자산별 단계·기기별 배포는 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본.
+- 저장소: github.com/yanos0218/AI (비공개). **v0.6.0까지 릴리즈**(2026-09-08 v0.1.0 첫 컷 → v0.2.0 지침 확인 기준 변경 → v0.3.0 `base/`·`tools/` 경로 재구성 → 2026-09-09 v0.4.0 config-changelog 훅 → v0.5.0 rules 모듈·dev-workflow·지침 §2·§5·§7 → v0.6.0 repo-setup 스킬, 사용자 명시 요청 컷). CI(`lint.yml`) 초록. 자산별 단계·기기별 배포는 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본.
 - **Windows PC는 v0.4.0 + 미릴리즈 일부**(§7·dev-release 0단계 없음 → `install.sh` 재실행 필요). CLI `~/.local/bin/claude.exe` v2.1.263, VS Code 확장 13개. 훅 2개(git-guardrails·baseline-guard)는 새 `claude -p` 세션에서 차단 동작 확인. 상태줄은 **터미널 CLI 전용**(VS Code 패널엔 안 나옴) — Windows 터미널에서 확인하면 [C-10](PROGRESS.md#c-10) 완료.
-- **Mac mini = v0.5.0(`check-install.sh` 일치). Linux·웹(Claude.ai)은 미반영.** 설치는 `docs/install.md`. 웹은 Release v0.5.0의 zip 2개 + Project instructions에 `base/claude-md/CLAUDE.md`. Mac 설치 중 `tools/*.sh`의 `python` 호출 실패 → python3 우선으로 수정. Mac은 PATH에 CLI가 없어도 VS Code 확장 내장 바이너리로 `claude` 명령 실행 가능(경로는 [C-10](PROGRESS.md#c-10)).
+- **Mac mini = v0.6.0(`check-install.sh` 일치). Windows는 v0.4.0 일부, Linux·웹(Claude.ai)은 미반영.** 설치는 `docs/install.md`. 웹은 Release v0.6.0의 zip 3개 + Project instructions에 `base/claude-md/CLAUDE.md`. Mac 설치 중 `tools/*.sh`의 `python` 호출 실패 → python3 우선으로 수정. Mac은 PATH에 CLI가 없어도 VS Code 확장 내장 바이너리로 `claude` 명령 실행 가능(경로는 [C-10](PROGRESS.md#c-10)).
 - 설정이 다른 저장소 작업 중 흔들리지 않게 하는 구조(기본·모듈·프로젝트 층)와 이력 장치는 `docs/config-lifecycle.md`(2026-09-09). 이력 훅은 v0.4.0에서 기본 영역.
 - C-18 결정 완료(웹은 OpenClaw에서), C-26 완료(웹 메모리 검토). OpenClaw `CLAUDE.md` 초안은 스크래치패드 브랜치, Script 키 처리 추천은 `docs/progress/C-35.md` — 둘 다 그 저장소에서 사용자 지시로 진행.
-- §3 진행(2026-09-09): Dependabot·2FA 확인, Actions 월 환산 11%, Issues 시험 시작(#1), `base/rules/` 첫 모듈, repo-setup 스킬 **3/3 시나리오 통과, 승격 대기**([C-35](PROGRESS.md#c-35); Script 점검에서 **이력 속 개인키 발견** → 사용자 결정), claude.ai 메모리는 zip 파일 대기([C-26](PROGRESS.md#c-26)).
+- §3 진행(2026-09-09): Dependabot·2FA 확인, Actions 월 환산 11%, Issues 시험 시작(#1), `base/rules/` 첫 모듈, repo-setup 스킬 **승격·v0.6.0**([C-35](PROGRESS.md#c-35) 완료; Script 점검에서 **이력 속 개인키 발견** → 사용자 결정), claude.ai 메모리는 zip 파일 대기([C-26](PROGRESS.md#c-26)).
 - §2 개발·설정 항목 정리(2026-09-09): `tools/install.sh`·`test-skill.sh`, Stop 훅, 권한 목록 보완, 전역 지침 §5 조사 규칙 승격. 전부 `[Unreleased]`, Windows 재설치됨.
 - 조사 규칙 `docs/research.md` + 기록 색인 `docs/research/`(2026-09-09), 토큰 절감 절은 `docs/review-vs-official.md`. 전역 반영은 [C-49](PROGRESS.md#c-49).
 - **[C-45](PROGRESS.md#c-45) 플러그인화 보류(2026-09-09)** — 플러그인은 스킬·훅만 싣고 지침·rules·permissions·statusLine은 못 실어 `install.sh`가 남음. 근거 `docs/research/plugins.md`. 부산물: `claude plugin validate base/skills` 통과 → [C-52](PROGRESS.md#c-52).
@@ -23,7 +23,7 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 
 ## 다음 할 일
 
-[PROGRESS.md](PROGRESS.md) §2·§3의 `C-NN` 항목. 추천 순서: v0.5.0 컷 직후 [C-16](PROGRESS.md#c-16)/17(Linux·웹 반영, 컷 시점 (a)) → [C-10](PROGRESS.md#c-10)(상태줄 육안, Windows 터미널) → [C-35](PROGRESS.md#c-35) repo-setup 승격 여부(사용자 결정).
+[PROGRESS.md](PROGRESS.md) §2·§3의 `C-NN` 항목. 추천 순서: v0.5.0 컷 직후 [C-16](PROGRESS.md#c-16)/17(Linux·웹 반영, 컷 시점 (a)) → [C-10](PROGRESS.md#c-10)(상태줄 육안, Windows 터미널) → Script·Etc 표준 적용은 그 저장소에서 `repo-setup`으로(사용자 지시 시, 순서는 `docs/progress/C-35.md`).
 
 ## 결정 사항 (다시 묻지 말 것)
 
@@ -35,5 +35,6 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 - (2026-09-09) **다른 저장소의 일은 이 보드에 두지 않는다.** 여기 두는 것은 저장소를 가리지 않는 결정·절차·표준·스킬까지. 특정 저장소에서의 실행(OpenClaw PR, Script 키 처리 등)은 그 저장소의 Issue·문서로.
 - (2026-09-08) 이 저장소도 태그를 쓴다. `docs/versioning.md` — 시작 `v0.1.0`, 기본 영역 변경만 등급 반영, Release에 `pack.sh` zip 첨부.
 - (2026-09-08) 기본 영역(`base/claude-md/`, `base/skills/<이름>/`, `scripts/`, `base/vscode/`)은 검증 통과 + 사용자의 명시적 반영 요청이 있을 때만 수정. 초안은 `drafts/`. `baseline-guard` 훅이 확인을 강제한다.
+- (2026-09-09) 저장소 표준 적용은 `repo-setup` 스킬로 — 판정표 → 사용자가 고른 것만 생성. 다른 저장소에 적용하는 일은 그 저장소에서.
 - (2026-09-09) 토큰이 필요하면 `gh auth status`로 확인하고 없으면 멈춘다. 채팅에 붙여넣으라고 하지 않는다(전역 §7, dev-release 0단계).
 - (2026-09-08) 사용자 성향 데이터는 세 곳(로컬 auto memory, claude.ai 메모리, `/insights`)에서 모아 `drafts/claude-md/`에 후보로 두고, 전역 지침 반영은 사용자 확인 후.

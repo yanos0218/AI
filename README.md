@@ -16,6 +16,8 @@
 | --- | --- |
 | [base/claude-md/CLAUDE.md](base/claude-md/CLAUDE.md) | 모든 프로젝트에 적용되는 공통 지침 (언어, 답변 방식, 확인 기준, 검증, Git) |
 | [base/skills/dev-release/](base/skills/dev-release/SKILL.md) | "버전 올려줘 / 릴리즈 하자"에 발동하는 릴리즈 절차 스킬 |
+| [base/skills/dev-workflow/](base/skills/dev-workflow/SKILL.md) | "테스트 어떻게 해 / 파일 정리해줘"에 발동. 구조·테스트 방법을 문서로 정하고 실행 증거를 보고 |
+| [base/skills/repo-setup/](base/skills/repo-setup/SKILL.md) | "저장소 표준 맞춰줘 / 뭐가 빠졌는지 봐줘"에 발동. [docs/repo-standard.md](docs/repo-standard.md) 9항목 대조 후 고른 것만 생성 |
 | [base/hooks/](base/hooks/) | 위험한 명령 앞 확인을 강제하는 `git-guardrails.sh`, 상태줄 `statusline.sh`, 설정 변경 이력 `config-changelog.sh` |
 | [base/settings.example.json](base/settings.example.json) | `~/.claude/settings.json` 예시 (허용·거부 명령, 훅, 상태줄) |
 | [base/rules/](base/rules/) | 모듈 규칙 — 기본 지침을 건드리지 않고 주제별로 붙이는 파일. `~/.claude/rules/`에 설치 |
