@@ -47,6 +47,7 @@ allowed-tools: Bash(git tag --list*) Bash(git log*) Bash(git diff*) Bash(git sta
 
 ```text
 릴리즈 vX.Y.Z
+- [ ] 0. gh auth status 확인 — 없으면 멈추고 사용자가 gh auth login (토큰을 채팅에 붙여넣으라고 하지 않음)
 - [ ] 1. 테스트·체크 통과 (실행한 명령과 결과 기록)
 - [ ] 2. CHANGELOG [Unreleased] → [X.Y.Z] - YYYY-MM-DD
 - [ ] 3. 버전이 박힌 파일 전부 갱신 (§0에서 찾은 목록)

@@ -17,13 +17,13 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 - §2 개발·설정 항목 정리(2026-09-09): `tools/install.sh`·`test-skill.sh`, Stop 훅, 권한 목록 보완, 전역 지침 §5 조사 규칙 승격. 전부 `[Unreleased]`, Windows 재설치됨.
 - 조사 규칙 `docs/research.md` + 기록 색인 `docs/research/`(2026-09-09), 토큰 절감 절은 `docs/review-vs-official.md`. 전역 반영은 [C-49](PROGRESS.md#c-49).
 - **[C-45](PROGRESS.md#c-45) 플러그인화 보류(2026-09-09)** — 플러그인은 스킬·훅만 싣고 지침·rules·permissions·statusLine은 못 실어 `install.sh`가 남음. 근거 `docs/research/plugins.md`. 부산물: `claude plugin validate base/skills` 통과 → [C-52](PROGRESS.md#c-52).
-- **[C-25](PROGRESS.md#c-25) `/insights` Mac 실행 완료(2026-09-09)** — 3세션뿐이라 얕음. 후보는 릴리즈 전 `gh auth` 점검·토큰 붙여넣기 금지 → [C-53](PROGRESS.md#c-53) **초안 + 발동 시험 통과, 승격 대기**(전역 §7 한 줄 + dev-release 0단계, `drafts/`, 상세 `docs/progress/C-53.md`). 시험 중 `test-skill.sh` 버그 2건 수정([#3](https://github.com/yanos0218/AI/issues/3)). `check-install.sh`는 VS Code 확장도 대조. 토큰 노출 건은 사용자가 "다른 저장소라 무관"으로 판단(토큰은 계정 단위라 이견은 전달함).
+- **[C-25](PROGRESS.md#c-25) `/insights` Mac 실행 완료(2026-09-09)** — 3세션뿐이라 얕음. 후보는 릴리즈 전 `gh auth` 점검·토큰 붙여넣기 금지 → [C-53](PROGRESS.md#c-53) **승격 완료(사용자 승인 2026-09-09)** — 전역 §7 한 줄 + dev-release 0단계, Mac 재설치. Windows는 다음 설치 때. 상세 `docs/progress/C-53.md`. 시험 중 `test-skill.sh` 버그 2건 수정([#3](https://github.com/yanos0218/AI/issues/3)). `check-install.sh`는 VS Code 확장도 대조. 토큰 노출 건은 사용자가 "다른 저장소라 무관"으로 판단(토큰은 계정 단위라 이견은 전달함).
 - 저장소 검토 `docs/audit-2026-09.md`(2026-09-09): 문제 7·제안 7 → 보드 [C-44](PROGRESS.md#c-44)~[C-48](PROGRESS.md#c-48). 규칙 이탈 금지 절을 저장소 CLAUDE.md에 추가, 전역판은 [C-47](PROGRESS.md#c-47).
 - dev-workflow 스킬 승격·Windows 설치(2026-09-09, `[Unreleased]`). dev-release 발동 테스트 3시나리오 통과(2026-09-08). 테스트 방법은 저장소 `CLAUDE.md` "검증" 절. 관찰: `cd X && ls` 복합 명령은 `Read(./.env)` deny 규칙과 겹쳐 승인 프롬프트가 뜨고, `python -m py_compile`은 allow 목록에 없음 → [C-11](PROGRESS.md#c-11).
 
 ## 다음 할 일
 
-[PROGRESS.md](PROGRESS.md) §2·§3의 `C-NN` 항목. 추천 순서: [C-53](PROGRESS.md#c-53) 승격 여부 결정(사용자) → v0.5.0 컷 직후 [C-16](PROGRESS.md#c-16)/17(Linux·웹 반영, 컷 시점 (a)) → [C-10](PROGRESS.md#c-10)(상태줄 육안, Windows 터미널) → [C-35](PROGRESS.md#c-35)(repo-setup 남은 시험, 사용자 지시 시).
+[PROGRESS.md](PROGRESS.md) §2·§3의 `C-NN` 항목. 추천 순서: v0.5.0 컷 직후 [C-16](PROGRESS.md#c-16)/17(Linux·웹 반영, 컷 시점 (a)) → [C-10](PROGRESS.md#c-10)(상태줄 육안, Windows 터미널) → [C-35](PROGRESS.md#c-35)(repo-setup 남은 시험, 사용자 지시 시).
 
 ## 결정 사항 (다시 묻지 말 것)
 
@@ -35,4 +35,5 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 - (2026-09-09) **다른 저장소의 일은 이 보드에 두지 않는다.** 여기 두는 것은 저장소를 가리지 않는 결정·절차·표준·스킬까지. 특정 저장소에서의 실행(OpenClaw PR, Script 키 처리 등)은 그 저장소의 Issue·문서로.
 - (2026-09-08) 이 저장소도 태그를 쓴다. `docs/versioning.md` — 시작 `v0.1.0`, 기본 영역 변경만 등급 반영, Release에 `pack.sh` zip 첨부.
 - (2026-09-08) 기본 영역(`base/claude-md/`, `base/skills/<이름>/`, `scripts/`, `base/vscode/`)은 검증 통과 + 사용자의 명시적 반영 요청이 있을 때만 수정. 초안은 `drafts/`. `baseline-guard` 훅이 확인을 강제한다.
+- (2026-09-09) 토큰이 필요하면 `gh auth status`로 확인하고 없으면 멈춘다. 채팅에 붙여넣으라고 하지 않는다(전역 §7, dev-release 0단계).
 - (2026-09-08) 사용자 성향 데이터는 세 곳(로컬 auto memory, claude.ai 메모리, `/insights`)에서 모아 `drafts/claude-md/`에 후보로 두고, 전역 지침 반영은 사용자 확인 후.

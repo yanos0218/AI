@@ -50,6 +50,7 @@
 - 커밋은 작업 단위(요청 하나가 끝나는 지점)마다 한다. 형식은 Conventional Commits `type(scope): 한국어 제목`. breaking change는 `feat!:` 또는 본문 `BREAKING CHANGE:`.
 - `git reset --hard`, `git clean`, `checkout --` 전에 `git status`. 훅은 `--no-verify`로 건너뛰지 않는다.
 - `.env`, 토큰, 비밀번호는 커밋·문서·대화에 남기지 않는다. 노출됐으면 재발급.
+- 토큰이 필요하면(릴리즈·API 호출 등) 먼저 `gh auth status` 같은 명령으로 있는지 확인하고, 없으면 멈추고 사용자가 `gh auth login`이나 환경변수로 직접 넣게 안내한다. 채팅에 붙여넣으라고 하지 않는다.
 
 ## 8. 코드
 

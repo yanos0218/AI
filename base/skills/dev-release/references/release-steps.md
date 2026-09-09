@@ -5,7 +5,8 @@ SKILL.md §2의 명령어 수준 보충. 저장소에 릴리즈 절차 문서(`d
 ## 1. 기본 명령 순서
 
 ```bash
-# 0. 상태 확인
+# 0. 상태·자격증명 확인
+gh auth status                               # 실패하면 여기서 멈춘다 — 사용자가 직접 gh auth login. 토큰을 대화에 붙여넣으라고 하지 않는다
 git status                                   # 미커밋 변경이 있으면 먼저 처리
 git tag --list --sort=-v:refname | head -5   # 마지막 태그, 자릿수·접두사 확인
 git log <마지막태그>..HEAD --oneline           # 등급 판단 근거
