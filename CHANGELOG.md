@@ -4,6 +4,16 @@
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-09-09
+
+### Added
+
+- `base/skills/repo-setup/` — 저장소가 최소 표준(`docs/repo-standard.md` 9항목)을 갖췄는지 대조하고 빠진 것을 제안표로 보인 뒤 사용자가 고른 것만 만드는 스킬. 비밀 파일 이력 검사를 §0에 둠. 3시나리오 발동 시험 통과(기록 `docs/progress/C-35.md`)
+
+### Changed
+
+- README 구조 표에 dev-workflow·repo-setup 행 추가
+
 ## [0.5.0] - 2026-09-09
 
 기존 기기는 `bash tools/install.sh`로 재설치(지침 §2·§5·§7, dev-release 0단계, rules 모듈, 권한 12개). Windows는 §7·dev-release 0단계가 아직 없음.
