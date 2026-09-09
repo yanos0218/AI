@@ -11,3 +11,4 @@
 | 플러그인·마켓플레이스(개인 저장소 배포) | 2026-09-09 | 2026-10-09 | [../audit-2026-09.md](../audit-2026-09.md) S1, PROGRESS C-45 |
 | 에이전트용 작업 추적(beads 등) vs PROGRESS·Issues | 2026-09-08 | 2027-03-08 | PROGRESS 머리말 크기 규칙, C-40 |
 | SemVer·Keep a Changelog 관례(dev-release 스킬) | 2026-09-08 | 2027-09-08 | `base/skills/dev-release/references/` |
+| `statusLine`은 터미널 CLI 전용, VS Code 확장 패널엔 안 나옴(패널은 컨텍스트 표시기·`/usage`) | 2026-09-09 | 2026-12-09 | PROGRESS [C-10](../PROGRESS.md#c-10) |

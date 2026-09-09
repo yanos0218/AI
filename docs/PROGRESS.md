@@ -34,9 +34,9 @@
 | dev-release 스킬 | 기본 (3시나리오 통과 2026-09-08) | ✓ v0.1.0 | ✓ | ✗ | ✗ (Release v0.1.0의 `dev-release.zip` 업로드) | [C-16](#c-16)/17 |
 | git-guardrails 훅 | 기본 (새 세션 push 차단 확인 2026-09-08) | ✓ | ✓ | ✗ | - | [C-10](#c-10), [C-16](#c-16) |
 | config-changelog 훅 | 기본 (임시 HOME 7케이스 통과, 2026-09-09) | ✓ v0.4.0 | ✓ | ✗ | - | [C-16](#c-16) |
-| statusline 훅 | 기본 | ✓ (표시 확인은 [C-10](#c-10), 사용자) | ✓ (훅 실행 확인, 표시는 [C-10](#c-10)) | ✗ | - | [C-10](#c-10), [C-16](#c-16) |
+| statusline 훅 | 기본 (터미널 CLI 전용, VS Code 패널엔 안 나옴) | ✓ (표시 확인은 [C-10](#c-10), 터미널에서) | ✓ 설치 (VS Code 패널만 써서 표시 없음) | ✗ | - | [C-10](#c-10), [C-16](#c-16) |
 | `settings.example.json` (권한·훅·상태줄) | 기본 | ✓ | ✓ (`model` 키 유지 병합) | ✗ | - | [C-16](#c-16) |
-| `base/vscode/` 확장 목록·설정·설치 스크립트 | 기본 | ✓ v0.3.0 | ✗ (Settings Sync가 주) | - | - | - |
+| `base/vscode/` 확장 목록·설정·설치 스크립트 | 기본 | ✓ v0.3.0 | ✓ 확장 13개 (2026-09-09, Settings Sync가 안 켜져 있어 `install.sh`로 설치. settings.json은 기존 것 유지) | - | - | - |
 | baseline-guard·session-end-check 훅 (이 저장소 전용, `.claude/`) | 기본 (새 세션 차단 확인 2026-09-08 / 트리 상태 시험 2026-09-09) | 저장소 안에서만 동작 | 동일 | 동일 | - | - |
 | dev-workflow 스킬 | 기본 (3시나리오 통과 2026-09-09, 미릴리즈) | ✓ | ✓ | ✗ | ✗ | [C-16](#c-16)/17 |
 | 모듈 규칙 `base/rules/docs-format.md` | 기본 (미릴리즈) | ✓ | ✓ | ✗ | - | [C-16](#c-16) |
@@ -91,7 +91,7 @@
 
 ## 2. 할 일 — 개발·설정
 
-- [~] <a id="c-10"></a>C-10 새 세션 훅·상태줄 확인 — 훅 2개는 `claude -p` 새 세션으로 검증 완료(2026-09-08): baseline-guard가 `base/` Edit을, git-guardrails가 `git push`를 확인 요구로 막음. **상태줄은 대화형 세션에서만 보이므로 사용자가 새 세션을 열어 하단 표시를 확인**하면 완료. Mac도 설치됨(2026-09-09) — Windows·Mac 각각 확인
+- [~] <a id="c-10"></a>C-10 새 세션 훅·상태줄 확인 — 훅 2개는 `claude -p` 새 세션으로 검증 완료(2026-09-08): baseline-guard가 `base/` Edit을, git-guardrails가 `git push`를 확인 요구로 막음. 상태줄은 **터미널 CLI에서만** 렌더링되고 VS Code 확장 채팅 패널에는 안 나옴(공식 문서 statusline·vs-code, 2026-09-09 확인 — 패널은 컨텍스트 표시기·`/usage`가 대신). 확인은 **Windows 터미널(`claude.exe`)** 에서. Mac은 VS Code 패널만 쓰고 CLI 미설치라 해당 없음
 - [ ] <a id="c-45"></a>C-45 플러그인화 검토 — base/skills+hooks를 `.claude-plugin/plugin.json`+`hooks/hooks.json`으로 묶고 이 저장소를 개인 마켓플레이스로(`claude plugin install`/`update`). CLAUDE.md·permissions·statusLine은 못 실으므로 install.sh와 병행. Mac 설치 때 이득 판단. 검토 S1
 - [ ] <a id="c-14"></a>C-14 Notification 훅 — 병렬 세션(`claude --bg`, worktree)을 실제로 쓰기 시작하면 추가. 그전엔 보류
 
