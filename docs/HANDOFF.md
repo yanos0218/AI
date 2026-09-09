@@ -13,7 +13,7 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 - **Mac mini = v0.5.0(`check-install.sh` 일치). Linux·웹(Claude.ai)은 미반영.** 설치는 `docs/install.md`. 웹은 Release v0.5.0의 zip 2개 + Project instructions에 `base/claude-md/CLAUDE.md`. Mac 설치 중 `tools/*.sh`의 `python` 호출 실패 → python3 우선으로 수정. Mac은 PATH에 CLI가 없어도 VS Code 확장 내장 바이너리로 `claude` 명령 실행 가능(경로는 [C-10](PROGRESS.md#c-10)).
 - 설정이 다른 저장소 작업 중 흔들리지 않게 하는 구조(기본·모듈·프로젝트 층)와 이력 장치는 `docs/config-lifecycle.md`(2026-09-09). 이력 훅은 v0.4.0에서 기본 영역.
 - C-18 결정 완료(웹은 OpenClaw에서), C-26 완료(웹 메모리 검토). OpenClaw `CLAUDE.md` 초안은 스크래치패드 브랜치, Script 키 처리 추천은 `docs/progress/C-35.md` — 둘 다 그 저장소에서 사용자 지시로 진행.
-- §3 진행(2026-09-09): Dependabot·2FA 확인, Actions 월 환산 11%, Issues 시험 시작(#1), `base/rules/` 첫 모듈, repo-setup 스킬 초안(Script 점검에서 **이력 속 개인키 발견** → 사용자 결정), claude.ai 메모리는 zip 파일 대기([C-26](PROGRESS.md#c-26)).
+- §3 진행(2026-09-09): Dependabot·2FA 확인, Actions 월 환산 11%, Issues 시험 시작(#1), `base/rules/` 첫 모듈, repo-setup 스킬 **3/3 시나리오 통과, 승격 대기**([C-35](PROGRESS.md#c-35); Script 점검에서 **이력 속 개인키 발견** → 사용자 결정), claude.ai 메모리는 zip 파일 대기([C-26](PROGRESS.md#c-26)).
 - §2 개발·설정 항목 정리(2026-09-09): `tools/install.sh`·`test-skill.sh`, Stop 훅, 권한 목록 보완, 전역 지침 §5 조사 규칙 승격. 전부 `[Unreleased]`, Windows 재설치됨.
 - 조사 규칙 `docs/research.md` + 기록 색인 `docs/research/`(2026-09-09), 토큰 절감 절은 `docs/review-vs-official.md`. 전역 반영은 [C-49](PROGRESS.md#c-49).
 - **[C-45](PROGRESS.md#c-45) 플러그인화 보류(2026-09-09)** — 플러그인은 스킬·훅만 싣고 지침·rules·permissions·statusLine은 못 실어 `install.sh`가 남음. 근거 `docs/research/plugins.md`. 부산물: `claude plugin validate base/skills` 통과 → [C-52](PROGRESS.md#c-52).
@@ -23,7 +23,7 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 
 ## 다음 할 일
 
-[PROGRESS.md](PROGRESS.md) §2·§3의 `C-NN` 항목. 추천 순서: v0.5.0 컷 직후 [C-16](PROGRESS.md#c-16)/17(Linux·웹 반영, 컷 시점 (a)) → [C-10](PROGRESS.md#c-10)(상태줄 육안, Windows 터미널) → [C-35](PROGRESS.md#c-35)(repo-setup 남은 시험, 사용자 지시 시).
+[PROGRESS.md](PROGRESS.md) §2·§3의 `C-NN` 항목. 추천 순서: v0.5.0 컷 직후 [C-16](PROGRESS.md#c-16)/17(Linux·웹 반영, 컷 시점 (a)) → [C-10](PROGRESS.md#c-10)(상태줄 육안, Windows 터미널) → [C-35](PROGRESS.md#c-35) repo-setup 승격 여부(사용자 결정).
 
 ## 결정 사항 (다시 묻지 말 것)
 

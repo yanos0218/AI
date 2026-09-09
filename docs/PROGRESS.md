@@ -40,7 +40,7 @@
 | baseline-guard·session-end-check 훅 (이 저장소 전용, `.claude/`) | 기본 (새 세션 차단 확인 2026-09-08 / 트리 상태 시험 2026-09-09) | 저장소 안에서만 동작 | 동일 | 동일 | - | - |
 | dev-workflow 스킬 | 기본 (3시나리오 통과 2026-09-09, v0.5.0) | ✓ | ✓ | ✗ | ✗ | [C-16](#c-16)/17 |
 | 모듈 규칙 `base/rules/docs-format.md` | 기본 (v0.5.0) | ✓ | ✓ | ✗ | - | [C-16](#c-16) |
-| repo-setup 스킬 | 검증 (1/3 시나리오, `drafts/skills/repo-setup/`) | | | | | [C-35](#c-35) |
+| repo-setup 스킬 | 검증 (**3/3 통과** 2026-09-09, `drafts/skills/repo-setup/`, 승격 대기) | | | | | [C-35](#c-35) |
 | 블로그용 스킬 | 계획 (역할 구분 선행) | | | | | [C-19](#c-19) |
 | 사업기획용 스킬 | 계획 (요구사항 미정) | | | | | [C-20](#c-20) |
 | 이 저장소 CI (lint.yml + check-docs.sh) | 기본 (첫 Actions 실행 success, 2026-09-08) | 저장소 안에서만 | 동일 | 동일 | - | - |
@@ -103,7 +103,7 @@
 - [ ] <a id="c-16"></a>C-16 Linux(Rocky) 반영 — `bash tools/install.sh --dry-run` → `install.sh`([C-15](#c-15)와 동일). jq 없어도 상태줄은 python/node 폴백
 - [ ] <a id="c-17"></a>C-17 Claude.ai 웹 업로드 — `bash tools/pack.sh` → Customize → Skills 업로드, Project instructions에 `base/claude-md/CLAUDE.md` 붙여넣기. 이후 CLAUDE.md를 고칠 때마다 다시 붙여넣어야 함(README "규칙을 고칠 때")
 - [~] <a id="c-34"></a>C-34 GitHub Issues 시험 시작 — 첫 Issue [#1](https://github.com/yanos0218/AI/issues/1)(복합 명령 승인 프롬프트), [#2](https://github.com/yanos0218/AI/issues/2)(tools python3, 열고 바로 닫음). 규칙: 작업 중 발견한 문제는 Issue, 계획·상태는 이 보드, 항목에 `#N`. 한 달 뒤(10월 점검) 유지 여부 판단 (2026-09-09)
-- [~] <a id="c-35"></a>C-35 `repo-setup` 스킬 검증 — 1/3 시나리오 통과(Script 클론). 남은 시험: 자체 표준 있는 저장소, 배포 요청 미발동. **이 저장소 몫은 표준(`docs/repo-standard.md`)과 스킬까지.** Script(개인키 처리·최소 표준)·Etc 적용은 그 저장소 일 — 추천 순서는 [docs/progress/C-35.md](progress/C-35.md), 착수는 사용자 지시 시
+- [~] <a id="c-35"></a>C-35 `repo-setup` 스킬 검증 — **3/3 시나리오 통과**(Script 클론 / 자체 표준 있는 저장소 → 빠진 칸만 / "배포해줘" 미발동, 2026-09-09). 승격은 사용자 요청 시. **이 저장소 몫은 표준(`docs/repo-standard.md`)과 스킬까지.** Script·Etc 적용은 그 저장소 일 — 추천 순서는 [docs/progress/C-35.md](progress/C-35.md), 착수는 사용자 지시 시
 - [ ] <a id="c-19"></a>C-19 블로그용 스킬 — 원본은 OpenClaw `core/definitions/modes/blog.md`·`core/playbooks/blog-*.md`(참조만). OpenClaw 원칙 "Claude Code가 블로그를 직접 쓰지 않는다"와 충돌하므로, 스킬화 전에 **역할 구분을 먼저 정리**(초안은 누가, 검수는 누가)
 - [ ] <a id="c-20"></a>C-20 사업기획용 스킬 — 웹 메모리에서 산출물 단서 확보(구조화된 기획 문서·경쟁 분석 표·인력/일정 견적). 스킬은 "셋 중 무엇을 어떤 틀로"를 묻고 시작. 제품 세부는 스킬에 넣지 않음. 초안 착수는 사용자 지시 시
 - [~] <a id="c-27"></a>C-27 auto memory 수집 — Windows 첫 수집 완료(`drafts/observations/memory-windows/`, 29개, 2026-09-09). Mac 수집 완료(`drafts/observations/memory-mac/`, 4개 — OpenClaw 맥락·릴리즈 절차·gh 설치, 2026-09-09). 전역 성향 추출은 월 점검 5번에서
