@@ -16,6 +16,10 @@
 - `base/claude-md/CLAUDE.md` §5 — 조사 규칙(공식 우선·날짜·직접 실행 검증·출처·`docs/research/`)과 "서브에이전트·시험 세션은 Sonnet"
 - `base/claude-md/CLAUDE.md` §2 — "정의된 규칙에서 스스로 벗어나지 않는다. 벗어나야 하면 근거 → 제안 → 승인 → 규칙 문서 먼저" 한 줄 추가
 
+### Fixed
+
+- `tools/install.sh`·`check-install.sh`·`test-skill.sh`·`pack.sh` — `python3`를 먼저 찾고 없을 때 `python`. Mac/Linux엔 `python`이 없어 settings.json 병합이 조용히 건너뛰어졌음(Mac 반영 중 발견)
+
 ## [0.4.0] - 2026-09-09
 
 ### Added

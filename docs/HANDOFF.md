@@ -10,7 +10,7 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 
 - 저장소: github.com/yanos0218/AI (비공개). **v0.4.0까지 릴리즈**(2026-09-08 v0.1.0 첫 컷 → v0.2.0 지침 확인 기준 변경 → v0.3.0 `base/`·`tools/` 경로 재구성 → 2026-09-09 v0.4.0 config-changelog 훅). CI(`lint.yml`) 초록. 자산별 단계·기기별 배포는 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본.
 - **Windows PC는 v0.4.0과 동일**(`tools/check-install.sh`로 확인). CLI `~/.local/bin/claude.exe` v2.1.263, VS Code 확장 13개. 훅 2개(git-guardrails·baseline-guard)는 새 `claude -p` 세션에서 차단 동작 확인, 상태줄 표시만 사용자가 대화형 세션에서 확인하면 [C-10](PROGRESS.md#c-10) 완료.
-- **Mac mini·Linux·웹(Claude.ai)은 미반영.** 설치는 `docs/install.md`. Mac은 기존 `~/.claude/CLAUDE.md`가 있을 수 있으니 덮어쓰기 전에 확인. 웹은 Release v0.4.0의 `dev-release.zip` + Project instructions에 `base/claude-md/CLAUDE.md`.
+- **Mac mini 반영 완료(2026-09-09, `[Unreleased]` 포함, `check-install.sh` 일치). Linux·웹(Claude.ai)은 미반영.** 설치는 `docs/install.md`. 웹은 Release v0.4.0의 `dev-release.zip` + Project instructions에 `base/claude-md/CLAUDE.md`. Mac 설치 중 `tools/*.sh`의 `python` 호출 실패 → python3 우선으로 수정.
 - 설정이 다른 저장소 작업 중 흔들리지 않게 하는 구조(기본·모듈·프로젝트 층)와 이력 장치는 `docs/config-lifecycle.md`(2026-09-09). 이력 훅은 v0.4.0에서 기본 영역.
 - C-18 결정 완료(웹은 OpenClaw에서), C-26 완료(웹 메모리 검토). OpenClaw `CLAUDE.md` 초안은 스크래치패드 브랜치, Script 키 처리 추천은 `docs/progress/C-35.md` — 둘 다 그 저장소에서 사용자 지시로 진행.
 - §3 진행(2026-09-09): Dependabot·2FA 확인, Actions 월 환산 11%, Issues 시험 시작(#1), `base/rules/` 첫 모듈, repo-setup 스킬 초안(Script 점검에서 **이력 속 개인키 발견** → 사용자 결정), claude.ai 메모리는 zip 파일 대기([C-26](PROGRESS.md#c-26)).
@@ -21,7 +21,7 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 
 ## 다음 할 일
 
-[PROGRESS.md](PROGRESS.md) §2·§3의 `C-NN` 항목. 추천 순서: [C-10](PROGRESS.md#c-10)(상태줄·훅 확인) → [C-18](PROGRESS.md#c-18)(GitHub 활용 결정, 사용자 판단) → [C-13](PROGRESS.md#c-13)(개발용 스킬) → [C-15](PROGRESS.md#c-15)/16/17(Mac·Linux·웹 반영).
+[PROGRESS.md](PROGRESS.md) §2·§3의 `C-NN` 항목. 추천 순서: [C-10](PROGRESS.md#c-10)(상태줄 표시 확인, Windows·Mac 사용자 육안) → [C-45](PROGRESS.md#c-45)(플러그인화 검토) → [C-16](PROGRESS.md#c-16)/17(Linux·웹 반영) → [C-35](PROGRESS.md#c-35)(repo-setup 남은 시험, 사용자 지시 시).
 
 ## 결정 사항 (다시 묻지 말 것)
 
