@@ -6,6 +6,7 @@ set -u
 cd "$(dirname "$0")/.." || exit 1
 CLAUDE_HOME="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
 PROJECTS_ROOT="${1:-/c/Git}"
+PY="$(command -v python3 || command -v python)"
 drift=0
 
 section() { printf '\n== %s\n' "$1"; }
@@ -26,7 +27,7 @@ for d in base/skills/*/; do
 done
 
 section "settings.json ↔ base/settings.example.json (permissions·hooks·statusLine 키)"
-python - "$CLAUDE_HOME/settings.json" base/settings.example.json <<'PY' || drift=1
+"$PY" - "$CLAUDE_HOME/settings.json" base/settings.example.json <<'PY' || drift=1
 import json, sys, io
 a = json.load(io.open(sys.argv[1], encoding='utf-8')); b = json.load(io.open(sys.argv[2], encoding='utf-8'))
 rc = 0
@@ -51,7 +52,7 @@ found=0
 for f in "$PROJECTS_ROOT"/*/.claude/settings.local.json; do
   [ -e "$f" ] || continue; found=1
   echo "  $f"
-  python - "$f" <<'PY'
+  "$PY" - "$f" <<'PY'
 import json, sys, io
 d = json.load(io.open(sys.argv[1], encoding='utf-8'))
 for k, v in (d.get('permissions') or {}).items():

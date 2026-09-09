@@ -11,6 +11,7 @@ MODEL="claude-sonnet-5"; TOOLS="Read Glob Grep Skill Bash(ls*) Bash(cat*) Bash(g
 while [ $# -gt 0 ]; do case "$1" in
   --model) MODEL="$2"; shift 2;; --tools) TOOLS="$2"; shift 2;; --turns) TURNS="$2"; shift 2;; *) echo "모르는 옵션 $1"; exit 2;; esac; done
 CLAUDE_BIN="${CLAUDE_BIN:-$(command -v claude || echo "$HOME/.local/bin/claude.exe")}"
+PY="$(command -v python3 || command -v python)"
 [ -d "$FIX/.git" ] || { echo "시나리오 저장소가 git 저장소가 아님: $FIX"; exit 2; }
 
 name="$(basename "$SKILL")"
@@ -21,7 +22,7 @@ echo "== 스킬 $name → $FIX/.claude/skills/ · 모델 $MODEL · 말: $PROMPT"
 (cd "$FIX" && unset CLAUDECODE CLAUDE_CODE_ENTRYPOINT && "$CLAUDE_BIN" -p "$PROMPT" --model "$MODEL" \
   --output-format stream-json --verbose --max-turns "$TURNS" --allowedTools $TOOLS) > "$out" 2>"$out.err"
 
-PYTHONIOENCODING=utf-8 python - "$out" "$name" <<'PY'
+PYTHONIOENCODING=utf-8 "$PY" - "$out" "$name" <<'PY'
 import json, sys
 path, skill = sys.argv[1], sys.argv[2]
 tools, texts, result, fired = [], [], None, False

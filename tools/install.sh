@@ -7,6 +7,7 @@
 set -u
 cd "$(dirname "$0")/.." || exit 1
 CLAUDE_HOME="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
+PY="$(command -v python3 || command -v python)"
 DRY=0; [ "${1:-}" = "--dry-run" ] && DRY=1
 say() { printf '%s\n' "$*"; }
 run() { if [ "$DRY" = 1 ]; then say "  (dry) $*"; else "$@"; fi; }
@@ -43,7 +44,7 @@ fi
 
 # 4. settings.json 병합 — permissions·hooks·statusLine 은 base 값으로, 나머지 키(model 등)는 유지
 if [ "$DRY" = 1 ]; then say "  (dry) settings.json 병합: permissions·hooks·statusLine"; else
-python - "$CLAUDE_HOME/settings.json" base/settings.example.json <<'PY'
+"$PY" - "$CLAUDE_HOME/settings.json" base/settings.example.json <<'PY'
 import json, sys, io, os, collections
 dst, src = sys.argv[1], sys.argv[2]
 base = json.load(io.open(src, encoding='utf-8'), object_pairs_hook=collections.OrderedDict)

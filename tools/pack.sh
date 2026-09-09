@@ -7,6 +7,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SKILLS_DIR="$ROOT_DIR/base/skills"
 DIST_DIR="$ROOT_DIR/dist"
+PY="$(command -v python3 || command -v python || true)"
 mkdir -p "$DIST_DIR"
 
 for skill_path in "$SKILLS_DIR"/*/; do
@@ -17,7 +18,7 @@ for skill_path in "$SKILLS_DIR"/*/; do
   if command -v zip >/dev/null 2>&1; then
     (cd "$SKILLS_DIR" && zip -qr "$zip_path" "$skill_name" -x '.*' '*/.*')
   else
-    python - "$SKILLS_DIR" "$skill_name" "$zip_path" <<'PY'
+    "$PY" - "$SKILLS_DIR" "$skill_name" "$zip_path" <<'PY'
 import sys, zipfile, pathlib
 root, name, out = pathlib.Path(sys.argv[1]), sys.argv[2], sys.argv[3]
 with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as z:
