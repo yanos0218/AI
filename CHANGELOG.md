@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-09-09
+
+기존 기기는 `bash tools/install.sh`로 재설치(지침 §2·§5·§7, dev-release 0단계, rules 모듈, 권한 12개). Windows는 §7·dev-release 0단계가 아직 없음.
+
 ### Added
 
 - `base/rules/docs-format.md` — 첫 모듈 규칙(문서 형식). `tools/install.sh`가 `~/.claude/rules/`에 설치
