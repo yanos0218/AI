@@ -14,6 +14,13 @@ drafts/hooks/<이름>.sh       새 훅 초안
 
 1. README "새 스킬 추가" 5번의 시험(3가지 상황, 새 세션)을 통과했다.
 2. 사용자가 "기본에 반영해"라고 명시적으로 요청했다.
-3. `git mv drafts/<경로> base/<경로>`로 옮기고, `docs/PROGRESS.md`에 완료 표시, `docs/HANDOFF.md` 결정 사항에 한 줄 추가, 커밋 제목 `feat(<영역>): <이름> 기본 영역 승격`.
+3. `git mv drafts/<경로> base/<경로>`로 옮기고, 관련 GitHub Issue를 닫거나(`task` 라벨) 새로 만들어 닫는다. 필요하면 `docs/HANDOFF.md` 결정 사항에 한 줄 추가, 커밋 제목 `feat(<영역>): <이름> 기본 영역 승격`.
 
 `.claude/hooks/baseline-guard.sh`가 기본 영역 쓰기 앞에서 확인 프롬프트를 띄운다. 승격 작업이면 승인하고, 아니면 여기로 돌아온다.
+
+## 관찰 기록 (`drafts/observations/`)
+
+성격이 다른 두 가지가 섞여 있다.
+
+- **원자료** — 하루치 관찰(`YYYY-MM-DD.md`), auto memory·설정 변경 이력 백업(`memory-<기기>/`), claude.ai 내보내기(`claude-ai-export/`, 개인정보라 zip은 `.gitignore`). 월 점검이 여러 날짜를 모아 패턴을 찾는 데 쓰므로 **그대로 둔다**. 아직 안 끝난 할 일(Issue)의 근거 자료도 그 Issue가 닫힐 때까지 둔다.
+- **판정 기록** — 후보를 검토해 채택/기각/보류를 다 정한 표(예: `/insights` 후보, claude.ai 메모리 검토). 결론이 나면 **GitHub Issue로 옮기고(`task` 라벨, 닫음) 파일은 지운다** — 원자료와 달리 다시 볼 일이 없고, 다른 문서가 그 파일을 참조하고 있었다면 링크도 Issue로 바꾼다(2026-09-12부터).
