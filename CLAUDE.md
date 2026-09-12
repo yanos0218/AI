@@ -1,6 +1,6 @@
 # claude-config 저장소 규칙
 
-세션 시작: `docs/HANDOFF.md` → `docs/PROGRESS.md` 순으로 읽는다.
+세션 시작: `docs/HANDOFF.md` → `docs/PROGRESS.md`(§0 표) → 열린 Issue(`gh issue list --state open`) 순으로 읽는다. 할 일은 `task`, 발견한 문제는 `bug` 라벨.
 
 ## 기본 영역과 작업 영역
 

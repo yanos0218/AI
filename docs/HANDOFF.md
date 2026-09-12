@@ -23,7 +23,7 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 
 ## 다음 할 일
 
-[PROGRESS.md](PROGRESS.md) §2·§3의 `C-NN` 항목. 추천 순서: [C-16](PROGRESS.md#c-16)(Linux 반영, v0.6.0 기준) → Script·Etc 표준 적용은 그 저장소에서 `repo-setup`으로(사용자 지시 시, 순서는 `docs/progress/C-35.md`).
+[PROGRESS.md](PROGRESS.md) §2·§3의 `C-NN` 항목. 할 일은 GitHub Issues(`gh issue list --state open --label task`)에서 확인 — [#6](https://github.com/yanos0218/AI/issues/6) Linux 반영이 먼저. Script·Etc 표준 적용은 그 저장소에서 `repo-setup`으로(사용자 지시 시, 순서는 `docs/progress/C-35.md`).
 
 ## 결정 사항 (다시 묻지 말 것)
 

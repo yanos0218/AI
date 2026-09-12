@@ -11,7 +11,7 @@
 >
 > **업데이트 규칙**: 작업 시작 시 `[ ]`→`[~]`, 완료 시 `[x]`와 날짜. 새 할 일이 떠오르면 즉시 `C-NN` ID를 붙여 §2 또는 §3에 추가한다. 세션이 끝날 때 이 보드와 HANDOFF "현재 상태"를 같이 갱신한다.
 >
-> **크기 규칙 ([C-40](#c-40), 2026-09-08)**: 이 파일은 **열린 항목 + 최근 30일 완료**만 담는다. 그보다 오래된 완료 항목은 월 점검 때 `docs/progress/archive-YYYY-MM.md`로 옮긴다. 한 항목의 설명이 3줄을 넘으면 `docs/progress/C-NN.md`로 빼고 여기엔 한 줄 + 링크만. 작업 중 **발견한 문제**는 GitHub Issue로 열고 항목에 `#N`을 적는다([C-34](#c-34)). 열린 항목이 100개를 넘거나 병렬 세션을 쓰게 되면 beads 같은 에이전트용 트래커를 검토한다.
+> **크기 규칙 ([C-40](#c-40), 2026-09-08; 범위 조정 [C-54](#c-54) 2026-09-12)**: 이 파일은 **§0 자산 현황 표 + 최근 30일 완료 이력**만 담는다. 할 일과 발견한 문제는 GitHub Issue로 관리한다(라벨 `task`/`bug`). 오래된 완료 항목은 월 점검 때 `docs/progress/archive-YYYY-MM.md`로 옮긴다. 한 항목의 설명이 3줄을 넘으면 `docs/progress/C-NN.md`로 빼고 여기엔 한 줄 + 링크만.
 
 ---
 
@@ -30,25 +30,26 @@
 
 | 자산 | 단계 | Windows | Mac mini | Linux | 웹(Claude.ai) | 다음 행동 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 전역 지침 `base/claude-md/CLAUDE.md` | 기본 | ✓ v0.6.0 (2026-09-12) | ✓ v0.6.0 | ✗ | ✓ Project instructions (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [C-16](#c-16) |
-| dev-release 스킬 | 기본 (3시나리오 통과 2026-09-08, 0단계 미인증 시나리오 통과 2026-09-09) | ✓ v0.5.0 (2026-09-12) | ✓ v0.5.0 | ✗ | ✓ v0.6.0 (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [C-16](#c-16) |
-| git-guardrails 훅 | 기본 (새 세션 push 차단 확인 2026-09-08) | ✓ | ✓ | ✗ | - | [C-16](#c-16) |
-| config-changelog 훅 | 기본 (임시 HOME 7케이스 통과, 2026-09-09) | ✓ v0.4.0 | ✓ | ✗ | - | [C-16](#c-16) |
-| statusline 훅 | 기본 (터미널 CLI 전용, VS Code 패널엔 안 나옴) | ✓ 육안 확인 2026-09-12 | ✓ 설치 (VS Code 패널만 써서 표시 없음) | ✗ | - | [C-16](#c-16) |
-| `settings.example.json` (권한·훅·상태줄) | 기본 | ✓ | ✓ (`model` 키 유지 병합) | ✗ | - | [C-16](#c-16) |
+| 전역 지침 `base/claude-md/CLAUDE.md` | 기본 | ✓ v0.6.0 (2026-09-12) | ✓ v0.6.0 | ✗ | ✓ Project instructions (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
+| dev-release 스킬 | 기본 (3시나리오 통과 2026-09-08, 0단계 미인증 시나리오 통과 2026-09-09) | ✓ v0.5.0 (2026-09-12) | ✓ v0.5.0 | ✗ | ✓ v0.6.0 (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
+| git-guardrails 훅 | 기본 (새 세션 push 차단 확인 2026-09-08) | ✓ | ✓ | ✗ | - | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
+| config-changelog 훅 | 기본 (임시 HOME 7케이스 통과, 2026-09-09) | ✓ v0.4.0 | ✓ | ✗ | - | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
+| statusline 훅 | 기본 (터미널 CLI 전용, VS Code 패널엔 안 나옴) | ✓ 육안 확인 2026-09-12 | ✓ 설치 (VS Code 패널만 써서 표시 없음) | ✗ | - | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
+| `settings.example.json` (권한·훅·상태줄) | 기본 | ✓ | ✓ (`model` 키 유지 병합) | ✗ | - | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
 | `base/vscode/` 확장 목록·설정·설치 스크립트 | 기본 | ✓ v0.3.0 | ✓ 확장 13개 (2026-09-09, Settings Sync가 안 켜져 있어 `install.sh`로 설치. settings.json은 기존 것 유지) | - | - | - |
 | baseline-guard·session-end-check 훅 (이 저장소 전용, `.claude/`) | 기본 (새 세션 차단 확인 2026-09-08 / 트리 상태 시험 2026-09-09) | 저장소 안에서만 동작 | 동일 | 동일 | - | - |
-| dev-workflow 스킬 | 기본 (3시나리오 통과 2026-09-09, v0.5.0) | ✓ | ✓ | ✗ | ✓ v0.6.0 (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [C-16](#c-16) |
-| 모듈 규칙 `base/rules/docs-format.md` | 기본 (v0.5.0) | ✓ | ✓ | ✗ | - | [C-16](#c-16) |
-| repo-setup 스킬 | 기본 (3시나리오 통과 2026-09-09, v0.6.0) | ✓ v0.6.0 (2026-09-12) | ✓ v0.6.0 | ✗ | ✓ v0.6.0 (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [C-16](#c-16) |
-| 블로그용 스킬 | 계획 (역할 구분 선행) | | | | | [C-19](#c-19) |
-| 사업기획용 스킬 | 계획 (요구사항 미정) | | | | | [C-20](#c-20) |
+| dev-workflow 스킬 | 기본 (3시나리오 통과 2026-09-09, v0.5.0) | ✓ | ✓ | ✗ | ✓ v0.6.0 (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
+| 모듈 규칙 `base/rules/docs-format.md` | 기본 (v0.5.0) | ✓ | ✓ | ✗ | - | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
+| repo-setup 스킬 | 기본 (3시나리오 통과 2026-09-09, v0.6.0) | ✓ v0.6.0 (2026-09-12) | ✓ v0.6.0 | ✗ | ✓ v0.6.0 (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
+| 블로그용 스킬 | 계획 (역할 구분 선행) | | | | | [Issue #7](https://github.com/yanos0218/AI/issues/7) |
+| 사업기획용 스킬 | 계획 (요구사항 미정) | | | | | [Issue #8](https://github.com/yanos0218/AI/issues/8) |
 | 이 저장소 CI (lint.yml + check-docs.sh) | 기본 (첫 Actions 실행 success, 2026-09-08) | 저장소 안에서만 | 동일 | 동일 | - | - |
-| 성향 데이터 → 전역 지침 후보 | 초안 (`drafts/observations/`, `/insights` 후보 1건 → [C-53](#c-53)) | | | | | [C-27](#c-27)/53, 월 점검 |
+| 성향 데이터 → 전역 지침 후보 | 초안 (`drafts/observations/`, `/insights` 후보 1건 → [C-53](#c-53)) | | | | | [Issue #9](https://github.com/yanos0218/AI/issues/9)/[C-53](#c-53), 월 점검 |
 | GitHub 활용 (web·`@claude` Actions) | 결정 대기 | | | | | [C-18](#c-18) |
 
 ## 1. 완료
 
+- [x] <a id="c-54"></a>C-54 Issues 사용 범위 확정 — 개인용 저장소는 문제(`bug`)+할 일(`task`) 모두 Issue로 관리. 저장소 `CLAUDE.md`·`docs/repo-standard.md`·`docs/versioning.md`·Stop 훅·README·HANDOFF·월 점검 문서 갱신, 열린 7개(C-14·16·19·20·22·27·52)를 Issue [#4](https://github.com/yanos0218/AI/issues/4)~[#10](https://github.com/yanos0218/AI/issues/10)로 이관. 팀·협업 저장소는 별도 — 실제 생기면 그때 조사(`repo-setup`) (2026-09-12)
 - [x] <a id="c-34"></a>C-34 GitHub Issues 시험 종료 → 상시 채택(2026-09-12, 10월 점검 대기 없이 사용자 결정). 첫 Issue [#1](https://github.com/yanos0218/AI/issues/1)(복합 명령 승인 프롬프트), [#2](https://github.com/yanos0218/AI/issues/2)·[#3](https://github.com/yanos0218/AI/issues/3)(발견 즉시 닫음). 범위 확장(문제만 → task 포함)은 [C-54](#c-54) 검토 중 (2026-09-09)
 - [x] <a id="c-17"></a>C-17 Claude.ai 웹 업로드 — `dist/` zip 3개(dev-release·dev-workflow·repo-setup) Skills 업로드 + Project instructions에 `base/claude-md/CLAUDE.md`, 사용자가 진행, 스크린샷으로 Skills 3개·프로젝트 MP의 instructions 확인(2026-09-12). 발동은 미검증 — 웹에서 "버전 올려줘"로 dev-release가 뜨는지 사용자가 확인. 이후 CLAUDE.md를 고칠 때마다 다시 붙여넣어야 함(README "규칙을 고칠 때") (2026-09-12)
 - [x] <a id="c-10"></a>C-10 새 세션 훅·상태줄 확인 — 훅 2개는 `claude -p` 새 세션 차단 확인(2026-09-08). 상태줄은 터미널 CLI 전용(VS Code 패널엔 안 나옴, 공식 문서 확인 2026-09-09) — Windows 터미널 `claude.exe`에서 `[Fable 5.1] System32 | ░ 0% | $0.00` 육안 확인(2026-09-12). Mac은 PATH에 CLI 없어도 VS Code 확장 내장 바이너리(`~/.vscode/extensions/anthropic.claude-code-*/resources/native-binary/claude`)로 실행 가능 (2026-09-12)
@@ -97,18 +98,13 @@
 
 ## 2. 할 일 — 개발·설정
 
-- [ ] <a id="c-52"></a>C-52 `claude plugin validate base/skills`를 검증 절차에 — 플러그인화 없이도 스킬 디렉터리 검사 통과 확인(2026-09-09, 2.1.266). 저장소 `CLAUDE.md` "검증" 절과 `tools/test-skill.sh` 앞단에 넣을지, CI는 `claude` 설치 비용 때문에 보류
-- [ ] <a id="c-14"></a>C-14 Notification 훅 — 병렬 세션(`claude --bg`, worktree)을 실제로 쓰기 시작하면 추가. 그전엔 보류
+할 일은 GitHub Issues로 관리한다([C-54](#c-54), 2026-09-12). `gh issue list --state open --label task`로 확인. 작업 중 발견한 문제는 `bug` 라벨.
 
 ## 3. 할 일 — 배포·운영·비개발
 
-- [ ] <a id="c-16"></a>C-16 Linux(Rocky) 반영 — `bash tools/install.sh --dry-run` → `install.sh`([C-15](#c-15)와 동일). jq 없어도 상태줄은 python/node 폴백
+§2와 같은 곳(Issues)에서 관리한다.
+
 - [x] <a id="c-35"></a>C-35 `repo-setup` 스킬 — 3/3 시나리오 통과(Script 클론 / 자체 표준 있는 저장소 → 빠진 칸만 / "배포해줘" 미발동) 후 사용자 승인으로 `base/skills/` 승격, Mac 설치, v0.6.0 (2026-09-09). **이 저장소 몫은 표준(`docs/repo-standard.md`)과 스킬까지.** Script·Etc 적용은 그 저장소 일 — 추천 순서는 [docs/progress/C-35.md](progress/C-35.md), 착수는 사용자 지시 시
-- [ ] <a id="c-19"></a>C-19 블로그용 스킬 — 원본은 OpenClaw `core/definitions/modes/blog.md`·`core/playbooks/blog-*.md`(참조만). OpenClaw 원칙 "Claude Code가 블로그를 직접 쓰지 않는다"와 충돌하므로, 스킬화 전에 **역할 구분을 먼저 정리**(초안은 누가, 검수는 누가)
-- [ ] <a id="c-20"></a>C-20 사업기획용 스킬 — 웹 메모리에서 산출물 단서 확보(구조화된 기획 문서·경쟁 분석 표·인력/일정 견적). 스킬은 "셋 중 무엇을 어떤 틀로"를 묻고 시작. 제품 세부는 스킬에 넣지 않음. 초안 착수는 사용자 지시 시
-- [~] <a id="c-27"></a>C-27 auto memory 수집 — Windows 첫 수집 완료(`drafts/observations/memory-windows/`, 29개, 2026-09-09). Mac 수집 완료(`drafts/observations/memory-mac/`, 4개 — OpenClaw 맥락·릴리즈 절차·gh 설치, 2026-09-09). 전역 성향 추출은 월 점검 5번에서
-- [ ] <a id="c-22"></a>C-22 사용량·비용 확인 습관 — 상태줄 `$`와 claude.ai 사용량 페이지. 시험 세션 4회에 약 2달러였음. 한 달 뒤 실제 사용량을 보고 모델/effort 기본값 재검토
-- [~] <a id="c-54"></a>C-54 Issues 사용 범위 확장 검토 — "발견한 문제"뿐 아니라 계획된 할 일(task)까지 Issue로 관리할지 검토 중. 근거·권장안은 채팅 답변(2026-09-12). 결론 나면 §5 "GitHub 이슈를 백로그로 쓰기" 기각 문구와 저장소 CLAUDE.md 규칙을 같이 고친다
 
 ## 4. 결정 사항 (다시 묻지 말 것)
 
@@ -117,5 +113,4 @@ HANDOFF.md "결정 사항" 절이 원본. 여기서는 중복하지 않는다.
 ## 5. 보류·기각
 
 - 에이전트 팀, 샌드박스(Windows 미지원), LSP 플러그인 — README 검토표 "보류" 참고
-- GitHub 이슈를 백로그로 쓰기 — 커뮤니티 관례지만 사용자 저장소는 `docs/PROGRESS.md` + `P-NN`이 확정. 바꾸지 않음
 - Code Review(관리형 PR 자동 리뷰) — Team/Enterprise 전용. 개인은 로컬 `/code-review`로 대체

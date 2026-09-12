@@ -33,7 +33,7 @@
 | 경로 | 무엇 |
 | --- | --- |
 | [docs/HANDOFF.md](docs/HANDOFF.md) | Claude가 새 대화를 시작할 때 읽는 "지금 상황" 메모 — 무엇이 어디까지 됐고 무엇을 결정했는지 |
-| [docs/PROGRESS.md](docs/PROGRESS.md) | 진행 보드 — 자산별 단계(계획→초안→검증→기본)와 기기별 배포 상태, 할 일 `C-NN` |
+| [docs/PROGRESS.md](docs/PROGRESS.md) | 진행 보드 — 자산별 단계(계획→초안→검증→기본)와 기기별 배포 상태. 할 일은 GitHub Issues(라벨 `task`/`bug`) |
 | [docs/versioning.md](docs/versioning.md) | 이 저장소의 버전·릴리즈 규칙 |
 | [docs/install.md](docs/install.md) | 기기·웹별 설치 상세 |
 | [docs/github.md](docs/github.md) | GitHub를 어디까지 쓰는지, Actions 한도, Claude와 어떻게 엮는지 |
