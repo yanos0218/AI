@@ -23,10 +23,10 @@
 
 - 스킬이 5개를 넘거나 다른 사람과 나눠 쓰게 될 때(마켓플레이스의 본래 용도).
 - 플러그인이 permissions·CLAUDE.md·rules를 실을 수 있게 바뀔 때(공식 문서 "Limitations" 절 재확인).
-- Claude.ai 웹 업로드([C-17](../PROGRESS.md#c-17))가 플러그인 동기화로 대체될 때 — 현재 `plugins/cache/.../synced/`는 claude.ai→Claude Code 방향만 확인(미검증).
+- Claude.ai 웹 업로드([Issue #13](https://github.com/yanos0218/AI/issues/13))가 플러그인 동기화로 대체될 때 — 현재 `plugins/cache/.../synced/`는 claude.ai→Claude Code 방향만 확인(미검증).
 
 ## 영향
 
-- [PROGRESS C-45](../PROGRESS.md#c-45) 닫음(보류 결론). 새 항목 [Issue #4](https://github.com/yanos0218/AI/issues/4): `claude plugin validate base/skills`를 로컬 검증 절차에 넣을지.
-- HANDOFF: Mac에서도 확장 내장 바이너리로 CLI 명령 실행 가능 → [C-10](../PROGRESS.md#c-10)·[C-25](../PROGRESS.md#c-25) 문구 정정.
+- [Issue #17](https://github.com/yanos0218/AI/issues/17) 닫음(보류 결론). 새 항목 [Issue #4](https://github.com/yanos0218/AI/issues/4): `claude plugin validate base/skills`를 로컬 검증 절차에 넣을지.
+- HANDOFF: Mac에서도 확장 내장 바이너리로 CLI 명령 실행 가능 → [Issue #14](https://github.com/yanos0218/AI/issues/14)·[Issue #16](https://github.com/yanos0218/AI/issues/16) 문구 정정.
 - [Issue #58](https://github.com/yanos0218/AI/issues/58)(옛 `docs/audit-2026-09.md`) S1은 "검토"로 두고 결론은 이 파일.

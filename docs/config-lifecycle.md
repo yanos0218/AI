@@ -8,7 +8,7 @@
 | 층 | 파일 | 누가 바꾸나 | 이 저장소에서의 취급 |
 | --- | --- | --- | --- |
 | **기본** (모든 프로젝트) | `~/.claude/CLAUDE.md`, `~/.claude/settings.json`, `~/.claude/hooks/`, `~/.claude/skills/` | 사람 (이 저장소 `base/`에서 설치) | 원본은 `base/`. 여기서만 고치고 재설치한다 |
-| **모듈** (모든 프로젝트, 주제별) | `~/.claude/rules/<주제>.md` | 사람 또는 Claude(요청 시) | 기본 CLAUDE.md를 건드리지 않고 규칙을 파일 단위로 붙였다 뗀다. 원본은 `base/rules/`(예정, [C-42](PROGRESS.md#c-42)) |
+| **모듈** (모든 프로젝트, 주제별) | `~/.claude/rules/<주제>.md` | 사람 또는 Claude(요청 시) | 기본 CLAUDE.md를 건드리지 않고 규칙을 파일 단위로 붙였다 뗀다. 원본은 `base/rules/`(예정, [Issue #34](https://github.com/yanos0218/AI/issues/34)) |
 | **프로젝트** (그 저장소만) | 저장소 `CLAUDE.md`, `.claude/settings.json`, `.claude/settings.local.json`(gitignore), 저장소 `.claude/skills/` | Claude와 사람 | 자유롭게 바뀌어도 기본에 영향 없음 |
 
 핵심 사실 두 가지:
@@ -24,7 +24,7 @@
 | --- | --- | --- |
 | `config-changelog` 훅 | Claude가 `~/.claude/{CLAUDE.md, settings*.json, rules/, hooks/}`를 편집하면 `~/.claude/config-changelog.md`에 시각·도구·대상·작업 폴더를 한 줄 기록. 막지 않고 남기기만 | 기본 `base/hooks/config-changelog.sh` (v0.4.0), `settings.example.json`의 PostToolUse에 등록 |
 | `tools/check-install.sh` | 설치본과 `base/` 대조(DIFF/MISSING), `rules/` 목록, 프로젝트별 `settings.local.json`에 쌓인 권한 목록, 변경 이력 꼬리 20줄 | 사용 가능 |
-| 월 점검 ([C-21](PROGRESS.md#c-21)) | 위 둘의 출력을 보고 결정: 여러 저장소에 반복된 권한 → `base/settings.example.json` 승격, 좋은 변경 → `base/`에 반영 후 재설치, 나쁜 변경 → 재설치로 되돌림 | 규칙 |
+| 월 점검 ([Issue #42](https://github.com/yanos0218/AI/issues/42)) | 위 둘의 출력을 보고 결정: 여러 저장소에 반복된 권한 → `base/settings.example.json` 승격, 좋은 변경 → `base/`에 반영 후 재설치, 나쁜 변경 → 재설치로 되돌림 | 규칙 |
 
 "보내준다"는 요구는 이 훅의 로그 파일 + `check-install.sh`가 해결한다. 기기마다 로그가 남고, 점검 때 `drafts/observations/`로 복사하면 저장소에 모인다. 실시간으로 어딘가에 전송하는 방식(메일·웹훅)은 외부 서비스 쓰기라 보류.
 

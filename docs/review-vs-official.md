@@ -33,14 +33,14 @@
 
 | 방법 | 무엇을 줄이나 | 상태 |
 | --- | --- | --- |
-| **절차는 스킬로, 반복 명령은 스크립트로** | 매번 절차를 설명하고 Claude가 명령을 다시 짜는 비용. 오늘 `check-install.sh`·`pack.sh`가 그 예 | 반영. 스킬 시험도 스크립트로([C-46](PROGRESS.md#c-46)) |
-| **서브에이전트에 싼 모델** | 조사·로그 읽기·시험 세션은 Sonnet/Haiku로 충분. 발동 시험 4회에 약 2달러였음 | [C-51](PROGRESS.md#c-51): 시험 스크립트 기본 `--model claude-sonnet-5`, 전역 지침 §5에 "서브에이전트는 Sonnet" |
+| **절차는 스킬로, 반복 명령은 스크립트로** | 매번 절차를 설명하고 Claude가 명령을 다시 짜는 비용. 오늘 `check-install.sh`·`pack.sh`가 그 예 | 반영. 스킬 시험도 스크립트로([Issue #37](https://github.com/yanos0218/AI/issues/37)) |
+| **서브에이전트에 싼 모델** | 조사·로그 읽기·시험 세션은 Sonnet/Haiku로 충분. 발동 시험 4회에 약 2달러였음 | [Issue #38](https://github.com/yanos0218/AI/issues/38): 시험 스크립트 기본 `--model claude-sonnet-5`, 전역 지침 §5에 "서브에이전트는 Sonnet" |
 | **작업 바뀌면 `/clear`** | 긴 세션에서 한 줄 질문도 전체 문맥을 다시 보냄. 이 세션은 30턴 넘게 이어짐 | 습관. HANDOFF·PROGRESS가 전환 비용을 줄이는 장치 |
 | **`/effort` 낮추기** | 단순 편집·문서 갱신에 깊은 추론 불필요 | 습관 |
 | **한 메시지에 여러 항목** | 턴마다 붙는 고정 비용 | 사용자가 이미 함 |
 | **읽을 파일을 줄이기** | 문서 상한, HANDOFF 4줄, 조사 기록 재사용(`docs/research/`) | 반영 |
 | **프롬프트 캐시** | 같은 앞부분(CLAUDE.md·시스템)은 1시간 캐시로 재사용됨. CLAUDE.md를 세션 중 자주 바꾸면 캐시가 깨짐 | 자동. 기본 영역을 세션 중 고치지 않는 규칙이 여기도 도움 |
-| **측정** | 상태줄 `$`, `/cost`, 월 1회 `/insights` | 반영·[C-25](PROGRESS.md#c-25) |
+| **측정** | 상태줄 `$`, `/cost`, 월 1회 `/insights` | 반영·[Issue #16](https://github.com/yanos0218/AI/issues/16) |
 
 ## 참고한 자료
 

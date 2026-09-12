@@ -14,4 +14,4 @@
 | 마찰 | VS Code 확장 7/13 누락을 늦게 발견(설치 스크립트가 별도) | `install.md`에 순서 있음. `check-install.sh`는 확장을 안 봄 |
 | 마찰 | C-10·C-25가 열린 채 세션 종료 | 보드·HANDOFF가 이미 추적. 리포트의 NOTES.md 제안은 불필요 |
 
-## 제안된 CLAUDE.md 추가 4개 → 판정은 [drafts/claude-md/2026-09-09-insights-candidates.md](../../claude-md/2026-09-09-insights-candidates.md)
+## 제안된 CLAUDE.md 추가 4개 → 판정은 [Issue #59](https://github.com/yanos0218/AI/issues/59)

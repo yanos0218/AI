@@ -9,7 +9,7 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 ## 현재 상태 (2026-09-12) · 마지막 월 점검: 없음 (첫 점검 2026-10 예정, `docs/monthly-check.md`)
 
 - 저장소 v0.6.0, CI(`lint.yml`) 초록. 배포 현황은 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본 — Windows·Mac·웹은 v0.6.0, Linux만 미반영.
-- 할 일·발견한 문제는 GitHub Issues로 관리한다([C-54](PROGRESS.md#c-54), 2026-09-12). 완료 이력은 [PROGRESS.md §1](PROGRESS.md#1-완료)에 짧은 색인 + 이슈 링크로.
+- 할 일·발견한 문제는 GitHub Issues로 관리한다([Issue #11](https://github.com/yanos0218/AI/issues/11), 2026-09-12). 완료 이력은 [PROGRESS.md §1](PROGRESS.md#1-완료)에 짧은 색인 + 이슈 링크로.
 - Script 저장소 이력에서 개인키 발견 — 처리는 그 저장소 일, 아직 사용자 결정 대기.
 - 그 밖의 결정 배경·조사 근거는 `git log`와 각 문서 "참고" 절, 닫힌 이슈에 남아 있다.
 

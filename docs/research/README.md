@@ -11,5 +11,5 @@
 | 플러그인·마켓플레이스(개인 저장소 배포) — 보류 결론 | 2026-09-09 | 2026-10-09 | [plugins.md](plugins.md), [Issue #58](https://github.com/yanos0218/AI/issues/58) S1 |
 | 에이전트용 작업 추적(beads 등) vs PROGRESS·Issues | 2026-09-08 | 2027-03-08 | PROGRESS 머리말 크기 규칙, C-40 |
 | SemVer·Keep a Changelog 관례(dev-release 스킬) | 2026-09-08 | 2027-09-08 | `base/skills/dev-release/references/` |
-| `statusLine`은 터미널 CLI 전용, VS Code 확장 패널엔 안 나옴(패널은 컨텍스트 표시기·`/usage`) | 2026-09-09 | 2026-12-09 | PROGRESS [C-10](../PROGRESS.md#c-10) |
-| GitHub Issues 범위 — "문제만" vs task 포함, 개인 계정엔 Issue Types 없음(404 확인) | 2026-09-12 | 2026-12-12 | [github-issues-scope.md](github-issues-scope.md), PROGRESS [C-54](../PROGRESS.md#c-54) |
+| `statusLine`은 터미널 CLI 전용, VS Code 확장 패널엔 안 나옴(패널은 컨텍스트 표시기·`/usage`) | 2026-09-09 | 2026-12-09 | PROGRESS [Issue #14](https://github.com/yanos0218/AI/issues/14) |
+| GitHub Issues 범위 — "문제만" vs task 포함, 개인 계정엔 Issue Types 없음(404 확인) | 2026-09-12 | 2026-12-12 | [github-issues-scope.md](github-issues-scope.md), PROGRESS [Issue #11](https://github.com/yanos0218/AI/issues/11) |

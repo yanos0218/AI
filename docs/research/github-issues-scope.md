@@ -1,6 +1,6 @@
 # GitHub Issues 사용 범위 — "문제만" vs "task 포함"
 
-[C-54](../PROGRESS.md#c-54) 검토에 쓴 조사. 결론은 PROGRESS C-54, 채택 여부는 사용자 결정 대기.
+[Issue #11](https://github.com/yanos0218/AI/issues/11) 검토에 쓴 조사. 결론은 PROGRESS C-54, 채택 여부는 사용자 결정 대기.
 
 ## 확인한 사실 (직접 실행)
 

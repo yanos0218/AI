@@ -6,7 +6,7 @@
 
 ### Changed
 
-- `base/skills/repo-setup/references/checklist.md` 항목 5·6 — Issues 판정 기준을 "개인용은 문제+할 일 통합(`bug`/`task`), 팀·협업은 별도 조사"로, 진행 보드 항목 6을 "할 일을 Issue로 관리하면 배포 표만 있어도 됨"으로 수정([C-54](docs/PROGRESS.md#c-54), 2026-09-12)
+- `base/skills/repo-setup/references/checklist.md` 항목 5·6 — Issues 판정 기준을 "개인용은 문제+할 일 통합(`bug`/`task`), 팀·협업은 별도 조사"로, 진행 보드 항목 6을 "할 일을 Issue로 관리하면 배포 표만 있어도 됨"으로 수정([Issue #11](https://github.com/yanos0218/AI/issues/11), 2026-09-12)
 
 ## [0.6.0] - 2026-09-09
 
