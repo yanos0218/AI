@@ -94,7 +94,7 @@
 
 ## 2. 할 일 — 개발·설정
 
-- [~] <a id="c-10"></a>C-10 새 세션 훅·상태줄 확인 — 훅 2개는 `claude -p` 새 세션으로 검증 완료(2026-09-08): baseline-guard가 `base/` Edit을, git-guardrails가 `git push`를 확인 요구로 막음. 상태줄은 **터미널 CLI에서만** 렌더링되고 VS Code 확장 채팅 패널에는 안 나옴(공식 문서 statusline·vs-code, 2026-09-09 확인 — 패널은 컨텍스트 표시기·`/usage`가 대신). 확인은 **Windows 터미널(`claude.exe`)** 에서. Mac은 PATH에 CLI가 없지만 VS Code 확장 내장 바이너리(`~/.vscode/extensions/anthropic.claude-code-*/resources/native-binary/claude`, 2.1.266 확인)로 터미널 실행 가능
+- [~] <a id="c-10"></a>C-10 새 세션 훅·상태줄 확인 — 훅 2개는 `claude -p` 새 세션으로 검증 완료(2026-09-08): baseline-guard가 `base/` Edit을, git-guardrails가 `git push`를 확인 요구로 막음. 상태줄은 **터미널 CLI에서만** 렌더링되고 VS Code 확장 채팅 패널에는 안 나옴(공식 문서 statusline·vs-code, 2026-09-09 확인 — 패널은 컨텍스트 표시기·`/usage`가 대신). 확인은 **Windows 터미널(`claude.exe`)** 에서. Windows 훅 샘플 입력 실행·`settings.json` 등록·CLI 2.1.263은 확인(2026-09-12), 남은 건 육안뿐. Mac은 PATH에 CLI가 없지만 VS Code 확장 내장 바이너리(`~/.vscode/extensions/anthropic.claude-code-*/resources/native-binary/claude`, 2.1.266 확인)로 터미널 실행 가능
 - [ ] <a id="c-52"></a>C-52 `claude plugin validate base/skills`를 검증 절차에 — 플러그인화 없이도 스킬 디렉터리 검사 통과 확인(2026-09-09, 2.1.266). 저장소 `CLAUDE.md` "검증" 절과 `tools/test-skill.sh` 앞단에 넣을지, CI는 `claude` 설치 비용 때문에 보류
 - [ ] <a id="c-14"></a>C-14 Notification 훅 — 병렬 세션(`claude --bg`, worktree)을 실제로 쓰기 시작하면 추가. 그전엔 보류
 
