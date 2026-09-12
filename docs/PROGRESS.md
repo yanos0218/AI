@@ -49,6 +49,8 @@
 
 ## 1. 완료
 
+아래 45개는 2026-09-12에 검색·백업용 closed Issue(`task` 라벨)로도 이관됐다. 목록은 `gh issue list --state closed --label task`. 원본은 이 절이 계속 담당한다.
+
 - [x] <a id="c-54"></a>C-54 Issues 사용 범위 확정 — 개인용 저장소는 문제(`bug`)+할 일(`task`) 모두 Issue로 관리. 저장소 `CLAUDE.md`·`docs/repo-standard.md`·`docs/versioning.md`·Stop 훅·README·HANDOFF·월 점검 문서 갱신, 열린 7개(C-14·16·19·20·22·27·52)를 Issue [#4](https://github.com/yanos0218/AI/issues/4)~[#10](https://github.com/yanos0218/AI/issues/10)로 이관. 팀·협업 저장소는 별도 — 실제 생기면 그때 조사(`repo-setup`) (2026-09-12)
 - [x] <a id="c-34"></a>C-34 GitHub Issues 시험 종료 → 상시 채택(2026-09-12, 10월 점검 대기 없이 사용자 결정). 첫 Issue [#1](https://github.com/yanos0218/AI/issues/1)(복합 명령 승인 프롬프트), [#2](https://github.com/yanos0218/AI/issues/2)·[#3](https://github.com/yanos0218/AI/issues/3)(발견 즉시 닫음). 범위 확장(문제만 → task 포함)은 [C-54](#c-54) 검토 중 (2026-09-09)
 - [x] <a id="c-17"></a>C-17 Claude.ai 웹 업로드 — `dist/` zip 3개(dev-release·dev-workflow·repo-setup) Skills 업로드 + Project instructions에 `base/claude-md/CLAUDE.md`, 사용자가 진행, 스크린샷으로 Skills 3개·프로젝트 MP의 instructions 확인(2026-09-12). 발동은 미검증 — 웹에서 "버전 올려줘"로 dev-release가 뜨는지 사용자가 확인. 이후 CLAUDE.md를 고칠 때마다 다시 붙여넣어야 함(README "규칙을 고칠 때") (2026-09-12)
