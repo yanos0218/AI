@@ -12,7 +12,7 @@
 
 ### Added
 
-- `base/skills/repo-setup/` — 저장소가 최소 표준(`docs/repo-standard.md` 9항목)을 갖췄는지 대조하고 빠진 것을 제안표로 보인 뒤 사용자가 고른 것만 만드는 스킬. 비밀 파일 이력 검사를 §0에 둠. 3시나리오 발동 시험 통과(기록 `docs/progress/C-35.md`)
+- `base/skills/repo-setup/` — 저장소가 최소 표준(`docs/repo-standard.md` 9항목)을 갖췄는지 대조하고 빠진 것을 제안표로 보인 뒤 사용자가 고른 것만 만드는 스킬. 비밀 파일 이력 검사를 §0에 둠. 3시나리오 발동 시험 통과(기록 [Issue #56](https://github.com/yanos0218/AI/issues/56))
 
 ### Changed
 
@@ -25,12 +25,12 @@
 ### Added
 
 - `base/rules/docs-format.md` — 첫 모듈 규칙(문서 형식). `tools/install.sh`가 `~/.claude/rules/`에 설치
-- `base/skills/dev-workflow/` — 저장소의 파일·폴더 구조와 테스트 방법을 정하고, 작업 뒤 테스트 실행 증거를 보고하는 스킬. 발동 문구 7개, references 2개. 3시나리오 발동 시험 통과(기록 `docs/progress/C-13.md`)
+- `base/skills/dev-workflow/` — 저장소의 파일·폴더 구조와 테스트 방법을 정하고, 작업 뒤 테스트 실행 증거를 보고하는 스킬. 발동 문구 7개, references 2개. 3시나리오 발동 시험 통과(기록 [Issue #45](https://github.com/yanos0218/AI/issues/45))
 
 ### Changed
 
 - `base/claude-md/CLAUDE.md` §7 — 토큰이 필요하면 `gh auth status`로 먼저 확인, 없으면 멈추고 사용자가 직접 넣게 안내, 채팅에 붙여넣으라고 하지 않는다(C-53, 2026-09-09 토큰 노출 사고 근거)
-- `base/skills/dev-release/` — 체크리스트 0단계 `gh auth status`, `references/release-steps.md` 명령 순서 맨 앞에 자격증명 확인. 미인증 시나리오 발동 시험 통과(`docs/progress/C-53.md`)
+- `base/skills/dev-release/` — 체크리스트 0단계 `gh auth status`, `references/release-steps.md` 명령 순서 맨 앞에 자격증명 확인. 미인증 시나리오 발동 시험 통과([Issue #15](https://github.com/yanos0218/AI/issues/15))
 - `tools/check-install.sh` — VS Code 확장을 `base/vscode/extensions.txt`와 대조해 빠진 것을 MISSING으로 보고(목록 밖 확장은 개수만). Mac은 `code`가 PATH에 없으면 앱 내장 경로 사용
 - `base/settings.example.json` — allow에 검사·조회 명령 12개 추가(`python -m py_compile`, `npx markdownlint-cli2`, `npx shellcheck`, `bash -n`, `gh issue list/view`, `gh run view/watch`, `cat`, `head`, `wc`, `grep`)
 - `base/skills/dev-release/SKILL.md` — `allowed-tools`로 읽기 전용 git·gh 명령 사전 승인

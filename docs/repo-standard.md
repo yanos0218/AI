@@ -24,7 +24,7 @@
 | kolo-api | ✓ `markdownlint.yml` | ✓ `build.yml` | ✓ | ✓ | ✗ | kolo_pwa 보드 공용 | ✓ | |
 | OpenClaw | ✓ `lint.yml` | - (문서 시스템) | ✓ | `workspace/AGENTS.md` (CLAUDE.md는 `@AGENTS.md` import로 연결 가능) | ✗ | ? | ✗ | |
 | AI (이 저장소) | ✓ `lint.yml` | ✓ shellcheck·문서 상한 | ✓ | ✓ | ✓ task+bug 통합 | ✓ | ✓ | |
-| Script | ✗ | ✗ (shellcheck 후보) | ✗ | ✗ | ✗ | ✗ | ✓ | **이력에 개인키** ([C-35](progress/C-35.md)) |
+| Script | ✗ | ✗ (shellcheck 후보) | ✗ | ✗ | ✗ | ✗ | ✓ | **이력에 개인키** ([Issue #56](https://github.com/yanos0218/AI/issues/56)) |
 | Etc | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ | |
 
-Script·Etc는 활동이 적어(마지막 push 2026-06) 보관/최소/전부 중 사용자가 고른다. 자동으로 맞춰 주는 `repo-setup` 스킬은 초안·1시나리오 통과([C-35](progress/C-35.md)).
+Script·Etc는 활동이 적어(마지막 push 2026-06) 보관/최소/전부 중 사용자가 고른다. 자동으로 맞춰 주는 `repo-setup` 스킬은 초안·1시나리오 통과([Issue #56](https://github.com/yanos0218/AI/issues/56)).

@@ -13,7 +13,7 @@
 - [ ] 7. /insights — 대화형 세션에서 실행, 제안 중 반복되는 것만 후보
 - [ ] 8. 사용량 — 상태줄 $ 누계, claude.ai 사용량 페이지, GitHub Settings → Billing → Actions 분
 - [ ] 9. 보드 정리 — PROGRESS 완료 항목 중 30일 지난 것을 docs/progress/archive-YYYY-MM.md 로. 열린 Issue(`gh issue list --state open`) 우선순위 재검토
-- [ ] 10. 검토표 갱신 — docs/review-vs-official.md·docs/audit-*.md 에서 상태가 바뀐 행 갱신. 새 기능은 docs/research/ 규칙대로 조사
+- [ ] 10. 검토표 갱신 — docs/review-vs-official.md에서 상태가 바뀐 행 갱신. 새로 발견한 문제·제안은 Issue로(`task`/`bug` 라벨, 2026-09-12부터 파일 대신). 새 기능은 docs/research/ 규칙대로 조사
 - [ ] 11. 릴리즈 판단 — [Unreleased]가 비어 있지 않고 다른 기기 설치가 예정돼 있으면 컷(versioning.md 컷 시점)
 - [ ] 12. HANDOFF "마지막 점검일" 갱신
 ```
