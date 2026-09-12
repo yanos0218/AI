@@ -8,6 +8,10 @@
 
 - `base/vscode/install.sh` — `code`가 PATH에 없어도 Mac 앱 내장 경로(`/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code`)로 폴백. 코드만 반영, Mac에서의 실제 동작 확인은 다음 Mac 세션([Issue #57](https://github.com/yanos0218/AI/issues/57))
 
+### Added
+
+- `base/claude-md/CLAUDE.md` §7 — 복합 명령에서 `cd <경로> && <명령>` 대신 `git -C <경로>`나 절대 경로를 쓴다는 한 줄. `Read` deny 규칙과 겹쳐 정적 분석이 안 돼 승인 프롬프트가 뜨던 문제([Issue #1](https://github.com/yanos0218/AI/issues/1))
+
 ### Changed
 
 - `base/skills/repo-setup/references/checklist.md` 항목 5·6 — Issues 판정 기준을 "개인용은 문제+할 일 통합(`bug`/`task`), 팀·협업은 별도 조사"로, 진행 보드 항목 6을 "할 일을 Issue로 관리하면 배포 표만 있어도 됨"으로 수정([Issue #11](https://github.com/yanos0218/AI/issues/11), 2026-09-12)
