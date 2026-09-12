@@ -49,7 +49,7 @@
 
 ## 1. 완료
 
-아래 45개는 2026-09-12에 검색·백업용 closed Issue(`task` 라벨)로도 이관됐다. 목록은 `gh issue list --state closed --label task`. 원본은 이 절이 계속 담당한다.
+아래 46개는 2026-09-12에 검색·백업용 closed Issue(`task` 라벨)로도 이관됐다. 목록은 `gh issue list --state closed --label task`. 원본은 이 절이 계속 담당한다.
 
 - [x] <a id="c-54"></a>C-54 Issues 사용 범위 확정 — 개인용 저장소는 문제(`bug`)+할 일(`task`) 모두 Issue로 관리. 저장소 `CLAUDE.md`·`docs/repo-standard.md`·`docs/versioning.md`·Stop 훅·README·HANDOFF·월 점검 문서 갱신, 열린 7개(C-14·16·19·20·22·27·52)를 Issue [#4](https://github.com/yanos0218/AI/issues/4)~[#10](https://github.com/yanos0218/AI/issues/10)로 이관. 팀·협업 저장소는 별도 — 실제 생기면 그때 조사(`repo-setup`) (2026-09-12)
 - [x] <a id="c-34"></a>C-34 GitHub Issues 시험 종료 → 상시 채택(2026-09-12, 10월 점검 대기 없이 사용자 결정). 첫 Issue [#1](https://github.com/yanos0218/AI/issues/1)(복합 명령 승인 프롬프트), [#2](https://github.com/yanos0218/AI/issues/2)·[#3](https://github.com/yanos0218/AI/issues/3)(발견 즉시 닫음). 범위 확장(문제만 → task 포함)은 [C-54](#c-54) 검토 중 (2026-09-09)
@@ -95,8 +95,8 @@
 - [x] <a id="c-12"></a>C-12 이 저장소 CI — `.github/workflows/lint.yml`(markdownlint·shellcheck·문서 상한), `.github/dependabot.yml`. 로컬에서 세 검사 통과, 첫 Actions 실행 결과는 push 후 확인 (2026-09-08)
 - [x] <a id="c-33"></a>C-33 README 입구화 + 문서 규칙 — 230줄 README를 111줄로, 설치·검토표·GitHub은 `docs/`로 분리. 문서별 줄 수 상한을 CLAUDE.md에 정하고 `check-docs.sh`로 CI 검사 (2026-09-08)
 - [x] <a id="c-30"></a>C-30 GitHub 기능 전체 대비 사용 수준 검토 — `docs/github.md` 표. 결론: 전부 쓸 필요 없음, 현재가 1인 권장 수준 (2026-09-08)
- — README "GitHub 기능 전체 대비 사용 수준" 표. 결론: 전부 쓸 필요 없음, 현재가 1인 권장 수준 (2026-09-08)
 - [x] <a id="c-24"></a>C-24 사용자 성향 데이터 활용 방안 조사 — 로컬 세션 기록·auto memory·claude.ai 메모리·`/insights` 검토, 결론은 C-25~C-27 (2026-09-08)
+- [x] <a id="c-35"></a>C-35 `repo-setup` 스킬 — 3/3 시나리오 통과(Script 클론 / 자체 표준 있는 저장소 → 빠진 칸만 / "배포해줘" 미발동) 후 사용자 승인으로 `base/skills/` 승격, Mac 설치, v0.6.0 (2026-09-09). **이 저장소 몫은 표준(`docs/repo-standard.md`)과 스킬까지.** Script·Etc 적용은 그 저장소 일 — 추천 순서는 [docs/progress/C-35.md](progress/C-35.md), 착수는 사용자 지시 시
 
 ## 2. 할 일 — 개발·설정
 
@@ -105,8 +105,6 @@
 ## 3. 할 일 — 배포·운영·비개발
 
 §2와 같은 곳(Issues)에서 관리한다.
-
-- [x] <a id="c-35"></a>C-35 `repo-setup` 스킬 — 3/3 시나리오 통과(Script 클론 / 자체 표준 있는 저장소 → 빠진 칸만 / "배포해줘" 미발동) 후 사용자 승인으로 `base/skills/` 승격, Mac 설치, v0.6.0 (2026-09-09). **이 저장소 몫은 표준(`docs/repo-standard.md`)과 스킬까지.** Script·Etc 적용은 그 저장소 일 — 추천 순서는 [docs/progress/C-35.md](progress/C-35.md), 착수는 사용자 지시 시
 
 ## 4. 결정 사항 (다시 묻지 말 것)
 
