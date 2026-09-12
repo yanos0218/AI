@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- `base/vscode/install.sh` — `code`가 PATH에 없어도 Mac 앱 내장 경로(`/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code`)로 폴백. 코드만 반영, Mac에서의 실제 동작 확인은 다음 Mac 세션([Issue #57](https://github.com/yanos0218/AI/issues/57))
+
 ### Changed
 
 - `base/skills/repo-setup/references/checklist.md` 항목 5·6 — Issues 판정 기준을 "개인용은 문제+할 일 통합(`bug`/`task`), 팀·협업은 별도 조사"로, 진행 보드 항목 6을 "할 일을 Issue로 관리하면 배포 표만 있어도 됨"으로 수정([Issue #11](https://github.com/yanos0218/AI/issues/11), 2026-09-12)

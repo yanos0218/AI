@@ -5,11 +5,20 @@
 set -euo pipefail
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-command -v code >/dev/null || { echo "VS Code CLI(code)가 PATH에 없습니다. VS Code에서 'Shell Command: Install code command' 실행 후 다시 시도하세요." >&2; exit 1; }
+MAC_APP_CODE="/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
+if command -v code >/dev/null; then
+  CODE=code
+elif [[ "$(uname -s)" == "Darwin" && -x "$MAC_APP_CODE" ]]; then
+  CODE="$MAC_APP_CODE"
+  echo "== code가 PATH에 없어 Mac 앱 내장 경로를 씀: $CODE"
+else
+  echo "VS Code CLI(code)가 PATH에 없습니다. VS Code에서 'Shell Command: Install code command' 실행 후 다시 시도하세요." >&2
+  exit 1
+fi
 
 echo "== 확장 설치"
 grep -v -E '^\s*(#|$)' "$here/extensions.txt" | while read -r ext; do
-  code --install-extension "$ext" --force >/dev/null
+  "$CODE" --install-extension "$ext" --force >/dev/null
   echo "  $ext"
 done
 
