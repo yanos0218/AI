@@ -10,7 +10,7 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 
 - 저장소: github.com/yanos0218/AI (비공개). **v0.6.0까지 릴리즈**(2026-09-08 v0.1.0 첫 컷 → v0.2.0 지침 확인 기준 변경 → v0.3.0 `base/`·`tools/` 경로 재구성 → 2026-09-09 v0.4.0 config-changelog 훅 → v0.5.0 rules 모듈·dev-workflow·지침 §2·§5·§7 → v0.6.0 repo-setup 스킬, 사용자 명시 요청 컷). CI(`lint.yml`) 초록. 자산별 단계·기기별 배포는 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본.
 - **Windows PC = v0.6.0**(2026-09-12 `install.sh` 재실행, `check-install.sh` 전부 same). CLI `~/.local/bin/claude.exe` v2.1.263, VS Code 확장 13개. 훅 2개(git-guardrails·baseline-guard)는 새 `claude -p` 세션에서 차단 동작 확인. 상태줄은 **터미널 CLI 전용**(VS Code 패널엔 안 나옴), Windows 터미널 육안 확인으로 [C-10](PROGRESS.md#c-10) 완료(2026-09-12).
-- **Mac mini·Windows = v0.6.0. Linux·웹(Claude.ai)은 미반영.** 설치는 `docs/install.md`. 웹은 Release v0.6.0의 zip 3개 + Project instructions에 `base/claude-md/CLAUDE.md`. Mac 설치 중 `tools/*.sh`의 `python` 호출 실패 → python3 우선으로 수정. Mac은 PATH에 CLI가 없어도 VS Code 확장 내장 바이너리로 `claude` 명령 실행 가능(경로는 [C-10](PROGRESS.md#c-10)).
+- **Mac mini·Windows·웹(Claude.ai) = v0.6.0**(웹은 2026-09-12 사용자 업로드, 발동 미검증 — [C-17](PROGRESS.md#c-17)). **Linux는 미반영.** 설치는 `docs/install.md`. Mac 설치 중 `tools/*.sh`의 `python` 호출 실패 → python3 우선으로 수정. Mac은 PATH에 CLI가 없어도 VS Code 확장 내장 바이너리로 `claude` 명령 실행 가능(경로는 [C-10](PROGRESS.md#c-10)).
 - 설정이 다른 저장소 작업 중 흔들리지 않게 하는 구조(기본·모듈·프로젝트 층)와 이력 장치는 `docs/config-lifecycle.md`(2026-09-09). 이력 훅은 v0.4.0에서 기본 영역.
 - C-18 결정 완료(웹은 OpenClaw에서), C-26 완료(웹 메모리 검토). OpenClaw `CLAUDE.md` 초안은 스크래치패드 브랜치, Script 키 처리 추천은 `docs/progress/C-35.md` — 둘 다 그 저장소에서 사용자 지시로 진행.
 - §3 진행(2026-09-09): Dependabot·2FA 확인, Actions 월 환산 11%, Issues 시험 시작(#1), `base/rules/` 첫 모듈, repo-setup 스킬 **승격·v0.6.0**([C-35](PROGRESS.md#c-35) 완료; Script 점검에서 **이력 속 개인키 발견** → 사용자 결정), claude.ai 메모리는 zip 파일 대기([C-26](PROGRESS.md#c-26)).
@@ -23,7 +23,7 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 
 ## 다음 할 일
 
-[PROGRESS.md](PROGRESS.md) §2·§3의 `C-NN` 항목. 추천 순서: [C-16](PROGRESS.md#c-16)/17(Linux·웹 반영, v0.6.0 기준) → Script·Etc 표준 적용은 그 저장소에서 `repo-setup`으로(사용자 지시 시, 순서는 `docs/progress/C-35.md`).
+[PROGRESS.md](PROGRESS.md) §2·§3의 `C-NN` 항목. 추천 순서: [C-16](PROGRESS.md#c-16)(Linux 반영, v0.6.0 기준) → Script·Etc 표준 적용은 그 저장소에서 `repo-setup`으로(사용자 지시 시, 순서는 `docs/progress/C-35.md`).
 
 ## 결정 사항 (다시 묻지 말 것)
 
