@@ -12,7 +12,9 @@ DRY=0; [ "${1:-}" = "--dry-run" ] && DRY=1
 say() { printf '%s\n' "$*"; }
 run() { if [ "$DRY" = 1 ]; then say "  (dry) $*"; else "$@"; fi; }
 
-say "== 대상: $CLAUDE_HOME  (base 버전: $(git describe --tags --always 2>/dev/null))"
+BASE_VER="$(git describe --tags --always 2>/dev/null)"
+SRC_ABS="$(pwd)"
+say "== 대상: $CLAUDE_HOME  (base 버전: $BASE_VER)"
 run mkdir -p "$CLAUDE_HOME/hooks" "$CLAUDE_HOME/skills"
 
 # 1. CLAUDE.md — 다르면 백업 후 교체
@@ -58,6 +60,12 @@ for k in ('$schema', 'permissions', 'hooks', 'statusLine'):
 io.open(dst, 'w', encoding='utf-8', newline='\n').write(json.dumps(cur, ensure_ascii=False, indent=2) + '\n')
 print('  settings.json 병합: ' + (', '.join(changed) + ' 갱신' if changed else '변경 없음'))
 PY
+fi
+
+# 5. 버전 표시 파일 — SessionStart 훅(session-start-check.sh)이 최신 여부를 조용히 확인하는 데 씀
+if [ "$DRY" = 1 ]; then say "  (dry) 버전 표시 파일 기록: $SRC_ABS / $BASE_VER"; else
+  printf '%s\n%s\n' "$SRC_ABS" "$BASE_VER" > "$CLAUDE_HOME/.claude-config-version"
+  say "  버전 표시 기록: $BASE_VER"
 fi
 
 say "== 설치 끝. 스킬·훅은 새 세션부터 적용. 웹(Claude.ai)은 dist/*.zip 업로드와 Project instructions 갱신이 별도."

@@ -4,13 +4,16 @@
 
 ## [Unreleased]
 
-### Fixed
-
-- `base/vscode/install.sh` — `code`가 PATH에 없어도 Mac 앱 내장 경로(`/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code`)로 폴백. 코드만 반영, Mac에서의 실제 동작 확인은 다음 Mac 세션([Issue #57](https://github.com/yanos0218/AI/issues/57))
-
 ### Added
 
 - `base/claude-md/CLAUDE.md` §7 — 복합 명령에서 `cd <경로> && <명령>` 대신 `git -C <경로>`나 절대 경로를 쓴다는 한 줄. `Read` deny 규칙과 겹쳐 정적 분석이 안 돼 승인 프롬프트가 뜨던 문제([Issue #1](https://github.com/yanos0218/AI/issues/1))
+- `base/hooks/session-start-check.sh` — 전역 `SessionStart` 훅(matcher `startup`). 새 세션마다 읽기 전용으로 두 가지를 조용히 확인: (1) 지금 저장소에 `CLAUDE.md`가 없고 `.claude/.no-repo-setup-suggest`도 없으면 repo-setup 제안을 상기시킴, (2) `~/.claude/.claude-config-version`에 적힌 버전이 원본 저장소 최신과 다르면 재설치를 상기시킴. 4개 시나리오(표준 없음/있음/억제 표시/버전 낡음) 직접 실행 확인([Issue #62](https://github.com/yanos0218/AI/issues/62))
+- `tools/install.sh` — 설치할 때마다 `~/.claude/.claude-config-version`에 원본 경로+버전을 기록(위 훅이 읽음)
+- `base/claude-md/CLAUDE.md` §5 — 저장소 표준 제안을 거절하면 `.claude/.no-repo-setup-suggest`를 만들어 다음부턴 묻지 않는다는 한 줄
+
+### Fixed
+
+- `base/vscode/install.sh` — `code`가 PATH에 없어도 Mac 앱 내장 경로(`/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code`)로 폴백. 코드만 반영, Mac에서의 실제 동작 확인은 다음 Mac 세션([Issue #57](https://github.com/yanos0218/AI/issues/57))
 
 ### Changed
 
