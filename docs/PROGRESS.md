@@ -32,9 +32,9 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | 전역 지침 `base/claude-md/CLAUDE.md` | 기본 | ✓ v0.6.0 (2026-09-12) | ✓ v0.6.0 | ✗ | ✗ (Project instructions) | [C-16](#c-16)/17 |
 | dev-release 스킬 | 기본 (3시나리오 통과 2026-09-08, 0단계 미인증 시나리오 통과 2026-09-09) | ✓ v0.5.0 (2026-09-12) | ✓ v0.5.0 | ✗ | ✗ (Release v0.1.0의 `dev-release.zip` 업로드) | [C-16](#c-16)/17 |
-| git-guardrails 훅 | 기본 (새 세션 push 차단 확인 2026-09-08) | ✓ | ✓ | ✗ | - | [C-10](#c-10), [C-16](#c-16) |
+| git-guardrails 훅 | 기본 (새 세션 push 차단 확인 2026-09-08) | ✓ | ✓ | ✗ | - | [C-16](#c-16) |
 | config-changelog 훅 | 기본 (임시 HOME 7케이스 통과, 2026-09-09) | ✓ v0.4.0 | ✓ | ✗ | - | [C-16](#c-16) |
-| statusline 훅 | 기본 (터미널 CLI 전용, VS Code 패널엔 안 나옴) | ✓ (표시 확인은 [C-10](#c-10), 터미널에서) | ✓ 설치 (VS Code 패널만 써서 표시 없음) | ✗ | - | [C-10](#c-10), [C-16](#c-16) |
+| statusline 훅 | 기본 (터미널 CLI 전용, VS Code 패널엔 안 나옴) | ✓ 육안 확인 2026-09-12 | ✓ 설치 (VS Code 패널만 써서 표시 없음) | ✗ | - | [C-16](#c-16) |
 | `settings.example.json` (권한·훅·상태줄) | 기본 | ✓ | ✓ (`model` 키 유지 병합) | ✗ | - | [C-16](#c-16) |
 | `base/vscode/` 확장 목록·설정·설치 스크립트 | 기본 | ✓ v0.3.0 | ✓ 확장 13개 (2026-09-09, Settings Sync가 안 켜져 있어 `install.sh`로 설치. settings.json은 기존 것 유지) | - | - | - |
 | baseline-guard·session-end-check 훅 (이 저장소 전용, `.claude/`) | 기본 (새 세션 차단 확인 2026-09-08 / 트리 상태 시험 2026-09-09) | 저장소 안에서만 동작 | 동일 | 동일 | - | - |
@@ -49,6 +49,7 @@
 
 ## 1. 완료
 
+- [x] <a id="c-10"></a>C-10 새 세션 훅·상태줄 확인 — 훅 2개는 `claude -p` 새 세션 차단 확인(2026-09-08). 상태줄은 터미널 CLI 전용(VS Code 패널엔 안 나옴, 공식 문서 확인 2026-09-09) — Windows 터미널 `claude.exe`에서 `[Fable 5.1] System32 | ░ 0% | $0.00` 육안 확인(2026-09-12). Mac은 PATH에 CLI 없어도 VS Code 확장 내장 바이너리(`~/.vscode/extensions/anthropic.claude-code-*/resources/native-binary/claude`)로 실행 가능 (2026-09-12)
 - [x] <a id="c-53"></a>C-53 릴리즈 전 자격증명 점검 — 전역 §7 한 줄 + dev-release 0단계 승격(사용자 승인 2026-09-09), `check-install.sh` VS Code 확장 대조. 미인증 시나리오 발동 시험 통과, `test-skill.sh` 버그 2건 수정([#3](https://github.com/yanos0218/AI/issues/3)). 상세 [docs/progress/C-53.md](progress/C-53.md). Mac 재설치, Windows 미반영 (2026-09-09)
 - [x] <a id="c-25"></a>C-25 `/insights` Mac 첫 실행 — `claude -p "/insights"`로 비대화형 동작 확인. 3세션 23메시지라 얕음. 제안 7개 중 채택 후보 1(릴리즈 전 `gh auth` 점검·토큰 붙여넣기 금지 → [C-53](#c-53)), 나머지는 기존 장치로 충분. 원자료 `drafts/observations/2026-09-09-insights-mac/`, 판정 `drafts/claude-md/2026-09-09-insights-candidates.md`. 다음 실행은 10월 점검 (2026-09-09)
 - [x] <a id="c-45"></a>C-45 플러그인화 검토 — **보류.** 플러그인은 스킬·훅만 싣고 전역 지침·rules·permissions·statusLine은 못 실어 `install.sh`가 어차피 남음. 1인·3기기에선 설치 경로·버전이 둘로 늘기만 함. 근거·재검토 조건은 [docs/research/plugins.md](research/plugins.md) (2026-09-09)
@@ -94,7 +95,6 @@
 
 ## 2. 할 일 — 개발·설정
 
-- [~] <a id="c-10"></a>C-10 새 세션 훅·상태줄 확인 — 훅 2개는 `claude -p` 새 세션으로 검증 완료(2026-09-08): baseline-guard가 `base/` Edit을, git-guardrails가 `git push`를 확인 요구로 막음. 상태줄은 **터미널 CLI에서만** 렌더링되고 VS Code 확장 채팅 패널에는 안 나옴(공식 문서 statusline·vs-code, 2026-09-09 확인 — 패널은 컨텍스트 표시기·`/usage`가 대신). 확인은 **Windows 터미널(`claude.exe`)** 에서. Windows 훅 샘플 입력 실행·`settings.json` 등록·CLI 2.1.263은 확인(2026-09-12), 남은 건 육안뿐. Mac은 PATH에 CLI가 없지만 VS Code 확장 내장 바이너리(`~/.vscode/extensions/anthropic.claude-code-*/resources/native-binary/claude`, 2.1.266 확인)로 터미널 실행 가능
 - [ ] <a id="c-52"></a>C-52 `claude plugin validate base/skills`를 검증 절차에 — 플러그인화 없이도 스킬 디렉터리 검사 통과 확인(2026-09-09, 2.1.266). 저장소 `CLAUDE.md` "검증" 절과 `tools/test-skill.sh` 앞단에 넣을지, CI는 `claude` 설치 비용 때문에 보류
 - [ ] <a id="c-14"></a>C-14 Notification 훅 — 병렬 세션(`claude --bg`, worktree)을 실제로 쓰기 시작하면 추가. 그전엔 보류
 
