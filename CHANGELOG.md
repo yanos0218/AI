@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-09-13
+
 ### Added
 
 - `base/claude-md/CLAUDE.md` §7 — 복합 명령에서 `cd <경로> && <명령>` 대신 `git -C <경로>`나 절대 경로를 쓴다는 한 줄. `Read` deny 규칙과 겹쳐 정적 분석이 안 돼 승인 프롬프트가 뜨던 문제([Issue #1](https://github.com/yanos0218/AI/issues/1))
@@ -101,7 +103,10 @@
 - 저장소 운영: `docs/HANDOFF.md`(인수인계), `docs/PROGRESS.md`(자산 현황표 + `C-NN` 보드), `CLAUDE.md`(기본/작업 영역 규칙), `drafts/`(승격 전 초안), `.claude/hooks/baseline-guard.sh`(기본 영역 쓰기 확인 강제)
 - README — 표면별 적용 범위, 설치, 공식 문서 대비 검토표, GitHub 활용 선택지
 
-[Unreleased]: https://github.com/yanos0218/AI/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/yanos0218/AI/compare/v0.7.0...HEAD
+[0.7.0]: https://github.com/yanos0218/AI/compare/v0.6.0...v0.7.0
+[0.6.0]: https://github.com/yanos0218/AI/compare/v0.5.0...v0.6.0
+[0.5.0]: https://github.com/yanos0218/AI/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/yanos0218/AI/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/yanos0218/AI/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/yanos0218/AI/compare/v0.1.0...v0.2.0
