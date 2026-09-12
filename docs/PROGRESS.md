@@ -49,6 +49,7 @@
 
 ## 1. 완료
 
+- [x] <a id="c-34"></a>C-34 GitHub Issues 시험 종료 → 상시 채택(2026-09-12, 10월 점검 대기 없이 사용자 결정). 첫 Issue [#1](https://github.com/yanos0218/AI/issues/1)(복합 명령 승인 프롬프트), [#2](https://github.com/yanos0218/AI/issues/2)·[#3](https://github.com/yanos0218/AI/issues/3)(발견 즉시 닫음). 범위 확장(문제만 → task 포함)은 [C-54](#c-54) 검토 중 (2026-09-09)
 - [x] <a id="c-17"></a>C-17 Claude.ai 웹 업로드 — `dist/` zip 3개(dev-release·dev-workflow·repo-setup) Skills 업로드 + Project instructions에 `base/claude-md/CLAUDE.md`, 사용자가 진행, 스크린샷으로 Skills 3개·프로젝트 MP의 instructions 확인(2026-09-12). 발동은 미검증 — 웹에서 "버전 올려줘"로 dev-release가 뜨는지 사용자가 확인. 이후 CLAUDE.md를 고칠 때마다 다시 붙여넣어야 함(README "규칙을 고칠 때") (2026-09-12)
 - [x] <a id="c-10"></a>C-10 새 세션 훅·상태줄 확인 — 훅 2개는 `claude -p` 새 세션 차단 확인(2026-09-08). 상태줄은 터미널 CLI 전용(VS Code 패널엔 안 나옴, 공식 문서 확인 2026-09-09) — Windows 터미널 `claude.exe`에서 `[Fable 5.1] System32 | ░ 0% | $0.00` 육안 확인(2026-09-12). Mac은 PATH에 CLI 없어도 VS Code 확장 내장 바이너리(`~/.vscode/extensions/anthropic.claude-code-*/resources/native-binary/claude`)로 실행 가능 (2026-09-12)
 - [x] <a id="c-53"></a>C-53 릴리즈 전 자격증명 점검 — 전역 §7 한 줄 + dev-release 0단계 승격(사용자 승인 2026-09-09), `check-install.sh` VS Code 확장 대조. 미인증 시나리오 발동 시험 통과, `test-skill.sh` 버그 2건 수정([#3](https://github.com/yanos0218/AI/issues/3)). 상세 [docs/progress/C-53.md](progress/C-53.md). Mac 재설치, Windows 미반영 (2026-09-09)
@@ -102,12 +103,12 @@
 ## 3. 할 일 — 배포·운영·비개발
 
 - [ ] <a id="c-16"></a>C-16 Linux(Rocky) 반영 — `bash tools/install.sh --dry-run` → `install.sh`([C-15](#c-15)와 동일). jq 없어도 상태줄은 python/node 폴백
-- [~] <a id="c-34"></a>C-34 GitHub Issues 시험 시작 — 첫 Issue [#1](https://github.com/yanos0218/AI/issues/1)(복합 명령 승인 프롬프트), [#2](https://github.com/yanos0218/AI/issues/2)(tools python3, 열고 바로 닫음). 규칙: 작업 중 발견한 문제는 Issue, 계획·상태는 이 보드, 항목에 `#N`. 한 달 뒤(10월 점검) 유지 여부 판단 (2026-09-09)
 - [x] <a id="c-35"></a>C-35 `repo-setup` 스킬 — 3/3 시나리오 통과(Script 클론 / 자체 표준 있는 저장소 → 빠진 칸만 / "배포해줘" 미발동) 후 사용자 승인으로 `base/skills/` 승격, Mac 설치, v0.6.0 (2026-09-09). **이 저장소 몫은 표준(`docs/repo-standard.md`)과 스킬까지.** Script·Etc 적용은 그 저장소 일 — 추천 순서는 [docs/progress/C-35.md](progress/C-35.md), 착수는 사용자 지시 시
 - [ ] <a id="c-19"></a>C-19 블로그용 스킬 — 원본은 OpenClaw `core/definitions/modes/blog.md`·`core/playbooks/blog-*.md`(참조만). OpenClaw 원칙 "Claude Code가 블로그를 직접 쓰지 않는다"와 충돌하므로, 스킬화 전에 **역할 구분을 먼저 정리**(초안은 누가, 검수는 누가)
 - [ ] <a id="c-20"></a>C-20 사업기획용 스킬 — 웹 메모리에서 산출물 단서 확보(구조화된 기획 문서·경쟁 분석 표·인력/일정 견적). 스킬은 "셋 중 무엇을 어떤 틀로"를 묻고 시작. 제품 세부는 스킬에 넣지 않음. 초안 착수는 사용자 지시 시
 - [~] <a id="c-27"></a>C-27 auto memory 수집 — Windows 첫 수집 완료(`drafts/observations/memory-windows/`, 29개, 2026-09-09). Mac 수집 완료(`drafts/observations/memory-mac/`, 4개 — OpenClaw 맥락·릴리즈 절차·gh 설치, 2026-09-09). 전역 성향 추출은 월 점검 5번에서
 - [ ] <a id="c-22"></a>C-22 사용량·비용 확인 습관 — 상태줄 `$`와 claude.ai 사용량 페이지. 시험 세션 4회에 약 2달러였음. 한 달 뒤 실제 사용량을 보고 모델/effort 기본값 재검토
+- [~] <a id="c-54"></a>C-54 Issues 사용 범위 확장 검토 — "발견한 문제"뿐 아니라 계획된 할 일(task)까지 Issue로 관리할지 검토 중. 근거·권장안은 채팅 답변(2026-09-12). 결론 나면 §5 "GitHub 이슈를 백로그로 쓰기" 기각 문구와 저장소 CLAUDE.md 규칙을 같이 고친다
 
 ## 4. 결정 사항 (다시 묻지 말 것)
 
