@@ -30,17 +30,17 @@
 
 | 자산 | 단계 | Windows | Mac mini | Linux | 웹(Claude.ai) | 다음 행동 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 전역 지침 `base/claude-md/CLAUDE.md` | 기본 | ✓ v0.6.0 (2026-09-12) | ✓ v0.6.0 | ✗ | ✓ Project instructions (2026-09-12 사용자 업로드, 발동 미검증) | [C-16](#c-16) |
-| dev-release 스킬 | 기본 (3시나리오 통과 2026-09-08, 0단계 미인증 시나리오 통과 2026-09-09) | ✓ v0.5.0 (2026-09-12) | ✓ v0.5.0 | ✗ | ✓ v0.6.0 (2026-09-12 사용자 업로드, 발동 미검증) | [C-16](#c-16) |
+| 전역 지침 `base/claude-md/CLAUDE.md` | 기본 | ✓ v0.6.0 (2026-09-12) | ✓ v0.6.0 | ✗ | ✓ Project instructions (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [C-16](#c-16) |
+| dev-release 스킬 | 기본 (3시나리오 통과 2026-09-08, 0단계 미인증 시나리오 통과 2026-09-09) | ✓ v0.5.0 (2026-09-12) | ✓ v0.5.0 | ✗ | ✓ v0.6.0 (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [C-16](#c-16) |
 | git-guardrails 훅 | 기본 (새 세션 push 차단 확인 2026-09-08) | ✓ | ✓ | ✗ | - | [C-16](#c-16) |
 | config-changelog 훅 | 기본 (임시 HOME 7케이스 통과, 2026-09-09) | ✓ v0.4.0 | ✓ | ✗ | - | [C-16](#c-16) |
 | statusline 훅 | 기본 (터미널 CLI 전용, VS Code 패널엔 안 나옴) | ✓ 육안 확인 2026-09-12 | ✓ 설치 (VS Code 패널만 써서 표시 없음) | ✗ | - | [C-16](#c-16) |
 | `settings.example.json` (권한·훅·상태줄) | 기본 | ✓ | ✓ (`model` 키 유지 병합) | ✗ | - | [C-16](#c-16) |
 | `base/vscode/` 확장 목록·설정·설치 스크립트 | 기본 | ✓ v0.3.0 | ✓ 확장 13개 (2026-09-09, Settings Sync가 안 켜져 있어 `install.sh`로 설치. settings.json은 기존 것 유지) | - | - | - |
 | baseline-guard·session-end-check 훅 (이 저장소 전용, `.claude/`) | 기본 (새 세션 차단 확인 2026-09-08 / 트리 상태 시험 2026-09-09) | 저장소 안에서만 동작 | 동일 | 동일 | - | - |
-| dev-workflow 스킬 | 기본 (3시나리오 통과 2026-09-09, v0.5.0) | ✓ | ✓ | ✗ | ✓ v0.6.0 (2026-09-12 사용자 업로드, 발동 미검증) | [C-16](#c-16) |
+| dev-workflow 스킬 | 기본 (3시나리오 통과 2026-09-09, v0.5.0) | ✓ | ✓ | ✗ | ✓ v0.6.0 (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [C-16](#c-16) |
 | 모듈 규칙 `base/rules/docs-format.md` | 기본 (v0.5.0) | ✓ | ✓ | ✗ | - | [C-16](#c-16) |
-| repo-setup 스킬 | 기본 (3시나리오 통과 2026-09-09, v0.6.0) | ✓ v0.6.0 (2026-09-12) | ✓ v0.6.0 | ✗ | ✓ v0.6.0 (2026-09-12 사용자 업로드, 발동 미검증) | [C-16](#c-16) |
+| repo-setup 스킬 | 기본 (3시나리오 통과 2026-09-09, v0.6.0) | ✓ v0.6.0 (2026-09-12) | ✓ v0.6.0 | ✗ | ✓ v0.6.0 (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [C-16](#c-16) |
 | 블로그용 스킬 | 계획 (역할 구분 선행) | | | | | [C-19](#c-19) |
 | 사업기획용 스킬 | 계획 (요구사항 미정) | | | | | [C-20](#c-20) |
 | 이 저장소 CI (lint.yml + check-docs.sh) | 기본 (첫 Actions 실행 success, 2026-09-08) | 저장소 안에서만 | 동일 | 동일 | - | - |
@@ -49,7 +49,7 @@
 
 ## 1. 완료
 
-- [x] <a id="c-17"></a>C-17 Claude.ai 웹 업로드 — `dist/` zip 3개(dev-release·dev-workflow·repo-setup) Skills 업로드 + Project instructions에 `base/claude-md/CLAUDE.md`, 사용자가 진행(2026-09-12). Claude는 웹을 볼 수 없어 발동은 미검증 — 웹에서 "버전 올려줘"로 dev-release가 뜨는지 사용자가 확인. 이후 CLAUDE.md를 고칠 때마다 다시 붙여넣어야 함(README "규칙을 고칠 때") (2026-09-12)
+- [x] <a id="c-17"></a>C-17 Claude.ai 웹 업로드 — `dist/` zip 3개(dev-release·dev-workflow·repo-setup) Skills 업로드 + Project instructions에 `base/claude-md/CLAUDE.md`, 사용자가 진행, 스크린샷으로 Skills 3개·프로젝트 MP의 instructions 확인(2026-09-12). 발동은 미검증 — 웹에서 "버전 올려줘"로 dev-release가 뜨는지 사용자가 확인. 이후 CLAUDE.md를 고칠 때마다 다시 붙여넣어야 함(README "규칙을 고칠 때") (2026-09-12)
 - [x] <a id="c-10"></a>C-10 새 세션 훅·상태줄 확인 — 훅 2개는 `claude -p` 새 세션 차단 확인(2026-09-08). 상태줄은 터미널 CLI 전용(VS Code 패널엔 안 나옴, 공식 문서 확인 2026-09-09) — Windows 터미널 `claude.exe`에서 `[Fable 5.1] System32 | ░ 0% | $0.00` 육안 확인(2026-09-12). Mac은 PATH에 CLI 없어도 VS Code 확장 내장 바이너리(`~/.vscode/extensions/anthropic.claude-code-*/resources/native-binary/claude`)로 실행 가능 (2026-09-12)
 - [x] <a id="c-53"></a>C-53 릴리즈 전 자격증명 점검 — 전역 §7 한 줄 + dev-release 0단계 승격(사용자 승인 2026-09-09), `check-install.sh` VS Code 확장 대조. 미인증 시나리오 발동 시험 통과, `test-skill.sh` 버그 2건 수정([#3](https://github.com/yanos0218/AI/issues/3)). 상세 [docs/progress/C-53.md](progress/C-53.md). Mac 재설치, Windows 미반영 (2026-09-09)
 - [x] <a id="c-25"></a>C-25 `/insights` Mac 첫 실행 — `claude -p "/insights"`로 비대화형 동작 확인. 3세션 23메시지라 얕음. 제안 7개 중 채택 후보 1(릴리즈 전 `gh auth` 점검·토큰 붙여넣기 금지 → [C-53](#c-53)), 나머지는 기존 장치로 충분. 원자료 `drafts/observations/2026-09-09-insights-mac/`, 판정 `drafts/claude-md/2026-09-09-insights-candidates.md`. 다음 실행은 10월 점검 (2026-09-09)
