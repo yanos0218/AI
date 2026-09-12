@@ -15,6 +15,12 @@ CLAUDE_BIN="${CLAUDE_BIN:-$(command -v claude || echo "$HOME/.local/bin/claude.e
 PY="$(command -v python3 || command -v python)"
 [ -d "$FIX/.git" ] || { echo "시나리오 저장소가 git 저장소가 아님: $FIX"; exit 2; }
 
+# 구조 검사(공짜, 즉시) — 실제 시험(비용 발생) 전에 먼저 돈다. 폴더 단위 검사라 형제
+# 스킬의 문제도 같이 잡힐 수 있어 실패해도 막지 않고 경고만 한다(2026-09-12, Issue #4).
+SKILL_PARENT="$(dirname "$SKILL")"
+echo "== 구조 검사: claude plugin validate $SKILL_PARENT --strict"
+"$CLAUDE_BIN" plugin validate "$SKILL_PARENT" --strict || echo "  ↑ 실패해도 발동 시험은 계속 진행(형제 스킬 문제일 수 있음, 직접 확인)"
+
 name="$(basename "$SKILL")"
 # 같은 이름의 스킬이 ~/.claude/skills/에 설치돼 있으면 시험 동안 비켜 둔다(설치본이 초안을 가림 — 2026-09-09 Mac에서 확인).
 CLAUDE_HOME="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"; aside=""
