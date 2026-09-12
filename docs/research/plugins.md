@@ -27,6 +27,6 @@
 
 ## 영향
 
-- [PROGRESS C-45](../PROGRESS.md#c-45) 닫음(보류 결론). 새 항목 [C-52](../PROGRESS.md#c-52): `claude plugin validate base/skills`를 로컬 검증 절차에 넣을지.
+- [PROGRESS C-45](../PROGRESS.md#c-45) 닫음(보류 결론). 새 항목 [Issue #4](https://github.com/yanos0218/AI/issues/4): `claude plugin validate base/skills`를 로컬 검증 절차에 넣을지.
 - HANDOFF: Mac에서도 확장 내장 바이너리로 CLI 명령 실행 가능 → [C-10](../PROGRESS.md#c-10)·[C-25](../PROGRESS.md#c-25) 문구 정정.
 - `docs/audit-2026-09.md` S1은 "검토"로 두고 결론은 이 파일.

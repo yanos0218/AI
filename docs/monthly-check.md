@@ -18,4 +18,4 @@
 - [ ] 12. HANDOFF "마지막 점검일" 갱신
 ```
 
-관련 항목: [C-21](PROGRESS.md#c-21) 정의, [C-43](PROGRESS.md#c-43) 대조·이력, [C-27](PROGRESS.md#c-27) 메모리 수집, [C-25](PROGRESS.md#c-25) insights, [C-38](PROGRESS.md#c-38)·[C-22](PROGRESS.md#c-22) 사용량, [C-40](PROGRESS.md#c-40) 보드 크기.
+관련 항목: [C-21](PROGRESS.md#c-21) 정의, [C-43](PROGRESS.md#c-43) 대조·이력, [Issue #9](https://github.com/yanos0218/AI/issues/9) 메모리 수집, [C-25](PROGRESS.md#c-25) insights, [C-38](PROGRESS.md#c-38)·[Issue #10](https://github.com/yanos0218/AI/issues/10) 사용량, [C-40](PROGRESS.md#c-40) 보드 크기.
