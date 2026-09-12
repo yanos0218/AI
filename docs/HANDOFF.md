@@ -1,6 +1,6 @@
 # 인수인계 — claude-config
 
-새 세션을 시작할 때 이 파일을 먼저 읽고, 할 일은 [PROGRESS.md](PROGRESS.md)에서 본다. 세션이 끝날 때 "현재 상태"와 PROGRESS.md를 갱신한다.
+새 세션을 시작할 때 이 파일을 먼저 읽고, 할 일은 GitHub Issues(`gh issue list --state open --label task`)에서 본다. 세션이 끝날 때 "현재 상태"와 필요하면 PROGRESS.md §0을 갱신한다.
 
 ## 목적 (변하지 않음)
 
@@ -8,18 +8,10 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 
 ## 현재 상태 (2026-09-12) · 마지막 월 점검: 없음 (첫 점검 2026-10 예정, `docs/monthly-check.md`)
 
-- 저장소: github.com/yanos0218/AI (비공개). **v0.6.0까지 릴리즈**(2026-09-08 v0.1.0 첫 컷 → v0.2.0 지침 확인 기준 변경 → v0.3.0 `base/`·`tools/` 경로 재구성 → 2026-09-09 v0.4.0 config-changelog 훅 → v0.5.0 rules 모듈·dev-workflow·지침 §2·§5·§7 → v0.6.0 repo-setup 스킬, 사용자 명시 요청 컷). CI(`lint.yml`) 초록. 자산별 단계·기기별 배포는 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본.
-- **Windows PC = v0.6.0**(2026-09-12 `install.sh` 재실행, `check-install.sh` 전부 same). CLI `~/.local/bin/claude.exe` v2.1.263, VS Code 확장 13개. 훅 2개(git-guardrails·baseline-guard)는 새 `claude -p` 세션에서 차단 동작 확인. 상태줄은 **터미널 CLI 전용**(VS Code 패널엔 안 나옴), Windows 터미널 육안 확인으로 [C-10](PROGRESS.md#c-10) 완료(2026-09-12).
-- **Mac mini·Windows·웹(Claude.ai) = v0.6.0**(웹은 2026-09-12 업로드 스크린샷 확인, 발동 미검증 — [C-17](PROGRESS.md#c-17)). **Linux는 미반영.** 설치는 `docs/install.md`. Mac 설치 중 `tools/*.sh`의 `python` 호출 실패 → python3 우선으로 수정. Mac은 PATH에 CLI가 없어도 VS Code 확장 내장 바이너리로 `claude` 명령 실행 가능(경로는 [C-10](PROGRESS.md#c-10)).
-- 설정이 다른 저장소 작업 중 흔들리지 않게 하는 구조(기본·모듈·프로젝트 층)와 이력 장치는 `docs/config-lifecycle.md`(2026-09-09). 이력 훅은 v0.4.0에서 기본 영역.
-- C-18 결정 완료(웹은 OpenClaw에서), C-26 완료(웹 메모리 검토). OpenClaw `CLAUDE.md` 초안은 스크래치패드 브랜치, Script 키 처리 추천은 `docs/progress/C-35.md` — 둘 다 그 저장소에서 사용자 지시로 진행.
-- §3 진행(2026-09-09): Dependabot·2FA 확인, Actions 월 환산 11%, Issues 시험 시작(#1), `base/rules/` 첫 모듈, repo-setup 스킬 **승격·v0.6.0**([C-35](PROGRESS.md#c-35) 완료; Script 점검에서 **이력 속 개인키 발견** → 사용자 결정), claude.ai 메모리는 zip 파일 대기([C-26](PROGRESS.md#c-26)).
-- §2 개발·설정 항목 정리(2026-09-09): `tools/install.sh`·`test-skill.sh`, Stop 훅, 권한 목록 보완, 전역 지침 §5 조사 규칙 승격. 전부 `[Unreleased]`, Windows 재설치됨.
-- 조사 규칙 `docs/research.md` + 기록 색인 `docs/research/`(2026-09-09), 토큰 절감 절은 `docs/review-vs-official.md`. 전역 반영은 [C-49](PROGRESS.md#c-49).
-- **[C-45](PROGRESS.md#c-45) 플러그인화 보류(2026-09-09)** — 플러그인은 스킬·훅만 싣고 지침·rules·permissions·statusLine은 못 실어 `install.sh`가 남음. 근거 `docs/research/plugins.md`. 부산물: `claude plugin validate base/skills` 통과 → [Issue #4](https://github.com/yanos0218/AI/issues/4).
-- **[C-25](PROGRESS.md#c-25) `/insights` Mac 실행 완료(2026-09-09)** — 3세션뿐이라 얕음. 후보는 릴리즈 전 `gh auth` 점검·토큰 붙여넣기 금지 → [C-53](PROGRESS.md#c-53) **승격 완료(사용자 승인 2026-09-09)** — 전역 §7 한 줄 + dev-release 0단계, Mac 재설치. Windows는 다음 설치 때. 상세 `docs/progress/C-53.md`. 시험 중 `test-skill.sh` 버그 2건 수정([#3](https://github.com/yanos0218/AI/issues/3)). `check-install.sh`는 VS Code 확장도 대조. 토큰 노출 건은 사용자가 "다른 저장소라 무관"으로 판단(토큰은 계정 단위라 이견은 전달함).
-- 저장소 검토 `docs/audit-2026-09.md`(2026-09-09): 문제 7·제안 7 → 보드 [C-44](PROGRESS.md#c-44)~[C-48](PROGRESS.md#c-48). 규칙 이탈 금지 절을 저장소 CLAUDE.md에 추가, 전역판은 [C-47](PROGRESS.md#c-47).
-- dev-workflow 스킬 승격·Windows 설치(2026-09-09, `[Unreleased]`). dev-release 발동 테스트 3시나리오 통과(2026-09-08). 테스트 방법은 저장소 `CLAUDE.md` "검증" 절. 관찰: `cd X && ls` 복합 명령은 `Read(./.env)` deny 규칙과 겹쳐 승인 프롬프트가 뜨고, `python -m py_compile`은 allow 목록에 없음 → [C-11](PROGRESS.md#c-11).
+- 저장소 v0.6.0, CI(`lint.yml`) 초록. 배포 현황은 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본 — Windows·Mac·웹은 v0.6.0, Linux만 미반영.
+- 할 일·발견한 문제는 GitHub Issues로 관리한다([C-54](PROGRESS.md#c-54), 2026-09-12). 완료 이력은 [PROGRESS.md §1](PROGRESS.md#1-완료)에 짧은 색인 + 이슈 링크로.
+- Script 저장소 이력에서 개인키 발견 — 처리는 그 저장소 일, 아직 사용자 결정 대기.
+- 그 밖의 결정 배경·조사 근거는 `git log`와 각 문서 "참고" 절, 닫힌 이슈에 남아 있다.
 
 ## 다음 할 일
 
