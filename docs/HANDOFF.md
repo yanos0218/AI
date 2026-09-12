@@ -6,11 +6,11 @@
 
 Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원본 저장소. 개발자가 아닌 사용자가 여러 스택의 프로젝트를 오가며 Claude에게 (1) 매번 같은 배경을 다시 설명하지 않고, (2) 멋대로 진행하거나 너무 자주 묻지 않게 하고, (3) 검증 없이 "됐다"는 말을 못 하게 하고, (4) 결론만 짧게 듣도록 만든다. 저장소별 규칙은 각 저장소에 두고 여기서는 **참조만** 한다.
 
-## 현재 상태 (2026-09-09) · 마지막 월 점검: 없음 (첫 점검 2026-10 예정, `docs/monthly-check.md`)
+## 현재 상태 (2026-09-12) · 마지막 월 점검: 없음 (첫 점검 2026-10 예정, `docs/monthly-check.md`)
 
 - 저장소: github.com/yanos0218/AI (비공개). **v0.6.0까지 릴리즈**(2026-09-08 v0.1.0 첫 컷 → v0.2.0 지침 확인 기준 변경 → v0.3.0 `base/`·`tools/` 경로 재구성 → 2026-09-09 v0.4.0 config-changelog 훅 → v0.5.0 rules 모듈·dev-workflow·지침 §2·§5·§7 → v0.6.0 repo-setup 스킬, 사용자 명시 요청 컷). CI(`lint.yml`) 초록. 자산별 단계·기기별 배포는 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본.
-- **Windows PC는 v0.4.0 + 미릴리즈 일부**(§7·dev-release 0단계 없음 → `install.sh` 재실행 필요). CLI `~/.local/bin/claude.exe` v2.1.263, VS Code 확장 13개. 훅 2개(git-guardrails·baseline-guard)는 새 `claude -p` 세션에서 차단 동작 확인. 상태줄은 **터미널 CLI 전용**(VS Code 패널엔 안 나옴) — Windows 터미널에서 확인하면 [C-10](PROGRESS.md#c-10) 완료.
-- **Mac mini = v0.6.0(`check-install.sh` 일치). Windows는 v0.4.0 일부, Linux·웹(Claude.ai)은 미반영.** 설치는 `docs/install.md`. 웹은 Release v0.6.0의 zip 3개 + Project instructions에 `base/claude-md/CLAUDE.md`. Mac 설치 중 `tools/*.sh`의 `python` 호출 실패 → python3 우선으로 수정. Mac은 PATH에 CLI가 없어도 VS Code 확장 내장 바이너리로 `claude` 명령 실행 가능(경로는 [C-10](PROGRESS.md#c-10)).
+- **Windows PC = v0.6.0**(2026-09-12 `install.sh` 재실행, `check-install.sh` 전부 same). CLI `~/.local/bin/claude.exe` v2.1.263, VS Code 확장 13개. 훅 2개(git-guardrails·baseline-guard)는 새 `claude -p` 세션에서 차단 동작 확인. 상태줄은 **터미널 CLI 전용**(VS Code 패널엔 안 나옴) — Windows 터미널에서 확인하면 [C-10](PROGRESS.md#c-10) 완료.
+- **Mac mini·Windows = v0.6.0. Linux·웹(Claude.ai)은 미반영.** 설치는 `docs/install.md`. 웹은 Release v0.6.0의 zip 3개 + Project instructions에 `base/claude-md/CLAUDE.md`. Mac 설치 중 `tools/*.sh`의 `python` 호출 실패 → python3 우선으로 수정. Mac은 PATH에 CLI가 없어도 VS Code 확장 내장 바이너리로 `claude` 명령 실행 가능(경로는 [C-10](PROGRESS.md#c-10)).
 - 설정이 다른 저장소 작업 중 흔들리지 않게 하는 구조(기본·모듈·프로젝트 층)와 이력 장치는 `docs/config-lifecycle.md`(2026-09-09). 이력 훅은 v0.4.0에서 기본 영역.
 - C-18 결정 완료(웹은 OpenClaw에서), C-26 완료(웹 메모리 검토). OpenClaw `CLAUDE.md` 초안은 스크래치패드 브랜치, Script 키 처리 추천은 `docs/progress/C-35.md` — 둘 다 그 저장소에서 사용자 지시로 진행.
 - §3 진행(2026-09-09): Dependabot·2FA 확인, Actions 월 환산 11%, Issues 시험 시작(#1), `base/rules/` 첫 모듈, repo-setup 스킬 **승격·v0.6.0**([C-35](PROGRESS.md#c-35) 완료; Script 점검에서 **이력 속 개인키 발견** → 사용자 결정), claude.ai 메모리는 zip 파일 대기([C-26](PROGRESS.md#c-26)).
@@ -23,7 +23,7 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 
 ## 다음 할 일
 
-[PROGRESS.md](PROGRESS.md) §2·§3의 `C-NN` 항목. 추천 순서: v0.5.0 컷 직후 [C-16](PROGRESS.md#c-16)/17(Linux·웹 반영, 컷 시점 (a)) → [C-10](PROGRESS.md#c-10)(상태줄 육안, Windows 터미널) → Script·Etc 표준 적용은 그 저장소에서 `repo-setup`으로(사용자 지시 시, 순서는 `docs/progress/C-35.md`).
+[PROGRESS.md](PROGRESS.md) §2·§3의 `C-NN` 항목. 추천 순서: [C-16](PROGRESS.md#c-16)/17(Linux·웹 반영, v0.6.0 기준) → [C-10](PROGRESS.md#c-10)(상태줄 육안, Windows 터미널) → Script·Etc 표준 적용은 그 저장소에서 `repo-setup`으로(사용자 지시 시, 순서는 `docs/progress/C-35.md`).
 
 ## 결정 사항 (다시 묻지 말 것)
 
