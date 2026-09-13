@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- `.claude/hooks/pre-commit-check.sh` — `base/` 또는 `docs/*.md` 규칙 문서를 바꾸는 커밋인데 메시지에 이슈 번호(`#숫자`)가 없으면 확인(`ask`)을 띄움. "착수 시점에 먼저 Issue부터 연다"는 CLAUDE.md 문장만으론 두 번(Issue #64, #66) 안 지켜져 훅으로 강제(버전 등급 미반영 — `.claude/` 전용)
+
 ### Changed
 
 - 조사 기록 방식을 `docs/research/<주제>.md` 파일에서 GitHub Issue `research` 라벨로 전환(파일·이슈 이중 기록 방지). `base/claude-md/CLAUDE.md` §5, `docs/research.md` §3, README·monthly-check·review-vs-official 갱신. 2026-09-13 이전 기록은 `docs/research/`에 archive로 유지

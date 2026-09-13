@@ -4,6 +4,10 @@
 # 실패하면 커밋 자체를 막는다(permissionDecision: deny). 지금까지는 "커밋 전에
 # 검사를 돌린다"가 제 습관이었을 뿐 강제 장치가 없었다 — "강제할 건 CLAUDE.md
 # 문장이 아니라 훅으로"라는 이 저장소 원칙을 검증에도 적용한 것(2026-09-13).
+#
+# base/·docs 규칙 문서를 건드리는 커밋에 이슈 번호가 없으면 확인을 띄운다
+# (permissionDecision: ask). "착수 시점에 먼저 Issue부터 연다"는 CLAUDE.md
+# 문장만으로는 두 번(Issue #64, #66) 안 지켜져서 훅으로 옮김(2026-09-13).
 set -u
 cd "$(dirname "${0}")/../.." || exit 0
 
@@ -42,5 +46,14 @@ fi
 if [[ "${fail}" = 1 ]]; then
   reason="$(printf '%s' "${msg}" | tr '\n' ' ' | sed 's/"/\\"/g')"
   printf '{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"pre-commit-check 실패, 커밋 차단: %s"}}\n' "${reason}"
+  exit 0
+fi
+
+# 4. base/·docs 규칙 변경인데 커밋 메시지에 이슈 번호(#숫자)가 없으면 확인
+touched="$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null || true)"
+if printf '%s\n' "${touched}" | grep -Eq '^base/|^docs/.*\.md$|^CLAUDE\.md$'; then
+  if ! printf '%s' "${cmd}" | grep -Eq '#[0-9]+'; then
+    printf '{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"ask","permissionDecisionReason":"base/ 또는 docs 규칙 문서를 바꾸는 커밋인데 메시지에 이슈 번호(#숫자)가 없습니다. 이슈 없이 진행할까요?"}}\n'
+  fi
 fi
 exit 0
