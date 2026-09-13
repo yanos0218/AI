@@ -74,4 +74,5 @@ Claude Code 확장 자체 설정(`claudeCode.*`)은 VS Code 설정에, 허용 �
 ## 참고
 
 - [VS Code — Settings Sync](https://code.visualstudio.com/docs/configure/settings-sync)
-- [Claude 도움말 — 스킬 사용](https://support.claude.com/en/articles/12512180-use-skills-in-claude), [Claude Code 공식 — VS Code 확장](https://code.claude.com/docs/en/vs-code)
+- [Claude 도움말 — 스킬 사용](https://support.claude.com/en/articles/12512180-use-skills-in-claude)
+- [Claude Code 공식 — VS Code 확장](https://code.claude.com/docs/en/vs-code)

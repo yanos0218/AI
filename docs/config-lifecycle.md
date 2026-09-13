@@ -38,5 +38,8 @@
 
 ## 참고
 
-- [Claude Code 공식 — .claude 디렉터리](https://code.claude.com/docs/en/claude-directory), [메모리·rules](https://code.claude.com/docs/en/memory)
-- [Manage Claude Code config with dotfiles and GNU Stow](https://yurikoval.com/blog/manage-ai-config-with-dotfiles.html), [chezmoi로 여러 기기 동기화](https://www.frxiaobei.com/en/posts/2026/04/chezmoi-claude-code/), [vsbuffalo/dotfiles — claude-code.md](https://github.com/vsbuffalo/dotfiles/blob/main/docs/claude-code.md)
+- [Claude Code 공식 — .claude 디렉터리](https://code.claude.com/docs/en/claude-directory)
+- [Claude Code 공식 — 메모리·rules](https://code.claude.com/docs/en/memory)
+- [Manage Claude Code config with dotfiles and GNU Stow](https://yurikoval.com/blog/manage-ai-config-with-dotfiles.html)
+- [chezmoi로 여러 기기 동기화](https://www.frxiaobei.com/en/posts/2026/04/chezmoi-claude-code/)
+- [vsbuffalo/dotfiles — claude-code.md](https://github.com/vsbuffalo/dotfiles/blob/main/docs/claude-code.md)

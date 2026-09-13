@@ -39,4 +39,5 @@
 - 조사가 곧 할 일(task)이기도 하면 `task`+`research` 라벨을 함께 붙인다.
 - 이미 문서 본문에 녹아 있는 조사(GitHub 활용, 설정 층 구조, 저장소 검토)는 그 문서가 기록이다.
 - Claude의 auto memory `reference` 타입은 "어디를 보면 되는지"만 담는 포인터로 쓰고, 조사 내용 자체는 이슈에 둔다.
-- 2026-09-13 이전 조사는 `docs/research/`에 파일로 남아 있다(archive, 새로 안 만듦) — 색인은 [docs/research/README.md](research/README.md).
+- 2026-09-13 이전 조사는 `docs/research/`에 파일로 남아 있다(archive, 새로 안 만듦).
+  - 색인은 [docs/research/README.md](research/README.md).
