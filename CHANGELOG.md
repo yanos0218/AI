@@ -6,6 +6,7 @@
 
 ### Added
 
+- `base/hooks/gh-throttle.sh` — `gh issue/pr/release/label`의 `create/comment/close/edit/reopen`, `gh api`의 POST/PATCH/PUT/DELETE 명령 앞에 1.5초 지연을 강제해 GitHub 2차 속도 제한(secondary rate limit)을 예방(MINOR — 새 훅 추가, [Issue #72](https://github.com/yanos0218/AI/issues/72)). 병렬 서브에이전트가 간격 없이 gh를 호출해 계정이 일시 차단된 인시던트([Issue #71](https://github.com/yanos0218/AI/issues/71)) 재발 방지
 - `.claude/hooks/pre-commit-check.sh` — `base/` 또는 `docs/*.md` 규칙 문서를 바꾸는 커밋인데 메시지에 이슈 번호(`#숫자`)가 없으면 확인(`ask`)을 띄움. "착수 시점에 먼저 Issue부터 연다"는 CLAUDE.md 문장만으론 두 번(Issue #64, #66) 안 지켜져 훅으로 강제(버전 등급 미반영 — `.claude/` 전용)
 
 ### Changed
