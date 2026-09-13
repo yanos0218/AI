@@ -30,7 +30,7 @@
 
 | 자산 | 단계 | Windows | Mac mini | Linux | 웹(Claude.ai) | 다음 행동 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 전역 지침 `base/claude-md/CLAUDE.md` | 기본 | ✓ v0.9.0 (2026-09-13) | ✓ v0.6.0 | ✗ | ✓ Project instructions (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
+| 전역 지침 `base/claude-md/CLAUDE.md` | 기본 | ✓ v0.9.1 (2026-09-14) | ✓ v0.6.0 | ✗ | ✓ Project instructions (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
 | dev-release 스킬 | 기본 (3시나리오 통과 2026-09-08, 0단계 미인증 시나리오 통과 2026-09-09) | ✓ v0.5.0 (2026-09-12) | ✓ v0.5.0 | ✗ | ✓ v0.6.0 (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
 | git-guardrails 훅 | 기본 (새 세션 push 차단 확인 2026-09-08) | ✓ | ✓ | ✗ | - | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
 | gh-throttle 훅 | 기본 (mkdir 락 기반 실제 직렬화로 개선, 병렬 3개 실측 확인 2026-09-13, [Issue #74](https://github.com/yanos0218/AI/issues/74)) | ✓ v0.9.0 | ✗ | ✗ | - | Mac·Linux 설치 시 |
