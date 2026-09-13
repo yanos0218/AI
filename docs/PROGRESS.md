@@ -30,7 +30,7 @@
 
 | 자산 | 단계 | Windows | Mac mini | Linux | 웹(Claude.ai) | 다음 행동 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 전역 지침 `base/claude-md/CLAUDE.md` | 기본 | ✓ v0.7.0 (2026-09-13) | ✓ v0.6.0 | ✗ | ✓ Project instructions (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
+| 전역 지침 `base/claude-md/CLAUDE.md` | 기본 | ✓ v0.8.0 (2026-09-13) | ✓ v0.6.0 | ✗ | ✓ Project instructions (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
 | dev-release 스킬 | 기본 (3시나리오 통과 2026-09-08, 0단계 미인증 시나리오 통과 2026-09-09) | ✓ v0.5.0 (2026-09-12) | ✓ v0.5.0 | ✗ | ✓ v0.6.0 (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
 | git-guardrails 훅 | 기본 (새 세션 push 차단 확인 2026-09-08) | ✓ | ✓ | ✗ | - | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
 | session-start-check 훅(SessionStart) | 기본 (설정 버전·저장소 표준 4시나리오 2026-09-12 + self-audit 안내 4시나리오 2026-09-13 직접 실행 확인) | ✓ | ✗ | ✗ | - | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
@@ -41,7 +41,7 @@
 | baseline-guard·session-end-check 훅 (이 저장소 전용, `.claude/`) | 기본 (새 세션 차단 확인 2026-09-08 / 트리 상태 시험 2026-09-09) | 저장소 안에서만 동작 | 동일 | 동일 | - | - |
 | dev-workflow 스킬 | 기본 (3시나리오 통과 2026-09-09, v0.5.0) | ✓ | ✓ | ✗ | ✓ v0.6.0 (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
 | 모듈 규칙 `base/rules/docs-format.md` | 기본 (v0.5.0) | ✓ | ✓ | ✗ | - | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
-| repo-setup 스킬 | 기본 (3시나리오 통과 2026-09-09, v0.6.0) | ✓ v0.7.0 (2026-09-13) | ✓ v0.6.0 | ✗ | ✓ v0.6.0 (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
+| repo-setup 스킬 | 기본 (3시나리오 통과 2026-09-09, v0.6.0) | ✓ v0.8.0 (2026-09-13) | ✓ v0.6.0 | ✗ | ✓ v0.6.0 (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
 | self-audit 스킬 (대화 기록 기반 CLAUDE.md 감사) | 기본 (3시나리오 통과 2026-09-13: "self-audit 해줘"·"이번 달 CLAUDE.md 점검해줘" 발동, "테스트 어떻게 해?" 오발동 안 함. 감사 표시 파일 쓰기는 작업 디렉터리 밖이라 매번 승인 필요 — 정상) | ✓ | ✗ | ✗ | ✗ | 웹 업로드는 다음 `pack.sh` 배치 때 |
 | 블로그용 스킬 | 계획 (역할 구분 선행) | | | | | [Issue #7](https://github.com/yanos0218/AI/issues/7) |
 | 사업기획용 스킬 | 계획 (요구사항 미정) | | | | | [Issue #8](https://github.com/yanos0218/AI/issues/8) |

@@ -4,10 +4,15 @@
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-09-13
+
 ### Added
 
 - `base/skills/self-audit/` — 대화 기록을 서브에이전트(Sonnet)로 읽어 CLAUDE.md·규칙 문서와 실제 작업 방식의 간극(반복 지적·안 지켜진 규칙·미문서화 결정)을 찾는 스킬(ykdojo `review-claudemd` 패턴 응용). 후보 제시까지만 자동, 문서 반영은 항상 사용자 확인 후. `tools/test-skill.sh` 3시나리오 발동 시험 통과("self-audit 해줘"·"이번 달 CLAUDE.md 점검해줘" 발동, "테스트 어떻게 해?" 오발동 안 함, 총 $1.37), 감사 표시 파일 쓰기는 작업 디렉터리 밖이라 매번 승인 필요함을 확인(정상, 2026-09-13)
 - `base/hooks/session-start-check.sh` 세 번째 확인 — self-audit 표시 파일과 현재 세션 트랜스크립트 개수를 비교해 15개 이상 쌓이면 실행을 제안(실행은 여전히 사용자가 말할 때만). 4시나리오(마커 없음/미만/이상, 마커 있음/미만/이상) 직접 실행 확인
+
+- `.claude/hooks/pre-commit-check.sh` — 이 저장소 전용 `PreToolUse` 훅. `git commit` 시도 시 `check-docs.sh`·markdownlint·shellcheck를 먼저 돌리고 실패하면 커밋을 막음(버전 등급 미반영 — `.claude/` 전용)
+- `CLAUDE.md` "새 기본 영역 자산(훅·스킬·설정 키)은 구현 전에 설계를 채팅에 제시하고 승인받은 뒤 만든다"는 규칙(버전 등급 미반영)
 
 ### Changed
 
