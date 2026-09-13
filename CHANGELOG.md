@@ -4,20 +4,22 @@
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-09-13
+
 ### Added
 
-- `base/hooks/gh-throttle.sh` — `gh issue/pr/release/label`의 `create/comment/close/edit/reopen`, `gh api`의 POST/PATCH/PUT/DELETE 명령 앞에 1.5초 지연을 강제해 GitHub 2차 속도 제한(secondary rate limit)을 예방(MINOR — 새 훅 추가, [Issue #72](https://github.com/yanos0218/AI/issues/72)). 병렬 서브에이전트가 간격 없이 gh를 호출해 계정이 일시 차단된 인시던트([Issue #71](https://github.com/yanos0218/AI/issues/71)) 재발 방지
+- `base/hooks/gh-throttle.sh` — `gh issue/pr/release/label`의 `create/comment/close/edit/reopen`, `gh api`의 POST/PATCH/PUT/DELETE 명령을 mkdir 락 + 공유 타임스탬프로 실제 직렬화(최소 2초 간격)해 GitHub 2차 속도 제한(secondary rate limit)을 예방(MINOR — 새 훅 추가). 병렬 서브에이전트가 간격 없이 gh를 호출해 계정이 일시 차단된 인시던트([Issue #71](https://github.com/yanos0218/AI/issues/71)) 재발 방지. 병렬 3개 실측으로 순차 처리 확인
+- `base/settings.example.json` — `env.CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH: "1"` 추가해 서브에이전트의 재귀적 하위 서브에이전트 생성을 전역 차단(MINOR — 새 설정 키 추가). 공식 문서 확인 + 실제 새 세션에서 재귀 시도 시 `Agent is disabled ... in subagents as well as here` 오류·`spawned_by_subagents: 0` 실측 확인. `tools/install.sh`·`tools/check-install.sh`에 `env` 키 병합·대조 추가
 - `.claude/hooks/pre-commit-check.sh` — `base/` 또는 `docs/*.md` 규칙 문서를 바꾸는 커밋인데 메시지에 이슈 번호(`#숫자`)가 없으면 확인(`ask`)을 띄움. "착수 시점에 먼저 Issue부터 연다"는 CLAUDE.md 문장만으론 두 번(Issue #64, #66) 안 지켜져 훅으로 강제(버전 등급 미반영 — `.claude/` 전용)
 
 ### Changed
 
 - 조사 기록 방식을 `docs/research/<주제>.md` 파일에서 GitHub Issue `research` 라벨로 전환(파일·이슈 이중 기록 방지). `base/claude-md/CLAUDE.md` §5, `docs/research.md` §3, README·monthly-check·review-vs-official 갱신. 2026-09-13 이전 기록은 `docs/research/`에 archive로 유지
-- `base/hooks/git-guardrails.sh` — 하나의 정규식으로 뭉쳐 있던 매칭을 패턴별 if-elif로 나눠, 어떤 명령이 왜 되돌리기 어려운지 구체적인 이유를 보여주도록 개선(11개 패턴 전부 positive/negative 실행 확인, [Issue #65](https://github.com/yanos0218/AI/issues/65))
+- `base/hooks/git-guardrails.sh` — 하나의 정규식으로 뭉쳐 있던 매칭을 패턴별 if-elif로 나눠 구체적인 이유를 보여주도록 개선, 명령을 스크립트 파일로 감싸(`bash x.sh`) 문자열 매칭을 우회하던 취약점도 보강해 스크립트 내용까지 같이 검사(11개 패턴·우회/회귀 시나리오 전부 직접 실행 확인, [Issue #65](https://github.com/yanos0218/AI/issues/65)·[Issue #73](https://github.com/yanos0218/AI/issues/73))
+- `.claude/hooks/pre-commit-check.sh` — 위와 같은 스크립트 감싸기 우회 취약점 보강([Issue #73](https://github.com/yanos0218/AI/issues/73))
 - `base/claude-md/CLAUDE.md` §3 — 확인 후 진행 항목 중 방법이 여럿인 경우 훅 확인 직전이 아니라 계획 단계에서 AskUserQuestion으로 먼저 확정하도록 규칙 추가([Issue #65](https://github.com/yanos0218/AI/issues/65))
-- `base/hooks/git-guardrails.sh`·`base/hooks/gh-throttle.sh`·`.claude/hooks/pre-commit-check.sh` — 명령을 스크립트 파일로 감싸(`bash x.sh`) 문자열 매칭을 우회하던 취약점 보강, 스크립트 내용까지 같이 검사(재현·회귀 시나리오 직접 실행 확인, [Issue #73](https://github.com/yanos0218/AI/issues/73))
-- `base/hooks/gh-throttle.sh` — 무조건 지연 방식이 병렬 호출을 못 막는다는 게 실측으로 확인돼(3개 병렬 실행 시 총 2.78초 만에 종료), mkdir 락 + 공유 타임스탬프로 실제 최소 2초 간격을 강제하도록 변경(병렬 3개 실측으로 순차 처리 확인, 훅 timeout 3→9초, [Issue #74](https://github.com/yanos0218/AI/issues/74))
 - `base/claude-md/CLAUDE.md` §5 — 서브에이전트 위임 습관 2건 추가: 정지시킨 서브에이전트의 뒤늦은 보고는 검증 없이 반영하지 않기, 병렬 위임 시 겹치지 않는 파일 배정([Issue #74](https://github.com/yanos0218/AI/issues/74))
-- `base/settings.example.json` — `env.CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH: "1"` 추가해 서브에이전트의 재귀적 하위 서브에이전트 생성을 전역 차단(공식 문서 확인 + 실제 세션에서 재귀 시도 시 `Agent is disabled ... in subagents as well as here` 오류·`spawned_by_subagents: 0` 실측 확인, `tools/install.sh`·`tools/check-install.sh`에 `env` 키 병합·대조 추가, [Issue #75](https://github.com/yanos0218/AI/issues/75))
+- `CHANGELOG.md` 보존 범위를 최근 3개 릴리즈로 축소(버전 등급 미반영 — 문서 전용, [Issue #76](https://github.com/yanos0218/AI/issues/76))
 
 ## [0.8.0] - 2026-09-13
 
@@ -50,17 +52,7 @@
 
 - `base/skills/repo-setup/references/checklist.md` 항목 5·6 — Issues 판정 기준을 "개인용은 문제+할 일 통합(`bug`/`task`), 팀·협업은 별도 조사"로, 진행 보드 항목 6을 "할 일을 Issue로 관리하면 배포 표만 있어도 됨"으로 수정([Issue #11](https://github.com/yanos0218/AI/issues/11), 2026-09-12)
 
-## [0.6.0] - 2026-09-09
-
-### Added
-
-- `base/skills/repo-setup/` — 저장소가 최소 표준(`docs/repo-standard.md` 9항목)을 갖췄는지 대조하고 빠진 것을 제안표로 보인 뒤 사용자가 고른 것만 만드는 스킬. 비밀 파일 이력 검사를 §0에 둠. 3시나리오 발동 시험 통과(기록 [Issue #56](https://github.com/yanos0218/AI/issues/56))
-
-### Changed
-
-- README 구조 표에 dev-workflow·repo-setup 행 추가
-
-[Unreleased]: https://github.com/yanos0218/AI/compare/v0.8.0...HEAD
+[Unreleased]: https://github.com/yanos0218/AI/compare/v0.9.0...HEAD
+[0.9.0]: https://github.com/yanos0218/AI/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/yanos0218/AI/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/yanos0218/AI/compare/v0.6.0...v0.7.0
-[0.6.0]: https://github.com/yanos0218/AI/compare/v0.5.0...v0.6.0
