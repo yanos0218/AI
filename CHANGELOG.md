@@ -12,6 +12,8 @@
 ### Changed
 
 - 조사 기록 방식을 `docs/research/<주제>.md` 파일에서 GitHub Issue `research` 라벨로 전환(파일·이슈 이중 기록 방지). `base/claude-md/CLAUDE.md` §5, `docs/research.md` §3, README·monthly-check·review-vs-official 갱신. 2026-09-13 이전 기록은 `docs/research/`에 archive로 유지
+- `base/hooks/git-guardrails.sh` — 하나의 정규식으로 뭉쳐 있던 매칭을 패턴별 if-elif로 나눠, 어떤 명령이 왜 되돌리기 어려운지 구체적인 이유를 보여주도록 개선(11개 패턴 전부 positive/negative 실행 확인, [Issue #65](https://github.com/yanos0218/AI/issues/65))
+- `base/claude-md/CLAUDE.md` §3 — 확인 후 진행 항목 중 방법이 여럿인 경우 훅 확인 직전이 아니라 계획 단계에서 AskUserQuestion으로 먼저 확정하도록 규칙 추가([Issue #65](https://github.com/yanos0218/AI/issues/65))
 
 ## [0.8.0] - 2026-09-13
 

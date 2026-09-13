@@ -33,3 +33,4 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 - (2026-09-09) 토큰이 필요하면 `gh auth status`로 확인하고 없으면 멈춘다. 채팅에 붙여넣으라고 하지 않는다(전역 §7, dev-release 0단계).
 - (2026-09-08) 사용자 성향 데이터는 세 곳(로컬 auto memory, claude.ai 메모리, `/insights`)에서 모아 Issue(`task` 라벨)로 후보 등록하고, 전역 지침 반영은 사용자 확인 후(2026-09-12부터 `drafts/claude-md/` 대신).
 - (2026-09-13) 조사 기록은 파일(`docs/research/`)이 아니라 GitHub Issue `research` 라벨로 남긴다(파일·이슈 이중 기록 낭비 지적). 그 이전 기록은 archive로 유지.
+- (2026-09-13) `git-guardrails.sh`(yes/no 승인)와 AskUserQuestion(선택형 확인)은 계층이 달라 합칠 수 없다 — 훅의 `hookSpecificOutput`엔 선택지를 보여줄 필드가 없음. 대신 방법이 여럿인 확인은 계획 단계에서 AskUserQuestion으로 먼저 정하고, 훅은 실행 직전 마지막 확인만 담당하도록 역할을 나눴다. 훅 reason도 패턴별로 구체화([Issue #65](https://github.com/yanos0218/AI/issues/65)).
