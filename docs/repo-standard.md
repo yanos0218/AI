@@ -16,12 +16,12 @@
 | 8 | 비밀 정보 차단 | `.env`·토큰 커밋 방지 | `.gitignore` + 전역 `permissions.deny` |
 | 9 | Actions 한도 방지 | 비공개 저장소 월 2,000분·아티팩트 500MB·API 시간당 1,000회 | 경로 필터, `concurrency`, `timeout-minutes`, main만 push 트리거, 폴링은 스크립트로. 상세는 [github.md](github.md) "Actions 제한과 방지" |
 
-## 현황 (2026-09-08)
+## 현황 (2026-09-13)
 
 | 저장소 | 1 문서 CI | 2 테스트 CI | 3 CHANGELOG | 4 CLAUDE.md | 5 Issues | 6 보드 | 7 Dependabot | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| kolo_pwa | ✓ (`test.yml` 안) | ✓ Playwright | ✓ | ✓ | ✗ | ✓ | ✓ | |
-| kolo-api | ✓ `markdownlint.yml` | ✓ `build.yml` | ✓ | ✓ | ✗ | kolo_pwa 보드 공용 | ✓ | |
+| kolo_pwa | ✓ (`test.yml` 안) | ✓ Playwright | ✓ | ✓ | ✓ `bug`/`task`(2026-09-13, 기존 백로그는 소급 안 함) | ✓ | ✓ | |
+| kolo-api | ✓ `markdownlint.yml` | ✓ `build.yml` | ✓ | ✓ | ✓ `bug`/`task`(2026-09-13) | kolo_pwa 보드 공용 | ✓ | |
 | OpenClaw | ✓ `lint.yml` | - (문서 시스템) | ✓ | `workspace/AGENTS.md` (CLAUDE.md는 `@AGENTS.md` import로 연결 가능) | ✗ | ? | ✗ | |
 | AI (이 저장소) | ✓ `lint.yml` | ✓ shellcheck·문서 상한 | ✓ | ✓ | ✓ task+bug 통합 | ✓ | ✓ | |
 | Script | ✗ | ✗ (shellcheck 후보) | ✗ | ✗ | ✗ | ✗ | ✓ | **이력에 개인키** ([Issue #56](https://github.com/yanos0218/AI/issues/56)) |
