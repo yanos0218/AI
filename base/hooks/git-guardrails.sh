@@ -9,7 +9,7 @@ input="$(cat)"
 
 pattern='git[[:space:]]+push|git[[:space:]]+reset[[:space:]]+--hard|git[[:space:]]+clean[[:space:]]+-[A-Za-z]*f|git[[:space:]]+branch[[:space:]]+-D|git[[:space:]]+checkout[[:space:]]+--|git[[:space:]]+restore[[:space:]]+\.|git[[:space:]]+tag[[:space:]]+-d|--no-verify|npm[[:space:]]+publish|gh[[:space:]]+release[[:space:]]+create|gh[[:space:]]+repo[[:space:]]+delete|rm[[:space:]]+-[A-Za-z]*r[A-Za-z]*f|Remove-Item[^|]*-Recurse'
 
-if printf '%s' "$input" | grep -Eq "$pattern"; then
+if printf '%s' "${input}" | grep -Eq "${pattern}"; then
   cat <<'JSON'
 {"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"ask","permissionDecisionReason":"되돌리기 어려운 명령입니다 (git-guardrails). 실행 전 사용자 확인이 필요합니다."}}
 JSON

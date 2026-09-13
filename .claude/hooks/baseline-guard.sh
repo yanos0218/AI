@@ -7,7 +7,7 @@
 set -u
 
 input="$(cat)"
-tool="$(printf '%s' "$input" | sed -n 's/.*"tool_name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -1)"
+tool="$(printf '%s' "${input}" | sed -n 's/.*"tool_name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -1)"
 
 # base/ 아래 경로. 단 base/skills/_* 는 제외
 is_baseline() { grep -Eq '(^|[/\\"'"'"' ])base[/\]' | grep -Evq '(^|[/\\"'"'"' ])base[/\]skills[/\]_' ; }
@@ -15,19 +15,19 @@ is_baseline() { grep -Eq '(^|[/\\"'"'"' ])base[/\]' | grep -Evq '(^|[/\\"'"'"' ]
 strip_exempt() { sed -E 's#([A-Za-z]:)?[^ "'"'"']*base[/\]skills[/\]_[^ "'"'"']*##g'; }
 
 hit=0
-case "$tool" in
+case "${tool}" in
   Edit|Write|MultiEdit|NotebookEdit)
-    target="$(printf '%s' "$input" | sed -n 's/.*"file_path"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -1 | strip_exempt)"
-    printf '%s' "$target" | grep -Eq '(^|[/\\"'"'"' ])base[/\]' && hit=1
+    target="$(printf '%s' "${input}" | sed -n 's/.*"file_path"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -1 | strip_exempt)"
+    printf '%s' "${target}" | grep -Eq '(^|[/\\"'"'"' ])base[/\]' && hit=1
     ;;
   Bash|PowerShell)
-    cmd="$(printf '%s' "$input" | sed -n 's/.*"command"[[:space:]]*:[[:space:]]*"\(.*\)".*/\1/p' | head -1 | strip_exempt)"
+    cmd="$(printf '%s' "${input}" | sed -n 's/.*"command"[[:space:]]*:[[:space:]]*"\(.*\)".*/\1/p' | head -1 | strip_exempt)"
     writes='(>|sed[[:space:]]+-i|tee[[:space:]]|(^|[;&| ])(cp|mv|rm|python|python3)[[:space:]]|git[[:space:]]+mv|Set-Content|Out-File|Copy-Item|Move-Item|Remove-Item|Add-Content)'
-    if printf '%s' "$cmd" | grep -Eq '(^|[/\\"'"'"' ])base[/\]' && printf '%s' "$cmd" | grep -Eq "$writes"; then hit=1; fi
+    if printf '%s' "${cmd}" | grep -Eq '(^|[/\\"'"'"' ])base[/\]' && printf '%s' "${cmd}" | grep -Eq "${writes}"; then hit=1; fi
     ;;
 esac
 
-if [ "$hit" = 1 ]; then
+if [[ "${hit}" = 1 ]]; then
   cat <<'JSON'
 {"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"ask","permissionDecisionReason":"기본 영역(base/) 변경입니다 (baseline-guard). 검증이 끝나고 사용자가 기본 반영을 요청한 변경이 맞는지 확인하세요. 초안은 drafts/ 에서."}}
 JSON

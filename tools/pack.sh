@@ -5,20 +5,20 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-SKILLS_DIR="$ROOT_DIR/base/skills"
-DIST_DIR="$ROOT_DIR/dist"
+SKILLS_DIR="${ROOT_DIR}/base/skills"
+DIST_DIR="${ROOT_DIR}/dist"
 PY="$(command -v python3 || command -v python || true)"
-mkdir -p "$DIST_DIR"
+mkdir -p "${DIST_DIR}"
 
-for skill_path in "$SKILLS_DIR"/*/; do
-  skill_name="$(basename "$skill_path")"
-  [[ "$skill_name" == _* ]] && continue
-  zip_path="$DIST_DIR/$skill_name.zip"
-  rm -f "$zip_path"
+for skill_path in "${SKILLS_DIR}"/*/; do
+  skill_name="$(basename "${skill_path}")"
+  [[ "${skill_name}" == _* ]] && continue
+  zip_path="${DIST_DIR}/${skill_name}.zip"
+  rm -f "${zip_path}"
   if command -v zip >/dev/null 2>&1; then
-    (cd "$SKILLS_DIR" && zip -qr "$zip_path" "$skill_name" -x '.*' '*/.*')
+    (cd "${SKILLS_DIR}" && zip -qr "${zip_path}" "${skill_name}" -x '.*' '*/.*')
   else
-    "$PY" - "$SKILLS_DIR" "$skill_name" "$zip_path" <<'PY'
+    "${PY}" - "${SKILLS_DIR}" "${skill_name}" "${zip_path}" <<'PY'
 import sys, zipfile, pathlib
 root, name, out = pathlib.Path(sys.argv[1]), sys.argv[2], sys.argv[3]
 with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as z:
@@ -28,5 +28,5 @@ with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as z:
             z.write(f, rel.as_posix())
 PY
   fi
-  echo "packed: $zip_path"
+  echo "packed: ${zip_path}"
 done

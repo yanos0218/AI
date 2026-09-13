@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- `base/hooks/*.sh`, `base/vscode/install.sh`, `.claude/hooks/*.sh`, `tools/*.sh` 13개 스크립트 전부 `${var}`·`[[ ]]` 스타일로 통일. 기존엔 신규 스크립트 2개만 이 스타일이었으나 사용자 요청으로 전체 확대(shellcheck `-S warning` 기준 실제 위험은 이전부터 0건, `--enable=all`로 잡히는 스타일 항목만 정리, 2026-09-13)
+
 ## [0.7.0] - 2026-09-13
 
 ### Added
