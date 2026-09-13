@@ -13,3 +13,4 @@
 | SemVer·Keep a Changelog 관례(dev-release 스킬) | 2026-09-08 | 2027-09-08 | `base/skills/dev-release/references/` |
 | `statusLine`은 터미널 CLI 전용, VS Code 확장 패널엔 안 나옴(패널은 컨텍스트 표시기·`/usage`) | 2026-09-09 | 2026-12-09 | PROGRESS [Issue #14](https://github.com/yanos0218/AI/issues/14) |
 | GitHub Issues 범위 — "문제만" vs task 포함, 개인 계정엔 Issue Types 없음(404 확인) | 2026-09-12 | 2026-12-12 | [github-issues-scope.md](github-issues-scope.md), PROGRESS [Issue #11](https://github.com/yanos0218/AI/issues/11) |
+| Claude Code 효율화 커뮤니티·공식 자료 — CLAUDE.md 자기감사 스킬(`review-claudemd`), 트렌드(다중 에이전트·Spec-Driven Development), `ultrathink` 폐지 확인 | 2026-09-13 | 2026-10-13 | [claude-code-community-2026-09.md](claude-code-community-2026-09.md) |
