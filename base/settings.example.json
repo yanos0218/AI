@@ -52,7 +52,7 @@
           {
             "type": "command",
             "command": "bash ~/.claude/hooks/gh-throttle.sh",
-            "timeout": 3
+            "timeout": 9
           }
         ]
       }
