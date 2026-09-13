@@ -8,14 +8,32 @@
 # base/·docs 규칙 문서를 건드리는 커밋에 이슈 번호가 없으면 확인을 띄운다
 # (permissionDecision: ask). "착수 시점에 먼저 Issue부터 연다"는 CLAUDE.md
 # 문장만으로는 두 번(Issue #64, #66) 안 지켜져서 훅으로 옮김(2026-09-13).
+#
+# 명령을 스크립트 파일로 감싸면(bash x.sh) 문자열 매칭이 뚫리는 우회가 실제
+# 사고로 확인돼, 그런 형태면 스크립트 내용까지 같이 검사한다(Issue #73).
 set -u
 cd "$(dirname "${0}")/../.." || exit 0
 
 input="$(cat)"
 cmd="$(printf '%s' "${input}" | sed -n 's/.*"command"[[:space:]]*:[[:space:]]*"\(.*\)".*/\1/p' | head -1)"
 
+script_path=""
+if printf '%s' "${cmd}" | grep -Eq '^[[:space:]]*(bash|sh|source)[[:space:]]+[^&|;]+\.sh'; then
+  script_path="$(printf '%s' "${cmd}" | sed -E 's/^[[:space:]]*(bash|sh|source)[[:space:]]+//' | awk '{print $1}')"
+elif printf '%s' "${cmd}" | grep -Eq '^[[:space:]]*\.\/[^&|;[:space:]]+\.sh'; then
+  script_path="$(printf '%s' "${cmd}" | awk '{print $1}')"
+fi
+
+script_content=""
+if [[ -n "${script_path}" && -f "${script_path}" ]]; then
+  script_content="$(cat "${script_path}" 2>/dev/null || true)"
+fi
+
+search_text="${cmd}
+${script_content}"
+
 # git commit이 아니면 조용히 통과
-printf '%s' "${cmd}" | grep -Eq 'git[[:space:]]+commit' || exit 0
+printf '%s' "${search_text}" | grep -Eq 'git[[:space:]]+commit' || exit 0
 
 fail=0
 msg=""
@@ -52,7 +70,7 @@ fi
 # 4. base/·docs 규칙 변경인데 커밋 메시지에 이슈 번호(#숫자)가 없으면 확인
 touched="$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null || true)"
 if printf '%s\n' "${touched}" | grep -Eq '^base/|^docs/.*\.md$|^CLAUDE\.md$'; then
-  if ! printf '%s' "${cmd}" | grep -Eq '#[0-9]+'; then
+  if ! printf '%s' "${search_text}" | grep -Eq '#[0-9]+'; then
     printf '{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"ask","permissionDecisionReason":"base/ 또는 docs 규칙 문서를 바꾸는 커밋인데 메시지에 이슈 번호(#숫자)가 없습니다. 이슈 없이 진행할까요?"}}\n'
   fi
 fi
