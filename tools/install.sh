@@ -2,7 +2,7 @@
 # base/ → ~/.claude 설치 (Windows Git Bash · Mac · Linux 공통, 멱등).
 #   bash tools/install.sh            설치 후 check-install.sh로 대조
 #   bash tools/install.sh --dry-run  무엇이 바뀔지만 보여주고 손대지 않음
-# 하는 일: CLAUDE.md·hooks·skills 복사, settings.json에 permissions·hooks·statusLine 키 병합(기기별 키는 유지).
+# 하는 일: CLAUDE.md·hooks·skills 복사, settings.json에 permissions·hooks·statusLine·env 키 병합(기기별 키는 유지).
 # 하지 않는 일: 기존 CLAUDE.md를 묻지 않고 덮어쓰지 않는다(다르면 백업 후 교체하고 diff 경로를 알린다).
 set -u
 cd "$(dirname "${0}")/.." || exit 1
@@ -44,8 +44,8 @@ if ls base/rules/*.md >/dev/null 2>&1; then
   say "  rules 설치: $(ls base/rules | tr '\n' ' ')"
 fi
 
-# 4. settings.json 병합 — permissions·hooks·statusLine 은 base 값으로, 나머지 키(model 등)는 유지
-if [[ "${DRY}" = 1 ]]; then say "  (dry) settings.json 병합: permissions·hooks·statusLine"; else
+# 4. settings.json 병합 — permissions·hooks·statusLine·env 은 base 값으로, 나머지 키(model 등)는 유지
+if [[ "${DRY}" = 1 ]]; then say "  (dry) settings.json 병합: permissions·hooks·statusLine·env"; else
 "${PY}" - "${CLAUDE_HOME}/settings.json" base/settings.example.json <<'PY'
 import json, sys, io, os, collections
 dst, src = sys.argv[1], sys.argv[2]
@@ -54,7 +54,7 @@ cur = collections.OrderedDict()
 if os.path.exists(dst):
     cur = json.load(io.open(dst, encoding='utf-8'), object_pairs_hook=collections.OrderedDict)
 changed = []
-for k in ('$schema', 'permissions', 'hooks', 'statusLine'):
+for k in ('$schema', 'permissions', 'hooks', 'statusLine', 'env'):
     if k in base and cur.get(k) != base[k]:
         cur[k] = base[k]; changed.append(k)
 io.open(dst, 'w', encoding='utf-8', newline='\n').write(json.dumps(cur, ensure_ascii=False, indent=2) + '\n')

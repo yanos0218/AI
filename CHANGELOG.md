@@ -17,6 +17,7 @@
 - `base/hooks/git-guardrails.sh`·`base/hooks/gh-throttle.sh`·`.claude/hooks/pre-commit-check.sh` — 명령을 스크립트 파일로 감싸(`bash x.sh`) 문자열 매칭을 우회하던 취약점 보강, 스크립트 내용까지 같이 검사(재현·회귀 시나리오 직접 실행 확인, [Issue #73](https://github.com/yanos0218/AI/issues/73))
 - `base/hooks/gh-throttle.sh` — 무조건 지연 방식이 병렬 호출을 못 막는다는 게 실측으로 확인돼(3개 병렬 실행 시 총 2.78초 만에 종료), mkdir 락 + 공유 타임스탬프로 실제 최소 2초 간격을 강제하도록 변경(병렬 3개 실측으로 순차 처리 확인, 훅 timeout 3→9초, [Issue #74](https://github.com/yanos0218/AI/issues/74))
 - `base/claude-md/CLAUDE.md` §5 — 서브에이전트 위임 습관 2건 추가: 정지시킨 서브에이전트의 뒤늦은 보고는 검증 없이 반영하지 않기, 병렬 위임 시 겹치지 않는 파일 배정([Issue #74](https://github.com/yanos0218/AI/issues/74))
+- `base/settings.example.json` — `env.CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH: "1"` 추가해 서브에이전트의 재귀적 하위 서브에이전트 생성을 전역 차단(공식 문서 확인 + 실제 세션에서 재귀 시도 시 `Agent is disabled ... in subagents as well as here` 오류·`spawned_by_subagents: 0` 실측 확인, `tools/install.sh`·`tools/check-install.sh`에 `env` 키 병합·대조 추가, [Issue #75](https://github.com/yanos0218/AI/issues/75))
 
 ## [0.8.0] - 2026-09-13
 
