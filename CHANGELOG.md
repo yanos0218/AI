@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- 조사 기록 방식을 `docs/research/<주제>.md` 파일에서 GitHub Issue `research` 라벨로 전환(파일·이슈 이중 기록 방지). `base/claude-md/CLAUDE.md` §5, `docs/research.md` §3, README·monthly-check·review-vs-official 갱신. 2026-09-13 이전 기록은 `docs/research/`에 archive로 유지
+
 ## [0.8.0] - 2026-09-13
 
 ### Added
