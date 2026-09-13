@@ -4,6 +4,11 @@
 
 ## [Unreleased]
 
+### Added
+
+- `base/skills/self-audit/` — 대화 기록을 서브에이전트(Sonnet)로 읽어 CLAUDE.md·규칙 문서와 실제 작업 방식의 간극(반복 지적·안 지켜진 규칙·미문서화 결정)을 찾는 스킬(ykdojo `review-claudemd` 패턴 응용). 후보 제시까지만 자동, 문서 반영은 항상 사용자 확인 후. 코드만 반영, `tools/test-skill.sh` 발동 시험은 비용 발생으로 보류(2026-09-13)
+- `base/hooks/session-start-check.sh` 세 번째 확인 — self-audit 표시 파일과 현재 세션 트랜스크립트 개수를 비교해 15개 이상 쌓이면 실행을 제안(실행은 여전히 사용자가 말할 때만). 4시나리오(마커 없음/미만/이상, 마커 있음/미만/이상) 직접 실행 확인
+
 ### Changed
 
 - `base/hooks/*.sh`, `base/vscode/install.sh`, `.claude/hooks/*.sh`, `tools/*.sh` 13개 스크립트 전부 `${var}`·`[[ ]]` 스타일로 통일. 기존엔 신규 스크립트 2개만 이 스타일이었으나 사용자 요청으로 전체 확대(shellcheck `-S warning` 기준 실제 위험은 이전부터 0건, `--enable=all`로 잡히는 스타일 항목만 정리, 2026-09-13)
