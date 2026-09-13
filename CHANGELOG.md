@@ -7,6 +7,17 @@
 
 ## [Unreleased]
 
+### Changed
+
+- `base/rules/docs-format.md` — 목록 항목이 "(N) 설명A — 설명B"처럼 한 줄에 길게 늘어지면 본문 줄 + 하위 bullet으로 나눠 쓰는 규칙 추가
+  - 처음엔 GitHub Issue·PR 본문에만 적용했다가 `.md` 파일 전반으로 확대([Issue #79](https://github.com/yanos0218/AI/issues/79)·[Issue #80](https://github.com/yanos0218/AI/issues/80))
+  - 기존 `.md` 파일 14개, 이전 릴리즈 노트 8개(v0.1.0~v0.8.0)에 소급 적용([Issue #81](https://github.com/yanos0218/AI/issues/81))
+- `.claude/hooks/pre-commit-check.sh` — `chore(release):` 커밋은 이슈 번호 확인을 건너뛰도록 예외 처리(버전 등급 미반영 — `.claude/` 전용, [Issue #79](https://github.com/yanos0218/AI/issues/79))
+
+### Fixed
+
+- `docs/versioning.md` — 이슈 백업 명령에 `--limit`이 없어 기본값 30개만 백업되던 문제 수정(버전 등급 미반영 — `docs/` 전용, [Issue #78](https://github.com/yanos0218/AI/issues/78))
+
 ## [0.9.0] - 2026-09-13
 
 ### Added
