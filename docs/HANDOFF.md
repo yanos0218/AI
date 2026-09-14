@@ -9,9 +9,11 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 ## 현재 상태 (2026-09-13) · 마지막 월 점검: 없음 (첫 점검 2026-10 예정, `docs/monthly-check.md`)
 
 - 저장소 v0.9.1(문서 목록 줄바꿈 규칙 추가 + 소급 정리, PATCH). CI(`lint.yml`) 초록.
-  - 배포 현황은 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본 — Windows는 v0.9.1, Mac·웹은 v0.6.0, Linux는 미반영.
+  - 배포 현황은 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본
+    - Windows는 v0.9.1, Mac·웹은 v0.6.0, Linux는 미반영.
 - 할 일·발견한 문제는 GitHub Issues로 관리한다([Issue #11](https://github.com/yanos0218/AI/issues/11), 2026-09-12). 완료 이력은 [PROGRESS.md §1](PROGRESS.md#1-완료)에 짧은 색인 + 이슈 링크로.
-- Script 저장소 이력에서 개인키 발견 — 처리는 그 저장소 일, 아직 사용자 결정 대기.
+- Script 저장소 이력에서 개인키 발견
+  - 처리는 그 저장소 일, 아직 사용자 결정 대기.
 - 그 밖의 결정 배경·조사 근거는 `git log`와 각 문서 "참고" 절, 닫힌 이슈에 남아 있다.
 
 ## 다음 할 일
@@ -28,12 +30,15 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 - 에이전트 팀·샌드박스(Windows 미지원)·LSP 플러그인·알림 훅은 보류. 병렬 작업은 설정이 아니라 습관 항목.
 - (v0.2.0에서 변경) 로컬 커밋은 작업 단위마다 묻지 않고. push·배포·삭제·외부 설정은 확인 후. 배치 = 메시지 하나.
 - (2026-09-09) **다른 저장소의 일은 이 보드에 두지 않는다.** 여기 두는 것은 저장소를 가리지 않는 결정·절차·표준·스킬까지. 특정 저장소에서의 실행(OpenClaw PR, Script 키 처리 등)은 그 저장소의 Issue·문서로.
-- (2026-09-08) 이 저장소도 태그를 쓴다. `docs/versioning.md` — 시작 `v0.1.0`, 기본 영역 변경만 등급 반영, Release에 `pack.sh` zip 첨부.
+- (2026-09-08) 이 저장소도 태그를 쓴다. `docs/versioning.md`
+  - 시작 `v0.1.0`, 기본 영역 변경만 등급 반영, Release에 `pack.sh` zip 첨부.
 - (2026-09-08) 기본 영역(`base/claude-md/`, `base/skills/<이름>/`, `scripts/`, `base/vscode/`)은 검증 통과 + 사용자의 명시적 반영 요청이 있을 때만 수정. 초안은 `drafts/`. `baseline-guard` 훅이 확인을 강제한다.
-- (2026-09-09) 저장소 표준 적용은 `repo-setup` 스킬로 — 판정표 → 사용자가 고른 것만 생성. 다른 저장소에 적용하는 일은 그 저장소에서.
+- (2026-09-09) 저장소 표준 적용은 `repo-setup` 스킬로
+  - 판정표 → 사용자가 고른 것만 생성. 다른 저장소에 적용하는 일은 그 저장소에서.
 - (2026-09-09) 토큰이 필요하면 `gh auth status`로 확인하고 없으면 멈춘다. 채팅에 붙여넣으라고 하지 않는다(전역 §7, dev-release 0단계).
 - (2026-09-08) 사용자 성향 데이터는 세 곳(로컬 auto memory, claude.ai 메모리, `/insights`)에서 모아 Issue(`task` 라벨)로 후보 등록하고, 전역 지침 반영은 사용자 확인 후(2026-09-12부터 `drafts/claude-md/` 대신).
 - (2026-09-13) 조사 기록은 파일(`docs/research/`)이 아니라 GitHub Issue `research` 라벨로 남긴다(파일·이슈 이중 기록 낭비 지적). 그 이전 기록은 archive로 유지.
-- (2026-09-13) `git-guardrails.sh`(yes/no 승인)와 AskUserQuestion(선택형 확인)은 계층이 달라 합칠 수 없다 — 훅의 `hookSpecificOutput`엔 선택지를 보여줄 필드가 없음.
+- (2026-09-13) `git-guardrails.sh`(yes/no 승인)와 AskUserQuestion(선택형 확인)은 계층이 달라 합칠 수 없다
+  - 훅의 `hookSpecificOutput`엔 선택지를 보여줄 필드가 없음.
   - 대신 방법이 여럿인 확인은 계획 단계에서 AskUserQuestion으로 먼저 정하고, 훅은 실행 직전 마지막 확인만 담당하도록 역할을 나눴다.
   - 훅 reason도 패턴별로 구체화([Issue #65](https://github.com/yanos0218/AI/issues/65)).

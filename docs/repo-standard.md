@@ -6,11 +6,11 @@
 
 | # | 항목 | 왜 | 최소 형태 |
 | --- | --- | --- | --- |
-| 1 | CI — 문서 검사 | .md가 늘어나면 형식이 깨져도 아무도 모른다 | `markdownlint-cli2` 워크플로 + `.markdownlint.jsonc`(MD013 끔) |
-| 2 | CI — 테스트/빌드 | "됐다"의 증거. 스택에 맞게 하나 | 정적 사이트: 브라우저 테스트·`node --check`, Java: `gradlew test`, Python: `pytest`, 셸: `shellcheck`, 문서 저장소: 문서 상한 검사 |
+| 1 | CI<br>문서 검사 | .md가 늘어나면 형식이 깨져도 아무도 모른다 | `markdownlint-cli2` 워크플로 + `.markdownlint.jsonc`(MD013 끔) |
+| 2 | CI<br>테스트/빌드 | "됐다"의 증거. 스택에 맞게 하나 | 정적 사이트: 브라우저 테스트·`node --check`, Java: `gradlew test`, Python: `pytest`, 셸: `shellcheck`, 문서 저장소: 문서 상한 검사 |
 | 3 | `CHANGELOG.md` | 릴리즈가 없는 저장소일수록 미루면 영원히 안 씀(kolo-api 8일 방치 전례) | Keep a Changelog. 릴리즈 없는 저장소는 날짜 섹션, 커밋과 같은 자리에서 갱신 |
 | 4 | 저장소 `CLAUDE.md` | 매 세션 같은 배경 설명 반복을 막음 | 200줄 이하, "날짜 + 사고 + 규칙" 형식, 상세는 `docs/`로 |
-| 5 | Issues | 문제·할 일을 잃지 않기 위해 | 개인용 저장소: 문제(`bug`) + 계획된 할 일(`task`) 모두 Issue로, 템플릿은 안 만든다(1인). 팀·협업 저장소는 별도 — 실제로 그런 저장소가 생기면 `repo-setup` 조사 단계에서 다시 정한다(이슈 템플릿·담당자·마일스톤이 필요해질 가능성이 큼). 커밋에 `#N`, 끝나면 `Closes #N` |
+| 5 | Issues | 문제·할 일을 잃지 않기 위해 | 개인용 저장소: 문제(`bug`) + 계획된 할 일(`task`) 모두 Issue로, 템플릿은 안 만든다(1인). 팀·협업 저장소는 별도<br>실제로 그런 저장소가 생기면 `repo-setup` 조사 단계에서 다시 정한다(이슈 템플릿·담당자·마일스톤이 필요해질 가능성이 큼). 커밋에 `#N`, 끝나면 `Closes #N` |
 | 6 | 진행 보드 | 지금 어디까지 됐는지 | `docs/PROGRESS.md` 또는 동급 |
 | 7 | Dependabot 알림 | 무료, 클릭 1회 | Settings → Security → Dependabot alerts |
 | 8 | 비밀 정보 차단 | `.env`·토큰 커밋 방지 | `.gitignore` + 전역 `permissions.deny` |

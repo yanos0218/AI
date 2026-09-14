@@ -21,7 +21,7 @@
 | [base/skills/self-audit/](base/skills/self-audit/SKILL.md) | "self-audit 해줘 / CLAUDE.md 점검해줘"에 발동. 대화 기록을 서브에이전트로 읽어 문서화 안 된 결정·안 지켜진 규칙 후보를 찾음(3시나리오 발동 시험 통과, 2026-09-13) |
 | [base/hooks/](base/hooks/) | 위험한 명령 앞 확인을 강제하는 `git-guardrails.sh`, gh 콘텐츠 생성 명령 앞 지연으로 GitHub 속도 제한을 예방하는 `gh-throttle.sh`, 상태줄 `statusline.sh`, 설정 변경 이력 `config-changelog.sh`, 새 세션마다 저장소 표준·설치 버전·self-audit 안내를 조용히 확인하는 `session-start-check.sh` |
 | [base/settings.example.json](base/settings.example.json) | `~/.claude/settings.json` 예시 (허용·거부 명령, 훅, 상태줄) |
-| [base/rules/](base/rules/) | 모듈 규칙 — 기본 지침을 건드리지 않고 주제별로 붙이는 파일. `~/.claude/rules/`에 설치 |
+| [base/rules/](base/rules/) | 모듈 규칙<br>기본 지침을 건드리지 않고 주제별로 붙이는 파일. `~/.claude/rules/`에 설치 |
 | [base/vscode/](base/vscode/) | 새 기기에 VS Code 확장·설정을 맞추는 목록과 스크립트 |
 | [base/skills/_template/](base/skills/_template/SKILL.md) | 새 스킬을 시작할 때 복사하는 틀 (배포 제외) |
 
@@ -33,8 +33,8 @@
 
 | 경로 | 무엇 |
 | --- | --- |
-| [docs/HANDOFF.md](docs/HANDOFF.md) | Claude가 새 대화를 시작할 때 읽는 "지금 상황" 메모 — 무엇이 어디까지 됐고 무엇을 결정했는지 |
-| [docs/PROGRESS.md](docs/PROGRESS.md) | 진행 보드 — 자산별 단계(계획→초안→검증→기본)와 기기별 배포 상태. 할 일은 GitHub Issues(라벨 `task`/`bug`) |
+| [docs/HANDOFF.md](docs/HANDOFF.md) | Claude가 새 대화를 시작할 때 읽는 "지금 상황" 메모<br>무엇이 어디까지 됐고 무엇을 결정했는지 |
+| [docs/PROGRESS.md](docs/PROGRESS.md) | 진행 보드<br>자산별 단계(계획→초안→검증→기본)와 기기별 배포 상태. 할 일은 GitHub Issues(라벨 `task`/`bug`) |
 | [docs/versioning.md](docs/versioning.md) | 이 저장소의 버전·릴리즈 규칙 |
 | [docs/install.md](docs/install.md) | 기기·웹별 설치 상세 |
 | [docs/github.md](docs/github.md) | GitHub를 어디까지 쓰는지, Actions 한도, Claude와 어떻게 엮는지 |
@@ -51,11 +51,11 @@
 | 경로 | 무엇 |
 | --- | --- |
 | [tools/install.sh](tools/install.sh) | `base/` → `~/.claude` 설치 (멱등, settings 병합, `--dry-run`). 기기 3대 공통 |
-| [tools/test-skill.sh](tools/test-skill.sh) | 스킬 발동 시험 — 시나리오 저장소에 넣고 새 세션으로 실행, 발동·비용 추출 (기본 Sonnet) |
+| [tools/test-skill.sh](tools/test-skill.sh) | 스킬 발동 시험<br>시나리오 저장소에 넣고 새 세션으로 실행, 발동·비용 추출 (기본 Sonnet) |
 | [tools/pack.sh](tools/pack.sh) | ①의 스킬을 웹 업로드용 zip으로 (zip 없으면 python 폴백) |
 | [tools/check-docs.sh](tools/check-docs.sh) | 문서 줄 수 상한과 필수 파일 검사 (CI와 로컬 공용) |
 | [tools/check-install.sh](tools/check-install.sh) | 설치본 `~/.claude`가 `base/`와 같은지, 프로젝트마다 쌓인 권한·설정 이력은 무엇인지 보고 |
-| [.claude/hooks/](.claude/hooks/) | 저장소 전용 훅 — `baseline-guard.sh`(`base/` 쓰기 확인), `session-end-check.sh`(base/ 변경 시 PROGRESS §0 갱신, 그 외엔 관련 Issue 댓글·닫기 확인 안내) |
+| [.claude/hooks/](.claude/hooks/) | 저장소 전용 훅<br>`baseline-guard.sh`(`base/` 쓰기 확인), `session-end-check.sh`(base/ 변경 시 PROGRESS §0 갱신, 그 외엔 관련 Issue 댓글·닫기 확인 안내) |
 | [.github/workflows/lint.yml](.github/workflows/lint.yml) | push마다 markdownlint·shellcheck·문서 상한 검사 |
 | [.github/dependabot.yml](.github/dependabot.yml) | 워크플로가 쓰는 액션 버전 업데이트 |
 
@@ -69,7 +69,7 @@
 | Claude Code VS Code 확장 | CLI와 동일 (`~/.claude` 공유) | 동일 | 동일 | 명령/스킬은 CLI의 부분집합(`/`로 확인). `!`·탭 완성 없음 |
 | Claude.ai 웹 · 데스크톱 채팅 | **Customize → Skills**에 zip 업로드(Pro 이상) | 없음 → 프로젝트 **Project instructions**에 붙여넣기 | 없음 | 계정 단위. 코드 실행 켜져 있어야 함 |
 | Cowork (데스크톱) | 계정에서 켠 스킬을 세션 시작 시 로드. `~/.claude/skills/`는 **안 읽음** | 없음 | 없음 | 로컬 전용 스킬을 쓰려면 웹에도 올리거나 저장소 `.claude/skills/`에 커밋 |
-| Claude Design (`claude.ai/design`) | 없음 — 디자인 시스템(스크린샷·자산·코드베이스) 첨부로 대체 | 없음 | 없음 | 결과를 Claude Code로 handoff 가능 |
+| Claude Design (`claude.ai/design`) | 없음<br>디자인 시스템(스크린샷·자산·코드베이스) 첨부로 대체 | 없음 | 없음 | 결과를 Claude Code로 handoff 가능 |
 | 클라우드 세션 (claude.ai/code) | 계정 스킬 + 저장소 `.claude/skills/` | 저장소 `CLAUDE.md` | 저장소 settings | 개인 `~/.claude`는 전달 안 됨 |
 
 결론: **원본은 이 저장소, 배포는 두 갈래** — (1) `~/.claude`에 복사(CLI·VS Code), (2) `pack.sh`로 zip 만들어 웹에 업로드(웹·데스크톱·Cowork). 웹에서 켠 스킬을 CLI로 끌어오는 `CLAUDE_CODE_SYNC_SKILLS=1 claude -p ...`도 있지만 비대화형 전용이라 이 저장소 방식이 더 단순하다.
@@ -88,7 +88,8 @@ CLAUDE.md·훅·스킬을 복사하고 `settings.json`에 `permissions`·`hooks`
 
 1. `base/skills/_template/`을 `drafts/skills/<이름>/`으로 복사한다.
 2. `SKILL.md`는 A4 한 장(50~60줄) 이내. 긴 자료는 `references/`로 빼고 SKILL.md에 "언제 읽을지"만 적는다. 참조는 한 단계만.
-3. frontmatter `description`에 **사용자가 실제로 쓰는 말투**("~해줘", "~하자")를 따옴표로 넣고 3인칭으로 쓴다 — 이것이 발동 기준이다.
+3. frontmatter `description`에 **사용자가 실제로 쓰는 말투**("~해줘", "~하자")를 따옴표로 넣고 3인칭으로 쓴다.
+   - 이것이 발동 기준이다.
 4. 날짜·특정 저장소 사례 같은 시점 의존 정보는 넣지 않는다. 필요하면 "저장소 문서 참고"로 가리킨다.
 5. 새 세션에서 3가지 상황으로 시험한 뒤 완료로 본다.
 
