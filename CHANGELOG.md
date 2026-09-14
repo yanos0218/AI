@@ -7,6 +7,17 @@
 
 ## [Unreleased]
 
+### Changed
+
+- `base/rules/docs-format.md`
+  - 목록 줄바꿈 규칙을 "길어지면"에서 "길이 무관 항상 분리"로 강화, 표 셀은 `<br>`로([Issue #86](https://github.com/yanos0218/AI/issues/86)·[Issue #87](https://github.com/yanos0218/AI/issues/87))
+  - "필드명: 값" 구조화된 기록(조사 이슈 등)은 예외로 유지
+- `.markdownlint.jsonc`
+  - MD033 allowed_elements에 `br` 추가(표 셀 줄바꿈 허용, [Issue #87](https://github.com/yanos0218/AI/issues/87))
+- 강화된 규칙을 로컬 `.md` 파일 전체와 GitHub Issue 본문 10개에 소급 적용
+  - `.md` 파일: [Issue #88](https://github.com/yanos0218/AI/issues/88)·[Issue #89](https://github.com/yanos0218/AI/issues/89)·[Issue #90](https://github.com/yanos0218/AI/issues/90)
+  - GitHub Issue 본문(#58, #60, #62, #63, #71, #75, #79, #81, #83, #88): [Issue #91](https://github.com/yanos0218/AI/issues/91)
+
 ### Added
 
 - `docs/issue-format.md`
