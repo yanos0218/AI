@@ -41,6 +41,7 @@
 | [docs/repo-standard.md](docs/repo-standard.md) | GitHub를 쓰는 모든 저장소의 최소선 체크리스트와 저장소별 현황 |
 | [docs/review-vs-official.md](docs/review-vs-official.md) | 공식 문서·커뮤니티 권장과 대조한 검토표 (반영/습관/보류) |
 | [docs/research.md](docs/research.md) | 조사 규칙(최신·검증·출처, 기록은 Issues `research` 라벨) |
+| [docs/issue-format.md](docs/issue-format.md) | 이슈 라벨별 작성 형식(개발/버그·에러/조사/제안) |
 | [docs/monthly-check.md](docs/monthly-check.md) | 월 점검 체크리스트 12항목 |
 | [docs/config-lifecycle.md](docs/config-lifecycle.md) | 다른 저장소에서 작업해도 기본 설정이 유지되는 구조(기본·모듈·프로젝트 층)와 변경 이력 장치 |
 | [CHANGELOG.md](CHANGELOG.md) · [CLAUDE.md](CLAUDE.md) | 기본 영역의 버전별 변경 이력 · 이 저장소 안에서 Claude가 지킬 규칙 |
