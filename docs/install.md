@@ -33,9 +33,12 @@ mkdir -p ~/.claude/hooks && cp base/hooks/*.sh ~/.claude/hooks/
 
 이 저장소의 `base/vscode/`는 **Settings Sync를 보완**한다.
 
-- `extensions.txt` — **선별한** 확장 목록. 새 기기 부트스트랩용이며, 손으로 관리한다(`code --list-extensions` 결과를 그대로 덮어쓰지 않는다).
-- `settings.json` — 사용자 설정 스냅샷(Claude Code 확장 설정 포함).
-- `install.ps1`(Windows) / `install.sh`(Mac·Linux) — 확장을 설치하고, 설정 파일이 없을 때만 복사한다. 이미 있으면 덮어쓰지 않는다.
+- `extensions.txt`
+  - **선별한** 확장 목록. 새 기기 부트스트랩용이며, 손으로 관리한다(`code --list-extensions` 결과를 그대로 덮어쓰지 않는다).
+- `settings.json`
+  - 사용자 설정 스냅샷(Claude Code 확장 설정 포함).
+- `install.ps1`(Windows) / `install.sh`(Mac·Linux)
+  - 확장을 설치하고, 설정 파일이 없을 때만 복사한다. 이미 있으면 덮어쓰지 않는다.
 
 ### 확장 선별 기준
 
@@ -43,7 +46,7 @@ mkdir -p ~/.claude/hooks && cp base/hooks/*.sh ~/.claude/hooks/
 
 | 판단 | 확장 | 이유 |
 | --- | --- | --- |
-| 유지 | claude-code, 한국어 팩, markdownlint, GitHub Actions, Python 3종, Java pack + Gradle, PowerShell, Remote-SSH, Live Server | 정적 PWA·Spring Boot·FastAPI·셸/PS·Markdown CI·NAS/서버 SSH — 전부 실제 저장소에 대응 |
+| 유지 | claude-code, 한국어 팩, markdownlint, GitHub Actions, Python 3종, Java pack + Gradle, PowerShell, Remote-SSH, Live Server | 정적 PWA·Spring Boot·FastAPI·셸/PS·Markdown CI·NAS/서버 SSH<br>전부 실제 저장소에 대응 |
 | 추가 | Error Lens | 진단을 줄 옆에 바로 보여줌. 코드를 직접 읽지 않는 사용 방식에 가장 도움이 되는 커뮤니티 필수 항목 |
 | 제외 | auto-rename-tag | `editor.linkedEditing`(이미 켜져 있음)이 같은 기능 |
 | 제외 | diff-merge, PDF 뷰어 | VS Code 내장 diff/merge 에디터로 충분, PDF는 외부 뷰어 |

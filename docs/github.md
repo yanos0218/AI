@@ -10,8 +10,8 @@ Claude와 GitHub를 엮는 방법은 크게 넷이다. 아래는 **사용자 저
 | 태그 push → Release 자동 생성 | 릴리즈 노트 파일을 태그 전에 커밋하면 Actions가 Release를 만듦 | 반영 | kolo_pwa·OpenClaw에 이미 있음. dev-release §0이 워크플로 존재를 감지해 절차를 맞춤 |
 | 이 저장소를 설정의 원본으로 | `~/.claude`를 기기마다 손으로 맞추지 않고 clone → 설치 스크립트 | 반영 | 커뮤니티 dotfiles 방식과 동일. Mac·Linux 반영은 `docs/PROGRESS.md` [Issue #28](https://github.com/yanos0218/AI/issues/28)/16 |
 | **Claude Code on the web** (`claude.ai/code`) | 브라우저·폰에서 지시 → 클라우드 VM이 저장소를 clone해 작업 → PR 생성. `claude --cloud "..."`로 터미널에서 보내고 `--teleport`로 받아옴. PR의 CI 실패·리뷰 코멘트를 자동 수정(auto-fix)도 가능 | **결정 필요** | Pro/Max 가능, 별도 VM 비용 없음(플랜 한도 공유). OpenClaw에서 Codex로 하던 "클라우드가 PR 만들기"의 Claude 버전. 저장소 `CLAUDE.md`·`.claude/`는 적용되지만 `~/.claude`는 전달 안 됨 |
-| **Claude Code GitHub Actions** (`@claude` 멘션) | 이슈·PR 코멘트에 `@claude ...`라고 쓰면 Actions 러너에서 Claude가 코드를 고치고 커밋·PR. `prompt`를 주면 일정(cron)·이벤트 자동 실행도 가능 | **결정 필요** | `/install-github-app`으로 5분 설치. 구독 토큰(`claude setup-token`)이면 API 과금 없이 플랜 한도 사용, 단 Actions 분은 소모(비공개 저장소 월 한도 있음). AI 저장소는 Issues를 쓰기 시작했지만(2026-09-12) PR 습관이 없어 지금은 이득이 작다 — PR 단위 작업이 자리 잡은 뒤 |
-| PR 자동 리뷰 — Code Review(관리형) | PR마다 다중 에이전트가 검토해 인라인 코멘트 | 보류 | Team/Enterprise 전용, 건당 15~25달러. 개인은 로컬 `/code-review`(무료, 세션 한도) 또는 `/code-review ultra`(크레딧)로 대체 |
+| **Claude Code GitHub Actions** (`@claude` 멘션) | 이슈·PR 코멘트에 `@claude ...`라고 쓰면 Actions 러너에서 Claude가 코드를 고치고 커밋·PR. `prompt`를 주면 일정(cron)·이벤트 자동 실행도 가능 | **결정 필요** | `/install-github-app`으로 5분 설치. 구독 토큰(`claude setup-token`)이면 API 과금 없이 플랜 한도 사용, 단 Actions 분은 소모(비공개 저장소 월 한도 있음). AI 저장소는 Issues를 쓰기 시작했지만(2026-09-12) PR 습관이 없어 지금은 이득이 작다<br>PR 단위 작업이 자리 잡은 뒤 |
+| PR 자동 리뷰<br>Code Review(관리형) | PR마다 다중 에이전트가 검토해 인라인 코멘트 | 보류 | Team/Enterprise 전용, 건당 15~25달러. 개인은 로컬 `/code-review`(무료, 세션 한도) 또는 `/code-review ultra`(크레딧)로 대체 |
 | 브랜치 → PR → merge 습관 | 위 두 "결정 필요" 항목의 전제. 리뷰 코멘트·auto-fix·`@claude`가 전부 PR 위에서 동작 | 습관 | kolo_pwa `CONTRIBUTING.md`가 GitHub Flow를 정해 뒀지만 1인이라 강제 안 함. 브랜치 보호는 Free 플랜에서 불가 |
 | GitHub 이슈를 백로그로 | 커뮤니티는 `gh issue create`로 할 일을 만들고 `@claude`에 넘기는 흐름을 씀 | AI 저장소는 채택(2026-09-12) | 개인용 저장소는 문제(`bug`)+할 일(`task`) 통합, 진행 보드는 배포 표만. 다른 저장소는 여전히 `docs/PROGRESS.md` + `P-NN`. 기준은 `docs/repo-standard.md` 항목5 |
 | 이 저장소 CI | markdownlint·shellcheck | 할 일 | `docs/PROGRESS.md` [Issue #52](https://github.com/yanos0218/AI/issues/52) |
@@ -49,9 +49,9 @@ Claude와 GitHub를 엮는 방법은 크게 넷이다. 아래는 **사용자 저
 
 | 순서 | 무엇 | 누가 |
 | --- | --- | --- |
-| 1 | 터미널에서 `claude`를 열고 `/web-setup` 입력 — 로컬 `gh` 토큰을 claude.ai 계정에 연결하고 Default 환경을 만든다. `gh auth refresh -s workflow`를 먼저 해 두면 워크플로 파일 push도 됨. 브라우저로 하려면 claude.ai/code → Sign in with GitHub | 사용자 (대화형 명령이라 Claude가 대신 못 함) |
+| 1 | 터미널에서 `claude`를 열고 `/web-setup` 입력<br>로컬 `gh` 토큰을 claude.ai 계정에 연결하고 Default 환경을 만든다. `gh auth refresh -s workflow`를 먼저 해 두면 워크플로 파일 push도 됨. 브라우저로 하려면 claude.ai/code → Sign in with GitHub | 사용자 (대화형 명령이라 Claude가 대신 못 함) |
 | 2 | auto-fix를 쓰려면 Claude GitHub App을 OpenClaw에 설치(claude.ai/code 온보딩에서 안내, 또는 github.com/apps/claude) | 사용자 |
-| 3 | OpenClaw에 루트 `CLAUDE.md` 추가 — 클라우드 VM은 저장소의 CLAUDE.md만 읽고 `~/.claude`는 못 읽으므로, 확인 기준과 검사 명령을 저장소 안에 둔다. 초안은 브랜치 `chore/claude-md`(스크래치패드 클론), push·PR은 확인 후 | Claude(초안) → 사용자(승인) |
+| 3 | OpenClaw에 루트 `CLAUDE.md` 추가<br>클라우드 VM은 저장소의 CLAUDE.md만 읽고 `~/.claude`는 못 읽으므로, 확인 기준과 검사 명령을 저장소 안에 둔다. 초안은 브랜치 `chore/claude-md`(스크래치패드 클론), push·PR은 확인 후 | Claude(초안) → 사용자(승인) |
 | 4 | 첫 작업: claude.ai/code에서 OpenClaw 선택 → Plan 모드로 작은 문서 작업 하나 → diff 확인 → Create PR → merge. 터미널에서는 `claude --cloud "작업 설명"`(현재 폴더가 OpenClaw 클론일 때) | 사용자 |
 | 5 | 한 달 뒤 판단: PR 리뷰 부담, 세션 한도 소모, Codex 대비 품질 | 월 점검 |
 
