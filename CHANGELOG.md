@@ -7,6 +7,13 @@
 
 ## [Unreleased]
 
+### Added
+
+- `docs/issue-format.md` — 이슈 라벨별 작성 형식 4종(개발/버그·에러/조사/제안) 정의, `error` 라벨 신설(`bug`와 구분, [Issue #83](https://github.com/yanos0218/AI/issues/83))
+- `docs/research.md` §3 — 조사 이슈 형식을 "다시 볼 시점" 대신 "조사일"+"출처"로 변경(버전 등급 미반영 — `docs/` 전용, [Issue #84](https://github.com/yanos0218/AI/issues/84))
+
+## [0.9.1] - 2026-09-14
+
 ### Changed
 
 - `base/rules/docs-format.md` — 목록 항목이 "(N) 설명A — 설명B"처럼 한 줄에 길게 늘어지면 본문 줄 + 하위 bullet으로 나눠 쓰는 규칙 추가
@@ -68,29 +75,7 @@
   - 기존엔 신규 스크립트 2개만 이 스타일이었으나 사용자 요청으로 전체 확대
   - shellcheck `-S warning` 기준 실제 위험은 이전부터 0건, `--enable=all`로 잡히는 스타일 항목만 정리(2026-09-13)
 
-## [0.7.0] - 2026-09-13
-
-### Added
-
-- `base/claude-md/CLAUDE.md` §7 — 복합 명령에서 `cd <경로> && <명령>` 대신 `git -C <경로>`나 절대 경로를 쓴다는 한 줄
-  - `Read` deny 규칙과 겹쳐 정적 분석이 안 돼 승인 프롬프트가 뜨던 문제([Issue #1](https://github.com/yanos0218/AI/issues/1))
-- `base/hooks/session-start-check.sh` — 전역 `SessionStart` 훅(matcher `startup`)
-  - 새 세션마다 읽기 전용으로 두 가지를 조용히 확인: (1) 지금 저장소에 `CLAUDE.md`가 없고 `.claude/.no-repo-setup-suggest`도 없으면 repo-setup 제안을 상기시킴, (2) `~/.claude/.claude-config-version`에 적힌 버전이 원본 저장소 최신과 다르면 재설치를 상기시킴
-  - 4개 시나리오(표준 없음/있음/억제 표시/버전 낡음) 직접 실행 확인([Issue #62](https://github.com/yanos0218/AI/issues/62))
-- `tools/install.sh` — 설치할 때마다 `~/.claude/.claude-config-version`에 원본 경로+버전을 기록(위 훅이 읽음)
-- `base/claude-md/CLAUDE.md` §5 — 저장소 표준 제안을 거절하면 `.claude/.no-repo-setup-suggest`를 만들어 다음부턴 묻지 않는다는 한 줄
-
-### Fixed
-
-- `base/vscode/install.sh` — `code`가 PATH에 없어도 Mac 앱 내장 경로(`/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code`)로 폴백
-  - 코드만 반영, Mac에서의 실제 동작 확인은 다음 Mac 세션([Issue #57](https://github.com/yanos0218/AI/issues/57))
-
-### Changed
-
-- `base/skills/repo-setup/references/checklist.md` 항목 5·6 — Issues 판정 기준을 "개인용은 문제+할 일 통합(`bug`/`task`), 팀·협업은 별도 조사"로, 진행 보드 항목 6을 "할 일을 Issue로 관리하면 배포 표만 있어도 됨"으로 수정
-  - [Issue #11](https://github.com/yanos0218/AI/issues/11), 2026-09-12
-
-[Unreleased]: https://github.com/yanos0218/AI/compare/v0.9.0...HEAD
+[Unreleased]: https://github.com/yanos0218/AI/compare/v0.9.1...HEAD
+[0.9.1]: https://github.com/yanos0218/AI/compare/v0.9.0...v0.9.1
 [0.9.0]: https://github.com/yanos0218/AI/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/yanos0218/AI/compare/v0.7.0...v0.8.0
-[0.7.0]: https://github.com/yanos0218/AI/compare/v0.6.0...v0.7.0
