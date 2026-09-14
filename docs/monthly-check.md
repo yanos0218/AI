@@ -13,6 +13,7 @@
 - [ ] 7. /insights — 대화형 세션에서 실행, 제안 중 반복되는 것만 후보
 - [ ] 8. 사용량 — 상태줄 $ 누계, claude.ai 사용량 페이지, GitHub Settings → Billing → Actions 분
 - [ ] 9. 이슈 정리 — 열린 Issue(`gh issue list --state open`) 우선순위 재검토. PROGRESS §0 표가 실제 배포 상태와 맞는지 확인
+  - 파생 관계인데 sub-issue로 안 묶인 것 없는지도 함께: 본문에서 다른 이슈 번호(`#N`)를 파생 의미로 언급한 것 찾아 대조(`docs/issue-format.md` "이슈 수명 관리")
 - [ ] 10. 검토표 갱신 — docs/review-vs-official.md에서 상태가 바뀐 행 갱신. 새로 발견한 문제·제안은 Issue로(`task`/`bug` 라벨, 2026-09-12부터 파일 대신). 새 기능은 조사 규칙대로 조사해 `research` 라벨 이슈로
 - [ ] 11. 릴리즈 판단 — [Unreleased]가 비어 있지 않고 다른 기기 설치가 예정돼 있으면 컷(versioning.md 컷 시점)
 - [ ] 12. HANDOFF "마지막 점검일" 갱신
