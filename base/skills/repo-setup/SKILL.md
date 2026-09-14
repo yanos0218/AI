@@ -30,7 +30,8 @@ allowed-tools: Bash(git status*) Bash(git log*) Bash(git ls-files*) Bash(gh repo
 
 ## 2. 참고 자료
 
-- `references/checklist.md` — 9항목의 판정 기준과 최소 형태. 2번 단계에서 읽는다.
+- `references/checklist.md`
+  - 9항목의 판정 기준과 최소 형태. 2번 단계에서 읽는다.
 
 ## 하지 않는 것
 

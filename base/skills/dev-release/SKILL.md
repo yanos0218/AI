@@ -15,7 +15,7 @@ allowed-tools: Bash(git tag --list*) Bash(git log*) Bash(git diff*) Bash(git sta
 | 확인 | 의미 |
 | --- | --- |
 | `docs/versioning.md`, README의 "버전 정책 / 버전 체계 / Version Policy" 절 | 등급 기준·태그 형식·릴리즈 빈도가 여기 정의됨. 아래 §1보다 우선 |
-| `git tag --list --sort=-v:refname \| head` | 자릿수(`v1.2.3` vs `v1.2`)와 접두사 `v` — 기존 형식을 바꾸지 않는다. **태그가 하나도 없으면** 형식(자릿수·접두사·시작 번호 `0.1.0`/`1.0.0`)을 스스로 정하지 않고 사용자에게 묻는다 |
+| `git tag --list --sort=-v:refname \| head` | 자릿수(`v1.2.3` vs `v1.2`)와 접두사 `v`<br>기존 형식을 바꾸지 않는다. **태그가 하나도 없으면** 형식(자릿수·접두사·시작 번호 `0.1.0`/`1.0.0`)을 스스로 정하지 않고 사용자에게 묻는다 |
 | `CHANGELOG.md` | Keep a Changelog 형식, `[Unreleased]` 누적 여부. 없으면 만들지 여부를 확인 |
 | `.github/workflows/release*.yml`, `.github/release-notes/`, `scripts/release-check.sh` | 태그 push로 Release가 자동 생성되는지, 노트 파일을 태그 전에 만들어야 하는지, 검증 스크립트가 있는지 |
 | 버전이 박힌 파일 | `package.json`, `pyproject.toml`, 스크립트 안 `SCRIPT_VERSION`, HTML 도구 안 `vX.Y`, README 배지 / `Version History` 표 |

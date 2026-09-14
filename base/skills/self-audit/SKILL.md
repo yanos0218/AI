@@ -10,7 +10,8 @@ allowed-tools: Bash(ls*) Bash(wc -l*) Bash(gh issue list*) Bash(gh label list*)
 
 ## 0. 시작 전 확인
 
-- 저장소 `CLAUDE.md`·`docs/`, 전역 `~/.claude/CLAUDE.md`·`~/.claude/rules/*.md`를 전부 읽는다 — 감사 대상 기준.
+- 저장소 `CLAUDE.md`·`docs/`, 전역 `~/.claude/CLAUDE.md`·`~/.claude/rules/*.md`를 전부 읽는다
+  - 감사 대상 기준.
 - 감사 표시 파일(`references/method.md` 1절)로 지난 감사 이후 세션 수를 센다. 처음이면 최신 것부터 상한까지만.
 - 세션 개수를 한 줄로 알리고 진행한다.
 
@@ -29,10 +30,12 @@ self-audit
 
 ## 2. 참고 자료
 
-- `references/method.md` — 표시 파일 형식, 서브에이전트 지시문 원문, 세션·용량 상한, Issue 작성 형식. 2·5·6단계에서 읽는다.
+- `references/method.md`
+  - 표시 파일 형식, 서브에이전트 지시문 원문, 세션·용량 상한, Issue 작성 형식. 2·5·6단계에서 읽는다.
 
 ## 하지 않는 것
 
 - 사용자 확인 없이 CLAUDE.md·규칙 문서를 직접 고치지 않는다. 후보 제시까지만 자동, 반영은 항상 승인 후.
-- 세션이 안 쌓였는데 먼저 나서서 실행하지 않는다 — 알려주는 건 훅(`session-start-check.sh`) 몫, 실행은 사용자가 말할 때만.
+- 세션이 안 쌓였는데 먼저 나서서 실행하지 않는다
+  - 알려주는 건 훅(`session-start-check.sh`) 몫, 실행은 사용자가 말할 때만.
 - 대화 기록 원문을 본 세션에 그대로 붙이지 않는다. 서브에이전트가 요약(표)만 반환한다.
