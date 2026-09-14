@@ -29,8 +29,11 @@ scripts/release-check.sh vX.Y.Z              # 있으면
 
 ## 2. 자동 Release 워크플로가 있는 저장소
 
-- **태그 push로 자동 트리거**: 노트 파일(`.github/release-notes/vX.Y.Z.md` 등)을 요구하는 워크플로면 **태그 push 전에** 커밋돼 있어야 한다. 워크플로 신설 이전에 push된 태그는 자동으로 안 걸리므로 Actions 탭에서 `Run workflow`로 수동 실행.
-- **`workflow_dispatch`만 있는 경우**: 태그는 손으로 push하고, Actions에서 입력값(태그·제목)을 넣어 실행한다.
+- **태그 push로 자동 트리거**
+  - 노트 파일(`.github/release-notes/vX.Y.Z.md` 등)을 요구하는 워크플로면 **태그 push 전에** 커밋돼 있어야 한다.
+  - 워크플로 신설 이전에 push된 태그는 자동으로 안 걸리므로 Actions 탭에서 `Run workflow`로 수동 실행.
+- **`workflow_dispatch`만 있는 경우**
+  - 태그는 손으로 push하고, Actions에서 입력값(태그·제목)을 넣어 실행한다.
 - 실행 후 `gh run list --workflow=<파일명> --limit 1`과 `gh release view vX.Y.Z`로 결과를 확인하고 사용자에게 보고한다.
 
 ## 3. 버전이 박힌 파일 — 플랫폼별
