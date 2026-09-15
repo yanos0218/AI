@@ -14,6 +14,7 @@ except (FileNotFoundError, TypeError):
 colon_pat = re.compile(r'^(\s*(?:[-*]|\d+\.)\s+|\s*)(\*\*[^*]+\*\*|`[^`]+`|[^\s:][^:]{0,40}?)\s*[:：]\s+\S')
 enum_hint = re.compile(r'(\d\s*(개|종|가지|건)|둘|셋|넷|다섯|\([0-9]\)|\([a-z]\))')
 link_pat = re.compile(r'\[[^\]]*—[^\]]*\]\(')
+linkref_pat = re.compile(r'^\[.+?\]:\s*\S')
 bullet_prefix = re.compile(r'^\s*(?:[-*]|\d+\.)\s+')
 code_or_bold_label = re.compile(r'^(`[^`]+`|\*\*[^*]+\*\*)$')
 
@@ -52,6 +53,8 @@ def check_line(stripped):
     t = stripped.strip()
     if not t or t.startswith(('#', '>', '|', '```')):
         return None
+    if linkref_pat.match(t):
+        return None  # 마크다운 링크 참조 정의([label]: url) — 라벨:설명 크램이 아니다
     if t in exceptions:
         return None
     for m in re.finditer(r'\s—\s', stripped):

@@ -8,3 +8,6 @@
 - (괄호 안 — 중첩된 대시는 예외)
 - 코드 안 `이것: 은 예외` 처리
 - [저자 — 제목](https://example.com)
+- 변경 이력은 [Unreleased]에 쌓는다.
+
+[Unreleased]: https://github.com/example/repo/compare/v1.0.0...HEAD
