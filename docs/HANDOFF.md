@@ -6,10 +6,10 @@
 
 Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원본 저장소. 개발자가 아닌 사용자가 여러 스택의 프로젝트를 오가며 Claude에게 (1) 매번 같은 배경을 다시 설명하지 않고, (2) 멋대로 진행하거나 너무 자주 묻지 않게 하고, (3) 검증 없이 "됐다"는 말을 못 하게 하고, (4) 결론만 짧게 듣도록 만든다. 저장소별 규칙은 각 저장소에 두고 여기서는 **참조만** 한다.
 
-## 현재 상태 (2026-09-14) · 마지막 월 점검: 없음 (첫 점검 2026-10 예정, `docs/monthly-check.md`)
+## 현재 상태 (2026-09-15) · 마지막 월 점검: 없음 (첫 점검 2026-10 예정, `docs/monthly-check.md`)
 
 - 저장소 v0.9.1 그대로
-  - 9/14 작업(목록 줄바꿈 규칙 소급 적용 2~3차, 이슈 sub-issue 연결 정비)은 문서 재구성이라 컷 없음(`versioning.md` "문서만 대량 재구성" 기준). CI(`lint.yml`) 초록.
+  - 9/14 문서 재구성분은 컷 대상 아님(`versioning.md` 기준). 9/15 신규 훅(`base/hooks/bulk-read-log.sh`)은 다음 컷 때 MINOR 근거가 되지만, 컷 시점 3가지(기기 설치·월 점검·명시 요청) 중 해당이 없어 지금은 컷 안 함. CI(`lint.yml`) 초록.
   - 배포 현황은 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본. Windows는 v0.9.1, Mac·웹은 v0.6.0, Linux는 미반영.
 - 할 일·발견한 문제는 GitHub Issues로 관리한다([Issue #11](https://github.com/yanos0218/AI/issues/11), 2026-09-12). 완료 이력은 [PROGRESS.md §1](PROGRESS.md#1-완료)에 짧은 색인 + 이슈 링크로.
 - Script 저장소 이력에서 개인키 발견
@@ -42,3 +42,6 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
   - 훅의 `hookSpecificOutput`엔 선택지를 보여줄 필드가 없음.
   - 대신 방법이 여럿인 확인은 계획 단계에서 AskUserQuestion으로 먼저 정하고, 훅은 실행 직전 마지막 확인만 담당하도록 역할을 나눴다.
   - 훅 reason도 패턴별로 구체화([Issue #65](https://github.com/yanos0218/AI/issues/65)).
+- (2026-09-15) 목록 줄바꿈 규칙 위반은 사람이 수동으로 재검색하는 대신 `tools/check-cram.sh`가 커밋 시 기계적으로 검사·차단한다([Issue #99](https://github.com/yanos0218/AI/issues/99)).
+- (2026-09-15) PreToolUse/PostToolUse 훅은 매 도구 호출마다 Claude에게 실시간으로 알림을 보여줄 수 없다(실제 세션 3개로 확인)
+  - 서브에이전트 위임 습관은 `bulk-read-log.sh`의 사후 로그 + `session-start-check.sh`의 개수 기준(10건) 점검으로 대체([Issue #100](https://github.com/yanos0218/AI/issues/100)).

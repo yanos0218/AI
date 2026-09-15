@@ -23,6 +23,7 @@
 | 장치 | 무엇 | 상태 |
 | --- | --- | --- |
 | `config-changelog` 훅 | Claude가 `~/.claude/{CLAUDE.md, settings*.json, rules/, hooks/}`를 편집하면 `~/.claude/config-changelog.md`에 시각·도구·대상·작업 폴더를 한 줄 기록. 막지 않고 남기기만 | 기본 `base/hooks/config-changelog.sh` (v0.4.0), `settings.example.json`의 PostToolUse에 등록 |
+| `bulk-read-log` 훅 | 서브에이전트 위임 없이 직접 실행한 대량 조회 명령을 `~/.claude/bulk-read-log.md`에 기록. `session-start-check.sh`가 10건 넘으면 다음 세션에서 알려줌(실시간 알림은 PreToolUse/PostToolUse가 Claude에게 못 보여줘 기술적으로 불가함을 실제 세션으로 확인, 2026-09-15) | 기본 `base/hooks/bulk-read-log.sh`, [Issue #100](https://github.com/yanos0218/AI/issues/100) |
 | `tools/check-install.sh` | 설치본과 `base/` 대조(DIFF/MISSING), `rules/` 목록, 프로젝트별 `settings.local.json`에 쌓인 권한 목록, 변경 이력 꼬리 20줄 | 사용 가능 |
 | 월 점검 ([Issue #42](https://github.com/yanos0218/AI/issues/42)) | 위 둘의 출력을 보고 결정: 여러 저장소에 반복된 권한 → `base/settings.example.json` 승격, 좋은 변경 → `base/`에 반영 후 재설치, 나쁜 변경 → 재설치로 되돌림 | 규칙 |
 

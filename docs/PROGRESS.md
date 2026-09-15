@@ -51,7 +51,7 @@
 | 사업기획용 스킬 | 계획 (요구사항 미정) | | | | | [Issue #8](https://github.com/yanos0218/AI/issues/8) |
 | 이 저장소 CI (lint.yml + check-docs.sh) | 기본 (첫 Actions 실행 success, 2026-09-08) | 저장소 안에서만 | 동일 | 동일 | - | - |
 | 성향 데이터 → 전역 지침 후보 | 초안 (`drafts/observations/`, `/insights` 후보 1건 → [Issue #15](https://github.com/yanos0218/AI/issues/15)) | | | | | [Issue #9](https://github.com/yanos0218/AI/issues/9)/[Issue #15](https://github.com/yanos0218/AI/issues/15), 월 점검 |
-| GitHub 활용 (`@claude` Actions) | 결정 대기 (web은 [Issue #30](https://github.com/yanos0218/AI/issues/30)로 이미 결정) | | | | | [Issue #61](https://github.com/yanos0218/AI/issues/61) |
+| GitHub 활용 (`@claude` Actions) | 보류 (PR 습관 생기기 전엔 재검토 안 함, [Issue #61](https://github.com/yanos0218/AI/issues/61) 2026-09-13. web은 [Issue #30](https://github.com/yanos0218/AI/issues/30)로 이미 결정) | | | | | §5 참고 |
 
 ## 1. 완료
 
