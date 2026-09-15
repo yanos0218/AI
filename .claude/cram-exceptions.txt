@@ -1,0 +1,4 @@
+# tools/check-cram.sh 예외 목록. 한 줄에 하나, 크램으로 오탐된 줄의 정확한(trim된) 텍스트.
+# `tools/check-cram.sh --add-exception <file> <line>`로 등록한다.
+# 쌓이는 예외에서 공통 패턴이 보이면(예: 특정 필드명 반복) docs-format.md 예외 규칙이나
+# 이 스크립트의 휴리스틱에 반영할 후보로 검토한다(월 점검 항목, Issue #99).

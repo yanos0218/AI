@@ -85,6 +85,8 @@
 ## 공통
 
 - 목록 항목·표 셀에서 주어와 설명을 `—`나 `:`로 이어쓰지 않는다([base/rules/docs-format.md](../base/rules/docs-format.md)).
+  - 로컬 `.md`는 커밋 시 `pre-commit-check.sh`가 자동 검사하지만, `gh issue comment`·`gh issue close --comment`·`gh release create/edit`는 git 커밋이 아니라 훅이 못 본다
+    - 본문을 파일로 쓴 뒤 `tools/check-cram.sh <파일>`로 확인하고 나서 올린다(Issue #99).
 - 완료해서 닫을 때 커밋에 `Closes #N`을 쓰면 자동으로 닫힌다.
 - **제목은 마크다운을 렌더링하지 않는다.** 백틱·`**`·`[]()` 등을 쓰면 기호가 그대로 보인다
   - 파일·명령어를 제목에 넣을 땐 기호 없이 그대로(예: `` `tools/pack.sh` `` 대신 `tools/pack.sh`).

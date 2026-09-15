@@ -30,10 +30,15 @@
   - `error` 라벨 신설(`bug`와 구분, [Issue #83](https://github.com/yanos0218/AI/issues/83))
   - "이슈 수명 관리" 절 추가: 하나의 목표는 이슈 하나로 유지, 파생 작업은 sub-issue로 연결([Issue #92](https://github.com/yanos0218/AI/issues/92))
   - 이슈 제목은 마크다운을 렌더링하지 않으니 기호 없이 쓴다는 규칙 추가([Issue #95](https://github.com/yanos0218/AI/issues/95))
+  - git 훅이 못 보는 GitHub 댓글·릴리즈 노트는 `tools/check-cram.sh`를 수동으로 돌리라는 절 추가([Issue #99](https://github.com/yanos0218/AI/issues/99))
 - `docs/research.md` §3
   - 조사 이슈 형식을 "다시 볼 시점" 대신 "조사일"+"출처"로 변경(버전 등급 미반영 — `docs/` 전용, [Issue #84](https://github.com/yanos0218/AI/issues/84))
 - `docs/monthly-check.md`
   - 파생 관계인데 sub-issue로 안 묶인 것 없는지 점검하는 항목 추가([Issue #94](https://github.com/yanos0218/AI/issues/94))
+  - 크램 검사 예외 목록을 검토해 휴리스틱에 반영하는 항목 추가([Issue #99](https://github.com/yanos0218/AI/issues/99))
+- `tools/check-cram.sh`·`tools/check-cram.py`
+  - 목록 줄바꿈 규칙(콜론·em-dash 크램) 자동 검사 도구 신설. `--staged`로 커밋 전 자동 검사, `--add-exception`으로 오탐 예외 등록
+  - `.claude/hooks/pre-commit-check.sh`에 연결해 스테이징된 `.md`의 크램을 커밋 차단(deny)([Issue #99](https://github.com/yanos0218/AI/issues/99))
 
 ### Fixed
 

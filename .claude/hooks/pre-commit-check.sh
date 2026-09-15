@@ -13,6 +13,11 @@
 #
 # 명령을 스크립트 파일로 감싸면(bash x.sh) 문자열 매칭이 뚫리는 우회가 실제
 # 사고로 확인돼, 그런 형태면 스크립트 내용까지 같이 검사한다(Issue #73).
+#
+# 목록 줄바꿈 규칙(라벨: 흐르는 문장 / 라벨 — 흐르는 문장 크램)도 수동 재검색만으로는
+# 매번 뭔가 놓쳐서(2026-09-15, 4라운드 동안 계속 새 미비 발견) tools/check-cram.sh로
+# 커밋 단계에서 기계적으로 잡는다. 정규식 휴리스틱이라 오탐 시 --add-exception으로
+# 예외 등록(Issue #99).
 set -u
 cd "$(dirname "${0}")/../.." || exit 0
 
@@ -60,6 +65,14 @@ if [[ -n "${sh_files}" ]]; then
   if ! out=$(printf '%s\n' "${sh_files}" | xargs npx --yes shellcheck -S warning 2>&1); then
     fail=1
     msg="${msg}\\nshellcheck 실패:\\n$(printf '%s' "${out}" | tail -8)"
+  fi
+fi
+
+# 3.5. 목록 줄바꿈 규칙(콜론·em-dash 크램) — 스테이징된 .md diff의 추가된 줄만(Issue #99)
+if git diff --cached --name-only --diff-filter=ACM 2>/dev/null | grep -q '\.md$'; then
+  if ! out=$(bash tools/check-cram.sh --staged 2>&1); then
+    fail=1
+    msg="${msg}\\n목록 줄바꿈 규칙 위반(크램):\\n$(printf '%s' "${out}" | head -10)\\n오탐이면 tools/check-cram.sh --add-exception <file> <line>"
   fi
 fi
 
