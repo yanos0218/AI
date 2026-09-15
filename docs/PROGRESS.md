@@ -41,6 +41,7 @@
 | 서브에이전트 재귀 차단(`env.CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`) | 기본 (새 세션에서 재귀 시도 → 차단 실측 확인 2026-09-13, [Issue #75](https://github.com/yanos0218/AI/issues/75)) | ✓ v0.9.0 | ✗ | ✗ | - | Mac·Linux 설치 시 |
 | `base/vscode/` 확장 목록·설정·설치 스크립트 | 기본 | ✓ v0.3.0 | ✓ 확장 13개 (2026-09-09, Settings Sync가 안 켜져 있어 `install.sh`로 설치. settings.json은 기존 것 유지) | - | - | - |
 | baseline-guard·session-end-check 훅 (이 저장소 전용, `.claude/`) | 기본 (새 세션 차단 확인 2026-09-08 / 트리 상태 시험 2026-09-09) | 저장소 안에서만 동작 | 동일 | 동일 | - | - |
+| `tools/check-cram.sh` 목록 크램 검사 (이 저장소 전용) | 기본 (픽스처 회귀 시험 + 커밋 시뮬레이션 통과 2026-09-15, [Issue #99](https://github.com/yanos0218/AI/issues/99)) | 저장소 안에서만 동작(`pre-commit-check.sh` 연결) | 동일 | 동일 | - | - |
 | dev-workflow 스킬 | 기본 (3시나리오 통과 2026-09-09, v0.5.0) | ✓ | ✓ | ✗ | ✓ v0.6.0 (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
 | 모듈 규칙 `base/rules/docs-format.md` | 기본 (v0.5.0) | ✓ | ✓ | ✗ | - | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
 | repo-setup 스킬 | 기본 (3시나리오 통과 2026-09-09, v0.6.0) | ✓ v0.8.0 (2026-09-13) | ✓ v0.6.0 | ✗ | ✓ v0.6.0 (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
