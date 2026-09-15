@@ -17,14 +17,27 @@
 - 강화된 규칙을 로컬 `.md` 파일 전체와 GitHub Issue 본문 10개에 소급 적용
   - `.md` 파일: [Issue #88](https://github.com/yanos0218/AI/issues/88)·[Issue #89](https://github.com/yanos0218/AI/issues/89)·[Issue #90](https://github.com/yanos0218/AI/issues/90)
   - GitHub Issue 본문(#58, #60, #62, #63, #71, #75, #79, #81, #83, #88): [Issue #91](https://github.com/yanos0218/AI/issues/91)
+- `base/rules/docs-format.md`
+  - `—`뿐 아니라 `:`(콜론) 기반 "라벨: 설명" 크램도 같은 기준으로 대상에 포함, 나열 도입 콜론("형식: A, B, C")은 예외로 명시([Issue #93](https://github.com/yanos0218/AI/issues/93))
+  - 적용 범위를 "`.md` 파일 → Issue·PR 본문 → Release 노트"처럼 하나씩 나열하며 매번 뭔가 빠뜨리던 것을, "Claude가 쓰는 텍스트 전부가 기본값"인 포괄형으로 변경(댓글·닫을 때 코멘트 포함, [Issue #95](https://github.com/yanos0218/AI/issues/95)·[Issue #96](https://github.com/yanos0218/AI/issues/96))
+- 콜론 기반 규칙을 로컬 `.md` 파일 전체·GitHub Issue 본문 40건·댓글 17건에 소급 적용([Issue #93](https://github.com/yanos0218/AI/issues/93)·[Issue #97](https://github.com/yanos0218/AI/issues/97))
 
 ### Added
 
 - `docs/issue-format.md`
   - 이슈 라벨별 작성 형식 4종(개발/버그·에러/조사/제안) 정의
   - `error` 라벨 신설(`bug`와 구분, [Issue #83](https://github.com/yanos0218/AI/issues/83))
+  - "이슈 수명 관리" 절 추가: 하나의 목표는 이슈 하나로 유지, 파생 작업은 sub-issue로 연결([Issue #92](https://github.com/yanos0218/AI/issues/92))
+  - 이슈 제목은 마크다운을 렌더링하지 않으니 기호 없이 쓴다는 규칙 추가([Issue #95](https://github.com/yanos0218/AI/issues/95))
 - `docs/research.md` §3
   - 조사 이슈 형식을 "다시 볼 시점" 대신 "조사일"+"출처"로 변경(버전 등급 미반영 — `docs/` 전용, [Issue #84](https://github.com/yanos0218/AI/issues/84))
+- `docs/monthly-check.md`
+  - 파생 관계인데 sub-issue로 안 묶인 것 없는지 점검하는 항목 추가([Issue #94](https://github.com/yanos0218/AI/issues/94))
+
+### Fixed
+
+- 파생 이슈 15건(#65~#93 계열)이 본문에 언급만 되고 sub-issue로 연결 안 된 채 방치된 걸 소급 연결([Issue #94](https://github.com/yanos0218/AI/issues/94))
+- 이슈 제목 11건에서 렌더링 안 되는 백틱 제거, GitHub Release 노트 2건(v0.2.0, v0.9.0)의 콜론 크램 수정([Issue #95](https://github.com/yanos0218/AI/issues/95))
 
 ## [0.9.1] - 2026-09-14
 
