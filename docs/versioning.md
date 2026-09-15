@@ -9,7 +9,7 @@
 
 ## 등급
 
-기본 영역(`base/claude-md/`, `base/skills/<이름>/`, `scripts/`, `base/vscode/`)의 변경만 등급에 반영한다. `docs/`, `drafts/`, `.claude/`, README만 바뀐 것은 버전을 올리지 않는다.
+기본 영역(`base/claude-md/`, `base/skills/<이름>/`, `base/hooks/`, `base/rules/`, `base/settings.example.json`, `scripts/`, `base/vscode/`)의 변경만 등급에 반영한다. `docs/`, `drafts/`, `.claude/`, README만 바뀐 것은 버전을 올리지 않는다.
 
 | 등급 | 조건 | 예 |
 | --- | --- | --- |
