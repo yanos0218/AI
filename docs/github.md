@@ -2,7 +2,9 @@
 
 Claude와 GitHub를 엮는 방법은 크게 넷이다. 아래는 **사용자 저장소 현황(2026-09-08 `gh`로 조사)**과 대조한 결과이며, 상태 표기는 위 검토표와 같다(**결정 필요**는 사용자 판단이 있어야 하는 것).
 
-현황(2026-09-08 조사, AI 저장소는 2026-09-12에 예외로 바뀜 — 아래 표): 저장소 11개 전부 비공개, GitHub Free 플랜(브랜치 보호 불가 — Pro 필요). 이슈 0개(백로그는 각 저장소 `docs/PROGRESS.md`의 `P-NN`). PR은 kolo_pwa·kolo-api가 Dependabot뿐이고 OpenClaw만 Codex(OpenAI 클라우드 에이전트)가 만든 PR 18개 — 즉 사람이 브랜치→PR을 쓰는 습관은 없고 `main` 직접 push. Actions는 kolo_pwa(`test.yml` 경로 필터로 분 절약, `release.yml` 태그 push→Release)·OpenClaw(`lint.yml`, `release.yml`)에 있고 Release는 각각 30·42개.
+현황(2026-09-08 조사, AI 저장소는 2026-09-12에 예외로 바뀜, 아래 표)
+
+저장소 11개 전부 비공개, GitHub Free 플랜(브랜치 보호 불가 — Pro 필요). 이슈 0개(백로그는 각 저장소 `docs/PROGRESS.md`의 `P-NN`). PR은 kolo_pwa·kolo-api가 Dependabot뿐이고 OpenClaw만 Codex(OpenAI 클라우드 에이전트)가 만든 PR 18개 — 즉 사람이 브랜치→PR을 쓰는 습관은 없고 `main` 직접 push. Actions는 kolo_pwa(`test.yml` 경로 필터로 분 절약, `release.yml` 태그 push→Release)·OpenClaw(`lint.yml`, `release.yml`)에 있고 Release는 각각 30·42개.
 
 | 방법 | 무엇을 해주나 | 상태 | 비고 |
 | --- | --- | --- | --- |
@@ -16,7 +18,9 @@ Claude와 GitHub를 엮는 방법은 크게 넷이다. 아래는 **사용자 저
 | GitHub 이슈를 백로그로 | 커뮤니티는 `gh issue create`로 할 일을 만들고 `@claude`에 넘기는 흐름을 씀 | AI 저장소는 채택(2026-09-12) | 개인용 저장소는 문제(`bug`)+할 일(`task`) 통합, 진행 보드는 배포 표만. 다른 저장소는 여전히 `docs/PROGRESS.md` + `P-NN`. 기준은 `docs/repo-standard.md` 항목5 |
 | 이 저장소 CI | markdownlint·shellcheck | 할 일 | `docs/PROGRESS.md` [Issue #52](https://github.com/yanos0218/AI/issues/52) |
 
-추천 순서: PR 습관(브랜치에서 작업 → `gh pr create` → merge)을 먼저 한 저장소에서 시도하고, 그게 편하면 Claude Code on the web을 켠다. `@claude` Actions는 이슈를 쓰기 시작할 때.
+추천 순서
+
+PR 습관(브랜치에서 작업 → `gh pr create` → merge)을 먼저 한 저장소에서 시도하고, 그게 편하면 Claude Code on the web을 켠다. `@claude` Actions는 이슈를 쓰기 시작할 때.
 
 ## GitHub 기능 전체 대비 사용 수준 (2026-09-08)
 
@@ -41,11 +45,15 @@ Claude와 GitHub를 엮는 방법은 크게 넷이다. 아래는 **사용자 저
 | Actions secrets·Environments | 0개 | 필요할 때 | `@claude` Actions를 켜면 토큰 1개가 처음 생김 |
 | 2FA | 확인 불가(토큰 권한 부족) | **확인** | GitHub 필수화 대상. Settings → Password and authentication |
 
-**효과가 나는 최소 수준**: (1) 커밋·push, (2) 태그·Release, (3) Actions로 테스트 — 이 셋은 이미 하고 있다. 그다음 한 단계는 PR인데, 이건 GitHub 자체 때문이 아니라 Claude 자동화(위 표의 "결정 필요" 2건)를 쓸 때 비로소 값어치가 생긴다.
+효과가 나는 최소 수준은 이렇다.
+
+(1) 커밋·push, (2) 태그·Release, (3) Actions로 테스트 — 이 셋은 이미 하고 있다. 그다음 한 단계는 PR인데, 이건 GitHub 자체 때문이 아니라 Claude 자동화(위 표의 "결정 필요" 2건)를 쓸 때 비로소 값어치가 생긴다.
 
 ## Claude Code on the web 켜기 (C-18 채택, 2026-09-09)
 
-결정: `@claude` Actions는 보류하고, **Claude Code on the web**을 OpenClaw에서 먼저 쓴다. OpenClaw가 Codex 클라우드 PR을 쓰던 자리라 PR 흐름이 이미 있고, Actions 분을 쓰지 않으며, 폰에서 지시하고 PR의 CI 실패·리뷰 코멘트를 자동 수정(auto-fix)할 수 있다.
+결정
+
+`@claude` Actions는 보류하고, **Claude Code on the web**을 OpenClaw에서 먼저 쓴다. OpenClaw가 Codex 클라우드 PR을 쓰던 자리라 PR 흐름이 이미 있고, Actions 분을 쓰지 않으며, 폰에서 지시하고 PR의 CI 실패·리뷰 코멘트를 자동 수정(auto-fix)할 수 있다.
 
 | 순서 | 무엇 | 누가 |
 | --- | --- | --- |
@@ -55,7 +63,9 @@ Claude와 GitHub를 엮는 방법은 크게 넷이다. 아래는 **사용자 저
 | 4 | 첫 작업: claude.ai/code에서 OpenClaw 선택 → Plan 모드로 작은 문서 작업 하나 → diff 확인 → Create PR → merge. 터미널에서는 `claude --cloud "작업 설명"`(현재 폴더가 OpenClaw 클론일 때) | 사용자 |
 | 5 | 한 달 뒤 판단: PR 리뷰 부담, 세션 한도 소모, Codex 대비 품질 | 월 점검 |
 
-주의: 클라우드 세션은 플랜 한도를 공유하고, 병렬 세션은 그만큼 더 쓴다. `--teleport`로 로컬에 가져오면 이후 작업은 로컬 문맥이다.
+주의
+
+클라우드 세션은 플랜 한도를 공유하고, 병렬 세션은 그만큼 더 쓴다. `--teleport`로 로컬에 가져오면 이후 작업은 로컬 문맥이다.
 
 ## Actions 제한과 방지
 
