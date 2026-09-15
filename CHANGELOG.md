@@ -39,6 +39,7 @@
 - `tools/check-cram.sh`·`tools/check-cram.py`
   - 목록 줄바꿈 규칙(콜론·em-dash 크램) 자동 검사 도구 신설. `--staged`로 커밋 전 자동 검사, `--add-exception`으로 오탐 예외 등록
   - `.claude/hooks/pre-commit-check.sh`에 연결해 스테이징된 `.md`의 크램을 커밋 차단(deny)([Issue #99](https://github.com/yanos0218/AI/issues/99))
+  - 라벨이 백틱·볼드로 감싼 파일명·기능명이면 길이 무관하게 항상 검출하도록 보완(일반 텍스트 필드명 라벨만 길이로 관대하게, [Issue #99](https://github.com/yanos0218/AI/issues/99))
 
 ### Fixed
 
