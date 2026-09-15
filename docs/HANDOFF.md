@@ -8,9 +8,9 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 
 ## 현재 상태 (2026-09-15) · 마지막 월 점검: 없음 (첫 점검 2026-10 예정, `docs/monthly-check.md`)
 
-- 저장소 v0.9.1 그대로
-  - 9/14 문서 재구성분은 컷 대상 아님(`versioning.md` 기준). 9/15 신규 훅(`base/hooks/bulk-read-log.sh`)은 다음 컷 때 MINOR 근거가 되지만, 컷 시점 3가지(기기 설치·월 점검·명시 요청) 중 해당이 없어 지금은 컷 안 함. CI(`lint.yml`) 초록.
-  - 배포 현황은 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본. Windows는 v0.9.1, Mac·웹은 v0.6.0, Linux는 미반영.
+- 저장소 v0.10.0(MINOR, 2026-09-15 컷)
+  - 신규 훅 `bulk-read-log.sh` 추가 + `git-guardrails.sh`·`session-start-check.sh` 기능 확장. CI(`lint.yml`) 초록.
+  - 배포 현황은 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본. Windows는 v0.10.0, Mac·웹은 v0.6.0, Linux는 미반영.
 - 할 일·발견한 문제는 GitHub Issues로 관리한다([Issue #11](https://github.com/yanos0218/AI/issues/11), 2026-09-12). 완료 이력은 [PROGRESS.md §1](PROGRESS.md#1-완료)에 짧은 색인 + 이슈 링크로.
 - Script 저장소 이력에서 개인키 발견
   - 처리는 그 저장소 일, 아직 사용자 결정 대기.
