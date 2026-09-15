@@ -32,7 +32,7 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | 전역 지침 `base/claude-md/CLAUDE.md` | 기본 | ✓ v0.9.1 (2026-09-14) | ✓ v0.6.0 | ✗ | ✓ Project instructions (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
 | dev-release 스킬 | 기본 (3시나리오 통과 2026-09-08, 0단계 미인증 시나리오 통과 2026-09-09) | ✓ v0.5.0 (2026-09-12) | ✓ v0.5.0 | ✗ | ✓ v0.6.0 (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
-| git-guardrails 훅 | 기본 (새 세션 push 차단 확인 2026-09-08) | ✓ | ✓ | ✗ | - | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
+| git-guardrails 훅 | 기본 (새 세션 push 차단 확인 2026-09-08, push 시 문서 갱신 상기 문구 5시나리오 확인 2026-09-15 [Issue #102](https://github.com/yanos0218/AI/issues/102)) | ✓ | ✓ | ✗ | - | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
 | gh-throttle 훅 | 기본 (mkdir 락 기반 실제 직렬화로 개선, 병렬 3개 실측 확인 2026-09-13, [Issue #74](https://github.com/yanos0218/AI/issues/74)) | ✓ v0.9.0 | ✗ | ✗ | - | Mac·Linux 설치 시 |
 | session-start-check 훅(SessionStart) | 기본 (설정 버전·저장소 표준 4시나리오 2026-09-12 + self-audit 안내 4시나리오 2026-09-13 + 대량 조회 누적 알림 2026-09-15 직접 실행 확인) | ✓ | ✗ | ✗ | - | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
 | `bulk-read-log.sh` 훅(PostToolUse) | 기본 (기록·초기화 흐름 직접 실행 확인 2026-09-15, [Issue #100](https://github.com/yanos0218/AI/issues/100)) | ✓ | ✗ | ✗ | - | [Issue #6](https://github.com/yanos0218/AI/issues/6) |

@@ -22,6 +22,8 @@
   - 적용 범위를 "`.md` 파일 → Issue·PR 본문 → Release 노트"처럼 하나씩 나열하며 매번 뭔가 빠뜨리던 것을, "Claude가 쓰는 텍스트 전부가 기본값"인 포괄형으로 변경(댓글·닫을 때 코멘트 포함, [Issue #95](https://github.com/yanos0218/AI/issues/95)·[Issue #96](https://github.com/yanos0218/AI/issues/96))
 - 콜론 기반 규칙을 로컬 `.md` 파일 전체·GitHub Issue 본문 40건·댓글 17건에 소급 적용([Issue #93](https://github.com/yanos0218/AI/issues/93)·[Issue #97](https://github.com/yanos0218/AI/issues/97))
 - 저장소 전체 재검색으로 놓친 크램 추가 발견·수정: `drafts/observations/*.md`, `docs/github.md`(목록 항목이 아니라 문단 크램), `docs/issue-format.md` 자기모순 1건([Issue #98](https://github.com/yanos0218/AI/issues/98))
+- `base/hooks/git-guardrails.sh`
+  - `git push` 확인 문구에 관련 문서(`.md`) 갱신 상기 추가. 이번 push에 실제 포함된 `.md` 목록을 보여주고, 특정 파일로 못 박지 않고 "나열 안 된 다른 문서에도 걸쳐 있을 수 있다"고 안내([Issue #102](https://github.com/yanos0218/AI/issues/102))
 
 ### Added
 
