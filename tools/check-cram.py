@@ -14,6 +14,12 @@ except (FileNotFoundError, TypeError):
 colon_pat = re.compile(r'^(\s*(?:[-*]|\d+\.)\s+|\s*)(\*\*[^*]+\*\*|`[^`]+`|[^\s:][^:]{0,40}?)\s*[:：]\s+\S')
 enum_hint = re.compile(r'(\d\s*(개|종|가지|건)|둘|셋|넷|다섯|\([0-9]\)|\([a-z]\))')
 link_pat = re.compile(r'\[[^\]]*—[^\]]*\]\(')
+bullet_prefix = re.compile(r'^\s*(?:[-*]|\d+\.)\s+')
+code_or_bold_label = re.compile(r'^(`[^`]+`|\*\*[^*]+\*\*)$')
+
+# 규칙 원문(docs-format.md)이 "주어(파일명·기능명 등)"라고 명시한다: 라벨이 백틱·볼드로
+# 감싼 코드/기능명이면 "필드명: 값" 예외가 아니라 항상 대상 — 짧아도(길이 무관) 플래그.
+# 라벨이 일반 텍스트(질문/결론/이관/결정 같은 필드명)면 여전히 길이로 관대하게 봐준다.
 
 
 def paren_depth_at(s, idx):
@@ -52,6 +58,9 @@ def check_line(stripped):
         idx = m.start()
         if paren_depth_at(stripped, idx) > 0 or in_backtick(stripped, idx) or in_link_title(stripped, idx):
             continue
+        subject = bullet_prefix.sub('', stripped[:idx]).strip()
+        if code_or_bold_label.match(subject):
+            return 'emdash'  # 파일명·기능명 라벨 — 길이 무관하게 항상 대상
         if len(t) > 25:
             return 'emdash'
         break
@@ -60,11 +69,15 @@ def check_line(stripped):
         colon_idx = stripped.find(':', m.start(2))
         if colon_idx == -1:
             colon_idx = stripped.find('：', m.start(2))
-        if colon_idx != -1 and paren_depth_at(stripped, colon_idx) == 0 and not in_backtick(stripped, colon_idx) and len(t) > 25:
+        if colon_idx != -1 and paren_depth_at(stripped, colon_idx) == 0 and not in_backtick(stripped, colon_idx):
             after = stripped[colon_idx + 1:]
             if after.count(',') + after.count('·') >= 1 or enum_hint.search(t):
                 return None
-            return 'colon'
+            label = m.group(2).strip()
+            if code_or_bold_label.match(label):
+                return 'colon'  # 파일명·기능명 라벨 — 길이 무관하게 항상 대상
+            if len(t) > 25:
+                return 'colon'
     return None
 
 
