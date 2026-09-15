@@ -40,6 +40,11 @@
   - 목록 줄바꿈 규칙(콜론·em-dash 크램) 자동 검사 도구 신설. `--staged`로 커밋 전 자동 검사, `--add-exception`으로 오탐 예외 등록
   - `.claude/hooks/pre-commit-check.sh`에 연결해 스테이징된 `.md`의 크램을 커밋 차단(deny)([Issue #99](https://github.com/yanos0218/AI/issues/99))
   - 라벨이 백틱·볼드로 감싼 파일명·기능명이면 길이 무관하게 항상 검출하도록 보완(일반 텍스트 필드명 라벨만 길이로 관대하게, [Issue #99](https://github.com/yanos0218/AI/issues/99))
+- `base/hooks/bulk-read-log.sh`(PostToolUse)
+  - 대량 조회로 보이는 명령(`gh issue list --json body/comments`, 큰 `--limit` 등)을 `~/.claude/bulk-read-log.md`에 조용히 기록
+  - PreToolUse/PostToolUse가 매 호출마다 Claude에게 실시간으로 알리는 건 기술적으로 안 됨을 실제 세션 3개로 확인하고 채택한 대안([Issue #100](https://github.com/yanos0218/AI/issues/100))
+- `base/hooks/session-start-check.sh`
+  - 4번 확인 추가: 대량 조회 로그가 10건 넘으면 다음 세션 시작 때 검토·초기화를 안내([Issue #100](https://github.com/yanos0218/AI/issues/100))
 
 ### Fixed
 
