@@ -21,7 +21,7 @@ mkdir -p ~/.claude/hooks && cp base/hooks/*.sh ~/.claude/hooks/
 
 `~/.claude/settings.json`이 없으면 `base/settings.example.json`을 복사하고, 있으면 `permissions`·`hooks`·`statusLine` 키를 합친다(`model` 등 기기별 값은 기존 것 유지). `$schema` 덕에 VS Code에서 자동완성·검증이 된다. 상태줄 스크립트는 jq → python → node 순으로 있는 것을 쓰므로 Linux에 jq가 없어도 된다. 설치·대조 스크립트 자체는 `python3` → `python` 순으로 찾는다(Windows Git Bash엔 `python`만, Mac/Linux엔 `python3`만 있는 경우가 많음). 스킬 목록은 세션 시작 시 고정되므로 복사 후 **새 세션**에서 확인한다.
 
-**Rocky/AlmaLinux 등 RHEL 계열 최소 설치본**엔 `git`·`diff`(`diffutils` 패키지)가 기본으로 없을 수 있다. 먼저 `dnf install -y git diffutils`(python3는 기본 포함됨) — 안 하면 `check-install.sh`가 모든 파일을 "다르다"고 오탐한다(AlmaLinux 9 WSL로 검증, 2026-09-16, [Issue #6](https://github.com/yanos0218/AI/issues/6)).
+**Rocky/AlmaLinux 등 RHEL 계열 최소 설치본**은 버전마다 기본 포함 도구가 다르다(8.10: git·python3 없음, diff·jq 있음 / 9.x: git·diff 없음, python3·jq 있음 — AlmaLinux 8.10·9.8 WSL로 각각 검증, 2026-09-16). 버전을 따지지 말고 먼저 `dnf install -y git diffutils python3`를 실행한다(이미 있으면 `dnf`가 그냥 건너뛰므로 안전). 안 하면 `install.sh`가 python3/python을 못 찾아 멈추거나, `check-install.sh`가 모든 파일을 "다르다"고 오탐한다([Issue #6](https://github.com/yanos0218/AI/issues/6)).
 
 ## Claude.ai (웹 · 데스크톱 · Cowork)
 
