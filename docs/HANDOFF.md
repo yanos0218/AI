@@ -10,7 +10,7 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 
 - 저장소 v0.10.0(MINOR, 2026-09-15 컷)
   - 신규 훅 `bulk-read-log.sh` 추가 + `git-guardrails.sh`·`session-start-check.sh` 기능 확장. CI(`lint.yml`) 초록.
-  - 배포 현황은 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본. Windows·Mac mini는 v0.10.0(2026-09-16 `install.sh` 반영, `check-install.sh` 대조로 기본 영역과 일치 확인), 웹은 v0.6.0, Linux는 미반영.
+  - 배포 현황은 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본. Windows·Mac mini·Linux(실제 Rocky 서버, RHEL 계열 공통 사전 준비물 `git diffutils python3` 확인 후)는 v0.10.0(`install.sh`+`check-install.sh` 대조로 기본 영역과 일치 확인), 웹은 v0.6.0.
 - 할 일·발견한 문제는 GitHub Issues로 관리한다([Issue #11](https://github.com/yanos0218/AI/issues/11), 2026-09-12). 완료 이력은 [PROGRESS.md §1](PROGRESS.md#1-완료)에 짧은 색인 + 이슈 링크로.
 - Script 저장소 이력에서 개인키 발견
   - 처리는 그 저장소 일, 아직 사용자 결정 대기.
@@ -18,7 +18,7 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 
 ## 다음 할 일
 
-할 일은 GitHub Issues(`gh issue list --state open --label task`)에서 확인 — [#6](https://github.com/yanos0218/AI/issues/6) Linux 반영이 먼저. Script·Etc 표준 적용은 그 저장소에서 `repo-setup`으로(사용자 지시 시, 순서는 [Issue #56](https://github.com/yanos0218/AI/issues/56)).
+할 일은 GitHub Issues(`gh issue list --state open --label task`)에서 확인 — [#6](https://github.com/yanos0218/AI/issues/6) Linux 반영 완료(2026-09-16), 남은 건 [#7](https://github.com/yanos0218/AI/issues/7)/[#8](https://github.com/yanos0218/AI/issues/8)(요구사항 미정) 등. Script·Etc 표준 적용은 그 저장소에서 `repo-setup`으로(사용자 지시 시, 순서는 [Issue #56](https://github.com/yanos0218/AI/issues/56)).
 
 ## 결정 사항 (다시 묻지 말 것)
 

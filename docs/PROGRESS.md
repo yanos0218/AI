@@ -30,23 +30,23 @@
 
 | 자산 | 단계 | Windows | Mac mini | Linux | 웹(Claude.ai) | 다음 행동 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 전역 지침 `base/claude-md/CLAUDE.md` | 기본 | ✓ v0.10.0 (2026-09-15) | ✓ v0.10.0 (2026-09-16, `install.sh` 반영) | ✗ | ✓ Project instructions (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
-| dev-release 스킬 | 기본 (3시나리오 통과 2026-09-08, 0단계 미인증 시나리오 통과 2026-09-09) | ✓ v0.5.0 (2026-09-12) | ✓ v0.5.0 | ✗ | ✓ v0.6.0 (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
-| git-guardrails 훅 | 기본 (새 세션 push 차단 확인 2026-09-08, push 시 문서 갱신 상기 문구 5시나리오 확인 2026-09-15 [Issue #102](https://github.com/yanos0218/AI/issues/102)) | ✓ | ✓ | ✗ | - | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
-| gh-throttle 훅 | 기본 (mkdir 락 기반 실제 직렬화로 개선, 병렬 3개 실측 확인 2026-09-13, [Issue #74](https://github.com/yanos0218/AI/issues/74)) | ✓ v0.9.0 | ✓ (2026-09-16 설치) | ✗ | - | Linux 설치 시 |
-| session-start-check 훅(SessionStart) | 기본 (설정 버전·저장소 표준 4시나리오 2026-09-12 + self-audit 안내 4시나리오 2026-09-13 + 대량 조회 누적 알림 2026-09-15 직접 실행 확인) | ✓ | ✓ (2026-09-16 설치) | ✗ | - | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
-| `bulk-read-log.sh` 훅(PostToolUse) | 기본 (기록·초기화 흐름 직접 실행 확인 2026-09-15, [Issue #100](https://github.com/yanos0218/AI/issues/100)) | ✓ | ✓ (2026-09-16 설치) | ✗ | - | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
-| config-changelog 훅 | 기본 (임시 HOME 7케이스 통과, 2026-09-09) | ✓ v0.4.0 | ✓ | ✗ | - | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
-| statusline 훅 | 기본 (터미널 CLI 전용, VS Code 패널엔 안 나옴) | ✓ 육안 확인 2026-09-12 | ✓ 설치 (VS Code 패널만 써서 표시 없음) | ✗ | - | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
-| `settings.example.json` (권한·훅·상태줄·env) | 기본 | ✓ v0.9.0 | ✓ (`model` 키 유지 병합) | ✗ | - | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
-| 서브에이전트 재귀 차단(`env.CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`) | 기본 (새 세션에서 재귀 시도 → 차단 실측 확인 2026-09-13, [Issue #75](https://github.com/yanos0218/AI/issues/75)) | ✓ v0.9.0 | ✓ (2026-09-16 `check-install.sh` 대조 확인) | ✗ | - | Linux 설치 시 |
+| 전역 지침 `base/claude-md/CLAUDE.md` | 기본 | ✓ v0.10.0 (2026-09-15) | ✓ v0.10.0 (2026-09-16, `install.sh` 반영) | ✓ (2026-09-16, 실제 Rocky 서버 `install.sh`+`check-install.sh` same 확인, [Issue #6](https://github.com/yanos0218/AI/issues/6)) | ✓ Project instructions (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | - |
+| dev-release 스킬 | 기본 (3시나리오 통과 2026-09-08, 0단계 미인증 시나리오 통과 2026-09-09) | ✓ v0.5.0 (2026-09-12) | ✓ v0.5.0 | ✓ (2026-09-16) | ✓ v0.6.0 (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | - |
+| git-guardrails 훅 | 기본 (새 세션 push 차단 확인 2026-09-08, push 시 문서 갱신 상기 문구 5시나리오 확인 2026-09-15 [Issue #102](https://github.com/yanos0218/AI/issues/102)) | ✓ | ✓ | ✓ (2026-09-16) | - | - |
+| gh-throttle 훅 | 기본 (mkdir 락 기반 실제 직렬화로 개선, 병렬 3개 실측 확인 2026-09-13, [Issue #74](https://github.com/yanos0218/AI/issues/74)) | ✓ v0.9.0 | ✓ (2026-09-16 설치) | ✓ (2026-09-16) | - | - |
+| session-start-check 훅(SessionStart) | 기본 (설정 버전·저장소 표준 4시나리오 2026-09-12 + self-audit 안내 4시나리오 2026-09-13 + 대량 조회 누적 알림 2026-09-15 직접 실행 확인) | ✓ | ✓ (2026-09-16 설치) | ✓ (2026-09-16) | - | - |
+| `bulk-read-log.sh` 훅(PostToolUse) | 기본 (기록·초기화 흐름 직접 실행 확인 2026-09-15, [Issue #100](https://github.com/yanos0218/AI/issues/100)) | ✓ | ✓ (2026-09-16 설치) | ✓ (2026-09-16) | - | - |
+| config-changelog 훅 | 기본 (임시 HOME 7케이스 통과, 2026-09-09) | ✓ v0.4.0 | ✓ | ✓ (2026-09-16) | - | - |
+| statusline 훅 | 기본 (터미널 CLI 전용, VS Code 패널엔 안 나옴) | ✓ 육안 확인 2026-09-12 | ✓ 설치 (VS Code 패널만 써서 표시 없음) | ✓ (2026-09-16) | - | - |
+| `settings.example.json` (권한·훅·상태줄·env) | 기본 | ✓ v0.9.0 | ✓ (`model` 키 유지 병합) | ✓ (2026-09-16) | - | - |
+| 서브에이전트 재귀 차단(`env.CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`) | 기본 (새 세션에서 재귀 시도 → 차단 실측 확인 2026-09-13, [Issue #75](https://github.com/yanos0218/AI/issues/75)) | ✓ v0.9.0 | ✓ (2026-09-16 `check-install.sh` 대조 확인) | ✓ (2026-09-16, `check-install.sh` env 키 same 확인) | - | - |
 | `base/vscode/` 확장 목록·설정·설치 스크립트 | 기본 | ✓ v0.3.0 | ✓ 확장 13개 (2026-09-09, Settings Sync가 안 켜져 있어 `install.sh`로 설치. settings.json은 기존 것 유지) | - | - | - |
 | baseline-guard·session-end-check 훅 (이 저장소 전용, `.claude/`) | 기본 (새 세션 차단 확인 2026-09-08 / 트리 상태 시험 2026-09-09) | 저장소 안에서만 동작 | 동일 | 동일 | - | - |
 | `tools/check-cram.sh` 목록 크램 검사 (이 저장소 전용) | 기본 (픽스처 회귀 시험 + 커밋 시뮬레이션 통과 2026-09-15, [Issue #99](https://github.com/yanos0218/AI/issues/99)) | 저장소 안에서만 동작(`pre-commit-check.sh` 연결) | 동일 | 동일 | - | - |
-| dev-workflow 스킬 | 기본 (3시나리오 통과 2026-09-09, v0.5.0) | ✓ | ✓ | ✗ | ✓ v0.6.0 (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
-| 모듈 규칙 `base/rules/docs-format.md` | 기본 (v0.5.0) | ✓ | ✓ | ✗ | - | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
-| repo-setup 스킬 | 기본 (3시나리오 통과 2026-09-09, v0.6.0) | ✓ v0.8.0 (2026-09-13) | ✓ v0.8.0 (2026-09-16) | ✗ | ✓ v0.6.0 (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | [Issue #6](https://github.com/yanos0218/AI/issues/6) |
-| self-audit 스킬 (대화 기록 기반 CLAUDE.md 감사) | 기본 (3시나리오 통과 2026-09-13: "self-audit 해줘"·"이번 달 CLAUDE.md 점검해줘" 발동, "테스트 어떻게 해?" 오발동 안 함. 감사 표시 파일 쓰기는 작업 디렉터리 밖이라 매번 승인 필요 — 정상) | ✓ | ✓ (2026-09-16 설치, 새 세션 발동 미검증) | ✗ | ✗ | 웹 업로드는 다음 `pack.sh` 배치 때 |
+| dev-workflow 스킬 | 기본 (3시나리오 통과 2026-09-09, v0.5.0) | ✓ | ✓ | ✓ (2026-09-16) | ✓ v0.6.0 (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | - |
+| 모듈 규칙 `base/rules/docs-format.md` | 기본 (v0.5.0) | ✓ | ✓ | ✓ (2026-09-16) | - | - |
+| repo-setup 스킬 | 기본 (3시나리오 통과 2026-09-09, v0.6.0) | ✓ v0.8.0 (2026-09-13) | ✓ v0.8.0 (2026-09-16) | ✓ (2026-09-16) | ✓ v0.6.0 (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | - |
+| self-audit 스킬 (대화 기록 기반 CLAUDE.md 감사) | 기본 (3시나리오 통과 2026-09-13: "self-audit 해줘"·"이번 달 CLAUDE.md 점검해줘" 발동, "테스트 어떻게 해?" 오발동 안 함. 감사 표시 파일 쓰기는 작업 디렉터리 밖이라 매번 승인 필요 — 정상) | ✓ | ✓ (2026-09-16 설치, 새 세션 발동 미검증) | ✓ (2026-09-16 설치, 발동 미검증) | ✗ | 웹 업로드는 다음 `pack.sh` 배치 때 |
 | 블로그용 스킬 | 계획 (역할 구분 선행) | | | | | [Issue #7](https://github.com/yanos0218/AI/issues/7) |
 | 사업기획용 스킬 | 계획 (요구사항 미정) | | | | | [Issue #8](https://github.com/yanos0218/AI/issues/8) |
 | 이 저장소 CI (lint.yml + check-docs.sh) | 기본 (첫 Actions 실행 success, 2026-09-08) | 저장소 안에서만 | 동일 | 동일 | - | - |
