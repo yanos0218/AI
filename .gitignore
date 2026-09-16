@@ -1,2 +1,3 @@
 dist/
 drafts/observations/claude-ai-export/*.zip
+.claude/settings.local.json
