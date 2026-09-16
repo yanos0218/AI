@@ -6,11 +6,11 @@
 
 Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원본 저장소. 개발자가 아닌 사용자가 여러 스택의 프로젝트를 오가며 Claude에게 (1) 매번 같은 배경을 다시 설명하지 않고, (2) 멋대로 진행하거나 너무 자주 묻지 않게 하고, (3) 검증 없이 "됐다"는 말을 못 하게 하고, (4) 결론만 짧게 듣도록 만든다. 저장소별 규칙은 각 저장소에 두고 여기서는 **참조만** 한다.
 
-## 현재 상태 (2026-09-15) · 마지막 월 점검: 없음 (첫 점검 2026-10 예정, `docs/monthly-check.md`)
+## 현재 상태 (2026-09-16) · 마지막 월 점검: 없음 (첫 점검 2026-10 예정, `docs/monthly-check.md`)
 
 - 저장소 v0.10.0(MINOR, 2026-09-15 컷)
   - 신규 훅 `bulk-read-log.sh` 추가 + `git-guardrails.sh`·`session-start-check.sh` 기능 확장. CI(`lint.yml`) 초록.
-  - 배포 현황은 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본. Windows는 v0.10.0, Mac·웹은 v0.6.0, Linux는 미반영.
+  - 배포 현황은 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본. Windows·Mac mini는 v0.10.0(2026-09-16 `install.sh` 반영, `check-install.sh` 대조로 기본 영역과 일치 확인), 웹은 v0.6.0, Linux는 미반영.
 - 할 일·발견한 문제는 GitHub Issues로 관리한다([Issue #11](https://github.com/yanos0218/AI/issues/11), 2026-09-12). 완료 이력은 [PROGRESS.md §1](PROGRESS.md#1-완료)에 짧은 색인 + 이슈 링크로.
 - Script 저장소 이력에서 개인키 발견
   - 처리는 그 저장소 일, 아직 사용자 결정 대기.
