@@ -45,3 +45,5 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 - (2026-09-15) 목록 줄바꿈 규칙 위반은 사람이 수동으로 재검색하는 대신 `tools/check-cram.sh`가 커밋 시 기계적으로 검사·차단한다([Issue #99](https://github.com/yanos0218/AI/issues/99)).
 - (2026-09-15) PreToolUse/PostToolUse 훅은 매 도구 호출마다 Claude에게 실시간으로 알림을 보여줄 수 없다(실제 세션 3개로 확인)
   - 서브에이전트 위임 습관은 `bulk-read-log.sh`의 사후 로그 + `session-start-check.sh`의 개수 기준(10건) 점검으로 대체([Issue #100](https://github.com/yanos0218/AI/issues/100)).
+- (2026-09-16) PreCompact 훅도 같은 계열 제약: 컴팩션 요약 **내용에는 개입 불가**(차단·메시지만 가능, 공식 문서 확인). "강제"가 아니라 "안전망"(git 상태·최근 테스트·미완료 체크리스트를 별도 저장 후 컴팩션 직후 노출)으로 설계, 초안 진행 중([Issue #104](https://github.com/yanos0218/AI/issues/104)).
+- (2026-09-16) 결정 사항 전체 재검토: 전부 유효 확인됨 — Notification 훅([Issue #5](https://github.com/yanos0218/AI/issues/5), 병렬 세션 실사용 전 보류 그대로), 샌드박스 Windows 미지원(공식 문서 재확인), 버전 태그 체계(`v0.10.0` 태그 존재, 작업 트리는 그 이후 커밋 진행 중), 훅 강제 원칙(`.claude/hooks/`에 baseline-guard·session-end-check·pre-commit-check 그대로 존재).
