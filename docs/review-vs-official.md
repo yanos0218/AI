@@ -42,6 +42,15 @@
 | **프롬프트 캐시** | 같은 앞부분(CLAUDE.md·시스템)은 1시간 캐시로 재사용됨. CLAUDE.md를 세션 중 자주 바꾸면 캐시가 깨짐 | 자동. 기본 영역을 세션 중 고치지 않는 규칙이 여기도 도움 |
 | **측정** | 상태줄 `$`, `/cost`, 월 1회 `/insights` | 반영·[Issue #16](https://github.com/yanos0218/AI/issues/16) |
 
+## 2026-09-17 재검토 — 새로 나온 것
+
+| 항목 | 내용 | 판단 |
+| --- | --- | --- |
+| 컴팩션 후 자동 재로드 범위 | 공식 문서 확인: `/compact` 후 프로젝트 루트 CLAUDE.md·auto memory는 자동으로 다시 읽히고, 최근 읽거나 고친 파일 최대 5개와 그 규칙도 같이 재적용됨(5000토큰 넘는 파일은 경로만) | [Issue #104](https://github.com/yanos0218/AI/issues/104) 설계 범위 재확인 필요 — CLAUDE.md·최근 파일 5개는 이미 자동 보존되므로, PreCompact 훅은 "5개 넘는 파일·테스트 결과·TodoWrite 체크리스트"처럼 자동 재로드 밖의 것에만 집중하면 됨 |
+| `maxEffortLevel` 설정(2026-09 신규) | `settings.json`에서 effort 상한을 걸어 모델 호출 비용을 구조적으로 제한 가능 | 반영 후보 — [Issue #10](https://github.com/yanos0218/AI/issues/10) 월 점검(2026-10) 때 실사용 비용과 같이 검토 |
+| 코어 `rm -rf` 안전 프롬프트 강화 | 위치 인자·따옴표 감싼 `sh -c` 안의 `rm -rf`까지 하네이 자체가 감지 | 참고만 — `git-guardrails.sh`와 중복 방어라 우리 쪽 변경 불필요 |
+| 심볼릭 링크형 개인 dotfiles(예: ksdisch/claude-config) | `~/.claude`에 저장소를 직접 symlink, 편집이 바로 git에 반영 | 채택 안 함 — 우리는 `baseline-guard` 확인 절차가 핵심이라, symlink로 그 절차를 우회하게 되는 건 이 저장소 설계 의도와 반대 |
+
 ## 참고한 자료
 
 - [Claude Code 공식 — Best practices](https://code.claude.com/docs/en/best-practices)
@@ -61,3 +70,7 @@
 - [josix/awesome-claude-md](https://github.com/josix/awesome-claude-md)
 - [Dale Seo — CLAUDE.md 작성 가이드](https://daleseo.com/claude-code-claude-md/)
 - [GeekNews — Claude Code로 좋은 결과 얻기](https://news.hada.io/topic?id=22425)
+- [Claude Code 공식 — Memory(컴팩션 후 재로드 범위)](https://code.claude.com/docs/en/memory)
+- [Claude Code 공식 — Settings(`maxEffortLevel`)](https://code.claude.com/docs/en/settings)
+- [Claude Code 공식 — What's new, Week 37](https://code.claude.com/docs/en/whats-new/2026-w37)
+- [ksdisch/claude-config — symlink형 개인 dotfiles](https://github.com/ksdisch/claude-config)
