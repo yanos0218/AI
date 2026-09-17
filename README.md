@@ -19,6 +19,7 @@
 | [base/skills/dev-workflow/](base/skills/dev-workflow/SKILL.md) | "테스트 어떻게 해 / 파일 정리해줘"에 발동. 구조·테스트 방법을 문서로 정하고 실행 증거를 보고 |
 | [base/skills/repo-setup/](base/skills/repo-setup/SKILL.md) | "저장소 표준 맞춰줘 / 뭐가 빠졌는지 봐줘"에 발동. [docs/repo-standard.md](docs/repo-standard.md) 9항목 대조 후 고른 것만 생성 |
 | [base/skills/self-audit/](base/skills/self-audit/SKILL.md) | "self-audit 해줘 / CLAUDE.md 점검해줘"에 발동. 대화 기록을 서브에이전트로 읽어 문서화 안 된 결정·안 지켜진 규칙 후보를 찾음(3시나리오 발동 시험 통과, 2026-09-13) |
+| [base/skills/config-update/](base/skills/config-update/SKILL.md) | "설정 업데이트해줘"에 발동. 어느 저장소에 있든 원본 경로(`~/.claude/.claude-config-version`)로 `install.sh`+`check-install.sh` 실행(2시나리오 발동 시험 통과, 2026-09-17) |
 | [base/hooks/](base/hooks/) | 위험한 명령 앞 확인을 강제하는 `git-guardrails.sh`, gh 콘텐츠 생성 명령 앞 지연으로 GitHub 속도 제한을 예방하는 `gh-throttle.sh`, 상태줄 `statusline.sh`, 설정 변경 이력 `config-changelog.sh`, 대량 조회를 조용히 기록하는 `bulk-read-log.sh`, 새 세션마다 저장소 표준·설치 버전·self-audit 안내·대량 조회 누적을 조용히 확인하는 `session-start-check.sh` |
 | [base/settings.example.json](base/settings.example.json) | `~/.claude/settings.json` 예시 (허용·거부 명령, 훅, 상태줄) |
 | [base/rules/](base/rules/) | 모듈 규칙<br>기본 지침을 건드리지 않고 주제별로 붙이는 파일. `~/.claude/rules/`에 설치 |
@@ -50,6 +51,7 @@
 
 | 경로 | 무엇 |
 | --- | --- |
+| [tools/bootstrap.sh](tools/bootstrap.sh) | 신규 기기용 단일 명령 설치 — 저장소를 `~/claude-config`에 clone(있으면 pull) 후 `install.sh` 자동 실행 |
 | [tools/install.sh](tools/install.sh) | `base/` → `~/.claude` 설치 (멱등, settings 병합, `--dry-run`). 기기 3대 공통 |
 | [tools/test-skill.sh](tools/test-skill.sh) | 스킬 발동 시험<br>시나리오 저장소에 넣고 새 세션으로 실행, 발동·비용 추출 (기본 Sonnet) |
 | [tools/pack.sh](tools/pack.sh) | ①의 스킬을 웹 업로드용 zip으로 (zip 없으면 python 폴백) |
@@ -79,8 +81,14 @@
 기본 영역이 바뀌면 각 기기에서 다시 설치한다. 상세와 Claude.ai·VS Code 절차는 [docs/install.md](docs/install.md).
 
 ```bash
+# 신규 기기 — clone 없이 한 줄로
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/yanos0218/AI/main/tools/bootstrap.sh)"
+
+# 이미 clone된 저장소 — 갱신
 bash tools/install.sh            # --dry-run 으로 먼저 볼 수 있음
 ```
+
+이미 설치돼 있으면 어느 저장소에 있든 "설정 업데이트해줘"라고 말해도 된다(`config-update` 스킬).
 
 CLAUDE.md·훅·스킬을 복사하고 `settings.json`에 `permissions`·`hooks`·`statusLine` 키를 합친다(기기별 `model` 등은 유지). 스킬·훅은 **새 세션**부터 적용된다. 어느 기기에 어느 버전이 깔렸는지는 [docs/PROGRESS.md §0](docs/PROGRESS.md#0-자산-현황--단계와-배포-상태) 표.
 
