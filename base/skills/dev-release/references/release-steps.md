@@ -48,7 +48,28 @@ scripts/release-check.sh vX.Y.Z              # 있으면
 | 단일 HTML 도구 | 파일 안 `vX.Y` 표기 + 폴더 README 히스토리 표 | |
 | Markdown 시스템 | README 제목/헤더의 버전 | |
 
-## 4. 되돌리기
+## 4. 마일스톤 (GitHub Issues를 쓰는 저장소만)
+
+이슈가 "닫힘"과 "실제로 릴리즈에 포함됨"은 시점이 다르다(승격은 즉시, 릴리즈 컷은 나중에 배치로). 마일스톤으로 그 연결을 남기면 `gh issue list --milestone vX.Y.Z`로 특정 릴리즈에 뭐가 들어갔는지 바로 찾을 수 있다.
+
+```bash
+# 1. 마일스톤 생성
+resp=$(gh api repos/<owner>/<repo>/milestones -f title="vX.Y.Z" -f state=open -f due_on="<릴리즈 시각, ISO8601>")
+num=$(echo "$resp" | python3 -c "import json,sys;print(json.load(sys.stdin)['number'])")
+
+# 2. 직전 태그..이번 태그 범위 커밋에서 Closes #N 추출
+git log <이전태그>..vX.Y.Z --format="%B" | grep -oiE 'closes #[0-9]+' | grep -oE '[0-9]+' | sort -un
+
+# 3. 각 이슈에 배정
+gh issue edit <N> --milestone "vX.Y.Z"
+
+# 4. 마일스톤 닫기
+gh api -X PATCH "repos/<owner>/<repo>/milestones/$num" -f state=closed
+```
+
+이슈 번호가 존재하지 않아 배정이 실패해도(오탈자 등) 나머지는 계속 진행하고 실패한 번호만 보고한다.
+
+## 5. 되돌리기
 
 - 로컬 태그만 잘못 만들었으면 `git tag -d vX.Y.Z`로 지우면 된다(안전).
 - **이미 push된 태그**를 삭제·재생성하는 건 그 태그를 참조하는 Release·다른 클론에 영향을 준다. 사용자 확인 없이 하지 않고, 가능하면 새 PATCH 버전으로 앞으로 나간다.

@@ -4,7 +4,7 @@ Claude와 GitHub를 엮는 방법은 크게 넷이다. 아래는 **사용자 저
 
 현황(2026-09-08 조사, AI 저장소는 2026-09-12에 예외로 바뀜, 아래 표)
 
-저장소 11개 전부 비공개, GitHub Free 플랜(브랜치 보호 불가 — Pro 필요). 이슈 0개(백로그는 각 저장소 `docs/PROGRESS.md`의 `P-NN`). PR은 kolo_pwa·kolo-api가 Dependabot뿐이고 OpenClaw만 Codex(OpenAI 클라우드 에이전트)가 만든 PR 18개 — 즉 사람이 브랜치→PR을 쓰는 습관은 없고 `main` 직접 push. Actions는 kolo_pwa(`test.yml` 경로 필터로 분 절약, `release.yml` 태그 push→Release)·OpenClaw(`lint.yml`, `release.yml`)에 있고 Release는 각각 30·42개.
+저장소 11개 전부 비공개, GitHub Free 플랜(브랜치 보호 불가, Pro 필요). 이슈 0개(백로그는 각 저장소 `docs/PROGRESS.md`의 `P-NN`). PR은 kolo_pwa·kolo-api가 Dependabot뿐이고 OpenClaw만 Codex(OpenAI 클라우드 에이전트)가 만든 PR 18개다. 즉 사람이 브랜치→PR을 쓰는 습관은 없고 `main` 직접 push. Actions는 kolo_pwa(`test.yml` 경로 필터로 분 절약, `release.yml` 태그 push→Release)·OpenClaw(`lint.yml`, `release.yml`)에 있고 Release는 각각 30·42개.
 
 | 방법 | 무엇을 해주나 | 상태 | 비고 |
 | --- | --- | --- | --- |
@@ -34,7 +34,7 @@ PR 습관(브랜치에서 작업 → `gh pr create` → merge)을 먼저 한 저
 | Dependabot 알림 | kolo_pwa·kolo-api만 켜짐 | **켠다** | 무료, 저장소 Settings → Security 클릭 1회. AI·OpenClaw·Script·Etc는 꺼져 있음 |
 | Dependabot 버전 업데이트 | kolo_pwa(actions만) | 유지 | 의존성 트리가 있는 저장소만 |
 | PR | 사람이 만든 PR 없음(Codex·Dependabot뿐) | 필요할 때 | Claude 클라우드·`@claude`·리뷰 코멘트가 전부 PR 위에서 도니, 그걸 쓰기로 하면 같이 시작 |
-| 이슈·마일스톤·라벨 | AI 저장소는 `task`/`bug` 라벨로 55건 관리(2026-09-12), 나머지 저장소는 이슈 0·마일스톤 0 | AI는 쓴다, 나머지는 보류 | AI는 할 일까지 Issue, `docs/PROGRESS.md`는 배포 표만. 나머지 저장소는 `P-NN` 파일 하나가 아직 더 빠름 |
+| 이슈·마일스톤·라벨 | AI 저장소는 라벨로 이슈 관리, 릴리즈마다 마일스톤 배정(2026-09-17부터, `dev-release` §2 8번). 나머지 저장소는 이슈 0·마일스톤 0 | AI는 쓴다, 나머지는 보류 | AI는 할 일까지 Issue, `docs/PROGRESS.md`는 배포 표만. 마일스톤은 "이슈가 어느 릴리즈에 실제로 포함됐는지" 검색용([Issue #109](https://github.com/yanos0218/AI/issues/109)). 나머지 저장소는 `P-NN` 파일 하나가 아직 더 빠름 |
 | Projects(칸반) | 켜져 있으나 미사용 | 안 쓴다 | AI 저장소도 PROGRESS §0 표가 매트릭스 역할을 대신함, 토큰에 `read:project` 스코프도 없음 |
 | Wiki·Discussions·Pages | 꺼짐 | 불가/불필요 | Free 비공개 저장소는 Wiki·Pages 불가. 문서는 `docs/`, 서비스는 NAS |
 | 브랜치 보호·룰셋·CODEOWNERS | 없음 | **불가**(Pro 필요) | 대신 로컬 훅(`git-guardrails`)이 push 앞에서 확인. 두 번째 개발자가 오면 Pro($4/월) |
@@ -47,7 +47,7 @@ PR 습관(브랜치에서 작업 → `gh pr create` → merge)을 먼저 한 저
 
 효과가 나는 최소 수준은 이렇다.
 
-(1) 커밋·push, (2) 태그·Release, (3) Actions로 테스트 — 이 셋은 이미 하고 있다. 그다음 한 단계는 PR인데, 이건 GitHub 자체 때문이 아니라 Claude 자동화(위 표의 "결정 필요" 2건)를 쓸 때 비로소 값어치가 생긴다.
+(1) 커밋·push, (2) 태그·Release, (3) Actions로 테스트. 이 셋은 이미 하고 있다. 그다음 한 단계는 PR인데, 이건 GitHub 자체 때문이 아니라 Claude 자동화(위 표의 "결정 필요" 2건)를 쓸 때 비로소 값어치가 생긴다.
 
 ## Claude Code on the web 켜기 (C-18 채택, 2026-09-09)
 

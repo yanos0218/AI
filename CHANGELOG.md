@@ -10,10 +10,14 @@
 ### Changed
 
 - `README.md`
-  - "새 스킬 추가"·"dev-release 시험 시나리오"·"규칙과 문서를 고칠 때" 절 제거(구조 표·설치 요약·링크만 남기는 "입구" 역할로 축소, 119→99줄)
-  - "새 스킬 추가"는 [docs/skill-development.md](docs/skill-development.md) 신설로, 시험 시나리오는 `base/skills/dev-release/references/test-scenarios.md`로 이동. "규칙과 문서를 고칠 때"는 `CLAUDE.md`·`base/claude-md/CLAUDE.md`와 중복이라 삭제
+  - "새 스킬 추가"·"dev-release 시험 시나리오"·"규칙과 문서를 고칠 때" 절 제거(구조 표·설치 요약·링크만 남기는 "입구" 역할로 축소, 119→95줄)
+  - "새 스킬 추가" 절차는 [docs/skill-development.md](docs/skill-development.md) 신설로 옮기고, docs/ 표에 이미 링크가 있어 README 쪽 절은 완전히 삭제(중복 제거)
+  - 시험 시나리오는 `base/skills/dev-release/references/test-scenarios.md`로 이동. "규칙과 문서를 고칠 때"는 `CLAUDE.md`·`base/claude-md/CLAUDE.md`와 중복이라 삭제
 - `base/skills/dev-release/SKILL.md`
   - 신설한 `references/test-scenarios.md` 참조 한 줄 추가(버그 수정 수준 — PATCH)
+  - §2 체크리스트에 8번(마일스톤 생성·이슈 배정·닫기) 추가, 명령은 `references/release-steps.md` §4 신설. 앞으로의 릴리즈부터 자동 적용(PATCH, [Issue #109](https://github.com/yanos0218/AI/issues/109))
+- `docs/github.md`
+  - "이슈·마일스톤·라벨" 행에 마일스톤 도입 반영(버전 등급 미반영 — `docs/` 전용)
 
 ### Fixed
 

@@ -55,6 +55,7 @@ allowed-tools: Bash(git tag --list*) Bash(git log*) Bash(git diff*) Bash(git sta
 - [ ] 5. 커밋 chore(release): vX.Y.Z
 - [ ] 6. ★ 사용자 확인 ★ → git tag vX.Y.Z → git push origin main vX.Y.Z
 - [ ] 7. GitHub Release 생성 또는 자동 워크플로 결과 확인, 검증 스크립트 실행
+- [ ] 8. (GitHub Issues를 쓰는 저장소만) 마일스톤 vX.Y.Z 생성 → 직전 태그 이후 커밋의 `Closes #N`을 배정 → 닫음. 명령은 `references/release-steps.md`
 ```
 
 ## 하지 않는 것
