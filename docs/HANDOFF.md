@@ -6,11 +6,13 @@
 
 Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원본 저장소. 개발자가 아닌 사용자가 여러 스택의 프로젝트를 오가며 Claude에게 (1) 매번 같은 배경을 다시 설명하지 않고, (2) 멋대로 진행하거나 너무 자주 묻지 않게 하고, (3) 검증 없이 "됐다"는 말을 못 하게 하고, (4) 결론만 짧게 듣도록 만든다. 저장소별 규칙은 각 저장소에 두고 여기서는 **참조만** 한다.
 
-## 현재 상태 (2026-09-16) · 마지막 월 점검: 없음 (첫 점검 2026-10 예정, `docs/monthly-check.md`)
+## 현재 상태 (2026-09-17) · 마지막 월 점검: 없음 (첫 점검 2026-10 예정, `docs/monthly-check.md`)
 
-- 저장소 v0.10.0(MINOR, 2026-09-15 컷)
-  - 신규 훅 `bulk-read-log.sh` 추가 + `git-guardrails.sh`·`session-start-check.sh` 기능 확장. CI(`lint.yml`) 초록.
-  - 배포 현황은 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본. Windows·Mac mini·Linux(실제 Rocky 서버, RHEL 계열 공통 사전 준비물 `git diffutils python3` 확인 후)는 v0.10.0(`install.sh`+`check-install.sh` 대조로 기본 영역과 일치 확인), 웹은 v0.6.0.
+- 저장소 v0.11.1(2026-09-17 컷 2회: v0.11.0 MINOR → v0.11.1 PATCH)
+  - `config-update` 스킬·`tools/bootstrap.sh` 신설(단일 명령 설치·어디서든 설정 갱신), 이슈 제목·라벨·sub-issue 표준 완화(라벨 4개 고정 철회, [Issue #107](https://github.com/yanos0218/AI/issues/107)). CI(`lint.yml`) 초록.
+  - 배포 현황은 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본. Windows는 최신 반영, Mac mini·Linux(Rocky)는 v0.10.0 기준(다음 접속 때 갱신 필요), 웹은 v0.6.0(zip 재업로드 필요).
+  - `drafts/hooks/compact-snapshot*.sh`(컴팩션 안전망, [Issue #104](https://github.com/yanos0218/AI/issues/104))는 아직 초안.
+    - 자연 압축 발생 때 검증 대기 중, 이 저장소 `.claude/settings.local.json`(개인용, 커밋 안 됨)에 시험용으로 등록돼 있음.
 - 할 일·발견한 문제는 GitHub Issues로 관리한다([Issue #11](https://github.com/yanos0218/AI/issues/11), 2026-09-12). 완료 이력은 [PROGRESS.md §1](PROGRESS.md#1-완료)에 짧은 색인 + 이슈 링크로.
 - Script 저장소 이력에서 개인키 발견
   - 처리는 그 저장소 일, 아직 사용자 결정 대기.
@@ -18,7 +20,7 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 
 ## 다음 할 일
 
-할 일은 GitHub Issues(`gh issue list --state open --label task`)에서 확인 — [#6](https://github.com/yanos0218/AI/issues/6) Linux 반영 완료(2026-09-16), 남은 건 [#7](https://github.com/yanos0218/AI/issues/7)/[#8](https://github.com/yanos0218/AI/issues/8)(요구사항 미정) 등. Script·Etc 표준 적용은 그 저장소에서 `repo-setup`으로(사용자 지시 시, 순서는 [Issue #56](https://github.com/yanos0218/AI/issues/56)).
+할 일은 GitHub Issues(`gh issue list --state open --label task`)에서 확인한다. [#6](https://github.com/yanos0218/AI/issues/6) Linux 반영은 완료(2026-09-16), 남은 건 [#7](https://github.com/yanos0218/AI/issues/7)/[#8](https://github.com/yanos0218/AI/issues/8)(요구사항 미정) 등이다. Script·Etc 표준 적용은 그 저장소에서 `repo-setup`으로(사용자 지시 시, 순서는 [Issue #56](https://github.com/yanos0218/AI/issues/56)).
 
 ## 결정 사항 (다시 묻지 말 것)
 
@@ -46,4 +48,8 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 - (2026-09-15) PreToolUse/PostToolUse 훅은 매 도구 호출마다 Claude에게 실시간으로 알림을 보여줄 수 없다(실제 세션 3개로 확인)
   - 서브에이전트 위임 습관은 `bulk-read-log.sh`의 사후 로그 + `session-start-check.sh`의 개수 기준(10건) 점검으로 대체([Issue #100](https://github.com/yanos0218/AI/issues/100)).
 - (2026-09-16) PreCompact 훅도 같은 계열 제약: 컴팩션 요약 **내용에는 개입 불가**(차단·메시지만 가능, 공식 문서 확인). "강제"가 아니라 "안전망"(git 상태·최근 테스트·미완료 체크리스트를 별도 저장 후 컴팩션 직후 노출)으로 설계, 초안 진행 중([Issue #104](https://github.com/yanos0218/AI/issues/104)).
-- (2026-09-16) 결정 사항 전체 재검토: 전부 유효 확인됨 — Notification 훅([Issue #5](https://github.com/yanos0218/AI/issues/5), 병렬 세션 실사용 전 보류 그대로), 샌드박스 Windows 미지원(공식 문서 재확인), 버전 태그 체계(`v0.10.0` 태그 존재, 작업 트리는 그 이후 커밋 진행 중), 훅 강제 원칙(`.claude/hooks/`에 baseline-guard·session-end-check·pre-commit-check 그대로 존재).
+- (2026-09-16) 결정 사항 전체 재검토. 전부 유효 확인됨: Notification 훅([Issue #5](https://github.com/yanos0218/AI/issues/5), 병렬 세션 실사용 전 보류 그대로), 샌드박스 Windows 미지원(공식 문서 재확인), 버전 태그 체계(`v0.10.0` 태그 존재, 작업 트리는 그 이후 커밋 진행 중), 훅 강제 원칙(`.claude/hooks/`에 baseline-guard·session-end-check·pre-commit-check 그대로 존재).
+- (2026-09-17) `base/` 반영(승격)과 릴리즈 컷은 별개 이벤트임을 재확인
+  - 승격은 검증+요청 즉시, 컷은 쌓였다가 필요할 때. 매번 묶으면 번호 소진 사고 재발([Issue #107](https://github.com/yanos0218/AI/issues/107) 논의 중 정리).
+- (2026-09-17) 다른 저장소용 이슈 라벨을 `task`/`bug`/`error`/`research` 4개로 고정 요구하려던 초안을 철회
+  - kolo_pwa·kolo-api 실사용 관찰(참고용) 결과 "라벨이 있어도 문서화 안 되면 하나로 몰린다"만 확인됨 → 저장소 자유 + 문서화 원칙만 요구로 완화([Issue #107](https://github.com/yanos0218/AI/issues/107)).
