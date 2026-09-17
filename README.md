@@ -93,7 +93,3 @@ bash tools/install.sh            # --dry-run 으로 먼저 볼 수 있음
 이미 설치돼 있으면 어느 저장소에 있든 "설정 업데이트해줘"라고 말해도 된다(`config-update` 스킬).
 
 CLAUDE.md·훅·스킬을 복사하고 `settings.json`에 `permissions`·`hooks`·`statusLine` 키를 합친다(기기별 `model` 등은 유지). 스킬·훅은 **새 세션**부터 적용된다. 어느 기기에 어느 버전이 깔렸는지는 [docs/PROGRESS.md §0](docs/PROGRESS.md#0-자산-현황--단계와-배포-상태) 표.
-
-## 새 스킬 추가
-
-절차·시험 방법은 [docs/skill-development.md](docs/skill-development.md).
