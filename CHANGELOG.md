@@ -7,6 +7,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- GitHub Release 노트 2건(v0.11.0, v0.11.1)의 em-dash 크램 수정(발행 전 `tools/check-cram.sh` 확인을 빠뜨렸던 것, `gh release edit`로 소급 정정. 버전 등급 미반영 — 문서 전용)
+
 ## [0.11.1] - 2026-09-17
 
 ### Changed
