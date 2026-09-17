@@ -7,6 +7,16 @@
 
 ## [Unreleased]
 
+### Changed
+
+- `base/skills/repo-setup/references/checklist.md` 5번(Issues)
+  - 라벨 이름·개수 강제(`task`/`bug`/`error`/`research` 4개)를 철회하고, 저장소 자유 + "문제/할 일 구분 라벨 하나씩 + 문서화" 원칙만 요구하도록 완화([Issue #107](https://github.com/yanos0218/AI/issues/107), 다른 저장소 실사용 관찰 근거)
+- `docs/issue-format.md`
+  - 제목 원칙 절 신설(고정 템플릿 강제 안 함, 저장소 자체 백로그 ID 우선)
+  - sub-issue `--add-sub-issue` 사용 예시 2건 보강
+- `docs/repo-standard.md` 5번(Issues)
+  - 위와 동일하게 완화, `issue-format.md` 참고 링크 추가
+
 ## [0.11.0] - 2026-09-17
 
 ### Added
@@ -14,7 +24,7 @@
 - `base/skills/config-update/`
   - "설정 업데이트해줘"에 발동, 어느 저장소에 있든 원본 경로(`~/.claude/.claude-config-version`)로 `install.sh`+`check-install.sh` 실행(발동/오발동 2시나리오 확인, [Issue #105](https://github.com/yanos0218/AI/issues/105)·[Issue #106](https://github.com/yanos0218/AI/issues/106))
 - `tools/bootstrap.sh`
-  - 신규 기기용 단일 명령 설치 — `curl`로 받아 `bash`로 실행하면 clone(또는 pull) 후 `install.sh` 자동 실행(빈 `HOME` 시뮬레이션으로 신규 clone·기존 pull 두 경로 실행 확인)
+  - 신규 기기용 단일 명령 설치. `curl`로 받아 `bash`로 실행하면 clone(또는 pull) 후 `install.sh` 자동 실행(빈 `HOME` 시뮬레이션으로 신규 clone·기존 pull 두 경로 실행 확인)
 
 ### Changed
 

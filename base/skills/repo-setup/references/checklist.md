@@ -8,7 +8,7 @@ SKILL.md §1의 2·3번 단계를 보충한다. 저장소에 자체 기준이 �
 | 2 | 테스트/빌드 CI | 워크플로에 스택별 검사 명령 | 정적 사이트 `node --check`, Java `gradlew test`, Python `pytest`, 셸 `shellcheck -S warning`, PowerShell `Invoke-ScriptAnalyzer`, 문서 저장소 상한 검사. 명령은 문서에 적기 전에 한 번 실행 |
 | 3 | `CHANGELOG.md` | 파일 존재 + Keep a Changelog 헤더 | 릴리즈가 있으면 `[Unreleased]` 누적, 없으면 `## YYYY-MM-DD` 절. 첫 항목은 "이 파일 신설" |
 | 4 | 저장소 `CLAUDE.md` | 200줄 이하, 규칙만(설명은 docs/) | 세션 시작 시 읽을 문서, 검증 방법, "날짜 + 사고 + 규칙" 절 틀 |
-| 5 | Issues | 열린·닫힌 이슈가 있거나 CLAUDE.md에 Issue 사용 규칙 | 규칙 한 줄. 개인용 저장소는 문제(`bug`)+할 일(`task`) 통합, 템플릿은 안 만든다(1인). 팀·협업 저장소는 별도 조사 |
+| 5 | Issues | 열린·닫힌 이슈가 있거나 CLAUDE.md에 "언제 어떤 라벨을 쓰는지" 규칙 한 줄 | 라벨 이름·개수는 저장소 자유(claude-config `task`/`bug`/`error`/`research` 4개를 그대로 강제하지 않음). 최소 "문제"와 "할 일"을 구분하는 라벨 하나씩 + 그 저장소 문서에 정의 한 줄. 제목·sub-issue 사용법은 claude-config `docs/issue-format.md` 참고(강제 아님). 템플릿은 안 만든다(1인). 팀·협업 저장소는 별도 조사 |
 | 6 | 진행 보드 | `docs/PROGRESS.md` 또는 동급(항목 ID + 상태) | 완료 이력 + ID 규칙. 할 일을 Issue로 관리하는 저장소는 배포 상태 표만 있어도 됨 |
 | 7 | Dependabot 알림 | `gh api repos/<o>/<r>/vulnerability-alerts` 204 | 저장소 설정 변경이라 사용자가 클릭. 워크플로가 있으면 `.github/dependabot.yml`(github-actions, monthly) |
 | 8 | 비밀 차단 | `.gitignore`에 `.env*`·키 파일 패턴, 이력에 비밀 없음 | `.gitignore` 보강. 이력에 있으면 **재발급 + `git filter-repo`**를 사용자에게 제안(실행은 확인 후) |
