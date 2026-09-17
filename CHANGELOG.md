@@ -7,6 +7,8 @@
 
 ## [Unreleased]
 
+## [0.11.0] - 2026-09-17
+
 ### Added
 
 - `base/skills/config-update/`
@@ -90,46 +92,7 @@
 - `docs/versioning.md`
   - 이슈 백업 명령에 `--limit`이 없어 기본값 30개만 백업되던 문제 수정(버전 등급 미반영 — `docs/` 전용, [Issue #78](https://github.com/yanos0218/AI/issues/78))
 
-## [0.9.0] - 2026-09-13
-
-### Added
-
-- `base/hooks/gh-throttle.sh`
-  - mkdir 락 + 공유 타임스탬프로 gh 콘텐츠 생성 명령을 실제 직렬화(최소 2초 간격)해 GitHub 2차 속도 제한 예방(MINOR — 새 훅 추가)
-  - 대상: `gh issue/pr/release/label`의 `create/comment/close/edit/reopen`, `gh api`의 POST/PATCH/PUT/DELETE
-  - 병렬 서브에이전트가 간격 없이 gh를 호출해 계정이 일시 차단된 인시던트([Issue #71](https://github.com/yanos0218/AI/issues/71)) 재발 방지
-  - 병렬 3개 실측으로 순차 처리 확인
-- `base/settings.example.json`
-  - `env.CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH: "1"` 추가해 서브에이전트의 재귀적 하위 서브에이전트 생성을 전역 차단(MINOR — 새 설정 키 추가)
-  - 공식 문서 확인 + 실제 새 세션에서 재귀 시도 시 `Agent is disabled ... in subagents as well as here` 오류·`spawned_by_subagents: 0` 실측 확인
-  - `tools/install.sh`·`tools/check-install.sh`에 `env` 키 병합·대조 추가
-- `.claude/hooks/pre-commit-check.sh`
-  - `base/` 또는 `docs/*.md` 규칙 문서를 바꾸는 커밋인데 메시지에 이슈 번호(`#숫자`)가 없으면 확인(`ask`)을 띄움
-  - "착수 시점에 먼저 Issue부터 연다"는 CLAUDE.md 문장만으론 두 번(Issue #64, #66) 안 지켜져 훅으로 강제
-  - 버전 등급 미반영 — `.claude/` 전용
-
-### Changed
-
-- 조사 기록 방식
-  - `docs/research/<주제>.md` 파일에서 GitHub Issue `research` 라벨로 전환(파일·이슈 이중 기록 방지)
-  - `base/claude-md/CLAUDE.md` §5, `docs/research.md` §3, README·monthly-check·review-vs-official 갱신
-  - 2026-09-13 이전 기록은 `docs/research/`에 archive로 유지
-- `base/hooks/git-guardrails.sh`
-  - 하나의 정규식으로 뭉쳐 있던 매칭을 패턴별 if-elif로 나눠 구체적인 이유를 보여주도록 개선
-  - 명령을 스크립트 파일로 감싸(`bash x.sh`) 문자열 매칭을 우회하던 취약점도 보강해 스크립트 내용까지 같이 검사
-  - 11개 패턴·우회/회귀 시나리오 전부 직접 실행 확인([Issue #65](https://github.com/yanos0218/AI/issues/65)·[Issue #73](https://github.com/yanos0218/AI/issues/73))
-- `.claude/hooks/pre-commit-check.sh`
-  - 위와 같은 스크립트 감싸기 우회 취약점 보강([Issue #73](https://github.com/yanos0218/AI/issues/73))
-- `base/claude-md/CLAUDE.md` §3
-  - 확인 후 진행 항목 중 방법이 여럿인 경우 훅 확인 직전이 아니라 계획 단계에서 AskUserQuestion으로 먼저 확정하도록 규칙 추가([Issue #65](https://github.com/yanos0218/AI/issues/65))
-- `base/claude-md/CLAUDE.md` §5
-  - 서브에이전트 위임 습관 2건 추가
-  - 정지시킨 서브에이전트의 뒤늦은 보고는 검증 없이 반영하지 않기
-  - 병렬 위임 시 겹치지 않는 파일 배정([Issue #74](https://github.com/yanos0218/AI/issues/74))
-- `CHANGELOG.md`
-  - 보존 범위를 최근 3개 릴리즈로 축소(버전 등급 미반영 — 문서 전용, [Issue #76](https://github.com/yanos0218/AI/issues/76))
-
-[Unreleased]: https://github.com/yanos0218/AI/compare/v0.10.0...HEAD
+[Unreleased]: https://github.com/yanos0218/AI/compare/v0.11.0...HEAD
+[0.11.0]: https://github.com/yanos0218/AI/compare/v0.10.0...v0.11.0
 [0.10.0]: https://github.com/yanos0218/AI/compare/v0.9.1...v0.10.0
 [0.9.1]: https://github.com/yanos0218/AI/compare/v0.9.0...v0.9.1
-[0.9.0]: https://github.com/yanos0218/AI/compare/v0.8.0...v0.9.0
