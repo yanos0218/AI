@@ -7,6 +7,11 @@
 
 ## [Unreleased]
 
+### Changed
+
+- `base/claude-md/CLAUDE.md` §5
+  - SessionStart 훅의 버전 낡음 알림을 보면 다른 작업 전에 갱신 여부부터 물어보도록 규칙 추가(알림을 보고도 넘어간 실제 사례로 확인, [Issue #105](https://github.com/yanos0218/AI/issues/105))
+
 ## [0.10.0] - 2026-09-15
 
 ### Changed
