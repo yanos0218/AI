@@ -57,7 +57,8 @@
 | [tools/pack.sh](tools/pack.sh) | ①의 스킬을 웹 업로드용 zip으로 (zip 없으면 python 폴백) |
 | [tools/check-docs.sh](tools/check-docs.sh) | 문서 줄 수 상한과 필수 파일 검사 (CI와 로컬 공용) |
 | [tools/check-install.sh](tools/check-install.sh) | 설치본 `~/.claude`가 `base/`와 같은지, 프로젝트마다 쌓인 권한·설정 이력은 무엇인지 보고 |
-| [.claude/hooks/](.claude/hooks/) | 저장소 전용 훅<br>`baseline-guard.sh`(`base/` 쓰기 확인), `session-end-check.sh`(base/ 변경 시 PROGRESS §0 갱신, 그 외엔 관련 Issue 댓글·닫기 확인 안내) |
+| [tools/check-cram.sh](tools/check-cram.sh)·[tools/check-cram.py](tools/check-cram.py) | 목록 줄바꿈 규칙(콜론·em-dash 크램) 검사<br>`--staged`로 커밋 전 자동 검사, `--add-exception`으로 오탐 예외 등록 |
+| [.claude/hooks/](.claude/hooks/) | 저장소 전용 훅<br>`baseline-guard.sh`(`base/` 쓰기 확인), `pre-commit-check.sh`(이슈 번호·크램 검사로 커밋 차단), `session-end-check.sh`(base/ 변경 시 PROGRESS §0 갱신, 그 외엔 관련 Issue 댓글·닫기 확인 안내) |
 | [.github/workflows/lint.yml](.github/workflows/lint.yml) | push마다 markdownlint·shellcheck·문서 상한 검사 |
 | [.github/dependabot.yml](.github/dependabot.yml) | 워크플로가 쓰는 액션 버전 업데이트 |
 
@@ -74,7 +75,7 @@
 | Claude Design (`claude.ai/design`) | 없음<br>디자인 시스템(스크린샷·자산·코드베이스) 첨부로 대체 | 없음 | 없음 | 결과를 Claude Code로 handoff 가능 |
 | 클라우드 세션 (claude.ai/code) | 계정 스킬 + 저장소 `.claude/skills/` | 저장소 `CLAUDE.md` | 저장소 settings | 개인 `~/.claude`는 전달 안 됨 |
 
-결론: **원본은 이 저장소, 배포는 두 갈래** — (1) `~/.claude`에 복사(CLI·VS Code), (2) `pack.sh`로 zip 만들어 웹에 업로드(웹·데스크톱·Cowork). 웹에서 켠 스킬을 CLI로 끌어오는 `CLAUDE_CODE_SYNC_SKILLS=1 claude -p ...`도 있지만 비대화형 전용이라 이 저장소 방식이 더 단순하다.
+결론: **원본은 이 저장소, 배포는 두 갈래**다: (1) `~/.claude`에 복사(CLI·VS Code), (2) `pack.sh`로 zip 만들어 웹에 업로드(웹·데스크톱·Cowork). 웹에서 켠 스킬을 CLI로 끌어오는 `CLAUDE_CODE_SYNC_SKILLS=1 claude -p ...`도 있지만 비대화형 전용이라 이 저장소 방식이 더 단순하다.
 
 ## 설치 (요약)
 
