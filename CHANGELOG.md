@@ -7,6 +7,14 @@
 
 ## [Unreleased]
 
+### Changed
+
+- `README.md`
+  - "새 스킬 추가"·"dev-release 시험 시나리오"·"규칙과 문서를 고칠 때" 절 제거(구조 표·설치 요약·링크만 남기는 "입구" 역할로 축소, 119→99줄)
+  - "새 스킬 추가"는 [docs/skill-development.md](docs/skill-development.md) 신설로, 시험 시나리오는 `base/skills/dev-release/references/test-scenarios.md`로 이동. "규칙과 문서를 고칠 때"는 `CLAUDE.md`·`base/claude-md/CLAUDE.md`와 중복이라 삭제
+- `base/skills/dev-release/SKILL.md`
+  - 신설한 `references/test-scenarios.md` 참조 한 줄 추가(버그 수정 수준 — PATCH)
+
 ### Fixed
 
 - GitHub Release 노트 2건(v0.11.0, v0.11.1)의 em-dash 크램 수정(발행 전 `tools/check-cram.sh` 확인을 빠뜨렸던 것, `gh release edit`로 소급 정정. 버전 등급 미반영 — 문서 전용)

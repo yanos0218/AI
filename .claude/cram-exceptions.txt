@@ -4,3 +4,5 @@
 # 이 스크립트의 휴리스틱에 반영할 후보로 검토한다(월 점검 항목, Issue #99).
 - "필드명: 값" 구조화된 기록(조사 이슈 등)은 예외로 유지
 - 목록 항목이 "(N) 설명A — 설명B"처럼 한 줄에 길게 늘어지면 본문 줄 + 하위 bullet으로 나눠 쓰는 규칙 추가
+allowed-tools: Bash(git tag --list*) Bash(git log*) Bash(git diff*) Bash(git status*) Bash(gh release view*) Bash(gh run list*) Bash(gh run view*)
+- 예: 기능 추가와 버그 수정이 같이 있으면 **MINOR**; breaking change가 하나라도 있으면 **MAJOR**

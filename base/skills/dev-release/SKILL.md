@@ -37,7 +37,7 @@ allowed-tools: Bash(git tag --list*) Bash(git log*) Bash(git diff*) Bash(git sta
 
 0.y.z 단계와 판단이 갈리는 경우는 `references/semver-rules.md`를 읽는다.
 
-**근거를 먼저 보여준다** — "커밋 A·B가 기능 추가라 MINOR → `vX.Y.0` 제안" 형태로 제시하고 확인을 받은 뒤 다음 단계로 간다. 버전 판단만 요청받았으면 여기서 끝낸다.
+**근거를 먼저 보여준다.** "커밋 A·B가 기능 추가라 MINOR → `vX.Y.0` 제안" 형태로 제시하고 확인을 받은 뒤 다음 단계로 간다. 버전 판단만 요청받았으면 여기서 끝낸다.
 
 태그도 CHANGELOG도 없는 저장소면 등급(MAJOR/MINOR/PATCH)과 근거까지만 말하고, 구체 번호를 제안하기 전에 두 가지를 먼저 묻는다: (1) 태그 형식과 시작 번호, (2) CHANGELOG를 만들지 여부.
 
@@ -62,3 +62,5 @@ allowed-tools: Bash(git tag --list*) Bash(git log*) Bash(git diff*) Bash(git sta
 - **배포마다 태그를 찍지 않는다.** 작은 수정마다 올리면 버전 번호만 의미 없이 소진된다. 사용자가 릴리즈를 요청할 때만 컷하고, 그 사이 변경은 `[Unreleased]`에 쌓는다.
 - 태그 형식·자릿수를 저장소 관례와 다르게 만들지 않는다. 이미 push된 태그는 사용자 확인 없이 지우거나 옮기지 않는다.
 - push, 태그 push, Release 생성은 사용자 확인 없이 실행하지 않는다.
+
+발동 시험 시나리오는 `references/test-scenarios.md`.

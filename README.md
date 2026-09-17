@@ -43,6 +43,7 @@
 | [docs/review-vs-official.md](docs/review-vs-official.md) | 공식 문서·커뮤니티 권장과 대조한 검토표 (반영/습관/보류) |
 | [docs/research.md](docs/research.md) | 조사 규칙(최신·검증·출처, 기록은 Issues `research` 라벨) |
 | [docs/issue-format.md](docs/issue-format.md) | 이슈 라벨별 작성 형식(개발/버그·에러/조사/제안) |
+| [docs/skill-development.md](docs/skill-development.md) | 새 스킬 만드는 절차와 시험 방법 |
 | [docs/monthly-check.md](docs/monthly-check.md) | 월 점검 체크리스트 12항목 |
 | [docs/config-lifecycle.md](docs/config-lifecycle.md) | 다른 저장소에서 작업해도 기본 설정이 유지되는 구조(기본·모듈·프로젝트 층)와 변경 이력 장치 |
 | [CHANGELOG.md](CHANGELOG.md) · [CLAUDE.md](CLAUDE.md) | 기본 영역의 버전별 변경 이력 · 이 저장소 안에서 Claude가 지킬 규칙 |
@@ -95,25 +96,4 @@ CLAUDE.md·훅·스킬을 복사하고 `settings.json`에 `permissions`·`hooks`
 
 ## 새 스킬 추가
 
-1. `base/skills/_template/`을 `drafts/skills/<이름>/`으로 복사한다.
-2. `SKILL.md`는 A4 한 장(50~60줄) 이내. 긴 자료는 `references/`로 빼고 SKILL.md에 "언제 읽을지"만 적는다. 참조는 한 단계만.
-3. frontmatter `description`에 **사용자가 실제로 쓰는 말투**("~해줘", "~하자")를 따옴표로 넣고 3인칭으로 쓴다.
-   - 이것이 발동 기준이다.
-4. 날짜·특정 저장소 사례 같은 시점 의존 정보는 넣지 않는다. 필요하면 "저장소 문서 참고"로 가리킨다.
-5. 새 세션에서 3가지 상황으로 시험한 뒤 완료로 본다.
-
-### dev-release 시험 시나리오
-
-| 상황 | 기대 동작 |
-| --- | --- |
-| `docs/versioning.md`가 있는 저장소에서 "몇 버전으로 올려야 해?" | §0에서 문서를 찾았다고 알리고, 그 문서 기준으로 등급과 근거 제시. 릴리즈는 실행하지 않음 |
-| 태그가 `v2.9` 같은 두 자리인 저장소에서 "릴리즈 컷 하자" | 두 자리 형식을 유지하고, 체크리스트를 답변에 복사해 진행. 6번에서 멈추고 확인 요청 |
-| 태그도 CHANGELOG도 없는 저장소 | CHANGELOG를 만들지 여부부터 확인. 임의로 태그 형식을 정하지 않음 |
-
-## 규칙과 문서를 고칠 때
-
-- 어떤 저장소에서든 같은 지적을 두 번 받거나 실수가 실제 문제로 이어졌으면, 저장소 전용이면 그 저장소 `CLAUDE.md`에, 저장소를 가리지 않으면 `base/claude-md/CLAUDE.md`에 기록한다.
-- 줄을 추가할 때 "이 줄이 없으면 Claude가 실제로 실수하는가?"에 예일 때만. 반드시 지켜져야 하는 것은 CLAUDE.md 문장이 아니라 훅으로 만든다.
-- `base/claude-md/CLAUDE.md`를 고쳤으면 `~/.claude/CLAUDE.md`로 다시 복사한다(Mac·Windows 각각). 웹용은 Project instructions도 갱신.
-
-- README는 **입구**다. 새 주제는 `docs/`에 파일을 만들고 README에는 구조 목록 한 줄과 링크만 추가한다. 문서별 줄 수 상한은 `CLAUDE.md`에 있고 CI가 검사한다.
+절차·시험 방법은 [docs/skill-development.md](docs/skill-development.md).
