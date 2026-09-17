@@ -23,8 +23,10 @@ allowed-tools: Bash(cat ~/.claude/.claude-config-version) Bash(git -C* describe*
 - [ ] 3. 같으면 "이미 최신입니다"라고만 답하고 끝
 - [ ] 4. 다르면 bash "<SRC_PATH>/tools/install.sh" 실행
 - [ ] 5. bash "<SRC_PATH>/tools/check-install.sh" 실행
-- [ ] 6. 결과 보고 — 이전 버전 → 새 버전, check-install.sh 마지막 판정 줄 그대로
+- [ ] 6. 결과 보고 — 이전 버전 → 새 버전, check-install.sh 마지막 판정 줄 + install.sh가 출력한 "새 세션부터 적용" 경고를 그대로 전달. 버전이 바뀐 경우(3번에서 "이미 최신"이 아니었던 경우)엔 "지금 세션에는 적용되지 않으니 새 세션을 시작해야 합니다"를 반드시 덧붙인다.
 ```
+
+파일은 갱신돼도 CLAUDE.md·스킬·훅은 세션 시작 시 한 번만 로드된다. 갱신을 실행한 세션 자체는 새 세션을 시작하기 전까지 옛 규칙으로 계속 동작하므로, 이 경고를 빠뜨리면 사용자가 갱신됐다고 믿고 같은 세션에서 새 규칙을 기대하게 된다([Issue #110](https://github.com/yanos0218/AI/issues/110)).
 
 ## 하지 않는 것
 
