@@ -16,7 +16,7 @@ Claude와 GitHub를 엮는 방법은 크게 넷이다. 아래는 **사용자 저
 | PR 자동 리뷰<br>Code Review(관리형) | PR마다 다중 에이전트가 검토해 인라인 코멘트 | 보류 | Team/Enterprise 전용, 건당 15~25달러. 개인은 로컬 `/code-review`(무료, 세션 한도) 또는 `/code-review ultra`(크레딧)로 대체 |
 | 브랜치 → PR → merge 습관 | 위 두 "결정 필요" 항목의 전제. 리뷰 코멘트·auto-fix·`@claude`가 전부 PR 위에서 동작 | 습관 | kolo_pwa `CONTRIBUTING.md`가 GitHub Flow를 정해 뒀지만 1인이라 강제 안 함. 브랜치 보호는 Free 플랜에서 불가 |
 | GitHub 이슈를 백로그로 | 커뮤니티는 `gh issue create`로 할 일을 만들고 `@claude`에 넘기는 흐름을 씀 | AI 저장소는 채택(2026-09-12) | 개인용 저장소는 문제(`bug`)+할 일(`task`) 통합, 진행 보드는 배포 표만. 다른 저장소는 여전히 `docs/PROGRESS.md` + `P-NN`. 기준은 `docs/repo-standard.md` 항목5 |
-| 이 저장소 CI | markdownlint·shellcheck | 할 일 | `docs/PROGRESS.md` [Issue #52](https://github.com/yanos0218/AI/issues/52) |
+| 이 저장소 CI | markdownlint·shellcheck·문서 상한(`lint.yml`) + 이슈 형식 자동 검사(`issue-format-check.yml`) | 반영 | [Issue #52](https://github.com/yanos0218/AI/issues/52) 완료. 이슈 형식 검사는 [Issue #114](https://github.com/yanos0218/AI/issues/114) |
 
 추천 순서
 
@@ -30,7 +30,7 @@ PR 습관(브랜치에서 작업 → `gh pr create` → merge)을 먼저 한 저
 | --- | --- | --- | --- |
 | 저장소·커밋·push | 11개 저장소, Conventional Commits | 쓴다 | 백업·이력의 기본 |
 | Releases·태그 | kolo_pwa 30, OpenClaw 42, 이 저장소 v0.1.0 | 쓴다 | 어느 기기에 어느 버전이 깔렸는지의 기준점. zip 첨부로 웹 업로드 산출물도 보관 |
-| Actions | kolo_pwa test·release, OpenClaw lint·release | 쓴다 | 월 2,000분 한도. kolo_pwa처럼 경로 필터로 절약. 이 저장소는 [Issue #52](https://github.com/yanos0218/AI/issues/52) |
+| Actions | kolo_pwa test·release, OpenClaw lint·release | 쓴다 | 월 2,000분 한도. kolo_pwa처럼 경로 필터로 절약. 이 저장소는 `lint.yml`([Issue #52](https://github.com/yanos0218/AI/issues/52))·`issue-format-check.yml`([Issue #114](https://github.com/yanos0218/AI/issues/114)) |
 | Dependabot 알림 | kolo_pwa·kolo-api만 켜짐 | **켠다** | 무료, 저장소 Settings → Security 클릭 1회. AI·OpenClaw·Script·Etc는 꺼져 있음 |
 | Dependabot 버전 업데이트 | kolo_pwa(actions만) | 유지 | 의존성 트리가 있는 저장소만 |
 | PR | 사람이 만든 PR 없음(Codex·Dependabot뿐) | 필요할 때 | Claude 클라우드·`@claude`·리뷰 코멘트가 전부 PR 위에서 도니, 그걸 쓰기로 하면 같이 시작 |
