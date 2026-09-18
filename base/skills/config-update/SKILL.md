@@ -26,7 +26,7 @@ allowed-tools: Bash(cat ~/.claude/.claude-config-version) Bash(git -C* describe*
 - [ ] 6. 결과 보고 — 이전 버전 → 새 버전, check-install.sh 마지막 판정 줄 그대로 전달. 버전이 바뀐 경우(3번에서 "이미 최신"이 아니었던 경우)엔 "CLAUDE.md·스킬은 보통 이 세션의 다음 응답부터 자동 반영됩니다. 훅 등록·권한(settings.json 구조)이 바뀐 경우엔 확실히 하려면 새 세션을 시작하세요"를 덧붙인다.
 ```
 
-CLAUDE.md는 컴팩션·세션 재시작 시 다시 로드되고, 스킬은 호출할 때마다 디스크에서 새로 읽는다([공식 문서](https://code.claude.com/docs/en/context-window), 같은 세션 안에서 실험으로도 확인됨). 다만 훅 "등록"(어떤 이벤트에 어떤 훅을 실행할지, 권한 목록 — settings.json 구조 자체)이 바뀐 경우는 즉시 반영되는지 검증되지 않았으므로, 그럴 때만 새 세션을 권장한다([Issue #110](https://github.com/yanos0218/AI/issues/110)/[#111](https://github.com/yanos0218/AI/issues/111)).
+CLAUDE.md는 컴팩션·세션 재시작 시 다시 로드되고, 스킬은 호출할 때마다 디스크에서 새로 읽는다([공식 문서](https://code.claude.com/docs/en/context-window)). 다만 훅 "등록"(어떤 이벤트에 어떤 훅을 실행할지, 권한 목록 — settings.json 구조 자체)이 바뀐 경우는 즉시 반영되는지 검증되지 않았으므로, 그럴 때만 새 세션을 권장한다.
 
 ## 하지 않는 것
 
