@@ -7,7 +7,7 @@ name: 이슈 형식 검사
 # (자동 동기화 아님 — self-audit/월 점검 체크리스트로 드리프트 확인).
 on:
   issues:
-    types: [opened, edited, labeled, closed]
+    types: [opened, edited, labeled, unlabeled, closed]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.issue.number }}
@@ -19,7 +19,7 @@ permissions:
 
 jobs:
   check:
-    if: github.event.action != 'labeled' || github.event.label.name != 'needs-format-fix'
+    if: (github.event.action != 'labeled' && github.event.action != 'unlabeled') || github.event.label.name != 'needs-format-fix'
     runs-on: ubuntu-latest
     timeout-minutes: 3
     env:
