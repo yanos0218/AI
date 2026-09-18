@@ -7,10 +7,13 @@
 
 ## [Unreleased]
 
+## [0.11.2] - 2026-09-18
+
 ### Added
 
 - `.github/workflows/issue-format-check.yml` 신설
   - 이슈가 열리거나 수정될 때 `docs/issue-format.md` 규정(라벨별 필수 헤딩·크램)을 자동 검사해 코멘트+`needs-format-fix` 라벨로 알린다. 사전 차단은 못 함(이슈는 PR과 달리 상태 체크로 막을 방법이 없음). `tools/check-cram.sh` 재사용, 새 스크립트는 안 만듦(버전 등급 미반영 — `base/` 밖 저장소 CI 전용)
+  - 카테고리 라벨(`task`/`bug`/`error`/`research`)이 2개 이상 동시에 붙으면 그 자체를 위반으로 보고([Issue #115](https://github.com/yanos0218/AI/issues/115), 버전 등급 미반영)
 - `docs/issue-format.md`
   - "문서를 먼저 연다" 경고 신설(2026-09-18, 문서를 안 읽고 이슈 3건(#110~#112)을 만들어 제목 길이·본문 템플릿·크램 검사·sub-issue 연결 4가지를 한꺼번에 어긴 뒤 소급 정정. 버전 등급 미반영 — 문서 전용)
   - 크램 확인·게시 명령을 `&&`로 묶으라는 문장 추가(2026-09-18, 검사와 게시를 `;`로만 나눠 써서 검사 실패에도 게시가 그대로 진행된 사례 2건(#114, #117) 재발 방지. 버전 등급 미반영 — 문서 전용, [Issue #118](https://github.com/yanos0218/AI/issues/118))
@@ -33,6 +36,9 @@
 
 - `base/skills/config-update/SKILL.md` 6단계
   - install.sh의 "새 세션부터 적용" 경고가 보고 대상에서 빠져, 갱신 직후에도 같은 세션이 옛 규칙으로 계속 동작하는 걸 사용자가 모르게 되는 문제를 우선 고침. 이후 실험·공식 문서로 CLAUDE.md·스킬은 세션 재시작 없이도 자동 반영됨을 확인해, 훅 등록·권한 변경이 섞인 경우로 "새 세션 권장" 범위를 좁힘(PATCH, [Issue #110](https://github.com/yanos0218/AI/issues/110)/[#111](https://github.com/yanos0218/AI/issues/111))
+  - 이 저장소(`yanos0218/AI`) 전용 GitHub 이슈 링크가 들어 있어 다른 저장소·기기에 설치될 때 이식성이 떨어지던 것 제거(PATCH, [Issue #112](https://github.com/yanos0218/AI/issues/112))
+- `.github/workflows/issue-format-check.yml`
+  - 라벨을 떼는(`unlabeled`) 동작이 트리거에 없어, 위반이 해소돼도 재검사가 안 되던 문제(실제 테스트로 발견, [Issue #117](https://github.com/yanos0218/AI/issues/117), 버전 등급 미반영)
 - GitHub Release 노트 2건(v0.11.0, v0.11.1)의 em-dash 크램 수정(발행 전 `tools/check-cram.sh` 확인을 빠뜨렸던 것, `gh release edit`로 소급 정정. 버전 등급 미반영 — 문서 전용)
 - Issue #109 본문의 크램 2건 수정(같은 종류 실수 반복 — `gh issue create`도 검사 대상 목록에 빠져 있었음, `docs/issue-format.md` "공통" 절에 추가. 버전 등급 미반영 — 문서 전용)
 
@@ -67,56 +73,7 @@
 - `docs/versioning.md`
   - 등급 반영 범위에 남아있던 `scripts/`를 `tools/`로 정정(2026-09-08 저장소 재구성 때 놓친 참조, 버전 등급 미반영 — `docs/` 전용)
 
-## [0.10.0] - 2026-09-15
-
-### Changed
-
-- `base/rules/docs-format.md`
-  - 목록 줄바꿈 규칙을 "길어지면"에서 "길이 무관 항상 분리"로 강화, 표 셀은 `<br>`로([Issue #86](https://github.com/yanos0218/AI/issues/86)·[Issue #87](https://github.com/yanos0218/AI/issues/87))
-  - "필드명: 값" 구조화된 기록(조사 이슈 등)은 예외로 유지
-- `.markdownlint.jsonc`
-  - MD033 allowed_elements에 `br` 추가(표 셀 줄바꿈 허용, [Issue #87](https://github.com/yanos0218/AI/issues/87))
-- 강화된 규칙을 로컬 `.md` 파일 전체와 GitHub Issue 본문 10개에 소급 적용
-  - `.md` 파일: [Issue #88](https://github.com/yanos0218/AI/issues/88)·[Issue #89](https://github.com/yanos0218/AI/issues/89)·[Issue #90](https://github.com/yanos0218/AI/issues/90)
-  - GitHub Issue 본문(#58, #60, #62, #63, #71, #75, #79, #81, #83, #88): [Issue #91](https://github.com/yanos0218/AI/issues/91)
-- `base/rules/docs-format.md`
-  - `—`뿐 아니라 `:`(콜론) 기반 "라벨: 설명" 크램도 같은 기준으로 대상에 포함, 나열 도입 콜론("형식: A, B, C")은 예외로 명시([Issue #93](https://github.com/yanos0218/AI/issues/93))
-  - 적용 범위를 "`.md` 파일 → Issue·PR 본문 → Release 노트"처럼 하나씩 나열하며 매번 뭔가 빠뜨리던 것을, "Claude가 쓰는 텍스트 전부가 기본값"인 포괄형으로 변경(댓글·닫을 때 코멘트 포함, [Issue #95](https://github.com/yanos0218/AI/issues/95)·[Issue #96](https://github.com/yanos0218/AI/issues/96))
-- 콜론 기반 규칙을 로컬 `.md` 파일 전체·GitHub Issue 본문 40건·댓글 17건에 소급 적용([Issue #93](https://github.com/yanos0218/AI/issues/93)·[Issue #97](https://github.com/yanos0218/AI/issues/97))
-- 저장소 전체 재검색으로 놓친 크램 추가 발견·수정: `drafts/observations/*.md`, `docs/github.md`(목록 항목이 아니라 문단 크램), `docs/issue-format.md` 자기모순 1건([Issue #98](https://github.com/yanos0218/AI/issues/98))
-- `base/hooks/git-guardrails.sh`
-  - `git push` 확인 문구에 관련 문서(`.md`) 갱신 상기 추가. 이번 push에 실제 포함된 `.md` 목록을 보여주고, 특정 파일로 못 박지 않고 "나열 안 된 다른 문서에도 걸쳐 있을 수 있다"고 안내([Issue #102](https://github.com/yanos0218/AI/issues/102))
-
-### Added
-
-- `docs/issue-format.md`
-  - 이슈 라벨별 작성 형식 4종(개발/버그·에러/조사/제안) 정의
-  - `error` 라벨 신설(`bug`와 구분, [Issue #83](https://github.com/yanos0218/AI/issues/83))
-  - "이슈 수명 관리" 절 추가: 하나의 목표는 이슈 하나로 유지, 파생 작업은 sub-issue로 연결([Issue #92](https://github.com/yanos0218/AI/issues/92))
-  - 이슈 제목은 마크다운을 렌더링하지 않으니 기호 없이 쓴다는 규칙 추가([Issue #95](https://github.com/yanos0218/AI/issues/95))
-  - git 훅이 못 보는 GitHub 댓글·릴리즈 노트는 `tools/check-cram.sh`를 수동으로 돌리라는 절 추가([Issue #99](https://github.com/yanos0218/AI/issues/99))
-- `docs/research.md` §3
-  - 조사 이슈 형식을 "다시 볼 시점" 대신 "조사일"+"출처"로 변경(버전 등급 미반영 — `docs/` 전용, [Issue #84](https://github.com/yanos0218/AI/issues/84))
-- `docs/monthly-check.md`
-  - 파생 관계인데 sub-issue로 안 묶인 것 없는지 점검하는 항목 추가([Issue #94](https://github.com/yanos0218/AI/issues/94))
-  - 크램 검사 예외 목록을 검토해 휴리스틱에 반영하는 항목 추가([Issue #99](https://github.com/yanos0218/AI/issues/99))
-- `tools/check-cram.sh`·`tools/check-cram.py`
-  - 목록 줄바꿈 규칙(콜론·em-dash 크램) 자동 검사 도구 신설. `--staged`로 커밋 전 자동 검사, `--add-exception`으로 오탐 예외 등록
-  - `.claude/hooks/pre-commit-check.sh`에 연결해 스테이징된 `.md`의 크램을 커밋 차단(deny)([Issue #99](https://github.com/yanos0218/AI/issues/99))
-  - 라벨이 백틱·볼드로 감싼 파일명·기능명이면 길이 무관하게 항상 검출하도록 보완(일반 텍스트 필드명 라벨만 길이로 관대하게, [Issue #99](https://github.com/yanos0218/AI/issues/99))
-- `base/hooks/bulk-read-log.sh`(PostToolUse)
-  - 대량 조회로 보이는 명령(`gh issue list --json body/comments`, 큰 `--limit` 등)을 `~/.claude/bulk-read-log.md`에 조용히 기록
-  - PreToolUse/PostToolUse가 매 호출마다 Claude에게 실시간으로 알리는 건 기술적으로 안 됨을 실제 세션 3개로 확인하고 채택한 대안([Issue #100](https://github.com/yanos0218/AI/issues/100))
-- `base/hooks/session-start-check.sh`
-  - 4번 확인 추가: 대량 조회 로그가 10건 넘으면 다음 세션 시작 때 검토·초기화를 안내([Issue #100](https://github.com/yanos0218/AI/issues/100))
-
-### Fixed
-
-- 파생 이슈 15건(#65~#93 계열)이 본문에 언급만 되고 sub-issue로 연결 안 된 채 방치된 걸 소급 연결([Issue #94](https://github.com/yanos0218/AI/issues/94))
-- 이슈 제목 11건에서 렌더링 안 되는 백틱 제거, GitHub Release 노트 2건(v0.2.0, v0.9.0)의 콜론 크램 수정([Issue #95](https://github.com/yanos0218/AI/issues/95))
-- `docs/versioning.md` 등급 반영 범위 목록에 `base/hooks/`·`base/rules/`·`base/settings.example.json`이 빠져 있어 표의 MINOR 예시("훅·설정 키 추가")·v0.9.0 전례와 안 맞던 것 수정([Issue #103](https://github.com/yanos0218/AI/issues/103))
-
-[Unreleased]: https://github.com/yanos0218/AI/compare/v0.11.1...HEAD
+[Unreleased]: https://github.com/yanos0218/AI/compare/v0.11.2...HEAD
+[0.11.2]: https://github.com/yanos0218/AI/compare/v0.11.1...v0.11.2
 [0.11.1]: https://github.com/yanos0218/AI/compare/v0.11.0...v0.11.1
 [0.11.0]: https://github.com/yanos0218/AI/compare/v0.10.0...v0.11.0
-[0.10.0]: https://github.com/yanos0218/AI/compare/v0.9.1...v0.10.0
