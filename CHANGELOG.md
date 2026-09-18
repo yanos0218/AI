@@ -9,6 +9,8 @@
 
 ### Added
 
+- `.github/workflows/issue-format-check.yml` 신설
+  - 이슈가 열리거나 수정될 때 `docs/issue-format.md` 규정(라벨별 필수 헤딩·크램)을 자동 검사해 코멘트+`needs-format-fix` 라벨로 알린다. 사전 차단은 못 함(이슈는 PR과 달리 상태 체크로 막을 방법이 없음). `tools/check-cram.sh` 재사용, 새 스크립트는 안 만듦(버전 등급 미반영 — `base/` 밖 저장소 CI 전용)
 - `docs/issue-format.md`
   - "문서를 먼저 연다" 경고 신설(2026-09-18, 문서를 안 읽고 이슈 3건(#110~#112)을 만들어 제목 길이·본문 템플릿·크램 검사·sub-issue 연결 4가지를 한꺼번에 어긴 뒤 소급 정정. 버전 등급 미반영 — 문서 전용)
 - `base/claude-md/CLAUDE.md` 5절

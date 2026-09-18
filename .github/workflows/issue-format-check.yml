@@ -1,0 +1,120 @@
+name: 이슈 형식 검사
+
+# docs/issue-format.md 규정(라벨별 필수 헤딩·크램)을 이슈 생성·수정 시점에
+# 코멘트+라벨(needs-format-fix)로 알린다. 사전 차단은 못 한다 — 이슈는 PR과
+# 달리 상태 체크로 막을 방법이 없다.
+# docs/issue-format.md의 헤딩 문구가 바뀌면 이 파일도 같이 고쳐야 한다
+# (자동 동기화 아님 — self-audit/월 점검 체크리스트로 드리프트 확인).
+on:
+  issues:
+    types: [opened, edited, labeled, closed]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.issue.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    if: github.event.action != 'labeled' || github.event.label.name != 'needs-format-fix'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ISSUE_NUMBER: ${{ github.event.issue.number }}
+      ISSUE_TITLE: ${{ github.event.issue.title }}
+      ISSUE_BODY: ${{ github.event.issue.body }}
+      ISSUE_LABELS: ${{ join(github.event.issue.labels.*.name, ',') }}
+      EVENT_ACTION: ${{ github.event.action }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: 닫힐 때는 라벨만 정리하고 끝
+        if: env.EVENT_ACTION == 'closed'
+        run: gh issue edit "${ISSUE_NUMBER}" --remove-label "needs-format-fix" || true
+
+      - name: 검사 및 코멘트 반영
+        if: env.EVENT_ACTION != 'closed'
+        run: |
+          printf '%s' "${ISSUE_BODY}" > /tmp/body.md
+          : > /tmp/violations.md
+
+          # 1) 크램 (기존 스크립트 재사용)
+          if ! bash tools/check-cram.sh /tmp/body.md > /tmp/cram.txt 2>&1; then
+            {
+              echo "- 크램(목록 줄바꿈 규칙 위반):"
+              sed 's/^/  /' /tmp/cram.txt
+              echo "  - 오탐이면: \`tools/check-cram.sh --add-exception <파일> <줄번호>\`로 예외 등록 후 커밋"
+            } >> /tmp/violations.md
+          fi
+
+          # 2) 라벨별 필수 헤딩
+          skip=0
+          case ",${ISSUE_LABELS}," in
+            *,bug,*|*,error,*)
+              for h in "## 증상" "## 재현" "## 원인" "## 영향" "## 수정 이력"; do
+                grep -qF "${h}" /tmp/body.md || echo "- 필수 헤딩 누락: ${h}" >> /tmp/violations.md
+              done
+              ;;
+            *,task,*)
+              dev_ok=1; idea_ok=1
+              for h in "## 배경" "## 작업 내용" "## 검증"; do
+                grep -qF "${h}" /tmp/body.md || dev_ok=0
+              done
+              for h in "## 배경" "## 제안 내용" "## 기대 효과" "## 결정"; do
+                grep -qF "${h}" /tmp/body.md || idea_ok=0
+              done
+              if [[ "${dev_ok}" -eq 0 && "${idea_ok}" -eq 0 ]]; then
+                echo "- task 템플릿(개발형 배경/작업 내용/검증, 또는 제안형 배경/제안 내용/기대 효과/결정) 어느 쪽도 안 맞음" >> /tmp/violations.md
+              fi
+              ;;
+            *,research,*)
+              grep -qF "## 조사" /tmp/body.md || echo "- 필수 헤딩 누락: ## 조사" >> /tmp/violations.md
+              for f in "질문:" "결론:" "조사일:" "출처:" "영향:"; do
+                grep -qE "^- ${f}" /tmp/body.md || echo "- 조사 필드 누락: ${f}" >> /tmp/violations.md
+              done
+              ;;
+            *)
+              skip=1
+              ;;
+          esac
+          [[ "${skip}" -eq 1 ]] && { echo "관리 대상 라벨 없음 — 검사 건너뜀"; exit 0; }
+
+          # 3) 제목 길이(참고용, 위반으로 안 셈) — wc -m은 한글을 잘못 세므로 python 사용
+          title_len=$(python3 -c "import sys; print(len(sys.argv[1]))" "${ISSUE_TITLE}")
+          notice=""
+          [[ "${title_len}" -gt 50 ]] && notice="참고: 제목이 ${title_len}자로 가이드(40~50자)보다 깁니다."
+
+          MARKER="<!-- issue-format-check -->"
+          existing_id=$(gh api "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}/comments" \
+            --jq ".[] | select(.body | startswith(\"${MARKER}\")) | .id" | head -1)
+
+          if [[ -s /tmp/violations.md ]]; then
+            {
+              echo "${MARKER}"
+              echo "## 이슈 형식 확인 — 검토 필요"
+              echo
+              cat /tmp/violations.md
+              echo
+              [[ -n "${notice}" ]] && echo "${notice}"
+              echo
+              echo "기계적 검사라 오탐 가능 — 진짜 문제인지 확인 후 고치거나 예외 등록"
+              echo
+              echo "기준: docs/issue-format.md"
+            } > /tmp/comment.md
+            if [[ -n "${existing_id}" ]]; then
+              gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${existing_id}" -X PATCH -F body=@/tmp/comment.md
+            else
+              gh issue comment "${ISSUE_NUMBER}" --body-file /tmp/comment.md
+            fi
+            gh issue edit "${ISSUE_NUMBER}" --add-label "needs-format-fix" || true
+          else
+            if [[ -n "${existing_id}" ]]; then
+              printf '%s\n## 이슈 형식 확인 — 통과\n' "${MARKER}" > /tmp/comment.md
+              gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${existing_id}" -X PATCH -F body=@/tmp/comment.md
+            fi
+            gh issue edit "${ISSUE_NUMBER}" --remove-label "needs-format-fix" || true
+          fi
