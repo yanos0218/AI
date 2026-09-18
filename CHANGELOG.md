@@ -7,6 +7,8 @@
 
 ## [Unreleased]
 
+## [0.11.3] - 2026-09-18
+
 ### Added
 
 - `base/skills/dev-release/SKILL.md` §2
@@ -66,26 +68,7 @@
 - `docs/repo-standard.md` 5번(Issues)
   - 위와 동일하게 완화, `issue-format.md` 참고 링크 추가
 
-## [0.11.0] - 2026-09-17
-
-### Added
-
-- `base/skills/config-update/`
-  - "설정 업데이트해줘"에 발동, 어느 저장소에 있든 원본 경로(`~/.claude/.claude-config-version`)로 `install.sh`+`check-install.sh` 실행(발동/오발동 2시나리오 확인, [Issue #105](https://github.com/yanos0218/AI/issues/105)·[Issue #106](https://github.com/yanos0218/AI/issues/106))
-- `tools/bootstrap.sh`
-  - 신규 기기용 단일 명령 설치. `curl`로 받아 `bash`로 실행하면 clone(또는 pull) 후 `install.sh` 자동 실행(빈 `HOME` 시뮬레이션으로 신규 clone·기존 pull 두 경로 실행 확인)
-
-### Changed
-
-- `base/claude-md/CLAUDE.md` §5
-  - SessionStart 훅의 버전 낡음 알림을 보면 다른 작업 전에 갱신 여부부터 물어보도록 규칙 추가(알림을 보고도 넘어간 실제 사례로 확인, [Issue #105](https://github.com/yanos0218/AI/issues/105))
-
-### Fixed
-
-- `docs/versioning.md`
-  - 등급 반영 범위에 남아있던 `scripts/`를 `tools/`로 정정(2026-09-08 저장소 재구성 때 놓친 참조, 버전 등급 미반영 — `docs/` 전용)
-
-[Unreleased]: https://github.com/yanos0218/AI/compare/v0.11.2...HEAD
+[Unreleased]: https://github.com/yanos0218/AI/compare/v0.11.3...HEAD
+[0.11.3]: https://github.com/yanos0218/AI/compare/v0.11.2...v0.11.3
 [0.11.2]: https://github.com/yanos0218/AI/compare/v0.11.1...v0.11.2
 [0.11.1]: https://github.com/yanos0218/AI/compare/v0.11.0...v0.11.1
-[0.11.0]: https://github.com/yanos0218/AI/compare/v0.10.0...v0.11.0
