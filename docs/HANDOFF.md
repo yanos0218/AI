@@ -6,11 +6,10 @@
 
 Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원본 저장소. 개발자가 아닌 사용자가 여러 스택의 프로젝트를 오가며 Claude에게 (1) 매번 같은 배경을 다시 설명하지 않고, (2) 멋대로 진행하거나 너무 자주 묻지 않게 하고, (3) 검증 없이 "됐다"는 말을 못 하게 하고, (4) 결론만 짧게 듣도록 만든다. 저장소별 규칙은 각 저장소에 두고 여기서는 **참조만** 한다.
 
-## 현재 상태 (2026-09-17) · 마지막 월 점검: 없음 (첫 점검 2026-10 예정, `docs/monthly-check.md`)
+## 현재 상태 (2026-09-18) · 마지막 월 점검: 없음 (첫 점검 2026-10 예정, `docs/monthly-check.md`)
 
-- 저장소 v0.11.1(2026-09-17 컷 2회: v0.11.0 MINOR → v0.11.1 PATCH)
-  - `config-update` 스킬·`tools/bootstrap.sh` 신설(단일 명령 설치·어디서든 설정 갱신), 이슈 제목·라벨·sub-issue 표준 완화(라벨 4개 고정 철회, [Issue #107](https://github.com/yanos0218/AI/issues/107)). CI(`lint.yml`) 초록.
-  - 배포 현황은 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본. Windows는 최신 반영, Mac mini·Linux(Rocky)는 v0.10.0 기준(다음 접속 때 갱신 필요), 웹은 v0.6.0(zip 재업로드 필요).
+- 저장소 v0.11.2(2026-09-18 컷: config-update 버그 3건 수정, 이슈 형식 자동 검사 워크플로 `issue-format-check.yml` 신설, CLAUDE.md 규칙 2건 승격)
+  - 배포 현황은 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본. Windows는 v0.11.2 반영, Mac mini·Linux(Rocky)는 v0.10.0 기준(다음 접속 때 갱신 필요), 웹은 v0.6.0(zip 재업로드 필요).
   - `drafts/hooks/compact-snapshot*.sh`(컴팩션 안전망, [Issue #104](https://github.com/yanos0218/AI/issues/104))는 아직 초안.
     - 자연 압축 발생 때 검증 대기 중, 이 저장소 `.claude/settings.local.json`(개인용, 커밋 안 됨)에 시험용으로 등록돼 있음.
 - 할 일·발견한 문제는 GitHub Issues로 관리한다([Issue #11](https://github.com/yanos0218/AI/issues/11), 2026-09-12). 완료 이력은 [PROGRESS.md §1](PROGRESS.md#1-완료)에 짧은 색인 + 이슈 링크로.
@@ -53,3 +52,5 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
   - 승격은 검증+요청 즉시, 컷은 쌓였다가 필요할 때. 매번 묶으면 번호 소진 사고 재발([Issue #107](https://github.com/yanos0218/AI/issues/107) 논의 중 정리).
 - (2026-09-17) 다른 저장소용 이슈 라벨을 `task`/`bug`/`error`/`research` 4개로 고정 요구하려던 초안을 철회
   - kolo_pwa·kolo-api 실사용 관찰(참고용) 결과 "라벨이 있어도 문서화 안 되면 하나로 몰린다"만 확인됨 → 저장소 자유 + 문서화 원칙만 요구로 완화([Issue #107](https://github.com/yanos0218/AI/issues/107)).
+- (2026-09-18) 이슈 형식 위반은 `issue-format-check.yml`(GitHub Actions)이 사후 자동 확인한다(사전 차단 불가)
+  - 이슈·코멘트 본문은 크램 확인과 게시 명령을 `&&`로 묶어서 올린다. 순서로만 적어 게시가 그대로 진행된 사례 2건 재발 방지([Issue #118](https://github.com/yanos0218/AI/issues/118)).
