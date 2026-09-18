@@ -12,6 +12,13 @@
 - `base/skills/dev-release/SKILL.md` §2
   - 5번 단계 신설: 릴리즈 전 바뀐 파일 전체를 훑어 세션 요약·진행 보드 문서 갱신 여부 확인. release 커밋에만 거는 좁은 차단 훅 대신 택한 방식([Issue #121](https://github.com/yanos0218/AI/issues/121), PATCH)
 
+### Changed
+
+- `docs/issue-format.md`·`CLAUDE.md`·`docs/repo-standard.md`
+  - 커밋의 `Closes #N`(push 순간 자동 닫힘)을 `Refs #N` + 검증 후 수동 `gh issue close`로 교체. push 이후에도 검증할 게 남아 있으면 검증 전에 이슈가 닫히던 위험 방지([Issue #122](https://github.com/yanos0218/AI/issues/122), 버전 등급 미반영 — 문서 전용)
+- `base/skills/dev-release/SKILL.md`·`references/release-steps.md`
+  - 마일스톤 배정용 커밋 grep 패턴을 `closes #N`에서 `(refs|closes) #N`으로 확장(과거 커밋 호환, PATCH, [Issue #122](https://github.com/yanos0218/AI/issues/122))
+
 ## [0.11.2] - 2026-09-18
 
 ### Added

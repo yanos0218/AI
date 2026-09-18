@@ -57,8 +57,8 @@ scripts/release-check.sh vX.Y.Z              # 있으면
 resp=$(gh api repos/<owner>/<repo>/milestones -f title="vX.Y.Z" -f state=open -f due_on="<릴리즈 시각, ISO8601>")
 num=$(echo "$resp" | python3 -c "import json,sys;print(json.load(sys.stdin)['number'])")
 
-# 2. 직전 태그..이번 태그 범위 커밋에서 Closes #N 추출
-git log <이전태그>..vX.Y.Z --format="%B" | grep -oiE 'closes #[0-9]+' | grep -oE '[0-9]+' | sort -un
+# 2. 직전 태그..이번 태그 범위 커밋에서 Refs/Closes #N 추출(Closes는 과거 커밋 호환용)
+git log <이전태그>..vX.Y.Z --format="%B" | grep -oiE '(refs|closes) #[0-9]+' | grep -oE '[0-9]+' | sort -un
 
 # 3. 각 이슈에 배정
 gh issue edit <N> --milestone "vX.Y.Z"

@@ -105,6 +105,8 @@
   - 로컬 `.md`는 커밋 시 `pre-commit-check.sh`가 자동 검사하지만, `gh issue create`·`gh issue comment`·`gh issue close --comment`·`gh release create/edit`는 git 커밋이 아니라 훅이 못 본다
     - 본문을 파일로 쓴 뒤 `tools/check-cram.sh <파일>`로 확인하고 나서 올린다(Issue #99).
     - 확인 명령과 게시 명령을 `;`로 나눠 쓰지 않는다. `tools/check-cram.sh <파일> && gh issue create ...`처럼 `&&`로 묶어서, 검사가 실패하면 게시 명령이 물리적으로 실행되지 않게 한다(Issue #118 — 순서로만 적어 놨다가 검사 실패에도 게시가 그대로 진행된 사례 2건).
-- 완료해서 닫을 때 커밋에 `Closes #N`을 쓰면 자동으로 닫힌다.
+- 커밋에는 `Closes #N` 대신 `Refs #N`(자동 닫힘 없는 단순 참조)만 쓴다
+  - `Closes #N`은 push하는 순간 자동으로 닫혀서, push 이후에도 검증할 게 남아 있으면 검증이 안 끝난 채 닫히는 위험이 있다([Issue #122](https://github.com/yanos0218/AI/issues/122)).
+  - 검증이 전부 끝난 뒤 `gh issue close <N> --comment "..."`로 직접 닫는다. "이번 건은 push 뒤 확인이 더 필요한가"를 매번 판단하지 않고 항상 이 방식으로 통일한다.
 - **제목은 마크다운을 렌더링하지 않는다.** 백틱·`**`·`[]()` 등을 쓰면 기호가 그대로 보인다
   - 파일·명령어를 제목에 넣을 땐 기호 없이 그대로(예: `` `tools/pack.sh` `` 대신 `tools/pack.sh`).
