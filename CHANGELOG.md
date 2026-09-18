@@ -7,6 +7,11 @@
 
 ## [Unreleased]
 
+### Added
+
+- `base/skills/dev-release/SKILL.md` §2
+  - 5번 단계 신설: 릴리즈 전 바뀐 파일 전체를 훑어 세션 요약·진행 보드 문서 갱신 여부 확인. release 커밋에만 거는 좁은 차단 훅 대신 택한 방식([Issue #121](https://github.com/yanos0218/AI/issues/121), PATCH)
+
 ## [0.11.2] - 2026-09-18
 
 ### Added

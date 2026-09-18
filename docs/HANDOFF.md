@@ -54,3 +54,5 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
   - kolo_pwa·kolo-api 실사용 관찰(참고용) 결과 "라벨이 있어도 문서화 안 되면 하나로 몰린다"만 확인됨 → 저장소 자유 + 문서화 원칙만 요구로 완화([Issue #107](https://github.com/yanos0218/AI/issues/107)).
 - (2026-09-18) 이슈 형식 위반은 `issue-format-check.yml`(GitHub Actions)이 사후 자동 확인한다(사전 차단 불가)
   - 이슈·코멘트 본문은 크램 확인과 게시 명령을 `&&`로 묶어서 올린다. 순서로만 적어 게시가 그대로 진행된 사례 2건 재발 방지([Issue #118](https://github.com/yanos0218/AI/issues/118)).
+- (2026-09-18) release 커밋에만 거는 좁은 차단 훅 대신, `dev-release` §2 절차에 "바뀐 파일 전체를 훑어 관련 문서 갱신 확인" 단계를 추가했다
+  - release 아닌 커밋(`docs/github.md` 미갱신)에서 난 미스는 좁은 훅으로 못 잡았을 사례가 근거([Issue #121](https://github.com/yanos0218/AI/issues/121)).
