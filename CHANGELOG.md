@@ -7,6 +7,11 @@
 
 ## [Unreleased]
 
+### Added
+
+- `base/claude-md/CLAUDE.md` 5절
+  - kolo_pwa 세션이 정식 승격 절차 없이 설치본(`~/.claude/CLAUDE.md`)에만 직접 추가했던 규칙 2건을 원본에 승격(`--limit`/페이지네이션 오인 방지, 저장소 상태를 직접 고치기 전 기존 절차 확인). 승격 전엔 `install.sh` 실행 한 번으로 그 2건이 설치본에서 조용히 사라지는 위험이 있었다(PATCH)
+
 ### Changed
 
 - `README.md`
