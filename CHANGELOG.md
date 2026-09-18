@@ -22,7 +22,7 @@
 ### Fixed
 
 - `base/skills/config-update/SKILL.md` 6단계
-  - install.sh의 "새 세션부터 적용" 경고가 보고 대상에서 빠져, 갱신 직후에도 같은 세션이 옛 규칙으로 계속 동작하는 걸 사용자가 모르게 되는 문제(PATCH, [Issue #110](https://github.com/yanos0218/AI/issues/110))
+  - install.sh의 "새 세션부터 적용" 경고가 보고 대상에서 빠져, 갱신 직후에도 같은 세션이 옛 규칙으로 계속 동작하는 걸 사용자가 모르게 되는 문제를 우선 고침. 이후 실험·공식 문서로 CLAUDE.md·스킬은 세션 재시작 없이도 자동 반영됨을 확인해, 훅 등록·권한 변경이 섞인 경우로 "새 세션 권장" 범위를 좁힘(PATCH, [Issue #110](https://github.com/yanos0218/AI/issues/110)/[#111](https://github.com/yanos0218/AI/issues/111))
 - GitHub Release 노트 2건(v0.11.0, v0.11.1)의 em-dash 크램 수정(발행 전 `tools/check-cram.sh` 확인을 빠뜨렸던 것, `gh release edit`로 소급 정정. 버전 등급 미반영 — 문서 전용)
 - Issue #109 본문의 크램 2건 수정(같은 종류 실수 반복 — `gh issue create`도 검사 대상 목록에 빠져 있었음, `docs/issue-format.md` "공통" 절에 추가. 버전 등급 미반영 — 문서 전용)
 
