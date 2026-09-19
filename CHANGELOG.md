@@ -7,6 +7,18 @@
 
 ## [Unreleased]
 
+### Added
+
+- `tools/check-install.sh`
+  - `--summary` 옵션 신설: 6개 섹션 상세 없이 마지막 판정 줄만 출력. 릴리즈 컷 때 grep으로 걸러도 "설정 변경 이력" 섹션이 새서 컨텍스트를 불필요하게 채우던 문제 해결([Issue #123](https://github.com/yanos0218/AI/issues/123), PATCH)
+
+### Changed
+
+- `.gitattributes`
+  - `.md`·`.json`에 `eol=lf` 추가. `core.autocrlf=true` 환경에서 커밋마다 반복되던 CRLF 경고 제거([Issue #123](https://github.com/yanos0218/AI/issues/123), 버전 등급 미반영 — 저장소 설정 전용)
+- `docs/github.md`
+  - "gh CLI를 Claude가 직접 사용" 행에 `-q`로 필요한 필드만 추출하는 습관 명시(원본 JSON을 그대로 받으면 토큰이 늘어남, [Issue #123](https://github.com/yanos0218/AI/issues/123), 버전 등급 미반영 — 문서 전용)
+
 ## [0.11.3] - 2026-09-18
 
 ### Added

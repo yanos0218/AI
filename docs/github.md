@@ -8,7 +8,7 @@ Claude와 GitHub를 엮는 방법은 크게 넷이다. 아래는 **사용자 저
 
 | 방법 | 무엇을 해주나 | 상태 | 비고 |
 | --- | --- | --- | --- |
-| `gh` CLI를 Claude가 직접 사용 | PR·이슈·Actions 결과·Release 조회/생성. MCP보다 토큰이 적게 듦 | 반영 | `permissions.allow`에 `gh pr view`·`gh run list`·`gh release view` 사전 허용. dev-release가 `gh release create`·`gh run list`를 씀 |
+| `gh` CLI를 Claude가 직접 사용 | PR·이슈·Actions 결과·Release 조회/생성. MCP보다 토큰이 적게 듦 | 반영 | `permissions.allow`에 `gh pr view`·`gh run list`·`gh release view` 사전 허용. dev-release가 `gh release create`·`gh run list`를 씀. `gh api`는 항상 `-q`로 필요한 필드만 추출(원본 JSON을 그대로 받으면 오히려 토큰이 늘어남, [Issue #123](https://github.com/yanos0218/AI/issues/123)) |
 | 태그 push → Release 자동 생성 | 릴리즈 노트 파일을 태그 전에 커밋하면 Actions가 Release를 만듦 | 반영 | kolo_pwa·OpenClaw에 이미 있음. dev-release §0이 워크플로 존재를 감지해 절차를 맞춤 |
 | 이 저장소를 설정의 원본으로 | `~/.claude`를 기기마다 손으로 맞추지 않고 clone → 설치 스크립트 | 반영 | 커뮤니티 dotfiles 방식과 동일. Mac·Linux 반영은 `docs/PROGRESS.md` [Issue #28](https://github.com/yanos0218/AI/issues/28)/16 |
 | **Claude Code on the web** (`claude.ai/code`) | 브라우저·폰에서 지시 → 클라우드 VM이 저장소를 clone해 작업 → PR 생성. `claude --cloud "..."`로 터미널에서 보내고 `--teleport`로 받아옴. PR의 CI 실패·리뷰 코멘트를 자동 수정(auto-fix)도 가능 | **결정 필요** | Pro/Max 가능, 별도 VM 비용 없음(플랜 한도 공유). OpenClaw에서 Codex로 하던 "클라우드가 PR 만들기"의 Claude 버전. 저장소 `CLAUDE.md`·`.claude/`는 적용되지만 `~/.claude`는 전달 안 됨 |
