@@ -7,6 +7,8 @@
 
 ## [Unreleased]
 
+## [0.11.4] - 2026-09-19
+
 ### Added
 
 - `tools/check-install.sh`
@@ -68,19 +70,7 @@
 - GitHub Release 노트 2건(v0.11.0, v0.11.1)의 em-dash 크램 수정(발행 전 `tools/check-cram.sh` 확인을 빠뜨렸던 것, `gh release edit`로 소급 정정. 버전 등급 미반영 — 문서 전용)
 - Issue #109 본문의 크램 2건 수정(같은 종류 실수 반복 — `gh issue create`도 검사 대상 목록에 빠져 있었음, `docs/issue-format.md` "공통" 절에 추가. 버전 등급 미반영 — 문서 전용)
 
-## [0.11.1] - 2026-09-17
-
-### Changed
-
-- `base/skills/repo-setup/references/checklist.md` 5번(Issues)
-  - 라벨 이름·개수 강제(`task`/`bug`/`error`/`research` 4개)를 철회하고, 저장소 자유 + "문제/할 일 구분 라벨 하나씩 + 문서화" 원칙만 요구하도록 완화([Issue #107](https://github.com/yanos0218/AI/issues/107), 다른 저장소 실사용 관찰 근거)
-- `docs/issue-format.md`
-  - 제목 원칙 절 신설(고정 템플릿 강제 안 함, 저장소 자체 백로그 ID 우선)
-  - sub-issue `--add-sub-issue` 사용 예시 2건 보강
-- `docs/repo-standard.md` 5번(Issues)
-  - 위와 동일하게 완화, `issue-format.md` 참고 링크 추가
-
-[Unreleased]: https://github.com/yanos0218/AI/compare/v0.11.3...HEAD
+[Unreleased]: https://github.com/yanos0218/AI/compare/v0.11.4...HEAD
+[0.11.4]: https://github.com/yanos0218/AI/compare/v0.11.3...v0.11.4
 [0.11.3]: https://github.com/yanos0218/AI/compare/v0.11.2...v0.11.3
 [0.11.2]: https://github.com/yanos0218/AI/compare/v0.11.1...v0.11.2
-[0.11.1]: https://github.com/yanos0218/AI/compare/v0.11.0...v0.11.1
