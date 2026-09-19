@@ -8,7 +8,7 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 
 ## 현재 상태 (2026-09-18) · 마지막 월 점검: 없음 (첫 점검 2026-10 예정, `docs/monthly-check.md`)
 
-- 저장소 v0.11.3(2026-09-18 컷: dev-release 절차에 문서 동기화 확인 단계 추가, 이슈 종료를 `Closes` 자동 닫힘에서 `Refs` + 수동 닫기로 전환)
+- 저장소 v0.11.3(2026-09-18 컷: dev-release 절차에 문서 동기화 확인 단계 추가, 이슈 종료를 `Closes` 자동 닫힘에서 `Refs` + 수동 닫기로 전환). 이후 `[Unreleased]`에 토큰 절감 3건(`check-install.sh --summary`, `.gitattributes` CRLF, `gh api -q` 습관, [Issue #123](https://github.com/yanos0218/AI/issues/123)) 추가 반영, 다음 컷 때 포함
   - 배포 현황은 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본. Windows는 v0.11.3 반영, Mac mini·Linux(Rocky)는 v0.10.0 기준(다음 접속 때 갱신 필요), 웹은 v0.6.0(zip 재업로드 필요).
   - `drafts/hooks/compact-snapshot*.sh`(컴팩션 안전망, [Issue #104](https://github.com/yanos0218/AI/issues/104))는 아직 초안.
     - 자연 압축 발생 때 검증 대기 중, 이 저장소 `.claude/settings.local.json`(개인용, 커밋 안 됨)에 시험용으로 등록돼 있음.
