@@ -6,7 +6,7 @@ allowed-tools: Bash(ls*) Bash(wc -l*) Bash(gh issue list*) Bash(gh label list*)
 
 # self-audit
 
-대화 기록을 실제로 읽어 CLAUDE.md·규칙 문서와 실제 작업 방식 사이의 간극을 찾는다(ykdojo `review-claudemd` 패턴 응용). 파일 몇 개로 상태를 이어가는 평소 방식(HANDOFF 등, 비용 0)과 역할이 다르다 — 이건 어쩌다 한 번 도는 유료 감사다.
+대화 기록을 실제로 읽어 CLAUDE.md·규칙 문서와 실제 작업 방식 사이의 간극을 찾는다(ykdojo `review-claudemd` 패턴 응용). 파일 몇 개로 상태를 이어가는 평소 방식(HANDOFF 등, 비용 0)과 역할이 다르다. 이건 어쩌다 한 번 도는 유료 감사다.
 
 ## 0. 시작 전 확인
 

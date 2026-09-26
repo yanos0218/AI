@@ -10,7 +10,8 @@ allowed-tools: Bash(cat ~/.claude/.claude-config-version) Bash(git -C* describe*
 
 ## 0. 시작 전 확인 (필수)
 
-- `~/.claude/.claude-config-version`을 읽는다 — 1행: 원본 저장소 경로(SRC_PATH), 2행: 설치된 버전.
+- `~/.claude/.claude-config-version`을 읽는다.
+  - 1행은 원본 저장소 경로(SRC_PATH), 2행은 설치된 버전이다.
 - 파일이 없으면 아직 `tools/install.sh`를 한 번도 실행한 적이 없는 것이다. **경로를 추측하지 말고** 원본 저장소 위치를 사용자에게 물어본다.
 - 같은 세션에 다른 SessionStart 알림(저장소 표준 제안, 대량 조회 누적 등)이 함께 떠 있어도, 이 체크리스트를 먼저 끝내고 나서 그것들에 답한다.
 
@@ -30,7 +31,9 @@ CLAUDE.md는 컴팩션·세션 재시작 시 다시 로드되고, 스킬은 호�
 
 ## 하지 않는 것
 
-- SRC_PATH가 없으면 새로 clone하지 않는다 — 그건 `tools/bootstrap.sh`(사람이 직접 실행)의 역할이다.
-- `base/` 내용 자체를 이 스킬로 고치지 않는다 — 순수 배포 갱신 도구다.
+- SRC_PATH가 없으면 새로 clone하지 않는다.
+  - 그건 `tools/bootstrap.sh`(사람이 직접 실행)의 역할이다.
+- `base/` 내용 자체를 이 스킬로 고치지 않는다.
+  - 순수 배포 갱신 도구다.
 - SRC_PATH는 위 절차의 `install.sh`·`check-install.sh` 실행에만 쓴다. 그 저장소의 파일을 읽거나 고치거나, 그 저장소에 커밋·이슈·push를 하지 않는다(2026-09-26, 다른 기기 세션이 원본 저장소에 관여하려던 사례, [Issue #125](https://github.com/yanos0218/AI/issues/125)).
 - `check-install.sh`가 "어긋난 항목이 있다"고 보고해도 임의로 파일을 손대지 않고 그대로 사용자에게 전달한다.
