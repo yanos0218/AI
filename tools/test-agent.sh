@@ -5,19 +5,22 @@
 #   프로젝트 .claude/agents/에 넣으면 -p 세션은 신뢰 전 폴더라 frontmatter hooks가 건너뛰어진다(공식 문서, 2026-09-26 실측).
 #   --agents로 넘긴 정의와 ~/.claude/agents/의 훅은 신뢰 절차 없이 돈다 — 그래서 --agents 파일 형식(v2.1.281+)을 쓴다.
 #   "bash ~/.claude/hooks/<훅>.sh"는 설치 전이므로 drafts/hooks/<훅>.sh 절대 경로로 바꿔 넘긴다.
+#   --installed: 폴더 대신 이미 설치된 ~/.claude/agents/를 그대로 쓴다(설치본 시험, 훅 경로도 설치본).
 #   omitClaudeMd(v2.1.271+) 등 최신 필드는 CLI 버전을 탄다 — 필요하면 CLAUDE_BIN으로 다른 실행 파일을 지정한다.
 set -u
 cd "$(dirname "${0}")/.." || exit 1
 AGENT="${1:?에이전트 파일}"; FIX="${2:?시나리오 저장소}"; PROMPT="${3:?사용자 말}"; shift 3
-MODEL="claude-sonnet-5"; TOOLS="Read,Glob,Grep,Agent,Bash(ls*),Bash(cat*),Bash(git status*)"; TURNS=12
+INSTALLED=0; MODEL="claude-sonnet-5"; TOOLS="Read,Glob,Grep,Agent,Bash(ls*),Bash(cat*),Bash(git status*)"; TURNS=12
 while [[ $# -gt 0 ]]; do case "${1}" in
-  --model) MODEL="${2}"; shift 2;; --tools) TOOLS="${2}"; shift 2;; --turns) TURNS="${2}"; shift 2;; *) echo "모르는 옵션 ${1}"; exit 2;; esac; done
+  --model) MODEL="${2}"; shift 2;; --tools) TOOLS="${2}"; shift 2;; --turns) TURNS="${2}"; shift 2;; --installed) INSTALLED=1; shift;; *) echo "모르는 옵션 ${1}"; exit 2;; esac; done
 CLAUDE_BIN="${CLAUDE_BIN:-$(command -v claude || echo "${HOME}/.local/bin/claude.exe")}"
 PY="$(command -v python3 || command -v python)"
 [[ -d "${FIX}/.git" ]] || { echo "시나리오 저장소가 git 저장소가 아님: ${FIX}"; exit 2; }
 
 name="$(basename "${AGENT}" .md)"
 [[ -f "${HOME}/.claude/agents/${name}.md" ]] && echo "== 주의: 같은 이름의 전역 에이전트가 설치돼 있음(--agents 쪽이 우선)"
+agents_args=()
+if [[ "${INSTALLED}" = 0 ]]; then
 hooks_abs="$(pwd)/drafts/hooks"
 agents_json="${FIX}.agents.json"
 # 실제 사용처럼 같은 폴더의 에이전트를 전부 넘긴다(설명끼리 경쟁하는 상황에서 맞는 쪽이 골라지는지 봄)
@@ -38,11 +41,13 @@ for f in sorted(glob.glob(os.path.join(src, '*.md'))):
 json.dump(agents, io.open(out, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 print('== --agents:', ', '.join(agents))
 PY
+agents_args=(--agents "${agents_json}")
+fi
 out="${FIX}.${name}.jsonl"
 echo "== 에이전트 ${name} · 모델 ${MODEL} · $("${CLAUDE_BIN}" --version 2>/dev/null) · 말: ${PROMPT}"
 IFS=',' read -r -a tool_rules <<<"${TOOLS}"
 (cd "${FIX}" && unset CLAUDECODE CLAUDE_CODE_ENTRYPOINT && "${CLAUDE_BIN}" -p "${PROMPT}" --model "${MODEL}" \
-  --output-format stream-json --verbose --max-turns "${TURNS}" --agents "${agents_json}" --allowedTools "${tool_rules[@]}") > "${out}" 2>"${out}.err" < /dev/null
+  --output-format stream-json --verbose --max-turns "${TURNS}" "${agents_args[@]}" --allowedTools "${tool_rules[@]}") > "${out}" 2>"${out}.err" < /dev/null
 
 PYTHONIOENCODING=utf-8 "${PY}" - "${out}" "${name}" <<'PY'
 import json, sys
