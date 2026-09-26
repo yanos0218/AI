@@ -6,13 +6,13 @@
 
 Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원본 저장소. 개발자가 아닌 사용자가 여러 스택의 프로젝트를 오가며 Claude에게 (1) 매번 같은 배경을 다시 설명하지 않고, (2) 멋대로 진행하거나 너무 자주 묻지 않게 하고, (3) 검증 없이 "됐다"는 말을 못 하게 하고, (4) 결론만 짧게 듣도록 만든다. 저장소별 규칙은 각 저장소에 두고 여기서는 **참조만** 한다.
 
-## 현재 상태 (2026-09-26) · 마지막 월 점검: 없음 (첫 점검 2026-10 예정, `docs/monthly-check.md`)
+## 현재 상태 (2026-09-27) · 마지막 월 점검: 없음 (첫 점검 2026-10 예정, `docs/monthly-check.md`)
 
 - 저장소 v0.11.4(2026-09-19 컷: 릴리즈 컷 토큰 절감 3건 — `check-install.sh --summary`, `.gitattributes` CRLF 제거, `gh api -q` 습관, [Issue #123](https://github.com/yanos0218/AI/issues/123))
   - 배포 현황은 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본. Windows는 v0.11.4 반영, Mac mini·Linux(Rocky)는 v0.10.0 기준(다음 접속 때 갱신 필요), 웹은 v0.6.0(zip 재업로드 필요).
   - `drafts/hooks/compact-snapshot*.sh`(컴팩션 안전망, [Issue #104](https://github.com/yanos0218/AI/issues/104))는 아직 초안.
     - 자연 압축 발생 때 검증 대기 중, 이 저장소 `.claude/settings.local.json`(개인용, 커밋 안 됨)에 시험용으로 등록돼 있음.
-- 2026-09-26 base 원본 저장소 참조 제거([#125](https://github.com/yanos0218/AI/issues/125)), 이슈·코멘트 형식 검사 보강([#126](https://github.com/yanos0218/AI/issues/126)), 조사 이슈 운영 변경([#133](https://github.com/yanos0218/AI/issues/133)). 조사 [#127](https://github.com/yanos0218/AI/issues/127)~[#130](https://github.com/yanos0218/AI/issues/130)은 열어 둔 채 갱신 중. 에이전트 3종([#131](https://github.com/yanos0218/AI/issues/131))·PDF 추출 스킬([#132](https://github.com/yanos0218/AI/issues/132))은 검증 단계, 승격 요청 대기
+- 2026-09-26~27 base 원본 저장소 참조 제거([#125](https://github.com/yanos0218/AI/issues/125)), 형식 검사 보강([#126](https://github.com/yanos0218/AI/issues/126)), 조사 이슈 운영 변경([#133](https://github.com/yanos0218/AI/issues/133)). 에이전트 3종([#131](https://github.com/yanos0218/AI/issues/131))·PDF 추출 스킬([#132](https://github.com/yanos0218/AI/issues/132))은 검증 단계, 승격 요청 대기. tool-advisor([#135](https://github.com/yanos0218/AI/issues/135))·토큰 대시보드([#136](https://github.com/yanos0218/AI/issues/136))는 설계 승인 대기
 - 할 일·발견한 문제는 GitHub Issues로 관리한다([Issue #11](https://github.com/yanos0218/AI/issues/11), 2026-09-12). 완료 이력은 [PROGRESS.md §1](PROGRESS.md#1-완료)에 짧은 색인 + 이슈 링크로.
 - Script 저장소 이력에서 개인키 발견
   - 처리는 그 저장소 일, 아직 사용자 결정 대기.
