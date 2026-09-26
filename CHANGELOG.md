@@ -22,6 +22,8 @@
 
 - `base/skills/` SKILL.md 4개(_template, config-update, dev-workflow, self-audit)
   - 목록 줄바꿈 규칙 위반 8줄을 하위 bullet·소제목·문장 분리로 수정. 동작 변경 없음([Issue #137](https://github.com/yanos0218/AI/issues/137), PATCH)
+- `base/skills/*/references/` 4개 파일(_template detail, dev-release release-notes-format·semver-rules, dev-workflow file-layout)
+  - 같은 규칙 위반 4줄 수정, self-audit method.md 필드 나열 3줄은 예외 등록. 동작 변경 없음([Issue #137](https://github.com/yanos0218/AI/issues/137), PATCH)
 - `base/rules/docs-format.md`
   - "필드명: 값" 예외를 짧은 한 줄 값으로 좁힘. 문장·항목이 여럿인 값(조사 이슈의 결론·출처·영향 등)은 하위 bullet로 줄바꿈([Issue #133](https://github.com/yanos0218/AI/issues/133), PATCH)
   - GitHub Issue·PR 본문과 코멘트도 음슴체·명사형으로 쓴다는 줄 추가. 기존엔 릴리즈 노트만 규정([Issue #126](https://github.com/yanos0218/AI/issues/126), PATCH)

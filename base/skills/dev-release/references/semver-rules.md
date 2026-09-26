@@ -11,7 +11,7 @@ SKILL.md §1의 보충. 저장소에 `docs/versioning.md`나 README 버전 정�
 | `fix:`, `perf:`, `refactor:`, `style:` | PATCH |
 | `docs:`, `test:`, `chore:`, `ci:` 만 있음 | 버전 변경 없음(사용자가 원하면 PATCH) |
 
-커밋 메시지가 규칙을 안 따르면 `git diff <tag>..HEAD --stat`와 실제 변경을 보고 직접 분류하고, 분류 근거를 보여준 뒤 확인받는다. **등급을 낮추려고 breaking change를 빠뜨리지 않는다** — 사용자가 못 보고 넘어가면 실제 장애로 이어진다.
+커밋 메시지가 규칙을 안 따르면 `git diff <tag>..HEAD --stat`와 실제 변경을 보고 직접 분류하고, 분류 근거를 보여준 뒤 확인받는다. **등급을 낮추려고 breaking change를 빠뜨리지 않는다.** 사용자가 못 보고 넘어가면 실제 장애로 이어진다.
 
 ## 2. 저장소 유형별로 "무엇이 breaking인가"가 다르다
 
