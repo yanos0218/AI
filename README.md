@@ -44,6 +44,7 @@
 | [docs/research.md](docs/research.md) | 조사 규칙(최신·검증·출처, 기록은 Issues `research` 라벨) |
 | [docs/issue-format.md](docs/issue-format.md) | 이슈 라벨별 작성 형식(개발/버그·에러/조사/제안) |
 | [docs/skill-development.md](docs/skill-development.md) | 새 스킬 만드는 절차와 시험 방법 |
+| [docs/tool-catalog.md](docs/tool-catalog.md) | 조사한 외부 도구·내장 기능 목록<br>상황별 판정(도입·조건부·쓰지 말 것)과 확인일, 근거 이슈 |
 | [docs/monthly-check.md](docs/monthly-check.md) | 월 점검 체크리스트 12항목 |
 | [docs/config-lifecycle.md](docs/config-lifecycle.md) | 다른 저장소에서 작업해도 기본 설정이 유지되는 구조(기본·모듈·프로젝트 층)와 변경 이력 장치 |
 | [CHANGELOG.md](CHANGELOG.md) · [CLAUDE.md](CLAUDE.md) | 기본 영역의 버전별 변경 이력 · 이 저장소 안에서 Claude가 지킬 규칙 |
