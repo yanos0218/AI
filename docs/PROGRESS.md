@@ -56,7 +56,6 @@
 | 컴팩션 안전망 훅(`compact-snapshot.sh`+`compact-snapshot-show.sh`) | 초안 (스모크 테스트 통과 2026-09-16 — 가짜 stdin/transcript로 파일 생성·표시·삭제 확인. 실제 `/compact` 트리거 검증은 전) | | | | | [Issue #104](https://github.com/yanos0218/AI/issues/104) |
 | 용도별 에이전트 3종(`drafts/agents/` researcher·auditor·verifier + `drafts/hooks/verifier-guard.sh`) | 검증 (2026-09-26~27 새 세션 18회<br>자동 위임 researcher·auditor 성공, 오발동 없음<br>전역 설치 상태 verifier 차단 훅이 기본·auto·bypass 모드 모두 동작, auditor 허용 도구 강제 확인<br>researcher는 긴 문서 WebFetch 잘림 재현 → 대응 규칙 추가<br>승격 때 전역 CLAUDE.md 모델 문구 수정 필요) | | | | - | [Issue #131](https://github.com/yanos0218/AI/issues/131), 승격은 사용자 요청 후 |
 | PDF 텍스트 추출 스킬 `base/skills/pdf-extract` | 기본 (2026-09-26~27 새 세션 6시나리오 통과, 글자 깨짐 판정·버전 비교·가상환경 설치 보완. 승격 2026-09-27 사용자 요청) | ✓ (2026-09-27 설치, MarkItDown 0.1.8 가상환경) | ✗ | ✗ | - (웹은 PDF 직접 처리, 로컬 가상환경 없음) | Mac·Linux는 다음 기기 설치 때(Python 3.10+ 가상환경 필요, Rocky는 python3.11 별도), CID 깨짐 PDF 미시험 |
-| 도구 추천 스킬 tool-advisor | 계획 (설계 승인 대기) | | | | | [Issue #135](https://github.com/yanos0218/AI/issues/135) |
 | 토큰 사용 기록 훅 + 로컬 대시보드 | 계획 (설계 승인 대기) | | | | | [Issue #136](https://github.com/yanos0218/AI/issues/136) |
 | GitHub 활용 (`@claude` Actions) | 보류 (PR 습관 생기기 전엔 재검토 안 함, [Issue #61](https://github.com/yanos0218/AI/issues/61) 2026-09-13. web은 [Issue #30](https://github.com/yanos0218/AI/issues/30)로 이미 결정) | | | | | §5 참고 |
 
