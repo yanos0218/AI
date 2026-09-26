@@ -8,3 +8,4 @@ allowed-tools: Bash(git tag --list*) Bash(git log*) Bash(git diff*) Bash(git sta
 - 예: 기능 추가와 버그 수정이 같이 있으면 **MINOR**; breaking change가 하나라도 있으면 **MAJOR**
 command: "bash ~/.claude/hooks/verifier-guard.sh"
 allowed-tools: Read Bash(python *pdf2md.py*) Bash(PYTHONIOENCODING=utf-8 python *pdf2md.py*)
+- "필드명: 값"을 나열하는 구조화된 기록(예: 조사 이슈의 질문/조사일)은 값이 짧은 한 줄이면 그대로 둔다. 서술문을 이어붙인 게 아니라 필드 나열이라 대상이 아니다.

@@ -17,6 +17,7 @@
 ### Changed
 
 - `base/rules/docs-format.md`
+  - "필드명: 값" 예외를 짧은 한 줄 값으로 좁힘. 문장·항목이 여럿인 값(조사 이슈의 결론·출처·영향 등)은 하위 bullet로 줄바꿈([Issue #133](https://github.com/yanos0218/AI/issues/133), PATCH)
   - GitHub Issue·PR 본문과 코멘트도 음슴체·명사형으로 쓴다는 줄 추가. 기존엔 릴리즈 노트만 규정([Issue #126](https://github.com/yanos0218/AI/issues/126), PATCH)
 
 - base에서 원본 저장소(claude-config) 참조 제거
