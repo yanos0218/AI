@@ -9,6 +9,8 @@
 
 ### Added
 
+- `base/skills/pdf-extract` 스킬 승격
+  - PDF를 MarkItDown으로 텍스트 변환 후 읽어 토큰 절약(4쪽 한국어 실측 −62%). 스캔본·글자 깨짐 판정 후 직접 읽기로 전환, MarkItDown은 `~/.claude/venvs/markitdown` 가상환경에 사용자 승인 후 설치([Issue #132](https://github.com/yanos0218/AI/issues/132), MINOR)
 - `tools/check-cram.py`
   - 파일 맨 앞 YAML 머리말(`---` ~ `---`)은 검사하지 않음. 스킬·에이전트 설정 줄이 크램으로 오탐되던 문제, 머리말 예외 2줄 정리([Issue #132](https://github.com/yanos0218/AI/issues/132), PATCH)
 - `tools/test-agent.sh`
