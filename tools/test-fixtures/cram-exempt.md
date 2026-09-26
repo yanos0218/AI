@@ -1,3 +1,9 @@
+---
+name: fixture
+description: 머리말은 검사하지 않는다: 콜론 뒤에 긴 문장이 이어져도 대상이 아니다
+allowed-tools: Read Bash(python *x.py*)
+---
+
 # 테스트: 예외(전부 안 잡혀야 함)
 
 - 훅 2종: `git-guardrails.sh`, `statusline.sh`

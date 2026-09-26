@@ -9,6 +9,8 @@
 
 ### Added
 
+- `tools/check-cram.py`
+  - 파일 맨 앞 YAML 머리말(`---` ~ `---`)은 검사하지 않음. 스킬·에이전트 설정 줄이 크램으로 오탐되던 문제, 머리말 예외 2줄 정리([Issue #132](https://github.com/yanos0218/AI/issues/132), PATCH)
 - `tools/test-agent.sh`
   - 에이전트 발동 시험 도구. 같은 폴더 에이전트를 `--agents` JSON으로 넘겨 위임 대상·도구 호출·훅 차단·토큰 추출([Issue #131](https://github.com/yanos0218/AI/issues/131), PATCH)
 - `tools/check-cram.py`

@@ -103,6 +103,7 @@ def check_table_row(stripped):
 def main():
     hits = 0
     code_state = {}
+    fm_state = {}  # 파일 맨 앞 YAML 머리말(--- ~ ---)은 문서 본문이 아니라 설정이라 검사하지 않는다
     for raw in sys.stdin:
         raw = raw.rstrip('\n')
         if not raw:
@@ -111,6 +112,13 @@ def main():
         if len(parts) != 4:
             continue
         path, lineno, is_added, content = parts
+        if lineno == '1' and content.strip() == '---':
+            fm_state[path] = True
+            continue
+        if fm_state.get(path):
+            if content.strip() == '---':
+                fm_state[path] = False
+            continue
         in_code = code_state.get(path, False)
         if content.strip().startswith('```'):
             code_state[path] = not in_code
