@@ -7,6 +7,15 @@
 
 ## [Unreleased]
 
+### Changed
+
+- base에서 원본 저장소(claude-config) 참조 제거
+  - 전역 CLAUDE.md·repo-setup·dev-workflow·dev-release의 "claude-config `docs/...` 참고" 5곳을 스킬 자체 기준으로 교체. 다른 기기 세션이 원본 저장소에 관여하려던 문제 대응([Issue #125](https://github.com/yanos0218/AI/issues/125), PATCH)
+- `session-start-check.sh`
+  - 설정 낡음 알림에서 원본 저장소 경로·`install.sh` 명령을 빼고 "갱신 여부만 묻고 config-update 스킬로만 갱신, 원본 저장소 파일은 읽거나 고치지 않음"으로 변경([Issue #125](https://github.com/yanos0218/AI/issues/125), PATCH)
+- `config-update` 스킬
+  - SRC_PATH를 `install.sh`·`check-install.sh` 실행에만 쓰고 그 저장소에 읽기·쓰기·이슈·push를 하지 않는다는 줄 추가([Issue #125](https://github.com/yanos0218/AI/issues/125), PATCH)
+
 ## [0.11.4] - 2026-09-19
 
 ### Added

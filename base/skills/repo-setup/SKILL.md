@@ -6,7 +6,7 @@ allowed-tools: Bash(git status*) Bash(git log*) Bash(git ls-files*) Bash(gh repo
 
 # repo-setup
 
-저장소마다 "있어야 하는 최소한"을 같은 기준으로 맞춘다. 기준 원본은 claude-config `docs/repo-standard.md`이며, `references/checklist.md`가 그 사본이 아니라 **판정 방법**이다.
+저장소마다 "있어야 하는 최소한"을 같은 기준으로 맞춘다. 판정 기준과 방법은 `references/checklist.md`에 있다.
 
 ## 0. 시작 전 확인 (필수)
 

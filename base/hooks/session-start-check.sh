@@ -39,7 +39,7 @@ if [[ -f "${VER_FILE}" ]]; then
   if [[ -n "${SRC_PATH}" ]] && [[ -d "${SRC_PATH}/.git" ]]; then
     CURRENT_VER="$(git -C "${SRC_PATH}" describe --tags --always 2>/dev/null || true)"
     if [[ -n "${CURRENT_VER}" ]] && [[ -n "${INSTALLED_VER}" ]] && [[ "${CURRENT_VER}" != "${INSTALLED_VER}" ]]; then
-      echo "[claude-config] 전역 설정이 낡았습니다(설치됨 ${INSTALLED_VER} → 최신 ${CURRENT_VER}). \"${SRC_PATH}\"에서 bash tools/install.sh 로 갱신하세요."
+      echo "[claude-config] 전역 설정이 낡았습니다(설치됨 ${INSTALLED_VER} → 최신 ${CURRENT_VER}). 사용자에게 갱신 여부만 물으세요. 승인되면 config-update 스킬로만 갱신하고, 원본 저장소의 파일은 읽거나 고치지 마세요."
     fi
   fi
 fi

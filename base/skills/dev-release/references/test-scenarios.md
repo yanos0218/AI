@@ -1,6 +1,6 @@
 # 발동 시험 시나리오
 
-`tools/test-skill.sh`로 새 세션에서 확인한다(방법은 [docs/skill-development.md](../../../../docs/skill-development.md)).
+스킬을 고친 뒤 새 세션에서 아래 말로 발동을 확인한다.
 
 | 상황 | 기대 동작 |
 | --- | --- |

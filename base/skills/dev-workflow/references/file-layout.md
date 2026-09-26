@@ -7,7 +7,7 @@ SKILL.md §1-B를 보충한다. 저장소 `CONTRIBUTING.md`·`CLAUDE.md`에 구�
 | 경로 | 무엇 | 없으면 |
 | --- | --- | --- |
 | `README.md` | 입구. 무엇인지·설치·실행 요약과 링크. 120줄 안팎 | 만든다 |
-| `CLAUDE.md` | Claude가 지킬 저장소 규칙. 200줄 이하 | 저장소 표준 체크리스트(claude-config `docs/repo-standard.md`)대로 제안 |
+| `CLAUDE.md` | Claude가 지킬 저장소 규칙. 200줄 이하 | `repo-setup` 스킬 체크리스트대로 제안 |
 | `CHANGELOG.md` | 변경 이력 (Keep a Changelog) | 제안 |
 | `docs/` | 상세 문서. 주제당 파일 하나. 진행 보드(`PROGRESS.md`), 테스트(`testing.md`), 배포 등 | 주제가 둘 이상 생기면 만든다 |
 | `tests/` | 테스트 코드·페이지 | 테스트가 생길 때 |
