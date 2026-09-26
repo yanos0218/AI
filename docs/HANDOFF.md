@@ -12,7 +12,7 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
   - 배포 현황은 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) 표가 원본. Windows는 v0.11.4 반영, Mac mini·Linux(Rocky)는 v0.10.0 기준(다음 접속 때 갱신 필요), 웹은 v0.6.0(zip 재업로드 필요).
   - `drafts/hooks/compact-snapshot*.sh`(컴팩션 안전망, [Issue #104](https://github.com/yanos0218/AI/issues/104))는 아직 초안.
     - 자연 압축 발생 때 검증 대기 중, 이 저장소 `.claude/settings.local.json`(개인용, 커밋 안 됨)에 시험용으로 등록돼 있음.
-- 2026-09-26 base에서 원본 저장소 참조 제거(미컷, `[Unreleased]`, [Issue #125](https://github.com/yanos0218/AI/issues/125)). 이슈·코멘트 음슴체 규칙·코멘트/표 크램 검사 추가([Issue #126](https://github.com/yanos0218/AI/issues/126)). 도구·토큰·서브에이전트 조사는 research [#127](https://github.com/yanos0218/AI/issues/127)~[#130](https://github.com/yanos0218/AI/issues/130), 도입 결정 대기
+- 2026-09-26 base 원본 저장소 참조 제거([#125](https://github.com/yanos0218/AI/issues/125)), 이슈·코멘트 형식 검사 보강([#126](https://github.com/yanos0218/AI/issues/126)), 조사 이슈 운영 변경([#133](https://github.com/yanos0218/AI/issues/133)). 조사 [#127](https://github.com/yanos0218/AI/issues/127)~[#130](https://github.com/yanos0218/AI/issues/130)은 열어 둔 채 갱신 중. 에이전트 3종([#131](https://github.com/yanos0218/AI/issues/131))·PDF 추출 스킬([#132](https://github.com/yanos0218/AI/issues/132))은 검증 단계, 승격 요청 대기
 - 할 일·발견한 문제는 GitHub Issues로 관리한다([Issue #11](https://github.com/yanos0218/AI/issues/11), 2026-09-12). 완료 이력은 [PROGRESS.md §1](PROGRESS.md#1-완료)에 짧은 색인 + 이슈 링크로.
 - Script 저장소 이력에서 개인키 발견
   - 처리는 그 저장소 일, 아직 사용자 결정 대기.

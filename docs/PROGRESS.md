@@ -54,6 +54,8 @@
 | 이 저장소 CI (lint.yml + check-docs.sh) | 기본 (첫 Actions 실행 success, 2026-09-08) | 저장소 안에서만 | 동일 | 동일 | - | - |
 | 성향 데이터 → 전역 지침 후보 | 초안 (`drafts/observations/`, `/insights` 후보 1건 → [Issue #15](https://github.com/yanos0218/AI/issues/15)) | | | | | [Issue #9](https://github.com/yanos0218/AI/issues/9)/[Issue #15](https://github.com/yanos0218/AI/issues/15), 월 점검 |
 | 컴팩션 안전망 훅(`compact-snapshot.sh`+`compact-snapshot-show.sh`) | 초안 (스모크 테스트 통과 2026-09-16 — 가짜 stdin/transcript로 파일 생성·표시·삭제 확인. 실제 `/compact` 트리거 검증은 전) | | | | | [Issue #104](https://github.com/yanos0218/AI/issues/104) |
+| 용도별 에이전트 3종(`drafts/agents/` researcher·auditor·verifier + `drafts/hooks/verifier-guard.sh`) | 검증 (2026-09-26 새 세션 13회<br>자동 위임 researcher·auditor 성공, 오발동 없음<br>verifier 차단 훅 git commit·rm 실측 차단<br>조사 토큰 기본 에이전트 대비 에이전트 쪽 63~76% 적음<br>단순 검사 1건은 메인이 직접 실행해 verifier 자동 위임 안 됨) | | | | - | [Issue #131](https://github.com/yanos0218/AI/issues/131), 승격은 사용자 요청 후 |
+| PDF 텍스트 추출 스킬 `drafts/skills/pdf-extract` | 검증 (2026-09-26 새 세션 3시나리오 통과<br>텍스트 PDF 변환 후 요약, 스캔 PDF 판정 후 직접 읽기, 무관한 요청 미발동) | | | | | [Issue #132](https://github.com/yanos0218/AI/issues/132), 승격은 사용자 요청 후 |
 | GitHub 활용 (`@claude` Actions) | 보류 (PR 습관 생기기 전엔 재검토 안 함, [Issue #61](https://github.com/yanos0218/AI/issues/61) 2026-09-13. web은 [Issue #30](https://github.com/yanos0218/AI/issues/30)로 이미 결정) | | | | | §5 참고 |
 
 ## 1. 완료
