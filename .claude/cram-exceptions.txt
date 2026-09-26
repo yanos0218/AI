@@ -6,3 +6,5 @@
 - 목록 항목이 "(N) 설명A — 설명B"처럼 한 줄에 길게 늘어지면 본문 줄 + 하위 bullet으로 나눠 쓰는 규칙 추가
 allowed-tools: Bash(git tag --list*) Bash(git log*) Bash(git diff*) Bash(git status*) Bash(gh release view*) Bash(gh run list*) Bash(gh run view*)
 - 예: 기능 추가와 버그 수정이 같이 있으면 **MINOR**; breaking change가 하나라도 있으면 **MAJOR**
+command: "bash ~/.claude/hooks/verifier-guard.sh"
+allowed-tools: Read Bash(python *pdf2md.py*) Bash(PYTHONIOENCODING=utf-8 python *pdf2md.py*)

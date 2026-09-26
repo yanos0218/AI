@@ -55,6 +55,7 @@
 | [tools/bootstrap.sh](tools/bootstrap.sh) | 신규 기기용 단일 명령 설치 — 저장소를 `~/claude-config`에 clone(있으면 pull) 후 `install.sh` 자동 실행 |
 | [tools/install.sh](tools/install.sh) | `base/` → `~/.claude` 설치 (멱등, settings 병합, `--dry-run`). 기기 3대 공통 |
 | [tools/test-skill.sh](tools/test-skill.sh) | 스킬 발동 시험<br>시나리오 저장소에 넣고 새 세션으로 실행, 발동·비용 추출 (기본 Sonnet) |
+| [tools/test-agent.sh](tools/test-agent.sh) | 에이전트 발동 시험<br>같은 폴더 에이전트 전부를 `--agents`로 넘겨 새 세션으로 실행, 위임 대상·에이전트 안 도구 호출·훅 차단·토큰 추출 |
 | [tools/pack.sh](tools/pack.sh) | ①의 스킬을 웹 업로드용 zip으로 (zip 없으면 python 폴백) |
 | [tools/check-docs.sh](tools/check-docs.sh) | 문서 줄 수 상한과 필수 파일 검사 (CI와 로컬 공용) |
 | [tools/check-install.sh](tools/check-install.sh) | 설치본 `~/.claude`가 `base/`와 같은지, 프로젝트마다 쌓인 권한·설정 이력은 무엇인지 보고 |

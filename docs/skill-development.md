@@ -17,4 +17,6 @@
 
 - 시나리오 저장소의 `.claude/skills/`에 넣고 새 세션(`claude -p`, 기본 Sonnet)으로 돌려 발동·도구 호출·비용을 본다.
 - 같은 세션 안에서 스킬을 직접 호출하는 것은 발동 테스트가 아니다.
+- 에이전트(`drafts/agents/*.md`)는 `bash tools/test-agent.sh <에이전트.md> <시나리오 git 저장소> "<사용자 말>"`로 시험한다.
+  - 프로젝트 `.claude/agents/`에 넣으면 `-p` 세션은 신뢰 전 폴더라 에이전트 훅이 건너뛰어진다. 그래서 `--agents` JSON 파일로 넘긴다(v2.1.281 이상, `CLAUDE_BIN`으로 실행 파일 지정).
 - 스킬별 구체적인 시험 시나리오는 그 스킬의 `references/`에 둔다(예: [base/skills/dev-release/references/test-scenarios.md](../base/skills/dev-release/references/test-scenarios.md)).

@@ -8,6 +8,7 @@
 drafts/skills/<이름>/        새 스킬 초안 (base/skills/_template 복사해서 시작)
 drafts/claude-md/CLAUDE.md   전역 지침 수정안 (기본 파일을 복사해 고친 뒤 diff로 검토)
 drafts/hooks/<이름>.sh       새 훅 초안
+drafts/agents/<이름>.md      새 에이전트 초안 (tools/test-agent.sh로 시험)
 ```
 
 ## 기본 영역으로 올리는 조건 (승격)

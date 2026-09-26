@@ -9,6 +9,8 @@
 
 ### Added
 
+- `tools/test-agent.sh`
+  - 에이전트 발동 시험 도구. 같은 폴더 에이전트를 `--agents` JSON으로 넘겨 위임 대상·도구 호출·훅 차단·토큰 추출([Issue #131](https://github.com/yanos0218/AI/issues/131), PATCH)
 - `tools/check-cram.py`
   - 표 줄도 검사: 셀을 나누고 `<br>` 조각마다 목록 크램 규칙 적용. 픽스처에 표 사례 추가([Issue #126](https://github.com/yanos0218/AI/issues/126), PATCH)
 
