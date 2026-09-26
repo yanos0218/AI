@@ -11,3 +11,9 @@
 - 변경 이력은 [Unreleased]에 쌓는다.
 
 [Unreleased]: https://github.com/example/repo/compare/v1.0.0...HEAD
+
+| 항목 | 설명 |
+| --- | --- |
+| `install.sh` | 설치 스크립트<br>저장소를 clone한 뒤 전역 설정 파일을 복사 |
+| 형식 | A, B, C |
+| [저자 — 제목](https://example.com) | 링크 |

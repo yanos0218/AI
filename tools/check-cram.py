@@ -84,6 +84,22 @@ def check_line(stripped):
     return None
 
 
+table_sep = re.compile(r'^\|?\s*:?-{3,}')
+
+
+def check_table_row(stripped):
+    """표 한 줄: 셀을 나누고 <br> 단위 조각마다 목록 규칙을 적용한다(표에선 <br>이 하위 bullet 대신)."""
+    t = stripped.strip()
+    if table_sep.match(t) or t in exceptions:
+        return None
+    for cell in re.split(r'(?<!\\)\|', t.strip('|')):
+        for seg in cell.split('<br>'):
+            kind = check_line(seg.strip())
+            if kind:
+                return 'table-' + kind
+    return None
+
+
 def main():
     hits = 0
     code_state = {}
@@ -101,7 +117,7 @@ def main():
             continue
         if in_code or is_added != '1':
             continue
-        kind = check_line(content)
+        kind = check_table_row(content) if content.strip().startswith('|') else check_line(content)
         if kind:
             hits += 1
             print(f"{path}:{lineno}: [{kind}] {content.strip()[:120]}")

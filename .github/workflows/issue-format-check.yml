@@ -1,16 +1,19 @@
 name: 이슈 형식 검사
 
 # docs/issue-format.md 규정(라벨별 필수 헤딩·크램)을 이슈 생성·수정 시점에
-# 코멘트+라벨(needs-format-fix)로 알린다. 사전 차단은 못 한다 — 이슈는 PR과
+# 코멘트+라벨(needs-format-fix)로 알린다. 사람이 쓴 코멘트도 크램만 검사해
+# 코멘트별 알림 코멘트로 알린다(라벨은 본문 검사 전용이라 건드리지 않음). 사전 차단은 못 한다 — 이슈는 PR과
 # 달리 상태 체크로 막을 방법이 없다.
 # docs/issue-format.md의 헤딩 문구가 바뀌면 이 파일도 같이 고쳐야 한다
 # (자동 동기화 아님 — self-audit/월 점검 체크리스트로 드리프트 확인).
 on:
   issues:
     types: [opened, edited, labeled, unlabeled, closed]
+  issue_comment:
+    types: [created, edited]
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.issue.number }}
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.issue.number }}-${{ github.event.comment.id }}
   cancel-in-progress: true
 
 permissions:
@@ -19,7 +22,7 @@ permissions:
 
 jobs:
   check:
-    if: (github.event.action != 'labeled' && github.event.action != 'unlabeled') || github.event.label.name != 'needs-format-fix'
+    if: github.event_name == 'issues' && ((github.event.action != 'labeled' && github.event.action != 'unlabeled') || github.event.label.name != 'needs-format-fix')
     runs-on: ubuntu-latest
     timeout-minutes: 3
     env:
@@ -128,4 +131,49 @@ jobs:
               gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${existing_id}" -X PATCH -F body=@/tmp/comment.md
             fi
             gh issue edit "${ISSUE_NUMBER}" --remove-label "needs-format-fix" || true
+          fi
+
+  comment-check:
+    # 봇(이 워크플로의 알림 포함)·PR 코멘트는 제외
+    if: github.event_name == 'issue_comment' && github.event.comment.user.type != 'Bot' && !github.event.issue.pull_request
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ISSUE_NUMBER: ${{ github.event.issue.number }}
+      COMMENT_ID: ${{ github.event.comment.id }}
+      COMMENT_URL: ${{ github.event.comment.html_url }}
+      COMMENT_BODY: ${{ github.event.comment.body }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: 코멘트 크램 검사
+        run: |
+          printf '%s' "${COMMENT_BODY}" > /tmp/comment-body.md
+          MARKER="<!-- comment-format-check:${COMMENT_ID} -->"
+          existing_id=$(gh api "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}/comments" \
+            --jq ".[] | select(.body | startswith(\"${MARKER}\")) | .id" | head -1)
+
+          if ! bash tools/check-cram.sh /tmp/comment-body.md > /tmp/cram.txt 2>&1; then
+            {
+              echo "${MARKER}"
+              echo "## 코멘트 형식 확인 — 검토 필요"
+              echo
+              echo "대상: ${COMMENT_URL}"
+              echo
+              echo "- 크램(목록 줄바꿈 규칙 위반):"
+              sed 's/^/  /' /tmp/cram.txt
+              echo
+              echo "기계적 검사라 오탐 가능 — 진짜 문제인지 확인 후 코멘트를 고치거나 예외 등록"
+              echo
+              echo "기준: docs/issue-format.md"
+            } > /tmp/notice.md
+            if [[ -n "${existing_id}" ]]; then
+              gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${existing_id}" -X PATCH -F body=@/tmp/notice.md
+            else
+              gh issue comment "${ISSUE_NUMBER}" --body-file /tmp/notice.md
+            fi
+          elif [[ -n "${existing_id}" ]]; then
+            printf '%s\n## 코멘트 형식 확인 — 통과\n\n대상: %s\n' "${MARKER}" "${COMMENT_URL}" > /tmp/notice.md
+            gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${existing_id}" -X PATCH -F body=@/tmp/notice.md
           fi

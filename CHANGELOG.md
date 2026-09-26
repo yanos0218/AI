@@ -7,7 +7,15 @@
 
 ## [Unreleased]
 
+### Added
+
+- `tools/check-cram.py`
+  - 표 줄도 검사: 셀을 나누고 `<br>` 조각마다 목록 크램 규칙 적용. 픽스처에 표 사례 추가([Issue #126](https://github.com/yanos0218/AI/issues/126), PATCH)
+
 ### Changed
+
+- `base/rules/docs-format.md`
+  - GitHub Issue·PR 본문과 코멘트도 음슴체·명사형으로 쓴다는 줄 추가. 기존엔 릴리즈 노트만 규정([Issue #126](https://github.com/yanos0218/AI/issues/126), PATCH)
 
 - base에서 원본 저장소(claude-config) 참조 제거
   - 전역 CLAUDE.md·repo-setup·dev-workflow·dev-release의 "claude-config `docs/...` 참고" 5곳을 스킬 자체 기준으로 교체. 다른 기기 세션이 원본 저장소에 관여하려던 문제 대응([Issue #125](https://github.com/yanos0218/AI/issues/125), PATCH)
