@@ -9,6 +9,8 @@
 
 ### Added
 
+- `base/agents/` 용도별 서브에이전트 3종 승격
+  - 조사 `researcher`(Sonnet, 읽기·검색·웹만), 문서·참조 점검 `auditor`(Sonnet, 읽기·검색만), 검사 실행 `verifier`(Haiku). verifier는 전용 훅 `base/hooks/verifier-guard.sh`가 커밋·push·파일 쓰기·설치 명령을 차단. `install.sh`가 `~/.claude/agents/`에 설치하고 `check-install.sh`가 대조([Issue #131](https://github.com/yanos0218/AI/issues/131), MINOR)
 - `base/hooks/compact-snapshot.sh`·`compact-snapshot-show.sh` 승격
   - 컴팩션 직전 git 상태·최근 테스트/빌드 명령과 결과를 저장했다가 컴팩션 직후 세션 시작 메시지로 보여주고 지움. `settings.example.json`에 PreCompact·SessionStart(compact) 등록([Issue #104](https://github.com/yanos0218/AI/issues/104), MINOR)
 - `base/skills/pdf-extract` 스킬 승격
@@ -22,6 +24,8 @@
 
 ### Changed
 
+- `base/claude-md/CLAUDE.md` 5절 서브에이전트 문장
+  - 전용 에이전트(researcher·auditor·verifier)가 있으면 그것을 쓰고, 에이전트 파일에 모델이 있으면 `model` 값을 넘기지 않음. 나머지는 기존대로 Sonnet([Issue #131](https://github.com/yanos0218/AI/issues/131), PATCH)
 - `base/claude-md/CLAUDE.md` 5절 조사 규칙
   - 도구·사례 조사는 표본을 정량으로 뽑고 스타·최근 활동을 직접 확인, "없다" 대신 찾아본 범위, 서브에이전트 조사 결과는 보고 전 직접 재검증([Issue #138](https://github.com/yanos0218/AI/issues/138), PATCH)
 - `base/skills/` SKILL.md 4개(_template, config-update, dev-workflow, self-audit)

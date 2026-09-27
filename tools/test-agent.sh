@@ -4,7 +4,7 @@
 #   bash tools/test-agent.sh <에이전트.md> <시나리오 저장소> "<사용자 말>" [--model 모델] [--tools "Read,Agent"] [--turns N]
 #   프로젝트 .claude/agents/에 넣으면 -p 세션은 신뢰 전 폴더라 frontmatter hooks가 건너뛰어진다(공식 문서, 2026-09-26 실측).
 #   --agents로 넘긴 정의와 ~/.claude/agents/의 훅은 신뢰 절차 없이 돈다 — 그래서 --agents 파일 형식(v2.1.281+)을 쓴다.
-#   "bash ~/.claude/hooks/<훅>.sh"는 설치 전이므로 drafts/hooks/<훅>.sh 절대 경로로 바꿔 넘긴다.
+#   "bash ~/.claude/hooks/<훅>.sh"는 설치 전일 수 있으므로 저장소 base/hooks/<훅>.sh 절대 경로로 바꿔 넘긴다(없으면 drafts/hooks/).
 #   --installed: 폴더 대신 이미 설치된 ~/.claude/agents/를 그대로 쓴다(설치본 시험, 훅 경로도 설치본).
 #   omitClaudeMd(v2.1.271+) 등 최신 필드는 CLI 버전을 탄다 — 필요하면 CLAUDE_BIN으로 다른 실행 파일을 지정한다.
 set -u
@@ -21,15 +21,17 @@ name="$(basename "${AGENT}" .md)"
 [[ -f "${HOME}/.claude/agents/${name}.md" ]] && echo "== 주의: 같은 이름의 전역 에이전트가 설치돼 있음(--agents 쪽이 우선)"
 agents_args=()
 if [[ "${INSTALLED}" = 0 ]]; then
-hooks_abs="$(pwd)/drafts/hooks"
+hooks_abs="$(pwd)"
 agents_json="${FIX}.agents.json"
 # 실제 사용처럼 같은 폴더의 에이전트를 전부 넘긴다(설명끼리 경쟁하는 상황에서 맞는 쪽이 골라지는지 봄)
 PYTHONIOENCODING=utf-8 "${PY}" - "$(dirname "${AGENT}")" "${hooks_abs}" "${agents_json}" <<'PY'
-import glob, io, json, os, sys, yaml
+import glob, io, json, os, re, sys, yaml
 src, hooks_abs, out = sys.argv[1:4]
 agents = {}
 for f in sorted(glob.glob(os.path.join(src, '*.md'))):
-    text = io.open(f, encoding='utf-8').read().replace('bash ~/.claude/hooks/', f'bash {hooks_abs}/')
+    text = re.sub(r'bash ~/\.claude/hooks/(\S+?\.sh)',
+                  lambda m: f"bash {hooks_abs}/{'base' if os.path.exists(os.path.join(hooks_abs, 'base/hooks', m[1])) else 'drafts'}/hooks/{m[1]}",
+                  io.open(f, encoding='utf-8').read())
     _, fm, body = text.split('---', 2)
     meta = yaml.safe_load(fm)
     name = meta.pop('name')

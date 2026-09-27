@@ -2,7 +2,7 @@
 # base/ → ~/.claude 설치 (Windows Git Bash · Mac · Linux 공통, 멱등).
 #   bash tools/install.sh            설치 후 check-install.sh로 대조
 #   bash tools/install.sh --dry-run  무엇이 바뀔지만 보여주고 손대지 않음
-# 하는 일: CLAUDE.md·hooks·skills 복사, settings.json에 permissions·hooks·statusLine·env 키 병합(기기별 키는 유지).
+# 하는 일: CLAUDE.md·hooks·skills·agents 복사, settings.json에 permissions·hooks·statusLine·env 키 병합(기기별 키는 유지).
 # 하지 않는 일: 기존 CLAUDE.md를 묻지 않고 덮어쓰지 않는다(다르면 백업 후 교체하고 diff 경로를 알린다).
 set -u
 cd "$(dirname "${0}")/.." || exit 1
@@ -15,7 +15,7 @@ run() { if [[ "${DRY}" = 1 ]]; then say "  (dry) $*"; else "$@"; fi; }
 BASE_VER="$(git describe --tags --always 2>/dev/null)"
 SRC_ABS="$(pwd)"
 say "== 대상: ${CLAUDE_HOME}  (base 버전: ${BASE_VER})"
-run mkdir -p "${CLAUDE_HOME}/hooks" "${CLAUDE_HOME}/skills"
+run mkdir -p "${CLAUDE_HOME}/hooks" "${CLAUDE_HOME}/skills" "${CLAUDE_HOME}/agents"
 
 # 1. CLAUDE.md — 다르면 백업 후 교체
 src=base/claude-md/CLAUDE.md; dst="${CLAUDE_HOME}/CLAUDE.md"
@@ -36,6 +36,11 @@ for d in base/skills/*/; do
   n="$(basename "${d}")"; [[ "${n}" == _* ]] && continue
   run rm -rf "${CLAUDE_HOME}/skills/${n}"; run cp -r "${d}" "${CLAUDE_HOME}/skills/${n}"; say "  skill 설치: ${n}"
 done
+
+# 3a. agents (서브에이전트 정의) — base/agents/*.md → ~/.claude/agents/. 폴더를 처음 만든 뒤에는 새 세션부터 인식됨
+for f in base/agents/*.md; do run cp "${f}" "${CLAUDE_HOME}/agents/"; done
+say "  agents 설치: $(ls base/agents | tr '
+' ' ')"
 
 # 3b. rules (모듈 규칙) — base/rules/*.md → ~/.claude/rules/
 if ls base/rules/*.md >/dev/null 2>&1; then
