@@ -10,6 +10,8 @@
 #   disable   끄기 — 표시 파일만 지운다(쌓인 기록은 남김)
 #   open      대시보드를 다시 만들고 브라우저로 연다
 #   render    대시보드만 다시 만든다
+#   serve     VS Code 안에서 보도록 이 PC 전용(127.0.0.1) 주소로 띄우고 주소를 클립보드에 복사한다
+#   stop      serve로 띄운 것을 끈다
 #   status    켜짐 여부와 기록 기간
 #   check     세션 시작 크기가 중앙값보다 20% 넘게 늘었으면 한 줄 출력
 # 저장: ${CLAUDE_CONFIG_DIR:-~/.claude}/usage-log/ (시험할 때는 USAGE_LOG_DIR, USAGE_PROJECTS_DIR로 바꾼다)
@@ -30,6 +32,12 @@ fi
 PY="$(command -v python || command -v python3 || true)"
 [[ -n "${PY}" ]] || { echo "python이 없습니다"; exit 1; }
 run_py() { PYTHONIOENCODING=utf-8 "${PY}" "${HERE}/usage.py" "$@"; }
+
+# VS Code 내장 브라우저(Simple Browser)는 http 주소만 열 수 있어 작은 로컬 서버로 띄운다.
+# 127.0.0.1에만 묶어 이 PC 밖에서는 접속할 수 없다(요청 첫 80자 같은 기록이 들어 있으므로).
+PORT="${USAGE_PORT:-8765}"
+URL="http://127.0.0.1:${PORT}/dashboard.html"
+serving() { curl -s -o /dev/null -m 2 "${URL}"; }
 
 # 세션 여러 개가 동시에 끝나면 훅도 동시에 돈다. 합계 파일을 읽고-고치고-쓰는 사이에 서로 덮어쓰지 않게
 # mkdir 잠금으로 한 번에 하나만 쓰게 한다(gh-throttle.sh와 같은 방식). 1분 넘은 잠금은 죽은 것으로 보고 치운다.
@@ -73,7 +81,26 @@ case "${MODE}" in
       *) echo "브라우저로 여세요: ${page}" ;;
     esac
     ;;
+  serve)
+    run_py render
+    if ! serving; then
+      nohup "${PY}" -m http.server "${PORT}" --bind 127.0.0.1 --directory "${LOG}" >/dev/null 2>&1 &
+      echo "$!" > "${LOG}/.server.pid"
+      for _ in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do serving && break; sleep 0.2; done
+    fi
+    serving || { echo "띄우지 못했습니다(포트 ${PORT} 사용 중일 수 있음, USAGE_PORT로 바꿀 수 있음)."; exit 1; }
+    case "$(uname -s)" in
+      Darwin) printf '%s' "${URL}" | pbcopy ;;
+      MINGW*|MSYS*|CYGWIN*) printf '%s' "${URL}" | clip.exe ;;
+    esac
+    echo "주소(클립보드에 복사함): ${URL}"
+    echo "VS Code에서 Ctrl+Shift+P(Mac은 Cmd+Shift+P) → Simple Browser: Show → 주소 붙여넣기"
+    ;;
+  stop)
+    if [[ -f "${LOG}/.server.pid" ]]; then kill "$(cat "${LOG}/.server.pid")" 2>/dev/null; rm -f "${LOG}/.server.pid"; fi
+    serving && echo "아직 응답합니다. 다른 곳에서 띄운 서버일 수 있습니다." || echo "껐습니다."
+    ;;
   render|check|status) run_py "${MODE}" ;;
-  *) echo "사용법: bash usage.sh hook|enable|disable|open|render|status|check"; exit 2 ;;
+  *) echo "사용법: bash usage.sh hook|enable|disable|open|render|serve|stop|status|check"; exit 2 ;;
 esac
 exit 0

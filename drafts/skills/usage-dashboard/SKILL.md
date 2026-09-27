@@ -1,7 +1,7 @@
 ---
 name: usage-dashboard
-description: "토큰 사용량을 로컬에 기록하고 5시간 블록·시간·일·월별 대시보드(브라우저)로 보여준다. 저장소·누가(메인/서브에이전트)·모델별로 나눠 보고, 많이 쓴 요청과 원인(긴 요청, 서브에이전트, 캐시 재작성, 컴팩션, 큰 도구 결과)을 보여주며, 세션 시작 크기가 늘면 알린다. 사용자가 '토큰 대시보드 켜줘', '토큰 사용량 기록 시작해줘', '대시보드 열어줘', '토큰 사용량 보여줘', '대시보드 꺼줘', '토큰 기록 상태 알려줘'라고 하면 사용한다. 기본은 꺼져 있고 요청할 때만 켠다. 한 세션의 컨텍스트 구성만 궁금하면 이 스킬 대신 /context, 계정 한도는 /usage를 안내한다."
-allowed-tools: Bash(bash *usage.sh* status) Bash(bash *usage.sh* open) Bash(bash *usage.sh* render) Bash(bash *usage.sh* check)
+description: "토큰 사용량을 로컬에 기록하고 5시간 블록·시간·일·월별 대시보드(브라우저)로 보여준다. 저장소·누가(메인/서브에이전트)·모델별로 나눠 보고, 많이 쓴 요청과 원인(긴 요청, 서브에이전트, 캐시 재작성, 컴팩션, 큰 도구 결과)을 보여주며, 세션 시작 크기가 늘면 알린다. 사용자가 '토큰 대시보드 켜줘', '토큰 사용량 기록 시작해줘', '대시보드 열어줘', '토큰 사용량 보여줘', '대시보드 꺼줘', '토큰 기록 상태 알려줘', 'VS Code에서 대시보드 보여줘'라고 하면 사용한다. 기본은 꺼져 있고 요청할 때만 켠다. 한 세션의 컨텍스트 구성만 궁금하면 이 스킬 대신 /context, 계정 한도는 /usage를 안내한다."
+allowed-tools: Bash(bash *usage.sh* status) Bash(bash *usage.sh* open) Bash(bash *usage.sh* render) Bash(bash *usage.sh* check) Bash(bash *usage.sh* serve) Bash(bash *usage.sh* stop)
 ---
 
 # usage-dashboard
@@ -20,6 +20,7 @@ allowed-tools: Bash(bash *usage.sh* status) Bash(bash *usage.sh* open) Bash(bash
 | --- | --- |
 | 켜기 | ★ 사용자 확인 ★ 뒤 `usage.sh enable`. 남아 있는 대화 기록(기본 30일 보관)을 한 번 훑어 채운다<br>켠 뒤 자동 기록은 설정의 Stop 훅이 맡는다. 훅이 등록돼 있지 않으면 그렇게 알리고 멈춘다 |
 | 열기·보여줘 | `usage.sh open`. 대시보드를 다시 만들고 브라우저로 연다 |
+| VS Code에서 보기 | `usage.sh serve`. 이 PC 전용 주소(127.0.0.1)로 띄우고 주소를 클립보드에 복사한다<br>사용자에게 "Ctrl+Shift+P → Simple Browser 열기(Show) → 붙여넣기"를 안내한다. 끄기는 `usage.sh stop` |
 | 지금 갱신 | `usage.sh render` |
 | 끄기 | ★ 사용자 확인 ★ 뒤 `usage.sh disable`. 쌓인 기록은 지우지 않는다 |
 | 기록 삭제 | 스크립트로 하지 않는다. 기록 폴더 경로만 알려 주고 사용자가 지우게 한다 |

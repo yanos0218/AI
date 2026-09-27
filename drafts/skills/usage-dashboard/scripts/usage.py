@@ -200,6 +200,8 @@ class Store:
                             lt = parse_ts(last_ts) if last_ts else None
                             if lt and (t - lt).total_seconds() > IDLE_SEC:
                                 r['idle_rewrites'] += 1
+                    if kind == 'main':
+                        last_ts = ts           # 쉰 시간은 직전 API 호출(응답)부터 잰다. 사용자 입력 시각이 아니라
                     if first_turn:
                         first_turn = False
                         self.new_starts.append({'ts': t.isoformat(timespec='minutes'), 'sid': sid[:8], 'proj': proj,
@@ -216,8 +218,6 @@ class Store:
                             if rid:
                                 r = self._req(rid, ts, sid, proj)
                                 r['big'] = max(r['big'], size)
-            if kind == 'main' and ts:
-                last_ts = ts
         if kind == 'main':
             ss['last'] = last_ts
             ss['agents'] = dict(list(ss['agents'].items())[-300:])
