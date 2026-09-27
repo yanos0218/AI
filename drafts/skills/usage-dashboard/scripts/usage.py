@@ -9,7 +9,9 @@ python usage.py <hook|backfill|render|check|status>
   requests.json  요청(사용자 한 번의 요청과 그에 따른 응답·도구·서브에이전트) 단위 합계와 원인 신호. 90일
   starts.jsonl   세션 시작 크기. 영구
   tools.jsonl    2만 자 넘는 도구 결과(도구 이름·크기). 90일
-요청 내용은 첫 80자만 저장한다(어떤 작업이었는지 알아보기 위해, 2026-09-27 사용자 요청). 파일 내용·명령 출력은 저장하지 않는다.
+  details.json   요청별 진행 요약: 요청 원문(최대 2천 자), 응답 앞부분, 도구 호출 요약(명령·경로), 도구 결과 크기와 앞부분. 90일
+요청 목록은 첫 80자, 상세는 위 범위만 이 PC에 저장한다(어떤 작업이었는지 알아보기 위해, 2026-09-27 사용자 요청).
+화면(dashboard.html)은 details.js를 함께 읽는다. 둘 다 이 PC 안에서만 열린다.
 """
 import datetime
 import glob
@@ -20,14 +22,16 @@ import sys
 HOME = os.environ.get('CLAUDE_CONFIG_DIR') or os.path.expanduser('~/.claude')
 BASE = os.environ.get('USAGE_LOG_DIR') or os.path.join(HOME, 'usage-log')
 PROJECTS = os.environ.get('USAGE_PROJECTS_DIR') or os.path.join(HOME, 'projects')
-HOURLY, REQUESTS, STARTS, TOOLS, STATE, PAGE = (os.path.join(BASE, n) for n in (
-    'hourly.json', 'requests.json', 'starts.jsonl', 'tools.jsonl', 'state.json', 'dashboard.html'))
+HOURLY, REQUESTS, STARTS, TOOLS, STATE, PAGE, DETAILS, DETAILS_JS = (os.path.join(BASE, n) for n in (
+    'hourly.json', 'requests.json', 'starts.jsonl', 'tools.jsonl', 'state.json', 'dashboard.html', 'details.json', 'details.js'))
 TEMPLATE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dashboard.html')
 BIG_CHARS = 20000         # 이보다 큰 도구 결과만 따로 기록
 KEEP_DAYS = 90            # 요청·도구 기록 보관 기간
 REWRITE_MIN = 10000       # 캐시에 새로 쓴 양이 이보다 크고 읽은 양보다 많으면 "캐시 재작성"으로 본다
 IDLE_SEC = 300            # 이보다 오래 쉬고 난 뒤의 재작성은 "쉬어서 캐시 만료"(캐시 수명 5분)
 PROMPT_CHARS = 80
+PROMPT_FULL = 2000        # 상세에 남기는 요청 원문 길이
+EV_MAX, EV_TEXT = 40, 180 # 요청당 상세 단계 수, 단계마다 남기는 글자 수
 ALERT_RATIO, MIN_SESSIONS = 1.2, 6
 
 
@@ -98,9 +102,28 @@ def prompt_text(e):
         c = ' '.join(x.get('text', '') for x in c if isinstance(x, dict) and x.get('type') == 'text')
     if not isinstance(c, str):
         return None
+    full = c.strip()
     t = ' '.join(c.split())
     auto = t.startswith('<')     # <task-notification> 같은 자동 알림, <command-...> 같은 명령
-    return t[:PROMPT_CHARS], auto
+    return t[:PROMPT_CHARS], auto, full[:PROMPT_FULL]
+
+
+def tool_summary(name, inp):
+    """도구 호출을 한 줄로: 명령·경로·검색어처럼 무엇을 했는지 알 수 있는 값 하나."""
+    if not isinstance(inp, dict):
+        return ''
+    for key in ('command', 'file_path', 'path', 'pattern', 'url', 'query', 'description', 'skill', 'prompt'):
+        v = inp.get(key)
+        if isinstance(v, str) and v.strip():
+            return ' '.join(v.split())[:EV_TEXT]
+    return ''
+
+
+def result_text(c):
+    x = c.get('content')
+    if isinstance(x, list):
+        x = ' '.join(b.get('text', '') for b in x if isinstance(b, dict) and b.get('type') == 'text')
+    return ' '.join(str(x or '').split())[:EV_TEXT]
 
 
 class Store:
@@ -109,7 +132,15 @@ class Store:
         self.state.setdefault('sess', {})
         self.hourly = load_hourly()
         self.requests = load_json(REQUESTS, {})
+        self.details = load_json(DETAILS, {})
         self.new_starts, self.new_tools = [], []
+
+    def _ev(self, rid, ev):
+        d = self.details.setdefault(rid, {'p': '', 'ev': [], 'more': 0})
+        if len(d['ev']) < EV_MAX:
+            d['ev'].append(ev)
+        else:
+            d['more'] += 1
 
     def _req(self, rid, ts, sid, proj, text='', auto=False):
         return self.requests.setdefault(rid, {
@@ -156,12 +187,16 @@ class Store:
                 if p:
                     ss['rid'] = e.get('uuid') or f'{sid}:{ts}'
                     self._req(ss['rid'], ts, sid, proj, p[0], p[1])
+                    self.details.setdefault(ss['rid'], {'p': '', 'ev': [], 'more': 0})['p'] = p[2]
             rid = parent_rid if kind != 'main' else ss['rid']
             if e.get('type') == 'assistant':
                 for c in content:
+                    if kind == 'main' and rid and c.get('type') == 'text' and c.get('text', '').strip():
+                        self._ev(rid, {'k': 'say', 'x': ' '.join(c['text'].split())[:EV_TEXT]})
                     if c.get('type') == 'tool_use':
                         names[c.get('id')] = c.get('name')
                         if kind == 'main' and rid:
+                            self._ev(rid, {'k': 'tool', 'n': c.get('name'), 'x': tool_summary(c.get('name'), c.get('input'))})
                             t = self._req(rid, ts, sid, proj)['tools']
                             t[c.get('name')] = t.get(c.get('name'), 0) + 1
                             if c.get('name') in ('Agent', 'Task'):
@@ -219,6 +254,9 @@ class Store:
                 for c in content:
                     if c.get('type') == 'tool_result':
                         size = len(json.dumps(c.get('content'), ensure_ascii=False))
+                        if kind == 'main' and rid:
+                            self._ev(rid, {'k': 'res', 'n': names.get(c.get('tool_use_id'), ''), 'c': size,
+                                           'err': bool(c.get('is_error')), 'x': result_text(c)})
                         if size >= BIG_CHARS:
                             t = parse_ts(ts) or datetime.datetime.now().astimezone()
                             tool = names.get(c.get('tool_use_id'), '?')
@@ -248,6 +286,7 @@ class Store:
         if self.state.get('pruned') != today:   # 하루 한 번: 90일 지난 요청·도구 기록, 지워진 대화 기록 정보 정리
             cut = datetime.datetime.now().astimezone() - datetime.timedelta(days=KEEP_DAYS)
             self.requests = {k: v for k, v in self.requests.items() if (parse_ts(v['ts']) or cut) >= cut}
+            self.details = {k: v for k, v in self.details.items() if k in self.requests}
             keep = [r for r in read_jsonl(TOOLS) if (parse_ts(r.get('ts')) or cut) >= cut]
             write_atomic(TOOLS, ''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in keep))
             self.state['files'] = {p: o for p, o in self.state['files'].items() if os.path.isfile(p)}
@@ -257,6 +296,7 @@ class Store:
             self.state['pruned'] = today
         write_atomic(HOURLY, json.dumps(self.hourly, ensure_ascii=False, sort_keys=True))
         write_atomic(REQUESTS, json.dumps(self.requests, ensure_ascii=False))
+        write_atomic(DETAILS, json.dumps(self.details, ensure_ascii=False))
         for path, rows in ((STARTS, self.new_starts), (TOOLS, self.new_tools)):
             if rows:
                 with open(path, 'a', encoding='utf-8', newline='\n') as f:
@@ -297,7 +337,7 @@ def render():
             continue
         sub_new = sum(s['in'] + s['out'] for s in r['subs'].values())
         sub_all = sum(s['in'] + s['cache'] + s['out'] for s in r['subs'].values())
-        reqs.append(dict(r, ts=t.isoformat(timespec='minutes'),
+        reqs.append(dict(r, rid=rid, ts=t.isoformat(timespec='minutes'),
                          nocache=r['in'] + r['out'] + sub_new, all=r['in'] + r['cache'] + r['out'] + sub_all))
     keep = {id(r) for key in ('nocache', 'all') for r in sorted(reqs, key=lambda x: -x[key])[:150]}
     tools = sorted((r for r in read_jsonl(TOOLS) if (parse_ts(r['ts']) or cut30) >= now - datetime.timedelta(days=7)),
@@ -313,6 +353,9 @@ def render():
     with open(TEMPLATE, encoding='utf-8') as f:
         page = f.read().replace('__DATA__', blob)
     os.makedirs(BASE, exist_ok=True)
+    det = load_json(DETAILS, {})
+    shown = {r['rid']: det[r['rid']] for r in data['requests'] if r['rid'] in det}
+    write_atomic(DETAILS_JS, 'window.DETAILS=' + json.dumps(shown, ensure_ascii=False).replace('</', '<\\/') + ';')
     write_atomic(PAGE, page)
 
 

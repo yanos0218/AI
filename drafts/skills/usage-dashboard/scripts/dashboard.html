@@ -1,89 +1,125 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1"><title>토큰 사용 기록</title><style>
-:root{--bg:#f6f6f4;--card:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--ink3:#8a8984;--line:#e4e3df;--hover:#eeede9;--accent:#2a78d6;--warn:#eda100;
---c0:#2a78d6;--c1:#eb6834;--c2:#1baf7a;--c3:#eda100;--c4:#e87ba4;--c5:#a3a29d;--tag:#efeee9}
-@media (prefers-color-scheme:dark){:root{--bg:#121211;--card:#1a1a19;--ink:#fff;--ink2:#c3c2b7;--ink3:#8f8e87;--line:#34332f;--hover:#262624;--accent:#3987e5;--warn:#c98500;
---c0:#3987e5;--c1:#d95926;--c2:#199e70;--c3:#c98500;--c4:#d55181;--c5:#6d6c67;--tag:#2a2a28}}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 system-ui,"Malgun Gothic","Apple SD Gothic Neo",sans-serif}
-main{max-width:1100px;margin:0 auto;padding:16px}
-.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
-h1{font-size:18px;margin:0}.sub{color:var(--ink2);font-size:12px}.muted{color:var(--ink3)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px}
-.glance{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,2fr);gap:12px;margin-bottom:12px}@media (max-width:820px){.glance{grid-template-columns:1fr}}
-.glance ul{margin:0;padding-left:18px}.glance li{margin:3px 0}.glance li b{font-variant-numeric:tabular-nums}
-.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.kpi{border:1px solid var(--line);border-radius:10px;padding:8px 10px}.kpi .l{color:var(--ink2);font-size:12px}
-.kpi .v{font-size:18px;font-weight:650;font-variant-numeric:tabular-nums}.kpi .s{color:var(--ink3);font-size:11px;line-height:1.35}.kpi.warn{border-color:var(--warn)}
-.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;vertical-align:middle}
-.seg button{font:inherit;font-size:13px;border:0;background:none;color:var(--ink2);padding:4px 10px;cursor:pointer}
-.seg button+button{border-left:1px solid var(--line)}.seg button[aria-pressed=true]{background:var(--accent);color:#fff}
-button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-.lab{color:var(--ink3);font-size:12px;margin:0 4px 0 10px}
-.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin:-4px 0 12px}
-.tabs button{font:inherit;border:0;background:none;color:var(--ink2);padding:8px 14px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
-.tabs button[aria-selected=true]{color:var(--ink);font-weight:600;border-bottom-color:var(--accent)}
-.bar{display:flex;flex-wrap:wrap;gap:6px 0;align-items:center;margin-bottom:8px}
-.split{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(220px,1fr);gap:16px}@media (max-width:820px){.split{grid-template-columns:1fr}}
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>토큰 사용 기록</title>
+<script>try{const t=localStorage.getItem('usage-theme');if(t&&t!=='auto')document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>
+:root{--bg:#f4f5f7;--s1:#ffffff;--s2:#f7f8fa;--line:#e3e5e9;--ink:#111318;--ink2:#4b5059;--ink3:#80858f;--hover:#eef0f3;--accent:#2a78d6;--accent-soft:#e3eefc;
+--good:#1f8a4c;--bad:#c2410c;--warn:#b7791f;--shadow:0 1px 2px rgba(16,24,40,.05),0 1px 3px rgba(16,24,40,.06);
+--c0:#2a78d6;--c1:#eb6834;--c2:#1baf7a;--c3:#eda100;--c4:#e87ba4;--c5:#a3a29d;color-scheme:light}
+:root[data-theme=dark]{--bg:#0e0f11;--s1:#16181b;--s2:#1c1e22;--line:#2a2d33;--ink:#eceef1;--ink2:#a9adb5;--ink3:#737882;--hover:#22252a;--accent:#3987e5;--accent-soft:#16263c;
+--good:#4ade80;--bad:#fb923c;--warn:#fbbf24;--shadow:none;--c0:#3987e5;--c1:#d95926;--c2:#199e70;--c3:#c98500;--c4:#d55181;--c5:#6d6c67;color-scheme:dark}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0e0f11;--s1:#16181b;--s2:#1c1e22;--line:#2a2d33;--ink:#eceef1;--ink2:#a9adb5;--ink3:#737882;--hover:#22252a;--accent:#3987e5;--accent-soft:#16263c;
+--good:#4ade80;--bad:#fb923c;--warn:#fbbf24;--shadow:none;--c0:#3987e5;--c1:#d95926;--c2:#199e70;--c3:#c98500;--c4:#d55181;--c5:#6d6c67;color-scheme:dark}}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font:14px/1.5 Pretendard,"Pretendard Variable",system-ui,"Malgun Gothic","Apple SD Gothic Neo",sans-serif;-webkit-font-smoothing:antialiased}
+.num,.v,.val{font-variant-numeric:tabular-nums}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.bar .in{max-width:1180px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;white-space:nowrap}.brand svg,.ins .ic svg{width:18px;height:18px;flex:none}.brand svg{color:var(--accent)}
+.tabs{display:flex;gap:4px}.tabs button{font:inherit;border:0;background:none;color:var(--ink2);padding:6px 12px;border-radius:8px;cursor:pointer}
+.tabs button:hover{background:var(--hover)}.tabs button[aria-selected=true]{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.right{margin-left:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}.meta{color:var(--ink3);font-size:12px}
+.seg{display:inline-flex;background:var(--s2);border:1px solid var(--line);border-radius:9px;padding:2px}
+.seg button{font:inherit;font-size:12.5px;border:0;background:none;color:var(--ink2);padding:4px 10px;border-radius:7px;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--s1);color:var(--ink);font-weight:600;box-shadow:var(--shadow);outline:1px solid var(--line)}
+.icon-btn{font:inherit;border:1px solid var(--line);background:var(--s1);color:var(--ink2);border-radius:8px;height:30px;min-width:30px;padding:0 9px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12px}
+.icon-btn[aria-pressed=true]{color:var(--accent);border-color:var(--accent)}
+button:focus-visible,[tabindex]:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+main{max-width:1180px;margin:0 auto;padding:20px}
+.card{background:var(--s1);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:18px}
+.card-h{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}.card-h h2{font-size:15px;margin:0;font-weight:650}.card-h .ctl{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.sub{color:var(--ink3);font-size:12px}
+.insights{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-bottom:16px}
+.ins{display:flex;gap:10px;align-items:flex-start;background:var(--s1);border:1px solid var(--line);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow)}
+.ins .ic{flex:none;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
+.ins.warn .ic{background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn)}
+.ins .t{font-size:12px;color:var(--ink3)}.ins .b{font-weight:600;line-height:1.4}.ins .b small{font-weight:400;color:var(--ink2);font-size:12px}
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:16px}@media (max-width:1000px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi{background:var(--s1);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:4px;min-height:132px}
+.kpi.warn{border-color:var(--warn)}
+.kpi .l{font-size:11.5px;color:var(--ink3);display:flex;align-items:center;gap:4px}
+.kpi .v{font-size:26px;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.kpi .s{font-size:11.5px;color:var(--ink3)}.kpi .spark{margin-top:auto}
+.chip{display:inline-flex;align-items:center;gap:2px;font-size:11px;font-weight:600;border-radius:999px;padding:1px 7px;background:var(--s2);color:var(--ink2)}
+.chip.up{color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,transparent)}.chip.down{color:var(--good);background:color-mix(in srgb,var(--good) 12%,transparent)}
+.prog{height:6px;border-radius:3px;background:var(--hover);overflow:hidden;position:relative;margin-top:auto}.prog span{position:absolute;top:0;bottom:0;left:0;background:var(--accent);border-radius:3px}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:24px}@media (max-width:900px){.layout{grid-template-columns:1fr}}
 svg{display:block;width:100%;height:auto;overflow:visible}.grid{stroke:var(--line)}.axis{fill:var(--ink3);font-size:11px}
 .col:hover .hl,.col:focus .hl{fill:var(--hover)}.col:focus{outline:none}
-.medline{stroke:var(--ink3);stroke-dasharray:4 4}.sline{fill:none;stroke:var(--c0);stroke-width:2}
-#tip{position:fixed;pointer-events:none;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;
-box-shadow:0 4px 16px rgba(0,0,0,.12);font-size:12px;min-width:170px;max-width:300px;display:none;z-index:9}
-#tip .t{color:var(--ink2);margin-bottom:4px}#tip .r{display:flex;align-items:center;gap:8px;justify-content:space-between}
-#tip .r b{font-variant-numeric:tabular-nums}#tip .k{display:inline-block;width:12px;height:2px;margin-right:6px;vertical-align:3px}
-#tip .tot{border-top:1px solid var(--line);margin-top:4px;padding-top:4px}
-table{border-collapse:collapse;width:100%;font-size:13px}th{color:var(--ink2);font-weight:500;text-align:left}
-td,th{border-bottom:1px solid var(--line);padding:5px 6px;vertical-align:top}.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-.rank td{padding:4px 4px}.rank i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
-.scroll{max-height:340px;overflow:auto}
-details{border-top:1px solid var(--line)}details:first-of-type{border-top:0}
-summary{cursor:pointer;list-style:none;padding:9px 4px;display:flex;align-items:center;gap:10px}summary::-webkit-details-marker{display:none}
-summary::before{content:'›';color:var(--ink3);transition:transform .15s;display:inline-block;width:10px}details[open]>summary::before{transform:rotate(90deg)}
-summary .name{flex:1}summary .val{font-variant-numeric:tabular-nums;font-weight:600}summary .pct{color:var(--ink3);width:48px;text-align:right;font-size:12px}
-summary .meter{width:90px;height:6px;border-radius:3px;background:var(--hover);overflow:hidden}summary .meter span{display:block;height:100%;background:var(--c1)}
-.acc-body{padding:0 4px 12px 24px;font-size:13px;color:var(--ink2)}.acc-body ul{margin:4px 0 8px;padding-left:18px}.acc-body b{color:var(--ink)}
-.more{font-size:12px;color:var(--ink2)}
-.tag{display:inline-block;background:var(--tag);color:var(--ink2);border-radius:10px;padding:0 7px;font-size:11px;margin:1px 3px 1px 0;white-space:nowrap}
-.req{cursor:pointer}.req:hover td{background:var(--hover)}.req td.q{max-width:440px}.det td{background:var(--hover);font-size:12px;color:var(--ink2)}.det b{color:var(--ink)}
-.det ul{margin:2px 0;padding-left:18px}
-.empty{color:var(--ink3);padding:20px 0;text-align:center}
-.off{background:#fff4d6;color:#5a4300;border-radius:8px;padding:6px 12px;margin-bottom:10px;font-size:13px}
-@media (prefers-color-scheme:dark){.off{background:#3a2f10;color:#f3dfa3}}
-footer{color:var(--ink3);font-size:12px;margin-top:6px}footer ul{margin:0;padding-left:18px}
+.medline{stroke:var(--ink3);stroke-dasharray:4 4}.sline{fill:none;stroke:var(--accent);stroke-width:2}
+.rank{display:flex;flex-direction:column;gap:10px}.rank .row{display:grid;grid-template-columns:minmax(0,1fr) auto 40px;gap:8px;align-items:center;font-size:13px}
+.rank .name{display:flex;align-items:center;gap:8px;min-width:0}.rank .name span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rank .sw{flex:none;width:10px;height:10px;border-radius:3px}.rank .pct{color:var(--ink3);font-size:12px;text-align:right}
+.rank .bar2{grid-column:1/-1;height:4px;border-radius:2px;background:var(--hover);overflow:hidden}.rank .bar2 span{display:block;height:100%;border-radius:2px}
+.rank-h{font-size:12px;color:var(--ink3);margin-bottom:12px}.rank-h b{display:block;font-size:22px;color:var(--ink);font-weight:700}
+#tip{position:fixed;pointer-events:none;background:var(--s1);border:1px solid var(--line);border-radius:10px;padding:9px 11px;box-shadow:0 8px 24px rgba(0,0,0,.18);font-size:12px;min-width:180px;max-width:320px;display:none;z-index:20}
+#tip .t{color:var(--ink2);margin-bottom:5px;font-weight:600}#tip .r{display:flex;align-items:center;gap:8px;justify-content:space-between;margin:2px 0}
+#tip .r b{font-variant-numeric:tabular-nums}#tip .k{display:inline-block;width:12px;height:3px;border-radius:2px;margin-right:6px;vertical-align:3px}
+#tip .tot{border-top:1px solid var(--line);margin-top:5px;padding-top:5px}#tip ul{margin:0;padding-left:16px}
+table{border-collapse:collapse;width:100%;font-size:13px}th{color:var(--ink3);font-weight:500;text-align:left;font-size:12px}
+td,th{border-bottom:1px solid var(--line);padding:9px 8px;vertical-align:top}.num{text-align:right;white-space:nowrap}
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.filters input,.filters select{font:inherit;font-size:13px;height:32px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:var(--s1);color:var(--ink)}
+.filters input{min-width:240px;flex:1;max-width:360px}
+.req{cursor:pointer}.req:hover td{background:var(--hover)}.req td.q{max-width:480px}.req .p{font-weight:600;color:var(--ink2);white-space:nowrap}
+.req.open td{background:var(--hover);border-bottom-color:transparent}
+.tag{display:inline-block;background:var(--s2);border:1px solid var(--line);color:var(--ink2);border-radius:999px;padding:0 8px;font-size:11px;margin:1px 3px 1px 0;white-space:nowrap}
+.tag.hot{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 35%,transparent)}
+.det td{background:var(--hover);padding:4px 12px 16px}
+.dgrid{display:grid;grid-template-columns:250px minmax(0,1fr);gap:20px}@media (max-width:900px){.dgrid{grid-template-columns:1fr}}
+.facts{display:flex;flex-direction:column;gap:6px;font-size:12.5px}.facts div{display:flex;justify-content:space-between;gap:8px}.facts span{color:var(--ink3)}
+.prompt{white-space:pre-wrap;background:var(--s1);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:12.5px;max-height:160px;overflow:auto;margin-bottom:10px}
+.steps{list-style:none;margin:0;padding:0 0 0 8px;max-height:320px;overflow:auto}
+.steps li{position:relative;border-left:2px solid var(--line);padding:3px 0 3px 16px;font-size:12.5px;display:flex;gap:8px;align-items:baseline}
+.steps li::before{content:'';position:absolute;left:-5px;top:10px;width:8px;height:8px;border-radius:50%;background:var(--ink3)}
+.steps li.tool::before{background:var(--accent)}.steps li.res::before{background:var(--c2)}.steps li.res.err::before{background:var(--bad)}.steps li.say::before{background:var(--c3)}
+.steps .k{flex:none;font-size:11px;font-weight:600;color:var(--ink2);min-width:70px}.steps code{font-family:ui-monospace,Consolas,monospace;font-size:12px;color:var(--ink);word-break:break-all}
+.steps .x{color:var(--ink2);word-break:break-all}.steps .sz{flex:none;color:var(--ink3);font-size:11px;margin-left:auto;padding-left:8px}
+details.acc{border-top:1px solid var(--line)}details.acc:first-of-type{border-top:0}
+details.acc summary{cursor:pointer;list-style:none;padding:12px 4px;display:grid;grid-template-columns:14px minmax(0,1fr) auto 120px 40px 118px;gap:12px;align-items:center}
+details.acc summary::-webkit-details-marker{display:none}
+details.acc summary .chev{color:var(--ink3);transition:transform .15s;font-size:16px}details.acc[open] summary .chev{transform:rotate(90deg)}
+details.acc summary .name{font-weight:600;display:flex;align-items:center;gap:4px}details.acc summary .val{font-weight:600;text-align:right}
+.meter{height:6px;border-radius:3px;background:var(--hover);overflow:hidden}.meter span{display:block;height:100%;background:var(--c1);border-radius:3px}
+.pct{color:var(--ink3);font-size:12px;text-align:right}.trend{font-size:11.5px;text-align:right;white-space:nowrap}
+.up{color:var(--bad)}.down{color:var(--good)}.muted{color:var(--ink3)}
+.acc-body{padding:0 4px 16px 30px;font-size:13px;color:var(--ink2);display:grid;grid-template-columns:1fr 1fr;gap:6px 24px}@media (max-width:760px){.acc-body{grid-template-columns:1fr}}
+.acc-body h4{margin:4px 0;font-size:12px;color:var(--ink3);font-weight:600}.acc-body ul{margin:0 0 6px;padding-left:18px}.acc-body .full{grid-column:1/-1}
+.help{font:inherit;font-size:10.5px;width:17px;height:17px;border-radius:50%;border:1px solid var(--line);background:var(--s2);color:var(--ink3);cursor:help;padding:0;line-height:15px}
+.empty{color:var(--ink3);padding:28px 0;text-align:center}
+.off{background:color-mix(in srgb,var(--warn) 14%,transparent);color:var(--ink);border:1px solid color-mix(in srgb,var(--warn) 40%,transparent);border-radius:10px;padding:8px 12px;margin-bottom:14px;font-size:13px}
+.scroll{max-height:620px;overflow:auto}
+footer{max-width:1180px;margin:0 auto;padding:0 20px 28px;color:var(--ink3);font-size:12px;display:flex;gap:18px;flex-wrap:wrap}
 [hidden]{display:none!important}
-.help{font:inherit;font-size:11px;width:18px;height:18px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink2);cursor:help;margin-left:4px;padding:0;vertical-align:1px}
-.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px}.filters input,.filters select{font:inherit;font-size:13px;padding:4px 8px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
-.filters input{min-width:220px}.heat rect.cell{stroke:var(--card);stroke-width:2}
-.trend{font-size:11px;width:110px;text-align:right;white-space:nowrap}.up{color:#c0392b}.down{color:#1e8449}@media (prefers-color-scheme:dark){.up{color:#f08c7a}.down{color:#7fd19b}}
-</style></head><body><main>
-<div class="top"><div><h1>토큰 사용 기록</h1><div class="sub" id="meta"></div></div>
-<div><span class="lab">기준</span><span class="seg" data-k="metric"><button data-v="nocache">실사용</button><button data-v="all">캐시 포함</button></span><button class="help" data-help="metric" aria-label="기준 설명">?</button>
-<label class="sub" style="margin-left:10px"><input type="checkbox" id="auto"> 자동 새로고침</label></div></div>
+</style></head><body>
+<div class="bar"><div class="in">
+ <div class="brand"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>토큰 사용 기록</div>
+ <div class="tabs" role="tablist"><button role="tab" data-t="usage">개요</button><button role="tab" data-t="reqs">많이 쓴 요청</button><button role="tab" data-t="causes">원인</button></div>
+ <div class="right"><span class="seg" data-k="metric"><button data-v="nocache">실사용</button><button data-v="all">캐시 포함</button></span><span id="mhelp"></span>
+  <button class="icon-btn" id="theme" title="화면 테마"></button><button class="icon-btn" id="auto" title="30초마다 자동 새로고침">⟳ 자동</button><span class="meta" id="meta"></span></div>
+</div></div>
+<main>
 <div id="offnote"></div>
-<section class="glance"><div class="card" style="margin:0"><div class="sub" style="margin-bottom:4px">한눈에</div><ul id="insights"></ul></div>
-<div class="card" style="margin:0"><div class="kpis" id="kpis"></div></div></section>
-<section class="card">
-<div class="tabs" role="tablist"><button role="tab" data-t="usage">사용량</button><button role="tab" data-t="reqs">많이 쓴 요청</button><button role="tab" data-t="causes">원인</button></div>
-<div data-p="usage">
- <div class="bar"><span class="lab" style="margin-left:0">기간</span><span class="seg" data-k="view"><button data-v="block">5시간 블록</button><button data-v="hour">48시간</button><button data-v="day">60일</button><button data-v="month">월별</button><button data-v="heat">요일·시간</button></span>
- <span class="lab">나눠 보기</span><span class="seg" data-k="split"><button data-v="proj">저장소</button><button data-v="who">누가</button><button data-v="model">모델</button></span></div>
- <div class="split"><div><div id="chart"></div><div class="more" id="viewnote"></div></div><div><div class="sub" id="ranktitle" style="margin-bottom:4px"></div><table class="rank" id="rank"></table></div></div>
- <details style="margin-top:8px"><summary><span class="name more">기간별 숫자 표</span></summary><div class="scroll" id="tbl"></div></details>
-</div>
-<div data-p="reqs" hidden>
- <div class="bar"><span class="lab" style="margin-left:0">범위</span><span class="seg" data-k="range"><button data-v="7">최근 7일</button><button data-v="30">최근 30일</button></span>
- <span class="more" style="margin-left:10px">줄을 누르면 무엇에 썼는지 펼쳐짐</span></div>
- <div class="filters"><input id="q" type="search" placeholder="요청 내용 검색" aria-label="요청 내용 검색"><select id="pf" aria-label="저장소"></select><span class="more" id="reqcount"></span></div>
- <div class="scroll" id="reqs" style="max-height:520px"></div>
-</div>
-<div data-p="causes" hidden>
- <div class="more" id="causenote" style="margin-bottom:4px"></div><div id="causes"></div>
-</div>
+<section data-p="usage">
+ <div class="insights" id="insights"></div>
+ <div class="kpis" id="kpis"></div>
+ <div class="card"><div class="card-h"><h2>사용량</h2><span class="sub" id="viewnote"></span>
+  <div class="ctl"><span class="seg" data-k="view"><button data-v="block">5시간</button><button data-v="hour">48시간</button><button data-v="day">60일</button><button data-v="month">월별</button><button data-v="heat">요일·시간</button></span>
+  <span class="seg" data-k="split"><button data-v="proj">저장소</button><button data-v="who">누가</button><button data-v="model">모델</button></span></div></div>
+  <div class="layout"><div id="chart"></div><div><div class="rank-h" id="ranktitle"></div><div class="rank" id="rank"></div></div></div>
+ </div>
 </section>
-<footer><ul><li>이 기기에서 쓴 것만 집계함(다른 기기·claude.ai 웹 제외)</li><li>계정 한도 대비 사용률은 /usage(VS Code는 계정·사용량 창)에서 확인</li><li>로컬 파일이라 보는 데 토큰이 들지 않음</li></ul></footer>
-</main><div id="tip" role="status" aria-live="polite"></div>
+<section data-p="reqs" hidden><div class="card">
+ <div class="card-h"><h2>많이 쓴 요청</h2><span class="sub">줄을 누르면 요청 원문과 진행 과정이 펼쳐짐</span><div class="ctl"><span class="seg" data-k="range"><button data-v="7">7일</button><button data-v="30">30일</button></span></div></div>
+ <div class="filters"><input id="q" type="search" placeholder="요청 내용 검색" aria-label="요청 내용 검색"><select id="pf" aria-label="저장소"></select><span class="sub" id="reqcount"></span></div>
+ <div class="scroll" id="reqs"></div></div></section>
+<section data-p="causes" hidden><div class="card">
+ <div class="card-h"><h2>원인</h2><span class="sub" id="causenote"></span></div><div id="causes"></div></div></section>
+</main>
+<footer><span>이 기기에서 쓴 것만 집계함(다른 기기·claude.ai 웹 제외)</span><span>한도 대비 사용률은 /usage(VS Code는 계정·사용량 창)</span><span>로컬 파일이라 보는 데 토큰이 들지 않음</span></footer>
+<div id="tip" role="status" aria-live="polite"></div>
+<script src="details.js"></script>
 <script>
-const D=__DATA__;
+const D=__DATA__, DET=window.DETAILS||{};
 const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s), NS='http://www.w3.org/2000/svg';
 const FAM=['opus','sonnet','haiku','fable','other'], FAMN={opus:'Opus',sonnet:'Sonnet',haiku:'Haiku',fable:'Fable',other:'기타'};
 const pad=n=>String(n).padStart(2,'0');
@@ -94,8 +130,10 @@ function el(t,a,p){const e=document.createElementNS(NS,t);for(const k in a)e.set
 function h(t,cls,txt){const e=document.createElement(t);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
 function li(parent,...parts){const l=h('li');parts.forEach(p=>l.append(typeof p==='string'?document.createTextNode(p):p));parent.appendChild(l);return l}
 const B=t=>h('b',null,t);
+const ICON={trend:'<path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/>',cause:'<circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/>',req:'<path d="M4 6h16M4 12h10M4 18h7"/>',warn:'<path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17v.5"/>'};
+const svgIcon=n=>{const s=document.createElementNS(NS,'svg');s.setAttribute('width','16');s.setAttribute('height','16');s.setAttribute('viewBox','0 0 24 24');s.setAttribute('fill','none');s.setAttribute('stroke','currentColor');s.setAttribute('stroke-width','2');s.innerHTML=ICON[n];return s};
 let S={tab:'usage',view:'day',metric:'nocache',split:'proj',range:'7',open:'',proj:''};
-try{const q=Object.fromEntries((location.hash.slice(1)||'').split('&').filter(x=>x.includes('=')).map(x=>x.split('=')));Object.assign(S,q)}catch(e){}
+try{const q=Object.fromEntries((location.hash.slice(1)||'').split('&').filter(x=>x.includes('=')).map(x=>x.split('=').map(decodeURIComponent)));Object.assign(S,q)}catch(e){}
 const val=b=>S.metric==='all'?b.in+b.cache+b.out:b.in+b.out;
 const reqVal=r=>S.metric==='all'?r.all:r.nocache;
 function* cells(from,to){for(const hk in D.hourly){if(from&&hk<from)continue;if(to&&hk>=to)continue;const P=D.hourly[hk];
@@ -116,7 +154,7 @@ function blocks(){const act=[...new Set([...cells()].filter(c=>val(c[4])>0).map(
   for(const hk of act){const d=hourDate(hk),last=out[out.length-1];if(!last||d>=last.end)out.push({start:d,end:new Date(+d+5*36e5),k:hk})}return out}
 function periodKeys(){const now=new Date(),out=[];
   if(S.view==='hour'){for(let i=47;i>=0;i--)out.push(kHour(new Date(now-i*36e5)))}
-  else if(S.view==='day'){for(let i=59;i>=0;i--)out.push(kHour(new Date(now-i*864e5)).slice(0,10))}
+  else if(S.view==='day'){for(let i=59;i>=0;i--){const k=kHour(new Date(now-i*864e5)).slice(0,10);if(k>=FIRST.slice(0,10)||i<14)out.push(k)}}
   else if(S.view==='month'){const ks=Object.keys(D.hourly).sort();const st=ks.length?hourDate(ks[0]):now;
     for(let d=new Date(st.getFullYear(),st.getMonth(),1);d<=now;d=new Date(d.getFullYear(),d.getMonth()+1,1))out.push(`${d.getFullYear()}-${pad(d.getMonth()+1)}`)}
   else blocks().slice(-14).forEach(b=>out.push('B'+b.k));return out}
@@ -129,104 +167,119 @@ function label(k,short){if(k[0]==='B'){const d=hourDate(k.slice(1)),e=new Date(+
   if(k.length===13){const d=k.slice(5,10).replace('-','/');return short?`${+k.slice(11)}시`:`${d} ${+k.slice(11)}시`}
   if(k.length===10)return `${+k.slice(5,7)}/${+k.slice(8)}`;return `${k.slice(0,4)}년 ${+k.slice(5)}월`}
 const tip=$('#tip');
-function showTip(ev,title,items,lines){tip.replaceChildren();tip.appendChild(h('div','t',title));if(lines){const ul=h('ul');ul.style.cssText='margin:0;padding-left:16px';lines.forEach(x=>li(ul,x));tip.appendChild(ul)}let tot=0;
+function showTip(ev,title,items,lines){tip.replaceChildren();tip.appendChild(h('div','t',title));if(lines){const ul=h('ul');lines.forEach(x=>li(ul,x));tip.appendChild(ul)}let tot=0;
   items.forEach(([name,v,c])=>{tot+=v;const r=h('div','r'),l=h('span'),k=h('i','k');k.style.background=c;l.append(k,document.createTextNode(name));r.append(l,h('b',null,ko(v)));tip.appendChild(r)});
   if(items.length>1){const r=h('div','r tot');r.append(h('span',null,'합계'),h('b',null,ko(tot)));tip.appendChild(r)}
   tip.style.display='block';const rc=ev.currentTarget&&ev.currentTarget.getBoundingClientRect?ev.currentTarget.getBoundingClientRect():null;
   const x=ev.clientX||(rc?rc.left+rc.width/2:0),y=ev.clientY||(rc?rc.top:0),w=tip.offsetWidth,H=tip.offsetHeight;
-  tip.style.left=Math.max(8,Math.min(innerWidth-w-8,x+14))+'px';tip.style.top=Math.max(8,y-H-10)+'px'}
+  tip.style.left=Math.max(8,Math.min(innerWidth-w-8,x+14))+'px';tip.style.top=Math.max(8,y-H-12)+'px'}
 const hideTip=()=>{tip.style.display='none'};
 function hover(g,title,items){g.addEventListener('pointermove',e=>showTip(e,title,items));g.addEventListener('pointerleave',hideTip);g.addEventListener('focus',e=>showTip(e,title,items));g.addEventListener('blur',hideTip)}
 function axes(s,W,H,L,T,Bt,max){for(let i=0;i<=4;i++){const y=T+(H-T-Bt)*i/4;el('line',{x1:L,x2:W,y1:y,y2:y,class:'grid'},s);const t=el('text',{x:L-8,y:y+4,class:'axis','text-anchor':'end'},s);t.textContent=ko(max*(1-i/4))}}
 function med(a){const v=a.slice().sort((x,y)=>x-y);return v.length?(v.length%2?v[v.length>>1]:(v[v.length/2-1]+v[v.length/2])/2):0}
 function day0(n){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-n);return kHour(d)}
-
 const HELP={
  metric:['실사용 = 새로 보낸 입력 + 출력','캐시 포함 = 실사용 + 캐시 재사용분','캐시 재사용: 앞 대화를 다시 보낼 때 저장해 둔 것을 읽는 양, 요금이 일반 입력의 약 10%라 실사용이 실제 부담에 더 가까움'],
  block:['첫 사용 시각(정시)부터 5시간씩 나눈 이 기기 기준 추정','실제 한도 창의 시작 시각·사용률과 다를 수 있음','정확한 한도 사용률은 /usage(VS Code는 계정·사용량 창)'],
  rewrite:['캐시 재작성 = 저장해 둔 대화 캐시가 만료·무효가 되어 앞 대화를 통째로 다시 저장한 것','캐시 수명은 5분이라 오래 쉬었다 이어가면 생김']};
 function helpBtn(key){const b=h('button','help','?');b.type='button';b.setAttribute('aria-label','설명');const show=e=>{e.stopPropagation();showTip(e,'설명',[],HELP[key])};
   b.addEventListener('pointerenter',show);b.addEventListener('focus',show);b.addEventListener('click',show);b.addEventListener('pointerleave',hideTip);b.addEventListener('blur',hideTip);return b}
+const FIRST=Object.keys(D.hourly).sort()[0]||'';
+function chipOf(cur,prev,from){const c=h('span','chip');if(!prev||from&&from<FIRST.slice(0,10)+'T00'){c.textContent='기록 부족';return c}const p=Math.round((cur/prev-1)*100);c.textContent=`${p>=0?'▲':'▼'} ${Math.abs(p)}%`;if(p>5)c.classList.add('up');else if(p<-5)c.classList.add('down');return c}
+function spark(vals,color){const s=el('svg',{viewBox:'0 0 120 30',preserveAspectRatio:'none',class:'spark',height:30});const mx=Math.max(1,...vals);
+  const pts=vals.map((v,i)=>`${(i/(vals.length-1||1))*120},${28-26*v/mx}`);el('path',{d:`M0,30 L${pts.join(' L')} L120,30 Z`,fill:color,'fill-opacity':.14},s);
+  el('path',{d:'M'+pts.join(' L'),fill:'none',stroke:color,'stroke-width':1.6,'vector-effect':'non-scaling-stroke'},s);return s}
+const dayVals=n=>Array.from({length:n},(_,i)=>sum(day0(n-1-i),i===n-1?null:day0(n-2-i)));
 
-/* 한눈에 + 숫자 카드 */
-function glance(){const now=new Date(),wk=sum(day0(6)),prev=sum(day0(13),day0(6)),ch=prev?Math.round((wk/prev-1)*100):null;
-  const ul=$('#insights');ul.replaceChildren();
-  li(ul,'최근 7일 ',B(ko(wk)),' 사용'+(ch==null?'':`, 그 전 7일보다 ${ch>=0?'+':''}${ch}%`));
+/* 개요 */
+function insights(){const box=$('#insights');box.replaceChildren();const now=new Date(),wk=sum(day0(6)),prev=sum(day0(13),day0(6));
+  const add=(icon,t,b,warn)=>{const d=h('div','ins'+(warn?' warn':'')),ic=h('div','ic');ic.appendChild(svgIcon(icon));const tx=h('div');tx.append(h('div','t',t),b);d.append(ic,tx);box.appendChild(d)};
+  const b1=h('div','b');b1.append(document.createTextNode(ko(wk)+' '),chipOf(wk,prev,day0(13)),h('small',null,' 그 전 7일 대비'));add('trend','최근 7일 사용량',b1);
   const c=causeList().filter(x=>x.tokens!=null).sort((a,b)=>b.tokens-a.tokens)[0];
-  if(c&&D.signals.total)li(ul,'가장 큰 원인 ',B(c.name),` (${Math.round(100*c.tokens/D.signals.total)}%)`);
+  if(c&&D.signals.total){const b=h('div','b');b.append(document.createTextNode(c.name+' '),h('small',null,`실사용의 ${Math.round(100*c.tokens/D.signals.total)}% (30일)`));add('cause','가장 큰 원인',b)}
   const r=D.requests.filter(x=>new Date(x.ts)>=new Date(now-7*864e5)).sort((a,b)=>reqVal(b)-reqVal(a))[0];
-  if(r)li(ul,'가장 많이 쓴 요청 ',B(`${projName(r.proj)} "${r.text.slice(0,24)}${r.text.length>24?'…':''}"`),` ${ko(reqVal(r))}`);
+  if(r){const b=h('div','b');b.append(document.createTextNode(`"${r.text.slice(0,22)}${r.text.length>22?'…':''}" `),h('small',null,`${projName(r.proj)} · ${ko(reqVal(r))}`));add('req','가장 많이 쓴 요청(7일)',b)}
   const st=D.starts,md=med(st.map(s=>s.ctx)),last=st.length?st[st.length-1].ctx:0;
-  if(md&&last>md*1.2)li(ul,'세션 시작 크기가 평소보다 ',B(`${Math.round((last/md-1)*100)}%`),' 큼 → /context로 확인');
-  const k=$('#kpis');k.replaceChildren();const bl=blocks(),cur=bl.length&&now<bl[bl.length-1].end?bl[bl.length-1]:null;
-  const card=(l,v,s,w,help)=>{const d=h('div','kpi'+(w?' warn':'')),lb=h('div','l',l);if(help)lb.appendChild(helpBtn(help));d.append(lb,h('div','v',v),h('div','s',s));k.appendChild(d)};
-  if(cur){const used=sum(kHour(cur.start)),hrs=Math.max(.5,(now-cur.start)/36e5),proj=used/hrs*5,
-    past=med(bl.slice(-15,-1).map(b=>sum(kHour(b.start),kHour(b.end))));
+  if(md&&last>md*1.2){const b=h('div','b');b.append(document.createTextNode(`평소보다 ${Math.round((last/md-1)*100)}% 큼 `),h('small',null,'/context로 확인'));add('warn','세션 시작 크기',b,true)}}
+function kpis(){const k=$('#kpis');k.replaceChildren();const now=new Date();
+  const tile=(label,v,help,warn)=>{const d=h('div','kpi'+(warn?' warn':'')),l=h('div','l',label);if(help)l.appendChild(helpBtn(help));d.append(l,h('div','v',v));k.appendChild(d);return d};
+  const tv=sum(day0(0)),yv=sum(day0(1),day0(0)),d1=tile('오늘 (0시부터)',ko(tv));const s1=h('div','s');s1.append(chipOf(tv,yv,day0(1)),document.createTextNode(' 어제 대비'));d1.append(s1,spark(Array.from({length:now.getHours()+1},(_,i)=>{const a=new Date(now);a.setHours(i,0,0,0);return sum(kHour(a),kHour(new Date(+a+36e5)))}),'var(--accent)'));
+  const wk=sum(day0(6)),pw=sum(day0(13),day0(6)),d2=tile('최근 7일',ko(wk));const s2=h('div','s');s2.append(chipOf(wk,pw,day0(13)),document.createTextNode(' 그 전 7일 대비'));d2.append(s2,spark(dayVals(14),'var(--accent)'));
+  const m0=new Date(now.getFullYear(),now.getMonth(),1),pm0=new Date(now.getFullYear(),now.getMonth()-1,1),pmSame=new Date(pm0.getFullYear(),pm0.getMonth(),Math.min(now.getDate(),28),now.getHours());
+  const mv=sum(kHour(m0)),pmv=sum(kHour(pm0),kHour(pmSame)),d3=tile('이번 달 (1일부터)',ko(mv));const s3=h('div','s');s3.append(chipOf(mv,pmv,kHour(pm0)),document.createTextNode(' 지난달 같은 기간 대비'));d3.append(s3,spark(dayVals(Math.max(2,now.getDate())),'var(--accent)'));
+  const bl=blocks(),cur=bl.length&&now<bl[bl.length-1].end?bl[bl.length-1]:null;
+  if(cur){const used=sum(kHour(cur.start)),hrs=Math.max(.5,(now-cur.start)/36e5),proj=used/hrs*5,past=med(bl.slice(-15,-1).map(b=>sum(kHour(b.start),kHour(b.end))));
     const left=Math.max(0,Math.round((cur.end-now)/6e4)),lt=left>=60?`${Math.floor(left/60)}시간 ${left%60}분`:`${left}분`;
-    card(`5시간 구간 ${cur.start.getHours()}~${cur.end.getHours()}시(추정)`,ko(used),`${lt} 남음 · 이 속도면 끝까지 ${ko(proj)}`+(past?` · 평소 ${ko(past)}`:''),past&&proj>past*1.5,'block')}
-  else card('5시간 구간(추정)','-','사용 중인 구간 없음',false,'block');
-  card('오늘(0시부터)',ko(sum(day0(0))),S.metric==='all'?'캐시 포함 기준':'실사용 기준');
-  card('이번 달(1일부터)',ko(sum(kHour(new Date(now.getFullYear(),now.getMonth(),1)))),S.metric==='all'?'캐시 포함 기준':'실사용 기준')}
-
-/* 사용량 탭 */
+    const d4=tile(`5시간 구간 ${cur.start.getHours()}~${cur.end.getHours()}시`,ko(used),'block',past&&proj>past*1.5);
+    d4.appendChild(h('div','s',`${lt} 남음 · 이 속도면 ${ko(proj)}`+(past?` · 평소 ${ko(past)}`:'')));
+    const pg=h('div','prog'),bar=h('span');bar.style.width=Math.min(100,100*(now-cur.start)/(5*36e5))+'%';pg.appendChild(bar);d4.appendChild(pg)}
+  else{const d4=tile('5시간 구간','-','block');d4.appendChild(h('div','s','사용 중인 구간 없음'))}
+  const st=D.starts,md=med(st.map(s=>s.ctx)),last=st.length?st[st.length-1].ctx:0,d5=tile('세션 시작 크기',ko(last),null,md&&last>md*1.2);
+  d5.appendChild(h('div','s',`중앙값 ${ko(md)} · 아무 일 하기 전 싣는 양`));if(st.length>1)d5.appendChild(spark(st.slice(-20).map(s=>s.ctx),'var(--c3)'))}
+function rankRow(box,name,v,all,color){const r=h('div','row'),n=h('div','name'),sw=h('i','sw');sw.style.background=color;n.append(sw,h('span',null,name));
+  const b=h('div','bar2'),bs=h('span');bs.style.width=(all?100*v/all:0)+'%';bs.style.background=color;b.appendChild(bs);
+  r.append(n,h('div','num',ko(v)),h('div','pct',all?(100*v/all).toFixed(0)+'%':'-'),b);box.appendChild(r)}
 function heat(){const box=$('#chart');box.replaceChildren();const from=kHour(new Date(Date.now()-30*864e5)),g=Array.from({length:7},()=>Array(24).fill(0));
   for(const [hk,,,,b] of cells(from)){const d=hourDate(hk);g[(d.getDay()+6)%7][d.getHours()]+=val(b)}
-  const max=Math.max(1,...g.flat()),days=['월','화','수','목','금','토','일'],W=Math.max(300,box.clientWidth),L=24,T=16,cw=(W-L)/24,ch=Math.min(26,cw*1.1),H=T+ch*7+4;
-  const s=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'최근 30일 요일·시간별 사용량',class:'heat'},box);
-  for(let hr=0;hr<24;hr+=3){const t=el('text',{x:L+hr*cw+cw/2,y:11,class:'axis','text-anchor':'middle'},s);t.textContent=hr+'시'}
+  const max=Math.max(1,...g.flat()),days=['월','화','수','목','금','토','일'],W=Math.max(300,box.clientWidth),L=26,T=18,cw=(W-L)/24,ch=Math.min(30,cw*1.15),H=T+ch*7+4;
+  const s=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'최근 30일 요일·시간별 사용량'},box);
+  for(let hr=0;hr<24;hr+=3){const t=el('text',{x:L+hr*cw+cw/2,y:12,class:'axis','text-anchor':'middle'},s);t.textContent=hr+'시'}
   g.forEach((row,di)=>{const t=el('text',{x:L-6,y:T+di*ch+ch/2+4,class:'axis','text-anchor':'end'},s);t.textContent=days[di];
-    row.forEach((v,hr)=>{const c=el('rect',{x:L+hr*cw,y:T+di*ch,width:cw,height:ch,rx:3,class:'cell',fill:'var(--c0)','fill-opacity':v?(.12+.88*v/max).toFixed(2):'0.04',tabindex:0},s);
-      hover(c,`${days[di]}요일 ${hr}시`,[['최근 30일 합',v,'var(--c0)']])})});
+    row.forEach((v,hr)=>{const c=el('rect',{x:L+hr*cw+1,y:T+di*ch+1,width:cw-2,height:ch-2,rx:4,fill:'var(--accent)','fill-opacity':v?(.14+.86*v/max).toFixed(2):'0.05',tabindex:0},s);
+      hover(c,`${days[di]}요일 ${hr}시`,[['최근 30일 합',v,'var(--accent)']])})});
   const top=g.flatMap((row,di)=>row.map((v,hr)=>[v,di,hr])).filter(x=>x[0]>0).sort((a,b)=>b[0]-a[0]).slice(0,6),all=g.flat().reduce((a,b)=>a+b,0);
-  $('#ranktitle').textContent='가장 많이 쓴 시간대(최근 30일)';const rk=$('#rank');rk.replaceChildren();
-  top.forEach(([v,di,hr])=>{const tr=h('tr');tr.append(h('td',null,`${days[di]}요일 ${hr}시`),h('td','num',ko(v)),h('td','num muted',(100*v/all).toFixed(0)+'%'));rk.appendChild(tr)});
-  $('#viewnote').textContent='진할수록 많이 씀. 오래 쉬었다 이어가는 시간대에는 캐시 재작성이 생기기 쉬움';$('#tbl').replaceChildren()}
+  $('#ranktitle').replaceChildren(document.createTextNode('가장 많이 쓴 시간대'),B(ko(all)));
+  const rk=$('#rank');rk.replaceChildren();top.forEach(([v,di,hr])=>rankRow(rk,`${days[di]}요일 ${hr}시`,v,all,'var(--accent)'));
+  $('#viewnote').textContent='최근 30일 · 진할수록 많이 씀'}
 function chart(){if(S.view==='heat'){heat();return}const box=$('#chart'),K=seriesKeys(),R=rows();box.replaceChildren();
   const totals=Object.fromEntries(K.map(([k])=>[k,0]));R.forEach(r=>K.forEach(([k])=>totals[k]+=r.v[k]||0));const all=Object.values(totals).reduce((a,b)=>a+b,0);
-  $('#ranktitle').textContent=`이 기간 합계 ${ko(all)}`;const rk=$('#rank');rk.replaceChildren();
-  K.slice().sort((a,b)=>totals[b[0]]-totals[a[0]]).forEach(([k,n])=>{const tr=h('tr'),td=h('td'),i=h('i');i.style.background=colorOf(k);td.append(i,document.createTextNode(n));
-    tr.append(td,h('td','num',ko(totals[k])),h('td','num muted',all?(100*totals[k]/all).toFixed(0)+'%':'-'));rk.appendChild(tr)});
-  $('#viewnote').textContent=(S.view==='block'?'5시간 구간은 첫 사용 시각(정시)부터 나눈 추정임 · ':'')+(S.metric==='all'?'캐시 포함 기준':'실사용 기준(새 입력 + 출력)');
-  if(!all){box.appendChild(h('div','empty','이 기간에는 기록 없음'));table(R,K);return}
-  const W=Math.max(300,box.clientWidth),H=230,L=46,T=8,Bt=24,max=Math.max(...R.map(r=>Object.values(r.v).reduce((a,b)=>a+b,0)))*1.08;
+  $('#ranktitle').replaceChildren(document.createTextNode('이 기간 합계'),B(ko(all)));const rk=$('#rank');rk.replaceChildren();
+  K.slice().sort((a,b)=>totals[b[0]]-totals[a[0]]).forEach(([k,n])=>rankRow(rk,n,totals[k],all,colorOf(k)));
+  $('#viewnote').textContent=(S.view==='block'?'5시간 구간은 추정 · ':'')+(S.metric==='all'?'캐시 포함 기준':'실사용 기준');
+  if(!all){box.appendChild(h('div','empty','이 기간에는 기록 없음'));return}
+  const W=Math.max(300,box.clientWidth),H=280,L=46,T=10,Bt=26,max=Math.max(...R.map(r=>Object.values(r.v).reduce((a,b)=>a+b,0)))*1.08;
   const s=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'기간별 토큰 사용량'},box);axes(s,W,H,L,T,Bt,max);
-  const slot=(W-L)/R.length,bw=Math.max(2,Math.min(28,slot*.7)),step=Math.ceil(R.length/Math.max(4,Math.floor((W-L)/78)));
-  R.forEach((r,i)=>{const g=el('g',{class:'col',tabindex:0},s),x0=L+i*slot;el('rect',{x:x0,y:T,width:slot,height:H-T-Bt,fill:'transparent',class:'hl',rx:4},g);
-    let y=H-Bt;const segs=K.filter(([k])=>r.v[k]>0);segs.forEach(([k],j)=>{const hh=(H-T-Bt)*r.v[k]/max;y-=hh;const gap=j<segs.length-1?1:0,top=j===segs.length-1,x=x0+(slot-bw)/2,y1=y+gap,hv=Math.max(0,hh-gap),rad=top?Math.min(3,hv):0;
+  const slot=(W-L)/R.length,bw=Math.max(2,Math.min(26,slot*.68)),step=Math.ceil(R.length/Math.max(4,Math.floor((W-L)/80)));
+  R.forEach((r,i)=>{const g=el('g',{class:'col',tabindex:0},s),x0=L+i*slot;el('rect',{x:x0,y:T,width:slot,height:H-T-Bt,fill:'transparent',class:'hl',rx:6},g);
+    let y=H-Bt;const segs=K.filter(([k])=>r.v[k]>0);segs.forEach(([k],j)=>{const hh=(H-T-Bt)*r.v[k]/max;y-=hh;const gap=j<segs.length-1?1.5:0,top=j===segs.length-1,x=x0+(slot-bw)/2,y1=y+gap,hv=Math.max(0,hh-gap),rad=top?Math.min(4,hv):0;
       el('path',{d:`M${x},${y1+hv} V${y1+rad} Q${x},${y1} ${x+rad},${y1} H${x+bw-rad} Q${x+bw},${y1} ${x+bw},${y1+rad} V${y1+hv} Z`,fill:colorOf(k)},g)});
     hover(g,label(r.k),K.map(([k,n])=>[n,r.v[k]||0,colorOf(k)]).filter(x=>x[1]>0));
-    if(i%step===0||i===R.length-1&&R.length<16){const t=el('text',{x:x0+slot/2,y:H-7,class:'axis','text-anchor':'middle'},s);t.textContent=label(r.k,S.view==='hour'&&!r.k.endsWith('T00')||S.view==='block')}});
-  table(R,K)}
-function table(R,K){const t=h('table'),hd=h('tr');hd.appendChild(h('th',null,'기간'));K.forEach(([,n])=>hd.appendChild(h('th','num',n)));hd.appendChild(h('th','num','합계'));t.appendChild(hd);
-  R.slice().reverse().forEach(r=>{const tot=Object.values(r.v).reduce((a,b)=>a+b,0);if(!tot)return;const tr=h('tr');tr.appendChild(h('td',null,label(r.k)));
-    K.forEach(([k])=>tr.appendChild(h('td','num',ko(r.v[k]||0))));tr.appendChild(h('td','num',ko(tot)));t.appendChild(tr)});$('#tbl').replaceChildren(t)}
+    if(i%step===0||i===R.length-1&&R.length<16){const t=el('text',{x:x0+slot/2,y:H-7,class:'axis','text-anchor':'middle'},s);t.textContent=label(r.k,S.view==='hour'&&!r.k.endsWith('T00')||S.view==='block')}})}
 
-/* 요청 탭 */
-function reqTags(r){const t=[];if(r.turns>=30)t.push(`${r.turns}턴`);if(Object.keys(r.subs).length)t.push('서브에이전트');
-  if(r.rewrites)t.push('캐시 재작성');if(r.compact)t.push('컴팩션');if(r.big)t.push('큰 결과');if(r.auto)t.push('자동 알림');return t}
-function reqDetail(r){const ul=h('ul'),m=S.metric==='all';
-  li(ul,B('메인 대화 '),`${ko(m?r.in+r.cache+r.out:r.in+r.out)} · ${r.turns}턴`);
-  const tools=Object.entries(r.tools).sort((a,b)=>b[1]-a[1]);if(tools.length)li(ul,B('쓴 도구 '),tools.map(([k,v])=>`${k} ${v}회`).join(', '));
-  Object.entries(r.subs).forEach(([k,s])=>li(ul,B('서브에이전트 '),`${k} ${ko(m?s.in+s.cache+s.out:s.in+s.out)} · ${s.turns}턴`));
-  const mo=Object.entries(r.models).sort((a,b)=>b[1]-a[1]);if(mo.length)li(ul,B('모델 '),mo.map(([k,v])=>`${FAMN[k]||k} ${ko(v)}`).join(', '));
-  if(r.rewrites)li(ul,B('캐시 재작성 '),`${r.rewrites}회 · ${ko(r.rewrite_tokens)}`+(r.idle_rewrites?` · 5분 넘게 쉰 뒤 ${r.idle_rewrites}회`:''));
-  if(r.compact)li(ul,B('컴팩션 '),`${r.compact}회`);if(r.big)li(ul,B('가장 큰 도구 결과 '),`${r.big.toLocaleString()}자`);
-  return ul}
+/* 요청 */
+function reqTags(r){const t=[];if(r.turns>=30)t.push([`${r.turns}턴`,1]);if(Object.keys(r.subs).length)t.push(['서브에이전트',0]);
+  if(r.rewrites)t.push(['캐시 재작성',0]);if(r.compact)t.push(['컴팩션',1]);if(r.big)t.push(['큰 결과',0]);if(r.auto)t.push(['자동 알림',0]);return t}
+function reqDetail(r){const m=S.metric==='all',g=h('div','dgrid'),f=h('div','facts'),row=(a,b)=>{const d=h('div');d.append(h('span',null,a),h('b',null,b));f.appendChild(d)};
+  row('메인 대화',`${ko(m?r.in+r.cache+r.out:r.in+r.out)} · ${r.turns}턴`);row('새 입력 / 출력',`${ko(r.in)} / ${ko(r.out)}`);row('캐시 재사용',ko(r.cache));
+  Object.entries(r.subs).forEach(([k,s])=>row('서브에이전트 '+k,`${ko(m?s.in+s.cache+s.out:s.in+s.out)} · ${s.turns}턴`));
+  Object.entries(r.models).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=>row('모델 '+(FAMN[k]||k),ko(v)));
+  if(r.rewrites)row('캐시 재작성',`${r.rewrites}회`+(r.idle_rewrites?` (쉰 뒤 ${r.idle_rewrites})`:''));if(r.compact)row('컴팩션',`${r.compact}회`);if(r.big)row('가장 큰 결과',`${r.big.toLocaleString()}자`);
+  const tools=Object.entries(r.tools).sort((a,b)=>b[1]-a[1]);if(tools.length)row('도구',tools.map(([k,v])=>`${k} ${v}`).join(', '));
+  const right=h('div'),d=DET[r.rid];
+  if(d){if(d.p)right.appendChild(h('div','prompt',d.p));const ol=h('ol','steps');
+    d.ev.forEach(e=>{const l=h('li',e.k+(e.err?' err':''));
+      if(e.k==='tool')l.append(h('span','k',e.n),h('code',null,e.x||''));
+      else if(e.k==='res')l.append(h('span','k',(e.n||'')+' 결과'),h('span','x',e.x||(e.err?'오류':'')),h('span','sz',e.c.toLocaleString()+'자'));
+      else l.append(h('span','k','응답'),h('span','x',e.x));ol.appendChild(l)});
+    if(d.more)li(ol,h('span','k','…'),h('span','x',`이후 ${d.more}단계 더 있음`));right.appendChild(ol)}
+  else right.appendChild(h('div','sub','상세 기록 없음(이 기능을 넣기 전 요청이거나 목록에 없는 요청)'));
+  g.append(f,right);return g}
 function reqTable(list,box,limit){box.replaceChildren();if(!list.length){box.appendChild(h('div','empty','해당 요청 없음'));return}
   const t=h('table'),hd=h('tr');['시각','저장소','요청','토큰','단서'].forEach((x,i)=>hd.appendChild(h('th',i===3?'num':null,x)));t.appendChild(hd);
   list.slice(0,limit).forEach(r=>{const tr=h('tr','req');tr.tabIndex=0;const q=h('td','q',r.text||'(내용 없음)');if(r.auto)q.classList.add('muted');
-    const tg=h('td');reqTags(r).forEach(x=>tg.appendChild(h('span','tag',x)));
-    tr.append(h('td',null,r.ts.slice(5,16).replace('-','/').replace('T',' ')),h('td',null,projName(r.proj)),q,h('td','num',ko(reqVal(r))),tg);
-    const det=h('tr','det');det.hidden=true;const dc=h('td');dc.colSpan=5;dc.appendChild(reqDetail(r));det.appendChild(dc);
-    const tog=()=>{det.hidden=!det.hidden};tr.addEventListener('click',tog);tr.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tog()}});t.append(tr,det)});
+    const tg=h('td');reqTags(r).forEach(([x,hot])=>tg.appendChild(h('span','tag'+(hot?' hot':''),x)));
+    tr.append(h('td',null,r.ts.slice(5,16).replace('-','/').replace('T',' ')),h('td','p',projName(r.proj)),q,h('td','num',ko(reqVal(r))),tg);
+    const det=h('tr','det');det.hidden=true;const dc=h('td');dc.colSpan=5;det.appendChild(dc);
+    const tog=()=>{det.hidden=!det.hidden;tr.classList.toggle('open',!det.hidden);if(!det.hidden&&!dc.firstChild)dc.appendChild(reqDetail(r))};
+    tr.addEventListener('click',tog);tr.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tog()}});t.append(tr,det)});
   box.appendChild(t)}
 function requests(){const from=new Date(Date.now()-(+S.range)*864e5),q=($('#q').value||'').trim().toLowerCase(),pf=$('#pf');
   const base=D.requests.filter(r=>new Date(r.ts)>=from),projs=[...new Set(base.map(r=>r.proj))].sort();
   const cur=S.proj||'';pf.replaceChildren();[['','저장소 전체'],...projs.map(p=>[p,projName(p)])].forEach(([v,n])=>{const o=h('option',null,n);o.value=v;if(v===cur)o.selected=true;pf.appendChild(o)});
-  const list=base.filter(r=>(!cur||r.proj===cur)&&(!q||(r.text||'').toLowerCase().includes(q))).sort((a,b)=>reqVal(b)-reqVal(a));
-  $('#reqcount').textContent=`${list.length}개 중 상위 ${Math.min(30,list.length)}개 · 많이 쓴 요청만 담겨 있음`;reqTable(list,$('#reqs'),30)}
+  const list=base.filter(r=>(!cur||r.proj===cur)&&(!q||(r.text||'').toLowerCase().includes(q)||((DET[r.rid]||{}).p||'').toLowerCase().includes(q))).sort((a,b)=>reqVal(b)-reqVal(a));
+  $('#reqcount').textContent=`${list.length}개 · 상위 ${Math.min(40,list.length)}개 표시`;reqTable(list,$('#reqs'),40)}
 
-/* 원인 탭: 원인마다 한 줄 요약, 펼치면 설명·줄이는 법·해당 요청 */
+/* 원인 */
 function causeList(){const g=D.signals;return[
   {id:'sub',key:'sub_tokens',name:'서브에이전트',tokens:g.sub_tokens,val:ko(g.sub_tokens),pred:r=>Object.keys(r.subs).length>0,
    why:['조사·검토를 맡긴 서브에이전트가 쓴 양','메인 대화와 따로 세지만 같은 한도를 씀'],fix:['에이전트 파일에 Haiku·Sonnet 지정','결과는 요약만 받게 지시']},
@@ -240,46 +293,51 @@ function causeList(){const g=D.signals;return[
    why:['큰 파일·긴 로그를 통째로 읽음','읽은 내용이 이후 턴마다 다시 실림'],fix:['검색·줄 범위로 필요한 부분만 읽기','긴 출력은 요약·필터 후 보기']},
   {id:'compact',key:'compacts',name:'대화 요약(컴팩션)',tokens:null,val:`${g.compacts}회`,pred:r=>r.compact>0,
    why:['대화가 한도까지 길어져 자동으로 요약됨'],fix:['작업이 바뀔 때 /clear로 끊기']},
-  {id:'start',name:'세션 시작 크기',tokens:null,val:(()=>{const st=D.starts;return st.length?`최근 ${ko(st[st.length-1].ctx)} · 중앙값 ${ko(med(st.map(s=>s.ctx)))}`:'-'})(),starts:true,
+  {id:'start',name:'세션 시작 크기',tokens:null,val:(()=>{const st=D.starts;return st.length?`최근 ${ko(st[st.length-1].ctx)}`:'-'})(),starts:true,
    why:['아무 일도 하기 전 기본으로 싣는 양','스킬·플러그인·MCP·CLAUDE.md가 늘면 커짐'],fix:['/context로 무엇이 차지하는지 확인','안 쓰는 MCP 서버 끄기']}]}
 function causes(){const box=$('#causes');box.replaceChildren();const g=D.signals,open=new Set((S.open||'').split('.').filter(Boolean));
-  $('#causenote').textContent=`최근 30일 요청 ${g.requests.toLocaleString()}개 · 실사용 ${ko(g.total)} 기준 · 원인은 서로 겹칠 수 있음 · 지난주 대비는 최근 7일과 그 전 7일 비교`;
-  causeList().forEach(c=>{const d=h('details');if(open.has(c.id))d.open=true;const s=h('summary');
-    const meter=h('span','meter'),bar=h('span');bar.style.width=c.tokens!=null&&g.total?Math.min(100,100*c.tokens/g.total)+'%':'0';meter.appendChild(bar);
-    const nm=h('span','name',c.name);if(c.id==='rewrite')nm.appendChild(helpBtn('rewrite'));
+  $('#causenote').textContent=`최근 30일 요청 ${g.requests.toLocaleString()}개 · 실사용 ${ko(g.total)} 기준 · 원인은 겹칠 수 있음`;
+  causeList().forEach(c=>{const d=h('details','acc');if(open.has(c.id))d.open=true;const s=h('summary');
+    const chev=h('span','chev','›'),nm=h('span','name',c.name);if(c.id==='rewrite')nm.appendChild(helpBtn('rewrite'));
+    const meter=h('div','meter'),bar=h('span');bar.style.width=c.tokens!=null&&g.total?Math.min(100,100*c.tokens/g.total)+'%':'0';meter.appendChild(bar);
     const now7=(D.signals7||{})[c.key],prev7=(D.signals_prev7||{})[c.key],tr=h('span','trend');
-    if(c.key&&prev7){const p=Math.round((now7/prev7-1)*100);tr.textContent=`지난주 대비 ${p>=0?'+':''}${p}%`;tr.classList.add(p>10?'up':p<-10?'down':'muted')}else if(c.key){tr.textContent='비교 없음';tr.classList.add('muted')}
-    s.append(nm,h('span','val',c.val),meter,h('span','pct',c.tokens!=null&&g.total?Math.round(100*c.tokens/g.total)+'%':''),tr);d.appendChild(s);
-    const b=h('div','acc-body');const w=h('ul');c.why.forEach(x=>li(w,x));const f=h('ul');c.fix.forEach(x=>li(f,x));
-    b.append(h('div',null,'왜 생기나'),w,h('div',null,'줄이는 법'),f);
-    if(c.starts)b.appendChild(startsChart());
-    if(c.tools&&D.tools.length){const t=h('table'),hd=h('tr');['시각','저장소','누가','도구','글자 수'].forEach((x,i)=>hd.appendChild(h('th',i===4?'num':null,x)));t.appendChild(hd);
-      D.tools.slice(0,8).forEach(r=>{const tr=h('tr');tr.append(h('td',null,r.ts.slice(5,16).replace('-','/').replace('T',' ')),h('td',null,projName(r.proj)),h('td',null,r.who==='main'?'메인':r.who.slice(4)),h('td',null,r.tool),h('td','num',r.chars.toLocaleString()));t.appendChild(tr)});
-      b.append(h('div',null,'최근 7일 큰 결과'),t)}
-    const rl=D.requests.filter(c.pred).sort((a,b)=>reqVal(b)-reqVal(a));if(rl.length){b.appendChild(h('div',null,'해당 요청(많이 쓴 순)'));const rb=h('div');reqTable(rl,rb,5);b.appendChild(rb)}
+    if(c.key&&prev7){const p=Math.round((now7/prev7-1)*100);tr.textContent=`지난주 대비 ${p>=0?'▲':'▼'}${Math.abs(p)}%`;tr.classList.add(p>10?'up':p<-10?'down':'muted')}else{tr.textContent=c.key?'비교 없음':'';tr.classList.add('muted')}
+    s.append(chev,nm,h('span','val',c.val),meter,h('span','pct',c.tokens!=null&&g.total?Math.round(100*c.tokens/g.total)+'%':''),tr);d.appendChild(s);
+    const b=h('div','acc-body'),w=h('ul'),f=h('ul');c.why.forEach(x=>li(w,x));c.fix.forEach(x=>li(f,x));
+    const c1=h('div'),c2=h('div');c1.append(h('h4',null,'왜 생기나'),w);c2.append(h('h4',null,'줄이는 법'),f);b.append(c1,c2);
+    if(c.starts){const fb=h('div','full');fb.appendChild(startsChart());b.appendChild(fb)}
+    if(c.tools&&D.tools.length){const fb=h('div','full'),t=h('table'),hd=h('tr');['시각','저장소','누가','도구','글자 수'].forEach((x,i)=>hd.appendChild(h('th',i===4?'num':null,x)));t.appendChild(hd);
+      D.tools.slice(0,8).forEach(r=>{const tr2=h('tr');tr2.append(h('td',null,r.ts.slice(5,16).replace('-','/').replace('T',' ')),h('td',null,projName(r.proj)),h('td',null,r.who==='main'?'메인':r.who.slice(4)),h('td',null,r.tool),h('td','num',r.chars.toLocaleString()));t.appendChild(tr2)});
+      fb.append(h('h4',null,'최근 7일 큰 결과'),t);b.appendChild(fb)}
+    if(c.pred){const rl=D.requests.filter(c.pred).sort((a,b)=>reqVal(b)-reqVal(a));if(rl.length){const fb=h('div','full'),rb=h('div');reqTable(rl,rb,5);fb.append(h('h4',null,'해당 요청(많이 쓴 순)'),rb);b.appendChild(fb)}}
     d.appendChild(b);d.addEventListener('toggle',()=>{d.open?open.add(c.id):open.delete(c.id);S.open=[...open].join('.');save()});box.appendChild(d)})}
 function startsChart(){const box=h('div');const P=D.starts;if(!P.length)return box;setTimeout(()=>{
   const W=Math.max(300,box.clientWidth||600),H=150,L=46,T=8,Bt=18,max=Math.max(...P.map(p=>p.ctx))*1.12,s=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'세션 시작 크기 추이'},box);
   axes(s,W,H,L,T,Bt,max);const xs=P.map((p,i)=>L+10+(W-L-20)*(P.length>1?i/(P.length-1):.5)),ys=P.map(p=>T+(H-T-Bt)*(1-p.ctx/max)),m=med(P.map(p=>p.ctx)),my=T+(H-T-Bt)*(1-m/max);
   el('line',{x1:L,x2:W,y1:my,y2:my,class:'medline'},s);el('path',{d:xs.map((x,i)=>(i?'L':'M')+x+','+ys[i]).join(' '),class:'sline'},s);
-  P.forEach((p,i)=>{const g=el('g',{class:'col',tabindex:0},s);el('circle',{cx:xs[i],cy:ys[i],r:12,fill:'transparent'},g);el('circle',{cx:xs[i],cy:ys[i],r:i===P.length-1?5:3,fill:'var(--c0)',stroke:'var(--card)','stroke-width':2},g);
-    hover(g,`${p.ts.slice(5,16).replace('-','/').replace('T',' ')} · ${projName(p.proj)}`,[['시작 크기',p.ctx,'var(--c0)']])})},0);return box}
+  P.forEach((p,i)=>{const g=el('g',{class:'col',tabindex:0},s);el('circle',{cx:xs[i],cy:ys[i],r:12,fill:'transparent'},g);el('circle',{cx:xs[i],cy:ys[i],r:i===P.length-1?5:3,fill:'var(--accent)',stroke:'var(--s1)','stroke-width':2},g);
+    hover(g,`${p.ts.slice(5,16).replace('-','/').replace('T',' ')} · ${projName(p.proj)}`,[['시작 크기',p.ctx,'var(--accent)']])})},0);return box}
 
+/* 틀 */
 function meta(){const u=new Date(D.updated),ks=Object.keys(D.hourly).sort(),ago=Math.max(0,Math.round((Date.now()-u)/60000));
-  $('#meta').textContent=`이 기기 · ${ks.length?ks[0].slice(0,10):'-'}부터 · ${ago?ago+'분 전':'방금'} 갱신`;
+  $('#meta').textContent=`${ks.length?ks[0].slice(0,10):'-'}부터 · ${ago?ago+'분 전':'방금'} 갱신`;
   $('#offnote').replaceChildren();if(!D.enabled)$('#offnote').appendChild(h('div','off','기록 꺼짐 → 새 사용분 반영 안 됨. Claude에게 "토큰 기록 켜줘"라고 하면 됨'))}
-function save(){history.replaceState(null,'','#'+Object.entries(S).filter(([,v])=>v!=='').map(([k,v])=>`${k}=${v}`).join('&'))}
+function save(){history.replaceState(null,'','#'+Object.entries(S).filter(([,v])=>v!=='').map(([k,v])=>`${k}=${encodeURIComponent(v)}`).join('&'))}
 function all(){$$('.seg').forEach(g=>g.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',S[g.dataset.k]===b.dataset.v)));
   $$('.tabs button').forEach(b=>b.setAttribute('aria-selected',S.tab===b.dataset.t));$$('[data-p]').forEach(p=>p.hidden=p.dataset.p!==S.tab);
-  save();meta();glance();if(S.tab==='usage')chart();if(S.tab==='reqs')requests();if(S.tab==='causes')causes()}
+  save();meta();if(S.tab==='usage'){insights();kpis();chart()}if(S.tab==='reqs')requests();if(S.tab==='causes')causes()}
 $$('.seg').forEach(g=>g.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;S[g.dataset.k]=b.dataset.v;all()}));
 $$('.tabs button').forEach(b=>b.addEventListener('click',()=>{S.tab=b.dataset.t;all()}));
 $('#q').addEventListener('input',()=>requests());$('#pf').addEventListener('change',e=>{S.proj=e.target.value;save();requests()});
-document.querySelector('.help[data-help]').replaceWith(helpBtn('metric'));
+$('#mhelp').appendChild(helpBtn('metric'));
+const TH=['auto','dark','light'],THN={auto:'◐ 시스템',dark:'● 어둡게',light:'○ 밝게'};let th='auto';try{th=localStorage.getItem('usage-theme')||'auto'}catch(e){}
+const thb=$('#theme');const applyTh=()=>{thb.textContent=THN[th];if(th==='auto')delete document.documentElement.dataset.theme;else document.documentElement.dataset.theme=th};applyTh();
+thb.onclick=()=>{th=TH[(TH.indexOf(th)+1)%3];try{localStorage.setItem('usage-theme',th)}catch(e){}applyTh();all()};
 let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(all,150)});
-const auto=$('#auto');let on=true;try{on=localStorage.getItem('usage-auto')!=='0'}catch(e){}auto.checked=on;
-auto.onchange=()=>{try{localStorage.setItem('usage-auto',auto.checked?'1':'0')}catch(e){}};
+const auto=$('#auto');let on=true;try{on=localStorage.getItem('usage-auto')!=='0'}catch(e){}auto.setAttribute('aria-pressed',on);
+auto.onclick=()=>{on=!on;auto.setAttribute('aria-pressed',on);try{localStorage.setItem('usage-auto',on?'1':'0')}catch(e){}};
 try{const y=sessionStorage.getItem('usage-scroll');if(y)scrollTo(0,+y)}catch(e){}
-setInterval(()=>{const busy=tip.style.display==='block'||document.querySelector('.det:not([hidden])')||document.activeElement===$('#q')||$('#q').value;if(auto.checked&&!document.hidden&&!busy){try{sessionStorage.setItem('usage-scroll',scrollY)}catch(e){}location.reload()}},30000);
+setInterval(()=>{const busy=tip.style.display==='block'||document.querySelector('.det:not([hidden])')||document.activeElement===$('#q')||$('#q').value;
+  if(on&&!document.hidden&&!busy){try{sessionStorage.setItem('usage-scroll',scrollY)}catch(e){}location.reload()}},30000);
 all();
 </script></body></html>
