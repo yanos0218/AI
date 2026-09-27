@@ -20,6 +20,8 @@
 
 ### Changed
 
+- `base/claude-md/CLAUDE.md` 5절 조사 규칙
+  - 도구·사례 조사는 표본을 정량으로 뽑고 스타·최근 활동을 직접 확인, "없다" 대신 찾아본 범위, 서브에이전트 조사 결과는 보고 전 직접 재검증([Issue #138](https://github.com/yanos0218/AI/issues/138), PATCH)
 - `base/skills/` SKILL.md 4개(_template, config-update, dev-workflow, self-audit)
   - 목록 줄바꿈 규칙 위반 8줄을 하위 bullet·소제목·문장 분리로 수정. 동작 변경 없음([Issue #137](https://github.com/yanos0218/AI/issues/137), PATCH)
 - `base/skills/*/references/` 4개 파일(_template detail, dev-release release-notes-format·semver-rules, dev-workflow file-layout)
