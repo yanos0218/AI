@@ -37,6 +37,12 @@
 - `config-update` 스킬
   - SRC_PATH를 `install.sh`·`check-install.sh` 실행에만 쓰고 그 저장소에 읽기·쓰기·이슈·push를 하지 않는다는 줄 추가([Issue #125](https://github.com/yanos0218/AI/issues/125), PATCH)
 
+### Fixed
+
+- `base/hooks/bulk-read-log.sh`
+  - 서브에이전트 안에서 실행한 조회(입력에 `agent_id`)는 기록하지 않음, 알림 개수가 부풀던 문제([Issue #134](https://github.com/yanos0218/AI/issues/134), PATCH)
+  - 명령을 160바이트로 자를 때 한글 조각이 남아 기록 파일이 UTF-8로 안 읽히던 문제
+
 ## [0.11.4] - 2026-09-19
 
 ### Added

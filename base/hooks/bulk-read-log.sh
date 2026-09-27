@@ -10,6 +10,8 @@
 # gh issue list --json body/comments, 큰 --limit 등.
 set -u
 input="$(cat)"
+# 서브에이전트 안의 도구 호출은 입력에 agent_id가 붙는다(공식 hooks 문서). 위임한 조회는 기록 대상이 아니다(Issue #134)
+case "${input}" in *'"agent_id"'*) exit 0 ;; esac
 cmd="$(printf '%s' "${input}" | sed -n 's/.*"command"[[:space:]]*:[[:space:]]*"\(.*\)".*/\1/p' | head -1)"
 
 pattern='gh[[:space:]]+issue[[:space:]]+list[^"]*--json[^"]*(body|comments)|gh[[:space:]]+api[^"]*/(issues|comments)[^"]*--jq|--limit[[:space:]]+([2-9][0-9]|[0-9]{3,})|git[[:space:]]+log[^"]*-p[^"]*--all'
@@ -18,6 +20,7 @@ printf '%s' "${cmd}" | grep -Eq "${pattern}" || exit 0
 home="${CLAUDE_CONFIG_DIR:-${HOME}/.claude}"
 log="${home}/bulk-read-log.md"
 [[ -f "${log}" ]] || printf '# 대량 조회 로그 (bulk-read-log 훅이 자동 기록)\n\n서브에이전트 위임 없이 직접 실행한, 대량 조회로 보이는 명령들. 쌓인 개수가 session-start-check.sh 기준을 넘으면 다음 세션에서 알려준다. 검토 후 비운다(월 점검 3번과 같은 방식).\n\n| 시각 | 명령 | 작업 폴더 |\n| --- | --- | --- |\n' > "${log}"
-short="$(printf '%s' "${cmd}" | tr '\n' ' ' | cut -c1-160 | sed 's/|/\\|/g')"
+# Git Bash의 cut -c는 바이트 단위라 한글 중간이 잘린다. iconv -c로 잘린 글자 조각을 버린다(Issue #134)
+short="$(printf '%s' "${cmd}" | tr '\n' ' ' | cut -c1-160 | iconv -f UTF-8 -t UTF-8 -c 2>/dev/null | sed 's/|/\\|/g')"
 printf '| %s | %s | %s |\n' "$(date '+%Y-%m-%d %H:%M')" "${short}" "$(pwd)" >> "${log}"
 exit 0
