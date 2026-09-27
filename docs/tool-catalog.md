@@ -25,7 +25,7 @@
 | hookify(공식 플러그인) | 새 훅 초안을 빠르게 만들 때 | 선택 | 만든 훅은 drafts에서 검증 후 승격 | 2026-09-26 | [#129](https://github.com/yanos0218/AI/issues/129) |
 | ponytail 규칙 문구 3개 | 코드가 과하게 커질 때 | 전역 지침 후보 | 플러그인 설치는 하지 않음 | 2026-09-26 | [#127](https://github.com/yanos0218/AI/issues/127) |
 | graphify | 파일 수천 개 규모 코드베이스 탐색 | 조건부 | 그 저장소에서 있음·없음 토큰 실측 후 판단<br>보안 자동 감사 D등급 | 2026-09-26 | [#127](https://github.com/yanos0218/AI/issues/127) |
-| 에이전트 팀 | 병렬 교차 검증 리서치가 반복될 때 | 조건부 시험만 | 계획 모드 팀원 약 7배 토큰<br>Windows·VS Code 제약 | 2026-09-27 | [#130](https://github.com/yanos0218/AI/issues/130) |
+| 에이전트 팀 | 병렬 교차 검증 리서치·리뷰가 반복될 때 | 조건부 시험만 | 계획 모드 팀원 약 7배, 후기상 2~10배 토큰<br>대화형 세션에서만 동작(-p·SDK 불가), 화면 분할은 Windows·VS Code 미지원 | 2026-09-27 | [#130](https://github.com/yanos0218/AI/issues/130) |
 
 ## Claude Code 내장 기능(설치 불필요)
 
