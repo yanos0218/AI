@@ -18,6 +18,7 @@ import glob
 import json
 import os
 import sys
+import time
 
 HOME = os.environ.get('CLAUDE_CONFIG_DIR') or os.path.expanduser('~/.claude')
 BASE = os.environ.get('USAGE_LOG_DIR') or os.path.join(HOME, 'usage-log')
@@ -62,7 +63,16 @@ def write_atomic(path, text):
     tmp = f'{path}.{os.getpid()}.tmp'
     with open(tmp, 'w', encoding='utf-8', newline='\n') as f:
         f.write(text)
-    os.replace(tmp, path)
+    # Windows는 브라우저가 화면 파일을 읽는 중이면 바꿔치기가 거부된다(2026-09-27 error.log 실측). 잠깐 뒤 다시 시도
+    for i in range(5):
+        try:
+            os.replace(tmp, path)
+            return
+        except PermissionError:
+            if i == 4:
+                os.remove(tmp)
+                raise
+            time.sleep(0.2)
 
 
 def read_jsonl(path):
@@ -371,10 +381,32 @@ def signals(reqs):
     return s
 
 
+def hook_lock():
+    """usage.sh의 mkdir 잠금과 같은 폴더를 쓴다(동시에 끝난 세션끼리, enable과도 서로 기다림).
+    Windows Git Bash는 하위 프로세스 하나에 0.3초 안팎이라 훅에서는 잠금을 셸 대신 여기서 잡는다."""
+    lock = os.path.join(BASE, '.lock')
+    for _ in range(150):
+        try:
+            os.mkdir(lock)
+            return lock
+        except FileExistsError:
+            try:
+                if time.time() - os.path.getmtime(lock) > 60:   # 1분 넘은 잠금은 죽은 것으로 보고 치운다
+                    os.rmdir(lock)
+                    continue
+            except OSError:
+                pass
+            time.sleep(0.2)
+    return None
+
+
 if __name__ == '__main__':
     MODE = sys.argv[1] if len(sys.argv) > 1 else 'hook'
     os.makedirs(BASE, exist_ok=True)
     if MODE == 'hook':
+        lock = hook_lock()
+        if not lock:
+            sys.exit(0)
         try:
             inp = json.loads(sys.stdin.read() or '{}')
             if inp.get('transcript_path') and os.path.isfile(inp['transcript_path']):
@@ -386,6 +418,8 @@ if __name__ == '__main__':
         except Exception as e:   # 훅 실패가 세션을 방해하지 않게 조용히 기록만
             with open(os.path.join(BASE, 'error.log'), 'a', encoding='utf-8') as f:
                 f.write(f'{datetime.datetime.now().isoformat()} {type(e).__name__}: {e}\n')
+        finally:
+            os.rmdir(lock)
     elif MODE == 'backfill':
         st, n, files = Store(), 0, 0
         for tp in sorted(glob.glob(os.path.join(PROJECTS, '*', '*.jsonl')), key=os.path.getmtime):

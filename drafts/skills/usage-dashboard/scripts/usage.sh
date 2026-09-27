@@ -21,12 +21,16 @@ set -u
 HOME_DIR="${CLAUDE_CONFIG_DIR:-${HOME}/.claude}"
 LOG="${USAGE_LOG_DIR:-${HOME_DIR}/usage-log}"
 MODE="${1:-hook}"
-HERE="$(cd "$(dirname "${0}")" && pwd)"
 
-if [[ "${MODE}" == "hook" ]] && [[ ! -f "${LOG}/enabled" ]]; then
-  cat >/dev/null
-  exit 0
+# 훅은 응답마다 돈다. Windows Git Bash는 하위 프로세스 하나에 0.3초 안팎이 들어(2026-09-27 이 PC 실측 3.3초)
+# 셸에서는 켜짐 확인만 하고 파이썬으로 바로 넘긴다. 입력 읽기·잠금은 usage.py가 맡는다(같은 .lock 폴더)
+if [[ "${MODE}" == "hook" ]]; then
+  [[ -f "${LOG}/enabled" ]] || { cat >/dev/null; exit 0; }
+  if hash python 2>/dev/null; then PY=python; else PY=python3; fi
+  [[ "${0}" == */* ]] && here="${0%/*}" || here=.
+  PYTHONIOENCODING=utf-8 exec "${PY}" "${here}/usage.py" hook
 fi
+HERE="$(cd "$(dirname "${0}")" && pwd)"
 
 # Windows는 python3가 스토어 별칭이라 느려(0.6초+) python을 먼저 쓴다. Mac·Linux는 python3만 있는 경우가 많다
 PY="$(command -v python || command -v python3 || true)"
@@ -56,11 +60,6 @@ lock() {
 }
 
 case "${MODE}" in
-  hook)
-    input="$(cat)"
-    lock || exit 0
-    printf '%s' "${input}" | run_py hook
-    ;;
   enable)
     if [[ "$(uname -s)" == "Linux" ]]; then
       echo "Linux 서버는 대상이 아닙니다(화면 없이 쓰는 환경, 2026-09-27 결정). /usage로 확인하세요."
