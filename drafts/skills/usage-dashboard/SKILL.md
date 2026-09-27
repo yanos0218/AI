@@ -20,7 +20,7 @@ allowed-tools: Bash(bash *usage.sh* status) Bash(bash *usage.sh* open) Bash(bash
 | --- | --- |
 | 켜기 | ★ 사용자 확인 ★ 뒤 `usage.sh enable`. 남아 있는 대화 기록(기본 30일 보관)을 한 번 훑어 채운다<br>켠 뒤 자동 기록은 설정의 Stop 훅이 맡는다. 훅이 등록돼 있지 않으면 그렇게 알리고 멈춘다 |
 | 열기·보여줘 | `usage.sh open`. 대시보드를 다시 만들고 브라우저로 연다 |
-| VS Code에서 보기 | `usage.sh serve`. 이 PC 전용 주소(127.0.0.1)로 띄우고 주소를 클립보드에 복사한다<br>사용자에게 "Ctrl+Shift+P → 통합 브라우저 열기(Open Integrated Browser) → 주소창에 붙여넣기"를 안내한다<br>데스크톱 VS Code는 Simple Browser 명령이 숨겨져 있다. 끄기는 `usage.sh stop` |
+| VS Code에서 보기 | `usage.sh serve`. 이 PC 전용 주소(127.0.0.1)로 띄우고 주소를 클립보드에 복사한다<br>사용자에게 "Ctrl+Shift+P → 통합 브라우저 열기(Open Integrated Browser) → 주소창에 붙여넣기"를 안내한다<br>데스크톱 VS Code는 Simple Browser 명령이 숨겨져 있다(통합 브라우저로 열리는 것 2026-09-27 사용자 확인). 끄기는 `usage.sh stop` |
 | 지금 갱신 | `usage.sh render` |
 | 끄기 | ★ 사용자 확인 ★ 뒤 `usage.sh disable`. 쌓인 기록은 지우지 않는다 |
 | 기록 삭제 | 스크립트로 하지 않는다. 기록 폴더 경로만 알려 주고 사용자가 지우게 한다 |

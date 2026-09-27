@@ -304,7 +304,10 @@ def render():
                    key=lambda r: -r['chars'])[:15]
     data = {'hourly': load_hourly(), 'starts': sorted(read_jsonl(STARTS), key=lambda r: r['ts'])[-60:],
             'tools': tools, 'requests': [r for r in reqs if id(r) in keep],
-            'signals': signals(reqs), 'updated': now.isoformat(timespec='seconds'),
+            'signals': signals(reqs),
+            'signals7': signals([r for r in reqs if parse_ts(r['ts']) >= now - datetime.timedelta(days=7)]),
+            'signals_prev7': signals([r for r in reqs if now - datetime.timedelta(days=14) <= parse_ts(r['ts']) < now - datetime.timedelta(days=7)]),
+            'updated': now.isoformat(timespec='seconds'),
             'enabled': os.path.isfile(os.path.join(BASE, 'enabled'))}
     blob = json.dumps(data, ensure_ascii=False).replace('</', '<\\/')
     with open(TEMPLATE, encoding='utf-8') as f:

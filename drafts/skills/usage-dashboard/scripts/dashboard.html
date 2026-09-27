@@ -51,9 +51,13 @@ summary .meter{width:90px;height:6px;border-radius:3px;background:var(--hover);o
 @media (prefers-color-scheme:dark){.off{background:#3a2f10;color:#f3dfa3}}
 footer{color:var(--ink3);font-size:12px;margin-top:6px}footer ul{margin:0;padding-left:18px}
 [hidden]{display:none!important}
+.help{font:inherit;font-size:11px;width:18px;height:18px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink2);cursor:help;margin-left:4px;padding:0;vertical-align:1px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px}.filters input,.filters select{font:inherit;font-size:13px;padding:4px 8px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+.filters input{min-width:220px}.heat rect.cell{stroke:var(--card);stroke-width:2}
+.trend{font-size:11px;width:110px;text-align:right;white-space:nowrap}.up{color:#c0392b}.down{color:#1e8449}@media (prefers-color-scheme:dark){.up{color:#f08c7a}.down{color:#7fd19b}}
 </style></head><body><main>
 <div class="top"><div><h1>토큰 사용 기록</h1><div class="sub" id="meta"></div></div>
-<div><span class="lab">기준</span><span class="seg" data-k="metric"><button data-v="nocache">캐시 제외</button><button data-v="all">전체</button></span>
+<div><span class="lab">기준</span><span class="seg" data-k="metric"><button data-v="nocache">실사용</button><button data-v="all">캐시 포함</button></span><button class="help" data-help="metric" aria-label="기준 설명">?</button>
 <label class="sub" style="margin-left:10px"><input type="checkbox" id="auto"> 자동 새로고침</label></div></div>
 <div id="offnote"></div>
 <section class="glance"><div class="card" style="margin:0"><div class="sub" style="margin-bottom:4px">한눈에</div><ul id="insights"></ul></div>
@@ -61,7 +65,7 @@ footer{color:var(--ink3);font-size:12px;margin-top:6px}footer ul{margin:0;paddin
 <section class="card">
 <div class="tabs" role="tablist"><button role="tab" data-t="usage">사용량</button><button role="tab" data-t="reqs">많이 쓴 요청</button><button role="tab" data-t="causes">원인</button></div>
 <div data-p="usage">
- <div class="bar"><span class="lab" style="margin-left:0">기간</span><span class="seg" data-k="view"><button data-v="block">5시간 블록</button><button data-v="hour">48시간</button><button data-v="day">60일</button><button data-v="month">월별</button></span>
+ <div class="bar"><span class="lab" style="margin-left:0">기간</span><span class="seg" data-k="view"><button data-v="block">5시간 블록</button><button data-v="hour">48시간</button><button data-v="day">60일</button><button data-v="month">월별</button><button data-v="heat">요일·시간</button></span>
  <span class="lab">나눠 보기</span><span class="seg" data-k="split"><button data-v="proj">저장소</button><button data-v="who">누가</button><button data-v="model">모델</button></span></div>
  <div class="split"><div><div id="chart"></div><div class="more" id="viewnote"></div></div><div><div class="sub" id="ranktitle" style="margin-bottom:4px"></div><table class="rank" id="rank"></table></div></div>
  <details style="margin-top:8px"><summary><span class="name more">기간별 숫자 표</span></summary><div class="scroll" id="tbl"></div></details>
@@ -69,6 +73,7 @@ footer{color:var(--ink3);font-size:12px;margin-top:6px}footer ul{margin:0;paddin
 <div data-p="reqs" hidden>
  <div class="bar"><span class="lab" style="margin-left:0">범위</span><span class="seg" data-k="range"><button data-v="7">최근 7일</button><button data-v="30">최근 30일</button></span>
  <span class="more" style="margin-left:10px">줄을 누르면 무엇에 썼는지 펼쳐짐</span></div>
+ <div class="filters"><input id="q" type="search" placeholder="요청 내용 검색" aria-label="요청 내용 검색"><select id="pf" aria-label="저장소"></select><span class="more" id="reqcount"></span></div>
  <div class="scroll" id="reqs" style="max-height:520px"></div>
 </div>
 <div data-p="causes" hidden>
@@ -89,7 +94,7 @@ function el(t,a,p){const e=document.createElementNS(NS,t);for(const k in a)e.set
 function h(t,cls,txt){const e=document.createElement(t);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
 function li(parent,...parts){const l=h('li');parts.forEach(p=>l.append(typeof p==='string'?document.createTextNode(p):p));parent.appendChild(l);return l}
 const B=t=>h('b',null,t);
-let S={tab:'usage',view:'day',metric:'nocache',split:'proj',range:'7',open:''};
+let S={tab:'usage',view:'day',metric:'nocache',split:'proj',range:'7',open:'',proj:''};
 try{const q=Object.fromEntries((location.hash.slice(1)||'').split('&').filter(x=>x.includes('=')).map(x=>x.split('=')));Object.assign(S,q)}catch(e){}
 const val=b=>S.metric==='all'?b.in+b.cache+b.out:b.in+b.out;
 const reqVal=r=>S.metric==='all'?r.all:r.nocache;
@@ -124,7 +129,7 @@ function label(k,short){if(k[0]==='B'){const d=hourDate(k.slice(1)),e=new Date(+
   if(k.length===13){const d=k.slice(5,10).replace('-','/');return short?`${+k.slice(11)}시`:`${d} ${+k.slice(11)}시`}
   if(k.length===10)return `${+k.slice(5,7)}/${+k.slice(8)}`;return `${k.slice(0,4)}년 ${+k.slice(5)}월`}
 const tip=$('#tip');
-function showTip(ev,title,items){tip.replaceChildren();tip.appendChild(h('div','t',title));let tot=0;
+function showTip(ev,title,items,lines){tip.replaceChildren();tip.appendChild(h('div','t',title));if(lines){const ul=h('ul');ul.style.cssText='margin:0;padding-left:16px';lines.forEach(x=>li(ul,x));tip.appendChild(ul)}let tot=0;
   items.forEach(([name,v,c])=>{tot+=v;const r=h('div','r'),l=h('span'),k=h('i','k');k.style.background=c;l.append(k,document.createTextNode(name));r.append(l,h('b',null,ko(v)));tip.appendChild(r)});
   if(items.length>1){const r=h('div','r tot');r.append(h('span',null,'합계'),h('b',null,ko(tot)));tip.appendChild(r)}
   tip.style.display='block';const rc=ev.currentTarget&&ev.currentTarget.getBoundingClientRect?ev.currentTarget.getBoundingClientRect():null;
@@ -135,6 +140,13 @@ function hover(g,title,items){g.addEventListener('pointermove',e=>showTip(e,titl
 function axes(s,W,H,L,T,Bt,max){for(let i=0;i<=4;i++){const y=T+(H-T-Bt)*i/4;el('line',{x1:L,x2:W,y1:y,y2:y,class:'grid'},s);const t=el('text',{x:L-8,y:y+4,class:'axis','text-anchor':'end'},s);t.textContent=ko(max*(1-i/4))}}
 function med(a){const v=a.slice().sort((x,y)=>x-y);return v.length?(v.length%2?v[v.length>>1]:(v[v.length/2-1]+v[v.length/2])/2):0}
 function day0(n){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-n);return kHour(d)}
+
+const HELP={
+ metric:['실사용 = 새로 보낸 입력 + 출력','캐시 포함 = 실사용 + 캐시 재사용분','캐시 재사용: 앞 대화를 다시 보낼 때 저장해 둔 것을 읽는 양, 요금이 일반 입력의 약 10%라 실사용이 실제 부담에 더 가까움'],
+ block:['첫 사용 시각(정시)부터 5시간씩 나눈 이 기기 기준 추정','실제 한도 창의 시작 시각·사용률과 다를 수 있음','정확한 한도 사용률은 /usage(VS Code는 계정·사용량 창)'],
+ rewrite:['캐시 재작성 = 저장해 둔 대화 캐시가 만료·무효가 되어 앞 대화를 통째로 다시 저장한 것','캐시 수명은 5분이라 오래 쉬었다 이어가면 생김']};
+function helpBtn(key){const b=h('button','help','?');b.type='button';b.setAttribute('aria-label','설명');const show=e=>{e.stopPropagation();showTip(e,'설명',[],HELP[key])};
+  b.addEventListener('pointerenter',show);b.addEventListener('focus',show);b.addEventListener('click',show);b.addEventListener('pointerleave',hideTip);b.addEventListener('blur',hideTip);return b}
 
 /* 한눈에 + 숫자 카드 */
 function glance(){const now=new Date(),wk=sum(day0(6)),prev=sum(day0(13),day0(6)),ch=prev?Math.round((wk/prev-1)*100):null;
@@ -147,21 +159,34 @@ function glance(){const now=new Date(),wk=sum(day0(6)),prev=sum(day0(13),day0(6)
   const st=D.starts,md=med(st.map(s=>s.ctx)),last=st.length?st[st.length-1].ctx:0;
   if(md&&last>md*1.2)li(ul,'세션 시작 크기가 평소보다 ',B(`${Math.round((last/md-1)*100)}%`),' 큼 → /context로 확인');
   const k=$('#kpis');k.replaceChildren();const bl=blocks(),cur=bl.length&&now<bl[bl.length-1].end?bl[bl.length-1]:null;
-  const card=(l,v,s,w)=>{const d=h('div','kpi'+(w?' warn':''));d.append(h('div','l',l),h('div','v',v),h('div','s',s));k.appendChild(d)};
+  const card=(l,v,s,w,help)=>{const d=h('div','kpi'+(w?' warn':'')),lb=h('div','l',l);if(help)lb.appendChild(helpBtn(help));d.append(lb,h('div','v',v),h('div','s',s));k.appendChild(d)};
   if(cur){const used=sum(kHour(cur.start)),hrs=Math.max(.5,(now-cur.start)/36e5),proj=used/hrs*5,
     past=med(bl.slice(-15,-1).map(b=>sum(kHour(b.start),kHour(b.end))));
-    card(`5시간 블록 ${cur.start.getHours()}~${cur.end.getHours()}시`,ko(used),`이 속도면 ${ko(proj)}`+(past?` · 평소 ${ko(past)}`:''),past&&proj>past*1.5)}
-  else card('5시간 블록','-','사용 중인 블록 없음');
-  card('오늘',ko(sum(day0(0))),S.metric==='all'?'캐시 포함':'캐시 제외');
-  card('이번 달',ko(sum(kHour(new Date(now.getFullYear(),now.getMonth(),1)))),S.metric==='all'?'캐시 포함':'캐시 제외')}
+    const left=Math.max(0,Math.round((cur.end-now)/6e4)),lt=left>=60?`${Math.floor(left/60)}시간 ${left%60}분`:`${left}분`;
+    card(`5시간 구간 ${cur.start.getHours()}~${cur.end.getHours()}시(추정)`,ko(used),`${lt} 남음 · 이 속도면 끝까지 ${ko(proj)}`+(past?` · 평소 ${ko(past)}`:''),past&&proj>past*1.5,'block')}
+  else card('5시간 구간(추정)','-','사용 중인 구간 없음',false,'block');
+  card('오늘(0시부터)',ko(sum(day0(0))),S.metric==='all'?'캐시 포함 기준':'실사용 기준');
+  card('이번 달(1일부터)',ko(sum(kHour(new Date(now.getFullYear(),now.getMonth(),1)))),S.metric==='all'?'캐시 포함 기준':'실사용 기준')}
 
 /* 사용량 탭 */
-function chart(){const box=$('#chart'),K=seriesKeys(),R=rows();box.replaceChildren();
+function heat(){const box=$('#chart');box.replaceChildren();const from=kHour(new Date(Date.now()-30*864e5)),g=Array.from({length:7},()=>Array(24).fill(0));
+  for(const [hk,,,,b] of cells(from)){const d=hourDate(hk);g[(d.getDay()+6)%7][d.getHours()]+=val(b)}
+  const max=Math.max(1,...g.flat()),days=['월','화','수','목','금','토','일'],W=Math.max(300,box.clientWidth),L=24,T=16,cw=(W-L)/24,ch=Math.min(26,cw*1.1),H=T+ch*7+4;
+  const s=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'최근 30일 요일·시간별 사용량',class:'heat'},box);
+  for(let hr=0;hr<24;hr+=3){const t=el('text',{x:L+hr*cw+cw/2,y:11,class:'axis','text-anchor':'middle'},s);t.textContent=hr+'시'}
+  g.forEach((row,di)=>{const t=el('text',{x:L-6,y:T+di*ch+ch/2+4,class:'axis','text-anchor':'end'},s);t.textContent=days[di];
+    row.forEach((v,hr)=>{const c=el('rect',{x:L+hr*cw,y:T+di*ch,width:cw,height:ch,rx:3,class:'cell',fill:'var(--c0)','fill-opacity':v?(.12+.88*v/max).toFixed(2):'0.04',tabindex:0},s);
+      hover(c,`${days[di]}요일 ${hr}시`,[['최근 30일 합',v,'var(--c0)']])})});
+  const top=g.flatMap((row,di)=>row.map((v,hr)=>[v,di,hr])).filter(x=>x[0]>0).sort((a,b)=>b[0]-a[0]).slice(0,6),all=g.flat().reduce((a,b)=>a+b,0);
+  $('#ranktitle').textContent='가장 많이 쓴 시간대(최근 30일)';const rk=$('#rank');rk.replaceChildren();
+  top.forEach(([v,di,hr])=>{const tr=h('tr');tr.append(h('td',null,`${days[di]}요일 ${hr}시`),h('td','num',ko(v)),h('td','num muted',(100*v/all).toFixed(0)+'%'));rk.appendChild(tr)});
+  $('#viewnote').textContent='진할수록 많이 씀. 오래 쉬었다 이어가는 시간대에는 캐시 재작성이 생기기 쉬움';$('#tbl').replaceChildren()}
+function chart(){if(S.view==='heat'){heat();return}const box=$('#chart'),K=seriesKeys(),R=rows();box.replaceChildren();
   const totals=Object.fromEntries(K.map(([k])=>[k,0]));R.forEach(r=>K.forEach(([k])=>totals[k]+=r.v[k]||0));const all=Object.values(totals).reduce((a,b)=>a+b,0);
   $('#ranktitle').textContent=`이 기간 합계 ${ko(all)}`;const rk=$('#rank');rk.replaceChildren();
   K.slice().sort((a,b)=>totals[b[0]]-totals[a[0]]).forEach(([k,n])=>{const tr=h('tr'),td=h('td'),i=h('i');i.style.background=colorOf(k);td.append(i,document.createTextNode(n));
     tr.append(td,h('td','num',ko(totals[k])),h('td','num muted',all?(100*totals[k]/all).toFixed(0)+'%':'-'));rk.appendChild(tr)});
-  $('#viewnote').textContent=(S.view==='block'?'5시간 블록은 첫 사용 시각(정시)부터 5시간씩 나눈 추정임. ':'')+(S.metric==='all'?'전체 = 새 입력 + 캐시 재사용 + 출력(캐시 재사용은 요금이 약 10%라 실제 부담보다 크게 보임)':'캐시 제외 = 새 입력 + 출력(실제 부담에 더 가까움)');
+  $('#viewnote').textContent=(S.view==='block'?'5시간 구간은 첫 사용 시각(정시)부터 나눈 추정임 · ':'')+(S.metric==='all'?'캐시 포함 기준':'실사용 기준(새 입력 + 출력)');
   if(!all){box.appendChild(h('div','empty','이 기간에는 기록 없음'));table(R,K);return}
   const W=Math.max(300,box.clientWidth),H=230,L=46,T=8,Bt=24,max=Math.max(...R.map(r=>Object.values(r.v).reduce((a,b)=>a+b,0)))*1.08;
   const s=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'기간별 토큰 사용량'},box);axes(s,W,H,L,T,Bt,max);
@@ -195,29 +220,36 @@ function reqTable(list,box,limit){box.replaceChildren();if(!list.length){box.app
     const det=h('tr','det');det.hidden=true;const dc=h('td');dc.colSpan=5;dc.appendChild(reqDetail(r));det.appendChild(dc);
     const tog=()=>{det.hidden=!det.hidden};tr.addEventListener('click',tog);tr.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tog()}});t.append(tr,det)});
   box.appendChild(t)}
-function requests(){const from=new Date(Date.now()-(+S.range)*864e5);reqTable(D.requests.filter(r=>new Date(r.ts)>=from).sort((a,b)=>reqVal(b)-reqVal(a)),$('#reqs'),30)}
+function requests(){const from=new Date(Date.now()-(+S.range)*864e5),q=($('#q').value||'').trim().toLowerCase(),pf=$('#pf');
+  const base=D.requests.filter(r=>new Date(r.ts)>=from),projs=[...new Set(base.map(r=>r.proj))].sort();
+  const cur=S.proj||'';pf.replaceChildren();[['','저장소 전체'],...projs.map(p=>[p,projName(p)])].forEach(([v,n])=>{const o=h('option',null,n);o.value=v;if(v===cur)o.selected=true;pf.appendChild(o)});
+  const list=base.filter(r=>(!cur||r.proj===cur)&&(!q||(r.text||'').toLowerCase().includes(q))).sort((a,b)=>reqVal(b)-reqVal(a));
+  $('#reqcount').textContent=`${list.length}개 중 상위 ${Math.min(30,list.length)}개 · 많이 쓴 요청만 담겨 있음`;reqTable(list,$('#reqs'),30)}
 
 /* 원인 탭: 원인마다 한 줄 요약, 펼치면 설명·줄이는 법·해당 요청 */
 function causeList(){const g=D.signals;return[
-  {id:'sub',name:'서브에이전트',tokens:g.sub_tokens,val:ko(g.sub_tokens),pred:r=>Object.keys(r.subs).length>0,
+  {id:'sub',key:'sub_tokens',name:'서브에이전트',tokens:g.sub_tokens,val:ko(g.sub_tokens),pred:r=>Object.keys(r.subs).length>0,
    why:['조사·검토를 맡긴 서브에이전트가 쓴 양','메인 대화와 따로 세지만 같은 한도를 씀'],fix:['에이전트 파일에 Haiku·Sonnet 지정','결과는 요약만 받게 지시']},
-  {id:'long',name:'30턴 넘는 긴 요청',tokens:g.long_tokens,val:`${g.long}개 · ${ko(g.long_tokens)}`,pred:r=>r.turns>=30,
+  {id:'long',key:'long_tokens',name:'30턴 넘는 긴 요청',tokens:g.long_tokens,val:`${g.long}개 · ${ko(g.long_tokens)}`,pred:r=>r.turns>=30,
    why:['한 요청에서 도구를 여러 번 돌리며 대화가 계속 커짐','턴마다 앞 내용을 다시 보냄'],fix:['요청을 작게 나누기','긴 조사는 서브에이전트로 넘기기']},
-  {id:'rewrite',name:'캐시 재작성',tokens:g.rewrite_tokens,val:`${g.rewrites}회 · ${ko(g.rewrite_tokens)}`,pred:r=>r.rewrites>0,
+  {id:'rewrite',key:'rewrite_tokens',name:'캐시 재작성',tokens:g.rewrite_tokens,val:`${g.rewrites}회 · ${ko(g.rewrite_tokens)}`,pred:r=>r.rewrites>0,
    why:['캐시 수명은 5분',`5분 넘게 쉰 뒤 이어간 경우 ${g.idle_rewrites}회`,'그 밖에는 도구·설정 변경 등으로 캐시가 깨진 경우'],fix:['오래 쉰 뒤 다른 일이면 /clear나 새 세션','작업 중 MCP·설정 변경 줄이기']},
-  {id:'auto',name:'자동 알림에 대한 응답',tokens:g.auto_tokens,val:`${g.auto}개 · ${ko(g.auto_tokens)}`,pred:r=>r.auto,
+  {id:'auto',key:'auto_tokens',name:'자동 알림에 대한 응답',tokens:g.auto_tokens,val:`${g.auto}개 · ${ko(g.auto_tokens)}`,pred:r=>r.auto,
    why:['백그라운드 작업이 끝났다는 알림에도 응답이 오감'],fix:['백그라운드 작업을 여러 개 동시에 돌리지 않기']},
-  {id:'big',name:'2만 자 넘는 도구 결과',tokens:null,val:`${g.big}개 요청`,pred:r=>r.big>0,tools:true,
+  {id:'big',key:'big',name:'2만 자 넘는 도구 결과',tokens:null,val:`${g.big}개 요청`,pred:r=>r.big>0,tools:true,
    why:['큰 파일·긴 로그를 통째로 읽음','읽은 내용이 이후 턴마다 다시 실림'],fix:['검색·줄 범위로 필요한 부분만 읽기','긴 출력은 요약·필터 후 보기']},
-  {id:'compact',name:'대화 요약(컴팩션)',tokens:null,val:`${g.compacts}회`,pred:r=>r.compact>0,
+  {id:'compact',key:'compacts',name:'대화 요약(컴팩션)',tokens:null,val:`${g.compacts}회`,pred:r=>r.compact>0,
    why:['대화가 한도까지 길어져 자동으로 요약됨'],fix:['작업이 바뀔 때 /clear로 끊기']},
   {id:'start',name:'세션 시작 크기',tokens:null,val:(()=>{const st=D.starts;return st.length?`최근 ${ko(st[st.length-1].ctx)} · 중앙값 ${ko(med(st.map(s=>s.ctx)))}`:'-'})(),starts:true,
    why:['아무 일도 하기 전 기본으로 싣는 양','스킬·플러그인·MCP·CLAUDE.md가 늘면 커짐'],fix:['/context로 무엇이 차지하는지 확인','안 쓰는 MCP 서버 끄기']}]}
 function causes(){const box=$('#causes');box.replaceChildren();const g=D.signals,open=new Set((S.open||'').split('.').filter(Boolean));
-  $('#causenote').textContent=`최근 30일 요청 ${g.requests.toLocaleString()}개 · 캐시 제외 ${ko(g.total)} 기준 · 원인은 서로 겹칠 수 있음`;
+  $('#causenote').textContent=`최근 30일 요청 ${g.requests.toLocaleString()}개 · 실사용 ${ko(g.total)} 기준 · 원인은 서로 겹칠 수 있음 · 지난주 대비는 최근 7일과 그 전 7일 비교`;
   causeList().forEach(c=>{const d=h('details');if(open.has(c.id))d.open=true;const s=h('summary');
     const meter=h('span','meter'),bar=h('span');bar.style.width=c.tokens!=null&&g.total?Math.min(100,100*c.tokens/g.total)+'%':'0';meter.appendChild(bar);
-    s.append(h('span','name',c.name),h('span','val',c.val),meter,h('span','pct',c.tokens!=null&&g.total?Math.round(100*c.tokens/g.total)+'%':''));d.appendChild(s);
+    const nm=h('span','name',c.name);if(c.id==='rewrite')nm.appendChild(helpBtn('rewrite'));
+    const now7=(D.signals7||{})[c.key],prev7=(D.signals_prev7||{})[c.key],tr=h('span','trend');
+    if(c.key&&prev7){const p=Math.round((now7/prev7-1)*100);tr.textContent=`지난주 대비 ${p>=0?'+':''}${p}%`;tr.classList.add(p>10?'up':p<-10?'down':'muted')}else if(c.key){tr.textContent='비교 없음';tr.classList.add('muted')}
+    s.append(nm,h('span','val',c.val),meter,h('span','pct',c.tokens!=null&&g.total?Math.round(100*c.tokens/g.total)+'%':''),tr);d.appendChild(s);
     const b=h('div','acc-body');const w=h('ul');c.why.forEach(x=>li(w,x));const f=h('ul');c.fix.forEach(x=>li(f,x));
     b.append(h('div',null,'왜 생기나'),w,h('div',null,'줄이는 법'),f);
     if(c.starts)b.appendChild(startsChart());
@@ -242,10 +274,12 @@ function all(){$$('.seg').forEach(g=>g.querySelectorAll('button').forEach(b=>b.s
   save();meta();glance();if(S.tab==='usage')chart();if(S.tab==='reqs')requests();if(S.tab==='causes')causes()}
 $$('.seg').forEach(g=>g.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;S[g.dataset.k]=b.dataset.v;all()}));
 $$('.tabs button').forEach(b=>b.addEventListener('click',()=>{S.tab=b.dataset.t;all()}));
+$('#q').addEventListener('input',()=>requests());$('#pf').addEventListener('change',e=>{S.proj=e.target.value;save();requests()});
+document.querySelector('.help[data-help]').replaceWith(helpBtn('metric'));
 let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(all,150)});
 const auto=$('#auto');let on=true;try{on=localStorage.getItem('usage-auto')!=='0'}catch(e){}auto.checked=on;
 auto.onchange=()=>{try{localStorage.setItem('usage-auto',auto.checked?'1':'0')}catch(e){}};
 try{const y=sessionStorage.getItem('usage-scroll');if(y)scrollTo(0,+y)}catch(e){}
-setInterval(()=>{const busy=tip.style.display==='block'||document.querySelector('.det:not([hidden])');if(auto.checked&&!document.hidden&&!busy){try{sessionStorage.setItem('usage-scroll',scrollY)}catch(e){}location.reload()}},30000);
+setInterval(()=>{const busy=tip.style.display==='block'||document.querySelector('.det:not([hidden])')||document.activeElement===$('#q')||$('#q').value;if(auto.checked&&!document.hidden&&!busy){try{sessionStorage.setItem('usage-scroll',scrollY)}catch(e){}location.reload()}},30000);
 all();
 </script></body></html>
