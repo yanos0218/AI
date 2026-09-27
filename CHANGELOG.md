@@ -45,6 +45,8 @@
 
 ### Fixed
 
+- `base/agents/researcher.md`
+  - 웹 도구가 권한 거부되면 멈추고 보고, 홈·설치 폴더 로컬 우회 검색 금지. 같은 시험에서 에이전트 토큰 약 12.1만 → 2.6만([Issue #139](https://github.com/yanos0218/AI/issues/139), PATCH)
 - `base/hooks/bulk-read-log.sh`
   - 서브에이전트 안에서 실행한 조회(입력에 `agent_id`)는 기록하지 않음, 알림 개수가 부풀던 문제([Issue #134](https://github.com/yanos0218/AI/issues/134), PATCH)
   - 명령을 160바이트로 자를 때 한글 조각이 남아 기록 파일이 UTF-8로 안 읽히던 문제
