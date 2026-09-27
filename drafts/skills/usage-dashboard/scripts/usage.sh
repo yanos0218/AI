@@ -33,7 +33,8 @@ PY="$(command -v python || command -v python3 || true)"
 [[ -n "${PY}" ]] || { echo "python이 없습니다"; exit 1; }
 run_py() { PYTHONIOENCODING=utf-8 "${PY}" "${HERE}/usage.py" "$@"; }
 
-# VS Code 내장 브라우저(Simple Browser)는 http 주소만 열 수 있어 작은 로컬 서버로 띄운다.
+# VS Code 통합 브라우저(데스크톱 1.118 기준 명령 "통합 브라우저 열기", 영문 Open Integrated Browser)로 보도록 작은 로컬 서버로 띄운다.
+# Simple Browser는 데스크톱 명령 팔레트에서 숨겨져 있다(내장 확장 package.json의 when: isWeb, 2026-09-27 확인).
 # 127.0.0.1에만 묶어 이 PC 밖에서는 접속할 수 없다(요청 첫 80자 같은 기록이 들어 있으므로).
 PORT="${USAGE_PORT:-8765}"
 URL="http://127.0.0.1:${PORT}/dashboard.html"
@@ -94,7 +95,7 @@ case "${MODE}" in
       MINGW*|MSYS*|CYGWIN*) printf '%s' "${URL}" | clip.exe ;;
     esac
     echo "주소(클립보드에 복사함): ${URL}"
-    echo "VS Code에서 Ctrl+Shift+P(Mac은 Cmd+Shift+P) → Simple Browser: Show → 주소 붙여넣기"
+    echo "VS Code에서 Ctrl+Shift+P(Mac은 Cmd+Shift+P) → '통합 브라우저 열기'(Open Integrated Browser) → 주소창에 붙여넣기"
     ;;
   stop)
     if [[ -f "${LOG}/.server.pid" ]]; then kill "$(cat "${LOG}/.server.pid")" 2>/dev/null; rm -f "${LOG}/.server.pid"; fi

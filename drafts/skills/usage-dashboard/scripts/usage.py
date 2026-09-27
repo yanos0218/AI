@@ -133,7 +133,8 @@ class Store:
         end = data.rfind(b'\n') + 1          # 쓰는 중인 마지막 줄은 다음에 읽는다
         self.state['files'][path] = off + end
         ss = self.state['sess'].setdefault(sid, {'rid': None, 'last': None, 'agents': {}, 'first': True})
-        seen, names, n = {}, {}, 0
+        mem = self.state.setdefault('msgs', {}).setdefault(path, {})
+        names, n = {}, 0
         first_turn = off == 0 and kind == 'main'
         last_ts = ss['last'] if kind == 'main' else None
         for raw in data[:end].splitlines():
@@ -166,35 +167,43 @@ class Store:
                             if c.get('name') in ('Agent', 'Task'):
                                 ss['agents'][c.get('id')] = rid
                 u, mid = m.get('usage'), m.get('id')
-                if u and m.get('model') != '<synthetic>' and mid not in seen:
-                    seen[mid] = True
-                    n += 1
+                if u and m.get('model') != '<synthetic>':
+                    # 한 응답이 여러 줄로 남고, 앞줄에는 스트리밍 중간값(출력 토큰이 덜 찬 값)이 들어 있다(이 PC 기록 11,045건 중
+                    # 2,053건, 첫 줄만 세면 출력이 약 32% 적게 잡힘, 2026-09-27 확인). 응답별로 지금까지 센 값을 기억해 늘어난 만큼만 더한다.
+                    vals = [u.get('input_tokens', 0), u.get('cache_creation_input_tokens', 0),
+                            u.get('cache_read_input_tokens', 0), u.get('output_tokens', 0)]
+                    prev = mem.get(mid)
+                    delta = [max(0, a - b) for a, b in zip(vals, prev)] if prev else vals
+                    mem[mid] = [max(a, b) for a, b in zip(vals, prev)] if prev else vals
+                    if not any(delta):
+                        continue
+                    new_turn = prev is None
+                    n += new_turn
                     t = parse_ts(ts) or datetime.datetime.now().astimezone()
                     fam = family(m.get('model'))
-                    new_in = u.get('input_tokens', 0) + u.get('cache_creation_input_tokens', 0)
-                    cache, out = u.get('cache_read_input_tokens', 0), u.get('output_tokens', 0)
+                    new_in, cache, out = delta[0] + delta[1], delta[2], delta[3]
                     b = self.hourly.setdefault(t.strftime('%Y-%m-%dT%H'), {}).setdefault(proj, {}) \
                         .setdefault(kind, {}).setdefault(fam, {'turns': 0, 'in': 0, 'cache': 0, 'out': 0})
-                    b['turns'] += 1
+                    b['turns'] += new_turn
                     b['in'] += new_in
                     b['cache'] += cache
                     b['out'] += out
                     if rid:
                         r = self._req(rid, ts, sid, proj)
                         if kind == 'main':
-                            r['turns'] += 1
+                            r['turns'] += new_turn
                             r['in'] += new_in
                             r['cache'] += cache
                             r['out'] += out
                         else:
                             s = r['subs'].setdefault(kind[4:], {'turns': 0, 'in': 0, 'cache': 0, 'out': 0})
-                            s['turns'] += 1
+                            s['turns'] += new_turn
                             s['in'] += new_in
                             s['cache'] += cache
                             s['out'] += out
                         r['models'][fam] = r['models'].get(fam, 0) + new_in + out
-                        cc = u.get('cache_creation_input_tokens', 0)
-                        if kind == 'main' and not first_turn and cc >= REWRITE_MIN and cc > cache:
+                        cc = delta[1]
+                        if kind == 'main' and new_turn and not first_turn and cc >= REWRITE_MIN and cc > cache:
                             r['rewrites'] += 1
                             r['rewrite_tokens'] += cc
                             lt = parse_ts(last_ts) if last_ts else None
@@ -202,7 +211,7 @@ class Store:
                                 r['idle_rewrites'] += 1
                     if kind == 'main':
                         last_ts = ts           # 쉰 시간은 직전 API 호출(응답)부터 잰다. 사용자 입력 시각이 아니라
-                    if first_turn:
+                    if first_turn and new_turn:
                         first_turn = False
                         self.new_starts.append({'ts': t.isoformat(timespec='minutes'), 'sid': sid[:8], 'proj': proj,
                                                 'ctx': new_in + cache})
@@ -218,6 +227,7 @@ class Store:
                             if rid:
                                 r = self._req(rid, ts, sid, proj)
                                 r['big'] = max(r['big'], size)
+        self.state['msgs'][path] = dict(list(mem.items())[-50:])   # 다음 번에 이어질 수 있는 최근 응답만 기억
         if kind == 'main':
             ss['last'] = last_ts
             ss['agents'] = dict(list(ss['agents'].items())[-300:])
@@ -241,6 +251,7 @@ class Store:
             keep = [r for r in read_jsonl(TOOLS) if (parse_ts(r.get('ts')) or cut) >= cut]
             write_atomic(TOOLS, ''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in keep))
             self.state['files'] = {p: o for p, o in self.state['files'].items() if os.path.isfile(p)}
+            self.state['msgs'] = {p: v for p, v in self.state.get('msgs', {}).items() if p in self.state['files']}
             live = {os.path.basename(p)[:-len('.jsonl')] for p in self.state['files']}
             self.state['sess'] = {k: v for k, v in self.state['sess'].items() if k in live}
             self.state['pruned'] = today
