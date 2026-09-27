@@ -92,6 +92,27 @@
             "timeout": 5
           }
         ]
+      },
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/compact-snapshot-show.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/compact-snapshot.sh",
+            "timeout": 30
+          }
+        ]
       }
     ]
   },

@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 # PreCompact 훅(전역) — 컴팩션(대화 요약) 직전에 안전망 스냅샷을 저장한다.
 # PreCompact는 차단(exit 2)·메시지만 가능하고 요약 내용 자체엔 개입 못 함(공식 문서 확인,
-# https://code.claude.com/docs/en/hooks.md). 그래서 git 상태·최근 테스트 명령+결과·
-# 미완료 TodoWrite 체크리스트를 따로 저장해두고, SessionStart(matcher: compact) 훅인
-# compact-snapshot-show.sh가 컴팩션 직후 그 내용을 보여준다. (Issue #104)
+# https://code.claude.com/docs/en/hooks.md). 그래서 git 상태·최근 테스트 명령+결과를
+# 따로 저장해두고, SessionStart(matcher: compact) 훅인 compact-snapshot-show.sh가
+# 컴팩션 직후 그 내용을 보여준다. (Issue #104)
+# TodoWrite 체크리스트 추출은 승격 때 뺐다: 최근 30일 세션 88개에서 호출 0건, VS Code 확장엔 도구 자체가 없음(2026-09-27).
 set -u
 input="$(cat)"
 PY="$(command -v python3 || command -v python || true)"
@@ -64,7 +65,6 @@ TEST_RE = re.compile(
 tool_uses = {}     # tool_use_id -> command
 tool_results = {}  # tool_use_id -> result text (truncated)
 order = []
-last_todos = None
 
 try:
     with open(path, encoding="utf-8", errors="ignore") as f:
@@ -89,10 +89,6 @@ try:
                         tid = block.get("id")
                         tool_uses[tid] = cmd
                         order.append(tid)
-                elif btype == "tool_use" and block.get("name") == "TodoWrite":
-                    todos = (block.get("input") or {}).get("todos")
-                    if isinstance(todos, list):
-                        last_todos = todos
                 elif btype == "tool_result":
                     tid = block.get("tool_use_id")
                     rc = block.get("content")
@@ -113,14 +109,6 @@ if recent_ids:
         print(f"- `{cmd}`")
         print(f"  결과: {res}")
     print()
-
-if isinstance(last_todos, list):
-    pending = [t for t in last_todos if isinstance(t, dict) and t.get("status") != "completed"]
-    if pending:
-        print("### 미완료 체크리스트")
-        for t in pending:
-            print(f"- [{t.get('status', '?')}] {t.get('content', '')}")
-        print()
 PYEOF
   fi
 } > "${SNAP_FILE}" 2>/dev/null

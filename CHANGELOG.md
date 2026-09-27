@@ -9,6 +9,8 @@
 
 ### Added
 
+- `base/hooks/compact-snapshot.sh`·`compact-snapshot-show.sh` 승격
+  - 컴팩션 직전 git 상태·최근 테스트/빌드 명령과 결과를 저장했다가 컴팩션 직후 세션 시작 메시지로 보여주고 지움. `settings.example.json`에 PreCompact·SessionStart(compact) 등록([Issue #104](https://github.com/yanos0218/AI/issues/104), MINOR)
 - `base/skills/pdf-extract` 스킬 승격
   - PDF를 MarkItDown으로 텍스트 변환 후 읽어 토큰 절약(4쪽 한국어 실측 −62%). 스캔본·글자 깨짐 판정 후 직접 읽기로 전환, MarkItDown은 `~/.claude/venvs/markitdown` 가상환경에 사용자 승인 후 설치([Issue #132](https://github.com/yanos0218/AI/issues/132), MINOR)
 - `tools/check-cram.py`
