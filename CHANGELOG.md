@@ -35,6 +35,8 @@
 - `base/rules/docs-format.md`
   - "필드명: 값" 예외를 짧은 한 줄 값으로 좁힘. 문장·항목이 여럿인 값(조사 이슈의 결론·출처·영향 등)은 하위 bullet로 줄바꿈([Issue #133](https://github.com/yanos0218/AI/issues/133), PATCH)
   - GitHub Issue·PR 본문과 코멘트도 음슴체·명사형으로 쓴다는 줄 추가. 기존엔 릴리즈 노트만 규정([Issue #126](https://github.com/yanos0218/AI/issues/126), PATCH)
+- `docs/issue-format.md`·`.github/workflows/issue-format-check.yml` 조사(`research`) 양식
+  - `## 조사` 아래 필드 목록 대신 다른 양식처럼 `## 질문`·`## 결론`·`## 조사일`·`## 출처`·`## 영향` 헤딩으로 통일. 자동 검사도 새 헤딩 기준([Issue #146](https://github.com/yanos0218/AI/issues/146))
 
 - base에서 원본 저장소(claude-config) 참조 제거
   - 전역 CLAUDE.md·repo-setup·dev-workflow·dev-release의 "claude-config `docs/...` 참고" 5곳을 스킬 자체 기준으로 교체. 다른 기기 세션이 원본 저장소에 관여하려던 문제 대응([Issue #125](https://github.com/yanos0218/AI/issues/125), PATCH)

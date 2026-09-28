@@ -89,9 +89,8 @@ jobs:
                 fi
                 ;;
               research)
-                grep -qF "## 조사" /tmp/body.md || echo "- 필수 헤딩 누락: ## 조사" >> /tmp/violations.md
-                for f in "질문:" "결론:" "조사일:" "출처:" "영향:"; do
-                  grep -qE "^- ${f}" /tmp/body.md || echo "- 조사 필드 누락: ${f}" >> /tmp/violations.md
+                for h in "## 질문" "## 결론" "## 조사일" "## 출처" "## 영향"; do
+                  grep -qF "${h}" /tmp/body.md || echo "- 필수 헤딩 누락: ${h}" >> /tmp/violations.md
                 done
                 ;;
             esac
