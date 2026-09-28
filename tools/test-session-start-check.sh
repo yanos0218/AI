@@ -14,7 +14,7 @@ git clone -q "${tmp}/remote.git" "${tmp}/src"
 git -C "${tmp}/src" config user.email t@t; git -C "${tmp}/src" config user.name t
 mkdir -p "${tmp}/home/.claude"
 tree_of() { git -C "${tmp}/src" rev-parse "${1}:base"; }
-OLD=v0.11.4; NEW=v0.12.0
+OLD=v0.11.4; NEW=vtest   # NEW는 아래에서 시험 안에 직접 만드는 태그
 OLD_TREE="$(tree_of "${OLD}")"; MAIN_TREE="$(tree_of origin/main)"
 
 ver() { printf '%s\n' "${tmp}/src" "$@" > "${tmp}/home/.claude/.claude-config-version"; }
@@ -33,14 +33,15 @@ at "${OLD}"
 ver "${OLD}";                      expect behind '뒤처짐, 옛 형식(태그만)'
 ver "${OLD}" "${OLD_TREE}";        expect behind '뒤처짐, 새 형식(트리)'
 
-# 원격과 같은 원본, 태그 뒤에 base/ 밖 커밋만 있음(거짓 경보)
+# 원격과 같은 원본, 태그 뒤에 base/ 밖 커밋만 있음(거짓 경보, Issue #150)
+# 실제 저장소 태그에 기대면 태그 뒤 base/가 바뀌는 순간 이 사례가 건너뛰어져(Issue #158) 태그와 문서 커밋을 시험 안에서 만든다
 at origin/main
-if [[ "$(tree_of "${NEW}")" == "${MAIN_TREE}" ]]; then
-  ver "${NEW}";                    expect quiet '문서만 바뀜, 옛 형식 태그'
-  ver "${NEW}-2-gdbd7429";         expect quiet '문서만 바뀜, 옛 형식 describe 꼬리'
-else
-  echo "건너뜀: ${NEW} 이후 base/가 바뀌어 거짓 경보 시험(옛 형식) 불가"
-fi
+git -C "${tmp}/src" tag "${NEW}"
+echo "문서만 바뀜" >> "${tmp}/src/README.md"; git -C "${tmp}/src" commit -q -am docs
+git -C "${tmp}/src" push -q origin HEAD:main; git -C "${tmp}/src" fetch -q
+ver "${NEW}";                      expect quiet '문서만 바뀜, 옛 형식 태그'
+ver "${NEW}-1-g$(git -C "${tmp}/src" rev-parse --short HEAD)"; expect quiet '문서만 바뀜, 옛 형식 describe 꼬리'
+ver "${NEW}" "$(tree_of "${NEW}")"; expect quiet '문서만 바뀜, 새 형식(트리)'
 ver "$(git -C "${tmp}/src" describe --tags --always)" "${MAIN_TREE}"; expect quiet '최신 설치, 새 형식'
 ver "${OLD}" "${OLD_TREE}";        expect alert 'base 낡음, 새 형식'
 
