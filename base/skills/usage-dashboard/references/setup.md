@@ -16,14 +16,14 @@
 
 ## 자동 기록 훅 등록
 
-응답이 끝날 때마다 기록하려면 `~/.claude/settings.json`의 `hooks.Stop`에 아래를 넣는다. 켜짐 표시 파일(`usage-log/enabled`)이 없으면 훅은 바로 끝나므로 등록해 둬도 꺼진 동안 기록하지 않는다.
+claude-config `install.sh`가 `settings.example.json`의 `hooks.Stop`을 `~/.claude/settings.json`에 병합하면서 아래 훅을 등록한다(2026-09-29 기본 반영부터). 켜짐 표시 파일(`usage-log/enabled`)이 없으면 훅은 바로 끝나므로 등록돼 있어도 꺼진 동안 기록하지 않는다.
 
 ```json
-{ "hooks": [ { "type": "command", "command": "bash <스킬 폴더>/scripts/usage.sh hook", "async": true, "timeout": 60 } ] }
+{ "hooks": [ { "type": "command", "command": "bash ~/.claude/skills/usage-dashboard/scripts/usage.sh hook", "async": true, "timeout": 60 } ] }
 ```
 
 - `async: true`라 응답을 기다리게 하지 않는다.
-- `<스킬 폴더>`는 설치 위치의 절대 경로(예: `~/.claude/skills/usage-dashboard`).
+- `install.sh` 없이 스킬만 복사해 쓰는 경우에는 위 항목을 직접 넣고, 경로를 실제 스킬 위치로 바꾼다.
 - 세션 시작 크기 알림은 세션 시작 훅에서 `usage.sh check`를 부를 때만 동작한다.
 - `settings.json` 수정은 사용자 확인 뒤에 한다.
 

@@ -159,6 +159,18 @@
           }
         ]
       }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/skills/usage-dashboard/scripts/usage.sh hook",
+            "async": true,
+            "timeout": 60
+          }
+        ]
+      }
     ]
   },
   "statusLine": {
