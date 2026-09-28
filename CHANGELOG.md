@@ -29,6 +29,8 @@
   - `python` 명령을 고정으로 불러 `python3`만 있는 Mac에서 7건이 실패하던 문제, 훅과 같은 순서(`python` → `python3`)로 고르도록 바꿈([Issue #151](https://github.com/yanos0218/AI/issues/151), PATCH)
 - `tools/test-skill.sh`
   - 시험 중 스킬이 자신을 다시 설치하면(config-update) 끝날 때 비켜 둔 설치본이 새 폴더 안으로 들어가 이중 폴더가 생기던 문제. 복구 전에 대상 폴더를 치움([Issue #152](https://github.com/yanos0218/AI/issues/152), PATCH)
+- `tools/test-agent.sh`
+  - Mac에서 PyYAML이 없으면 변환 실패를 무시하고 세션을 띄워 "토큰 0"만 나오던 문제와, `--installed`에서 bash 3.2가 빈 배열로 멈추던 문제. 변환 실패 시 안내 후 종료, 빈 배열 안전하게 펼침([Issue #154](https://github.com/yanos0218/AI/issues/154), PATCH)
 - `tools/check-cram.sh`
   - `--staged`에서 추가된 줄 번호 목록을 `awk -v`로 넘겨, Mac 기본 awk가 오류를 내고 여러 줄을 추가한 파일을 건너뛰어 통과시키던 문제. 환경변수로 넘기도록 바꿈([Issue #151](https://github.com/yanos0218/AI/issues/151), PATCH)
 

@@ -19,12 +19,14 @@ PY="$(command -v python3 || command -v python)"
 
 name="$(basename "${AGENT}" .md)"
 [[ -f "${HOME}/.claude/agents/${name}.md" ]] && echo "== 주의: 같은 이름의 전역 에이전트가 설치돼 있음(--agents 쪽이 우선)"
+# 빈 배열은 ${a[@]+"${a[@]}"}로 펼친다. Mac 기본 bash 3.2는 set -u에서 빈 "${a[@]}"를 unbound 오류로 멈춘다(2026-09-29)
 agents_args=()
 if [[ "${INSTALLED}" = 0 ]]; then
 hooks_abs="$(pwd)"
 agents_json="${FIX}.agents.json"
 # 실제 사용처럼 같은 폴더의 에이전트를 전부 넘긴다(설명끼리 경쟁하는 상황에서 맞는 쪽이 골라지는지 봄)
-PYTHONIOENCODING=utf-8 "${PY}" - "$(dirname "${AGENT}")" "${hooks_abs}" "${agents_json}" <<'PY'
+# 변환에 실패하면(예: Mac Homebrew 파이썬엔 PyYAML이 없음) 에이전트 없이 세션이 떠 "토큰 0"만 나오므로 여기서 멈춘다(2026-09-29)
+PYTHONIOENCODING=utf-8 "${PY}" - "$(dirname "${AGENT}")" "${hooks_abs}" "${agents_json}" <<'PY' || { echo "에이전트 정의 변환 실패. PyYAML이 있는 파이썬을 PATH 앞에 두고 다시 실행(예: 가상환경에 pip install pyyaml)"; exit 2; }
 import glob, io, json, os, re, sys, yaml
 src, hooks_abs, out = sys.argv[1:4]
 agents = {}
@@ -49,7 +51,7 @@ out="${FIX}.${name}.jsonl"
 echo "== 에이전트 ${name} · 모델 ${MODEL} · $("${CLAUDE_BIN}" --version 2>/dev/null) · 말: ${PROMPT}"
 IFS=',' read -r -a tool_rules <<<"${TOOLS}"
 (cd "${FIX}" && unset CLAUDECODE CLAUDE_CODE_ENTRYPOINT && "${CLAUDE_BIN}" -p "${PROMPT}" --model "${MODEL}" \
-  --output-format stream-json --verbose --max-turns "${TURNS}" "${agents_args[@]}" --allowedTools "${tool_rules[@]}") > "${out}" 2>"${out}.err" < /dev/null
+  --output-format stream-json --verbose --max-turns "${TURNS}" ${agents_args[@]+"${agents_args[@]}"} --allowedTools "${tool_rules[@]}") > "${out}" 2>"${out}.err" < /dev/null
 
 PYTHONIOENCODING=utf-8 "${PY}" - "${out}" "${name}" <<'PY'
 import json, sys
