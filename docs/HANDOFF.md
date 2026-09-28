@@ -8,7 +8,7 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 
 ## 현재 상태 (2026-09-28) · 마지막 월 점검: 없음 (첫 점검 2026-10 예정, `docs/monthly-check.md`)
 
-- 저장소 v0.11.4, 그 뒤 변경은 [CHANGELOG.md](../CHANGELOG.md) `[Unreleased]`에 쌓임. 기기별 배포는 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태)이 원본(Windows 최신, Mac mini·Linux는 다음 접속 때 `install.sh`, 웹 스킬 3개는 v0.11.4).
+- 저장소 v0.12.0(2026-09-28), 그 뒤 변경은 [CHANGELOG.md](../CHANGELOG.md) `[Unreleased]`에 쌓임. 기기별 배포는 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태)이 원본(Windows 최신, Mac mini·Linux는 다음 접속 때 `install.sh`, 웹 스킬 3개는 v0.11.4).
 - 2026-09-27~28 기본 반영은 에이전트 3종([#131](https://github.com/yanos0218/AI/issues/131)), 컴팩션 안전망 훅([#104](https://github.com/yanos0218/AI/issues/104)), 훅 파이썬 전환([#144](https://github.com/yanos0218/AI/issues/144), 제한 시간 문제 [#143](https://github.com/yanos0218/AI/issues/143) 포함), 조사 이슈 `##` 헤딩 양식([#146](https://github.com/yanos0218/AI/issues/146)). `drafts/observations/`는 2026-09-28 폐지.
 - 진행 중인 것은 토큰 대시보드 실사용([#136](https://github.com/yanos0218/AI/issues/136), 전역 settings.json에 Stop 훅 임시 등록이라 `install.sh` 뒤 다시 등록), 형식 검사 훅 초안([#141](https://github.com/yanos0218/AI/issues/141)), 훅 대기 줄이기(async·`if` 조건 적용, [#147](https://github.com/yanos0218/AI/issues/147)·[#148](https://github.com/yanos0218/AI/issues/148), 남은 원인은 기기 프로세스 실행 지연).
 - 할 일·문제는 GitHub Issues, 결정 근거는 닫힌 이슈와 `git log`. Script 저장소 개인키 건은 그 저장소 일(사용자 결정 대기).
