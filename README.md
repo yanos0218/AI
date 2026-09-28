@@ -55,7 +55,7 @@
 
 | 경로 | 무엇 |
 | --- | --- |
-| [tools/bootstrap.sh](tools/bootstrap.sh) | 신규 기기용 단일 명령 설치 — 저장소를 `~/claude-config`에 clone(있으면 pull) 후 `install.sh` 자동 실행 |
+| [tools/bootstrap.sh](tools/bootstrap.sh) | 신규 기기용 단일 명령 설치<br>저장소를 `~/claude-config`에 clone(있으면 pull) 후 `install.sh` 자동 실행 |
 | [tools/install.sh](tools/install.sh) | `base/` → `~/.claude` 설치 (멱등, settings 병합, `--dry-run`). 기기 3대 공통 |
 | [tools/test-skill.sh](tools/test-skill.sh) | 스킬 발동 시험<br>시나리오 저장소에 넣고 새 세션으로 실행, 발동·비용 추출 (기본 Sonnet) |
 | [tools/test-agent.sh](tools/test-agent.sh) | 에이전트 발동 시험<br>같은 폴더 에이전트 전부를 `--agents`로 넘겨 새 세션으로 실행, 위임 대상·에이전트 안 도구 호출·훅 차단·토큰 추출 |
@@ -65,6 +65,7 @@
 | [tools/check-cram.sh](tools/check-cram.sh)·[tools/check-cram.py](tools/check-cram.py) | 목록 줄바꿈 규칙(콜론·em-dash 크램) 검사<br>`--staged`로 커밋 전 자동 검사, `--add-exception`으로 오탐 예외 등록 |
 | [.claude/hooks/](.claude/hooks/) | 저장소 전용 훅<br>`baseline-guard.sh`(`base/` 쓰기 확인), `pre-commit-check.sh`(이슈 번호·크램 검사로 커밋 차단), `session-end-check.sh`(base/ 변경 시 PROGRESS §0 갱신, 그 외엔 관련 Issue 댓글·닫기 확인 안내) |
 | [.github/workflows/lint.yml](.github/workflows/lint.yml) | push마다 markdownlint·shellcheck·문서 상한 검사 |
+| [.github/workflows/issue-format-check.yml](.github/workflows/issue-format-check.yml) | 이슈 본문·댓글이 올라오면 목록 줄바꿈 규칙을 검사해 위반을 댓글과 라벨로 알림 |
 | [.github/dependabot.yml](.github/dependabot.yml) | 워크플로가 쓰는 액션 버전 업데이트 |
 
 ## 어디서 무엇이 적용되나

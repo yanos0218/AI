@@ -17,6 +17,7 @@ bash tools/install.sh             # 설치 + check-install.sh 대조
 cp -r base/skills/<이름> ~/.claude/skills/
 cp base/claude-md/CLAUDE.md ~/.claude/CLAUDE.md
 mkdir -p ~/.claude/hooks && cp base/hooks/*.sh ~/.claude/hooks/
+mkdir -p ~/.claude/agents && cp base/agents/*.md ~/.claude/agents/
 ```
 
 `~/.claude/settings.json`이 없으면 `base/settings.example.json`을 복사하고, 있으면 `permissions`·`hooks`·`statusLine` 키를 합친다(`model` 등 기기별 값은 기존 것 유지). `$schema` 덕에 VS Code에서 자동완성·검증이 된다. 상태줄 스크립트는 jq → python → node 순으로 있는 것을 쓰므로 Linux에 jq가 없어도 된다. 설치·대조 스크립트 자체는 `python3` → `python` 순으로 찾는다(Windows Git Bash엔 `python`만, Mac/Linux엔 `python3`만 있는 경우가 많음). 스킬 목록은 세션 시작 시 고정되므로 복사 후 **새 세션**에서 확인한다.

@@ -32,10 +32,10 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | 전역 지침 `base/claude-md/CLAUDE.md` | 기본 | ✓ v0.11.2 (2026-09-18, `install.sh` 반영) | ✓ v0.10.0 (2026-09-16, `install.sh` 반영) | ✓ (2026-09-16, 실제 Rocky 서버 `install.sh`+`check-install.sh` same 확인, [Issue #6](https://github.com/yanos0218/AI/issues/6)) | ✓ Project instructions (2026-09-12 업로드 스크린샷 확인, 발동 미검증) | Mac·Linux·웹 v0.11.2 갱신 필요 |
 | dev-release 스킬 | 기본 (3시나리오 통과 2026-09-08, 0단계 미인증 시나리오 통과 2026-09-09. 문서 동기화 확인 단계·`Refs #N` 전환 추가, v0.11.3) | ✓ v0.11.3 (2026-09-18 설치) | ✓ v0.5.0 | ✓ (2026-09-16) | ✓ v0.11.4 (2026-09-19~20 업로드, 2026-09-27 Claude Code 동기화본 `~/.claude/skills/synced/`가 v0.11.4 태그와 같음을 확인, 발동 미검증) | Mac·Linux 갱신 필요, 웹은 다음 컷 뒤 재업로드(v0.11.4 이후 #125 참조 제거 미반영) |
-| git-guardrails 훅 | 기본 (새 세션 push 차단 확인 2026-09-08, push 시 문서 갱신 상기 문구 5시나리오 확인 2026-09-15 [Issue #102](https://github.com/yanos0218/AI/issues/102)) | ✓ | ✓ | ✓ (2026-09-16) | - | - |
-| gh-throttle 훅 | 기본 (mkdir 락 기반 실제 직렬화로 개선, 병렬 3개 실측 확인 2026-09-13, [Issue #74](https://github.com/yanos0218/AI/issues/74)) | ✓ v0.9.0 | ✓ (2026-09-16 설치) | ✓ (2026-09-16) | - | - |
+| git-guardrails 훅 | 기본 (새 세션 push 차단 확인 2026-09-08, push 시 문서 갱신 상기 문구 5시나리오 확인 2026-09-15 [Issue #102](https://github.com/yanos0218/AI/issues/102)<br>제한 시간 초과(느린 시각 9.5초 > 5초)로 확인 없이 통과될 수 있던 문제를 bash 내장 판정으로 수정, 제한 시간 30초, 명령 26개 판정 대조 동일 2026-09-28 [Issue #142](https://github.com/yanos0218/AI/issues/142)) | ✓ | ✓ | ✓ (2026-09-16) | - | - |
+| gh-throttle 훅 | 기본 (mkdir 락 기반 실제 직렬화로 개선, 병렬 3개 실측 확인 2026-09-13, [Issue #74](https://github.com/yanos0218/AI/issues/74)<br>하위 프로세스 제거·제한 시간 30초 2026-09-28 [Issue #142](https://github.com/yanos0218/AI/issues/142)) | ✓ v0.9.0 | ✓ (2026-09-16 설치) | ✓ (2026-09-16) | - | - |
 | session-start-check 훅(SessionStart) | 기본 (설정 버전·저장소 표준 4시나리오 2026-09-12 + self-audit 안내 4시나리오 2026-09-13 + 대량 조회 누적 알림 2026-09-15 직접 실행 확인) | ✓ | ✓ (2026-09-16 설치) | ✓ (2026-09-16) | - | - |
-| `bulk-read-log.sh` 훅(PostToolUse) | 기본 (기록·초기화 흐름 직접 실행 확인 2026-09-15, [Issue #100](https://github.com/yanos0218/AI/issues/100)) | ✓ | ✓ (2026-09-16 설치) | ✓ (2026-09-16) | - | - |
+| `bulk-read-log.sh` 훅(PostToolUse) | 기본 (기록·초기화 흐름 직접 실행 확인 2026-09-15, [Issue #100](https://github.com/yanos0218/AI/issues/100)<br>서브에이전트 조회 제외·한글 잘림 수정 2026-09-27 [Issue #134](https://github.com/yanos0218/AI/issues/134)) | ✓ | ✓ (2026-09-16 설치) | ✓ (2026-09-16) | - | - |
 | config-changelog 훅 | 기본 (임시 HOME 7케이스 통과, 2026-09-09) | ✓ v0.4.0 | ✓ | ✓ (2026-09-16) | - | - |
 | statusline 훅 | 기본 (터미널 CLI 전용, VS Code 패널엔 안 나옴) | ✓ 육안 확인 2026-09-12 | ✓ 설치 (VS Code 패널만 써서 표시 없음) | ✓ (2026-09-16) | - | - |
 | `settings.example.json` (권한·훅·상태줄·env) | 기본 | ✓ v0.9.0 | ✓ (`model` 키 유지 병합) | ✓ (2026-09-16) | - | - |

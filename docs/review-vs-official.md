@@ -6,13 +6,13 @@
 | --- | --- | --- | --- |
 | 실수 방지 | 되돌리기 어려운 명령 앞 확인 강제 | 반영 | `git-guardrails.sh`<br>PreToolUse 훅은 모든 권한 모드에서 먼저 실행됨 |
 | 실수 방지 | 비밀 파일 읽기/편집 거부 | 반영 | `permissions.deny`: `.env`, `secrets/`, `~/.ssh` |
-| 실수 방지 | 검증 없이 "됐다" 금지 | 반영 | CLAUDE.md §4. 공식: "Claude에게 돌릴 수 있는 검사를 주고 증거를 보이게 하라" |
+| 실수 방지 | 검증 없이 "됐다" 금지 | 반영 | CLAUDE.md §4<br>공식 문서도 "Claude에게 돌릴 수 있는 검사를 주고 증거를 보이게 하라"고 권함 |
 | 실수 방지 | 계획 먼저(plan mode) | 습관 | 여러 파일 건드리거나 방향이 불확실하면 Shift+Tab. 한 문장으로 diff를 설명할 수 있으면 생략 |
 | 실수 방지 | 같은 지적 두 번이면 `/clear` 후 더 나은 프롬프트로 | 습관 | 공식 "correcting over and over" 실패 패턴 |
 | 토큰 | 상태줄에 컨텍스트 % 상시 표시 | 반영 | `statusline.sh`<br>70%/85%에서 색 바뀜. 컴팩션 전에 `/compact` 또는 `/clear` 판단 |
 | 토큰 | 컴팩션 시 보존할 것 지정 | 반영 | CLAUDE.md §5<br>수정 파일·테스트 결과·미완료 체크리스트<br>`compact-snapshot.sh` 훅이 수정 파일·테스트 결과를 저장했다가 컴팩션 직후 보여줌(2026-09-27) |
 | 토큰 | 대량 읽기는 서브에이전트로 | 반영 | CLAUDE.md §5 |
-| 토큰 | CLAUDE.md 200줄 이하, 절차는 스킬로 | 반영 | 현재 60줄 |
+| 토큰 | CLAUDE.md 200줄 이하, 절차는 스킬로 | 반영 | 78줄(2026-09-28) |
 | 토큰 | 작업 바뀌면 `/clear`, 곁가지 질문은 `/btw` | 습관 | 긴 세션의 한 줄 질문도 전체 컨텍스트를 다시 보냄 |
 | 토큰 | 모델·effort 조절 | 습관 | 단순 작업은 `/effort` 낮추기, 서브에이전트는 Sonnet/Haiku. Fable은 thinking 끌 수 없음 |
 | 토큰 | 안 쓰는 MCP 서버 끄기, CLI(`gh`) 우선 | 습관 | 현재 MCP 없음 |
@@ -46,10 +46,10 @@
 
 | 항목 | 내용 | 판단 |
 | --- | --- | --- |
-| 컴팩션 후 자동 재로드 범위 | 공식 문서 확인: `/compact` 후 프로젝트 루트 CLAUDE.md·auto memory는 자동으로 다시 읽히고, 최근 읽거나 고친 파일 최대 5개와 그 규칙도 같이 재적용됨(5000토큰 넘는 파일은 경로만) | [Issue #104](https://github.com/yanos0218/AI/issues/104) 설계 범위 재확인 필요 — CLAUDE.md·최근 파일 5개는 이미 자동 보존되므로, PreCompact 훅은 "5개 넘는 파일·테스트 결과·TodoWrite 체크리스트"처럼 자동 재로드 밖의 것에만 집중하면 됨 |
-| `maxEffortLevel` 설정(2026-09 신규) | `settings.json`에서 effort 상한을 걸어 모델 호출 비용을 구조적으로 제한 가능 | 반영 후보 — [Issue #10](https://github.com/yanos0218/AI/issues/10) 월 점검(2026-10) 때 실사용 비용과 같이 검토 |
-| 코어 `rm -rf` 안전 프롬프트 강화 | 위치 인자·따옴표 감싼 `sh -c` 안의 `rm -rf`까지 하네이 자체가 감지 | 참고만 — `git-guardrails.sh`와 중복 방어라 우리 쪽 변경 불필요 |
-| 심볼릭 링크형 개인 dotfiles(예: ksdisch/claude-config) | `~/.claude`에 저장소를 직접 symlink, 편집이 바로 git에 반영 | 채택 안 함 — 우리는 `baseline-guard` 확인 절차가 핵심이라, symlink로 그 절차를 우회하게 되는 건 이 저장소 설계 의도와 반대 |
+| 컴팩션 후 자동 재로드 범위 | `/compact` 후 프로젝트 루트 CLAUDE.md·auto memory는 자동으로 다시 읽히고, 최근 읽거나 고친 파일 최대 5개와 그 규칙도 재적용됨(공식 문서 확인)<br>5000토큰 넘는 파일은 경로만 | 반영<br>`compact-snapshot.sh`는 자동 재로드 밖의 것(5개 넘는 파일, 테스트 결과)만 저장, 2026-09-27 기본 승격([Issue #104](https://github.com/yanos0218/AI/issues/104)) |
+| `maxEffortLevel` 설정(2026-09 신규) | `settings.json`에서 effort 상한을 걸어 모델 호출 비용을 구조적으로 제한 가능 | 반영 후보<br>[Issue #10](https://github.com/yanos0218/AI/issues/10) 월 점검(2026-10) 때 실사용 비용과 같이 검토 |
+| 코어 `rm -rf` 안전 프롬프트 강화 | 위치 인자·따옴표 감싼 `sh -c` 안의 `rm -rf`까지 하네스 자체가 감지 | 참고만<br>`git-guardrails.sh`와 중복 방어라 우리 쪽 변경 불필요 |
+| 심볼릭 링크형 개인 dotfiles(예: ksdisch/claude-config) | `~/.claude`에 저장소를 직접 symlink, 편집이 바로 git에 반영 | 채택 안 함<br>우리는 `baseline-guard` 확인 절차가 핵심이라, symlink로 그 절차를 우회하는 건 이 저장소 설계 의도와 반대 |
 
 ## 참고한 자료
 

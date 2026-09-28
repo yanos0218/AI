@@ -12,7 +12,7 @@
 | 도구 | 이럴 때 | 판정 | 주의 | 확인일 | 근거 |
 | --- | --- | --- | --- | --- | --- |
 | MarkItDown(`pdf-extract` 스킬) | 여러 쪽 PDF를 읽거나 요약할 때 | 도입 | 스캔본·글자 깨짐은 직접 읽기로 전환<br>MCP 서버형은 쓰지 않음 | 2026-09-27 | [#132](https://github.com/yanos0218/AI/issues/132), [#127](https://github.com/yanos0218/AI/issues/127) |
-| 용도별 에이전트(researcher·auditor·verifier) | 긴 조사, 문서 점검, 검사 실행 | 검증 중 | 긴 웹 문서는 잘릴 수 있음 | 2026-09-27 | [#131](https://github.com/yanos0218/AI/issues/131), [#130](https://github.com/yanos0218/AI/issues/130) |
+| 용도별 에이전트(researcher·auditor·verifier) | 긴 조사, 문서 점검, 검사 실행 | 기본(2026-09-27 승격) | 긴 웹 문서는 잘릴 수 있음 | 2026-09-27 | [#131](https://github.com/yanos0218/AI/issues/131), [#130](https://github.com/yanos0218/AI/issues/130) |
 
 ## 필요할 때 쓸 후보
 

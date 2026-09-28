@@ -8,7 +8,7 @@
 | 층 | 파일 | 누가 바꾸나 | 이 저장소에서의 취급 |
 | --- | --- | --- | --- |
 | **기본** (모든 프로젝트) | `~/.claude/CLAUDE.md`, `~/.claude/settings.json`, `~/.claude/hooks/`, `~/.claude/skills/` | 사람 (이 저장소 `base/`에서 설치) | 원본은 `base/`. 여기서만 고치고 재설치한다 |
-| **모듈** (모든 프로젝트, 주제별) | `~/.claude/rules/<주제>.md` | 사람 또는 Claude(요청 시) | 기본 CLAUDE.md를 건드리지 않고 규칙을 파일 단위로 붙였다 뗀다. 원본은 `base/rules/`(예정, [Issue #34](https://github.com/yanos0218/AI/issues/34)) |
+| **모듈** (모든 프로젝트, 주제별) | `~/.claude/rules/<주제>.md` | 사람 또는 Claude(요청 시) | 기본 CLAUDE.md를 건드리지 않고 규칙을 파일 단위로 붙였다 뗀다. 원본은 [base/rules/](../base/rules/)([Issue #34](https://github.com/yanos0218/AI/issues/34), `install.sh`가 설치) |
 | **프로젝트** (그 저장소만) | 저장소 `CLAUDE.md`, `.claude/settings.json`, `.claude/settings.local.json`(gitignore), 저장소 `.claude/skills/` | Claude와 사람 | 자유롭게 바뀌어도 기본에 영향 없음 |
 
 핵심 사실 두 가지:

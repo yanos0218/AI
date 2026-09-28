@@ -60,7 +60,7 @@ PR 습관(브랜치에서 작업 → `gh pr create` → merge)을 먼저 한 저
 | 1 | 터미널에서 `claude`를 열고 `/web-setup` 입력<br>로컬 `gh` 토큰을 claude.ai 계정에 연결하고 Default 환경을 만든다. `gh auth refresh -s workflow`를 먼저 해 두면 워크플로 파일 push도 됨. 브라우저로 하려면 claude.ai/code → Sign in with GitHub | 사용자 (대화형 명령이라 Claude가 대신 못 함) |
 | 2 | auto-fix를 쓰려면 Claude GitHub App을 OpenClaw에 설치(claude.ai/code 온보딩에서 안내, 또는 github.com/apps/claude) | 사용자 |
 | 3 | OpenClaw에 루트 `CLAUDE.md` 추가<br>클라우드 VM은 저장소의 CLAUDE.md만 읽고 `~/.claude`는 못 읽으므로, 확인 기준과 검사 명령을 저장소 안에 둔다. 초안은 브랜치 `chore/claude-md`(스크래치패드 클론), push·PR은 확인 후 | Claude(초안) → 사용자(승인) |
-| 4 | 첫 작업: claude.ai/code에서 OpenClaw 선택 → Plan 모드로 작은 문서 작업 하나 → diff 확인 → Create PR → merge. 터미널에서는 `claude --cloud "작업 설명"`(현재 폴더가 OpenClaw 클론일 때) | 사용자 |
+| 4 | 첫 작업<br>claude.ai/code에서 OpenClaw 선택 → Plan 모드로 작은 문서 작업 하나 → diff 확인 → Create PR → merge<br>터미널에서는 `claude --cloud "작업 설명"`(현재 폴더가 OpenClaw 클론일 때) | 사용자 |
 | 5 | 한 달 뒤 판단: PR 리뷰 부담, 세션 한도 소모, Codex 대비 품질 | 월 점검 |
 
 주의
