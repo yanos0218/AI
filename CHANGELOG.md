@@ -25,6 +25,12 @@
   - 원본 저장소가 원격보다 뒤처져도 낡음 알림이 안 뜨던 문제와, 문서만 바뀐 커밋에도 알림이 뜨던 거짓 경보. 하루 한 번 백그라운드 fetch, 뒤처지면 원격 기준, `base/` 트리 해시로 비교(옛 설치본은 태그 비교)([Issue #150](https://github.com/yanos0218/AI/issues/150), PATCH)
 - `base/skills/config-update`
   - 원격을 확인하지 않아 낡은 버전을 최신으로 판정하던 문제. fetch → 뒤처졌고 작업 트리가 깨끗하면 `pull --ff-only` → `base/` 트리 비교 → 다를 때만 설치([Issue #150](https://github.com/yanos0218/AI/issues/150), PATCH)
+- `.claude/hooks/pre-commit-check.sh`
+  - 명령을 `sed`로 꺼내며 뒤의 설명 글까지 삼켜, 설명에 "#64"·"chore(release):"가 있으면 이슈 번호 확인을 건너뛰고 커밋이 아닌 명령에 확인 창을 띄우던 문제. JSON으로 정확히 꺼냄([Issue #156](https://github.com/yanos0218/AI/issues/156), PATCH)
+- `tools/check-install.sh`
+  - 프로젝트 루트 기본값이 Windows 전용(`/c/Git`)이라 Mac·Linux에서 조용히 "(없음)"이던 문제. 기본값을 이 저장소의 상위 폴더로, 경로가 없으면 안내([Issue #157](https://github.com/yanos0218/AI/issues/157), PATCH)
+- `tools/test-session-start-check.sh`
+  - 실제 v0.12.0 태그에 기대 `base/`가 바뀐 뒤 "문서만 바뀐 커밋" 사례가 건너뛰어지던 문제. 시험 안에서 태그와 문서 커밋을 만들어 15건 모두 실행([Issue #158](https://github.com/yanos0218/AI/issues/158), PATCH)
 - `tools/check-docs.sh`
   - Mac 기본 bash 3.2에 없는 `mapfile` 때문에 모든 파일을 0줄로 세고 통과시키던 문제, 하위 프로세스 없는 내장 `read`로 줄 수를 세도록 바꿈([Issue #151](https://github.com/yanos0218/AI/issues/151), PATCH)
 - `tools/test-hooks-py.sh`

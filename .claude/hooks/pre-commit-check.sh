@@ -33,7 +33,18 @@ if [[ "${input}" =~ \"tool_use_id\"[[:space:]]*:[[:space:]]*\"([^\"]+)\" ]]; the
   trap 'rmdir "${once}" 2>/dev/null' EXIT
 fi
 cd "$(dirname "${0}")/../.." || exit 0
-cmd="$(printf '%s' "${input}" | sed -n 's/.*"command"[[:space:]]*:[[:space:]]*"\(.*\)".*/\1/p' | head -1)"
+# 명령은 JSON으로 정확히 꺼낸다. 예전 sed는 뒤의 description·tool_use_id까지 삼켜, 설명 글의 "#64"나
+# "chore(release):"로 이슈 번호 확인이 빠졌다(Issue #156). 파이썬이 없을 때만 sed로 대신한다
+if hash python 2>/dev/null; then PY=python; elif hash python3 2>/dev/null; then PY=python3; else PY=""; fi
+if [[ -n "${PY}" ]]; then
+  cmd="$(printf '%s' "${input}" | PYTHONIOENCODING=utf-8 "${PY}" -c 'import json, sys
+try:
+    print(json.load(sys.stdin).get("tool_input", {}).get("command", ""))
+except Exception:
+    pass')"
+else
+  cmd="$(printf '%s' "${input}" | sed -n 's/.*"command"[[:space:]]*:[[:space:]]*"\(.*\)".*/\1/p' | head -1)"
+fi
 
 script_path=""
 if printf '%s' "${cmd}" | grep -Eq '^[[:space:]]*(bash|sh|source)[[:space:]]+[^&|;]+\.sh'; then
