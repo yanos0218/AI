@@ -27,7 +27,7 @@
 | `tools/check-install.sh` | 설치본과 `base/` 대조(DIFF/MISSING), `rules/` 목록, 프로젝트별 `settings.local.json`에 쌓인 권한 목록, 변경 이력 꼬리 20줄 | 사용 가능 |
 | 월 점검 ([Issue #42](https://github.com/yanos0218/AI/issues/42)) | 위 둘의 출력을 보고 결정: 여러 저장소에 반복된 권한 → `base/settings.example.json` 승격, 좋은 변경 → `base/`에 반영 후 재설치, 나쁜 변경 → 재설치로 되돌림 | 규칙 |
 
-"보내준다"는 요구는 이 훅의 로그 파일 + `check-install.sh`가 해결한다. 기기마다 로그가 남고, 점검 때 `drafts/observations/`로 복사하면 저장소에 모인다. 실시간으로 어딘가에 전송하는 방식(메일·웹훅)은 외부 서비스 쓰기라 보류.
+"보내준다"는 요구는 이 훅의 로그 파일 + `check-install.sh`가 해결한다. 기기마다 로그가 남고, 월 점검 때 각 기기에서 `check-install.sh` 출력으로 보고 필요한 것만 Issue로 남긴다(2026-09-28부터 저장소로 복사하지 않음). 실시간으로 어딘가에 전송하는 방식(메일·웹훅)은 외부 서비스 쓰기라 보류.
 
 ## 3. 검토했지만 지금은 안 쓰는 방법
 

@@ -1,3 +1,0 @@
-- [OpenClaw context](openclaw_context.md) — what OpenClaw is, repo location, AI role boundaries
-- [OpenClaw release workflow](openclaw_release_workflow.md) — commit/PR only; tag+release only on explicit request
-- [gh CLI local install](gh_cli_local_install.md) — gh lives in ~/.local/bin, use GH_TOKEN not `gh auth login`

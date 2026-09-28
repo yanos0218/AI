@@ -63,6 +63,11 @@
   - 서브에이전트 안에서 실행한 조회(입력에 `agent_id`)는 기록하지 않음, 알림 개수가 부풀던 문제([Issue #134](https://github.com/yanos0218/AI/issues/134), PATCH)
   - 명령을 160바이트로 자를 때 한글 조각이 남아 기록 파일이 UTF-8로 안 읽히던 문제
 
+### Removed
+
+- `drafts/observations/`
+  - 날짜별 관찰 기록·auto memory 사본·claude.ai 내보내기 폴더 폐지. 월 점검에서 auto memory는 각 기기에서 직접 읽고 대화 방식은 self-audit로 확인. 저장소 `CLAUDE.md` 세션 끝 관찰 기록 규칙 삭제
+
 ## [0.11.4] - 2026-09-19
 
 ### Added

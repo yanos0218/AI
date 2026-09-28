@@ -46,7 +46,7 @@
 
 - 세션 끝
   - `docs/PROGRESS.md`(§0 자산 현황표의 단계·배포 열 + 항목 상태) + `docs/HANDOFF.md`(현재 상태) 갱신.
-  - 그날 드러난 요청·대화·작업 방식을 `drafts/observations/YYYY-MM-DD.md`에 짧게 적는다(원자료, 하루 파일 하나).
+  - 관찰 기록 파일은 따로 쓰지 않는다. 요청·작업 방식의 반복은 월 점검에서 `self-audit`가 대화 기록을 직접 읽어 찾는다(2026-09-28 `drafts/observations/` 폐지).
   - 전역 지침 반영은 월 점검 때 후보로만.
 - 할 일과 발견한 문제는 GitHub Issue로 관리한다(라벨 `task`/`bug`, [Issue #11](https://github.com/yanos0218/AI/issues/11) 2026-09-12). 진행 보드는 §0 배포 표만 담당.
 - 여러 세션에 걸치는 이슈는 **작업할 때마다 댓글로 진행 상황을 남긴다.**

@@ -6,9 +6,9 @@
 월 점검 YYYY-MM
 - [ ] 1. 도구 버전 — `claude --version`, `claude doctor`. 업데이트가 있으면 `research` 라벨 이슈 중 "다시 볼 시점" 지난 것 재조사(`gh issue list --label research --state all`)
 - [ ] 2. 설치본 대조 — `bash tools/check-install.sh`. DIFF는 base 반영 또는 재설치, 프로젝트 settings.local.json에 2개 저장소 이상 반복된 권한은 base/settings.example.json 승격 후보
-- [ ] 3. 설정 변경 이력 — ~/.claude/config-changelog.md 를 drafts/observations/memory-<기기>/ 로 복사하고 원본은 비움
-- [ ] 4. auto memory 수집 — ~/.claude/projects/*/memory/*.md 를 drafts/observations/memory-<기기>/ 로 복사. 저장소 무관 성향은 Issue로 후보 등록(`task` 라벨, 2026-09-12부터 drafts/claude-md/ 대신)
-- [ ] 5. 관찰 기록 검토 — drafts/observations/*.md 에서 두 번 이상 반복된 것만 전역 지침 후보로 Issue 등록
+- [ ] 3. 설정 변경 이력 — ~/.claude/config-changelog.md 를 그 기기에서 읽고, 반영할 변경만 Issue 후보로 남긴 뒤 원본은 비움
+- [ ] 4. auto memory 검토 — ~/.claude/projects/*/memory/*.md 를 그 기기에서 읽음(저장소로 복사하지 않음). 저장소 무관 성향은 Issue로 후보 등록(`task` 라벨)
+- [ ] 5. 대화 기록 검토 — 사용자가 요청하면 self-audit 스킬 실행(최근 세션 기록을 직접 읽음, 비용 발생). 두 번 이상 반복된 것만 전역 지침 후보로 Issue 등록
 - [ ] 6. 스킬 재시험 — base/skills/* 각 3시나리오를 tools/test-skill.sh 로 (Sonnet). 실패하면 초안으로 내려 수정
 - [ ] 7. /insights — 대화형 세션에서 실행, 제안 중 반복되는 것만 후보
 - [ ] 8. 사용량 — 상태줄 $ 누계, claude.ai 사용량 페이지, GitHub Settings → Billing → Actions 분

@@ -30,7 +30,7 @@
 
 ### ② `drafts/` — 만드는 중인 것 (작업 영역)
 
-`base/`와 같은 구조로 초안을 두고, 시험을 통과하면 ①로 옮긴다. 배포·pack 대상이 아니다. 승격 절차는 [drafts/README.md](drafts/README.md). [drafts/observations/](drafts/observations/)는 세션마다 관찰한 사용자 요청·대화 방식(원자료)이다.
+`base/`와 같은 구조로 초안을 두고, 시험을 통과하면 ①로 옮긴다. 배포·pack 대상이 아니다. 승격 절차는 [drafts/README.md](drafts/README.md).
 
 ### ③ `docs/` — 이 저장소를 운영하기 위한 문서
 
