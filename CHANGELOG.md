@@ -16,6 +16,8 @@
 
 ### Changed
 
+- `.github/workflows/lint.yml`
+  - shellcheck 대상에 `base/skills/*/scripts/*.sh`와 `drafts/hooks/*.sh` 추가, 로컬 같은 대상 27개 경고 0건([Issue #161](https://github.com/yanos0218/AI/issues/161), PATCH)
 - `tools/install.sh`
   - 버전 표시 파일 3행에 `base/` 트리 해시를 기록함. 1·2행은 그대로라 기존 세션 시작 훅과 호환, 문서만 바뀐 커밋을 설정 변경과 구별하는 데 씀([Issue #150](https://github.com/yanos0218/AI/issues/150), PATCH)
 
