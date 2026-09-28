@@ -31,7 +31,7 @@
 ## 문서 규칙
 
 - 파일마다 역할이 하나다. README = 입구(구조·설치 요약·링크). HANDOFF = 지금 상황(현재 상태는 **4줄 이하 + 링크**, 상세는 PROGRESS §0). PROGRESS = 자산 단계·배포 표 + 완료 이력. 할 일은 GitHub Issues. 상세 주제는 `docs/<주제>.md` 하나씩.
-- 줄 수 상한(`tools/check-docs.sh`가 CI에서 검사): README 120, 이 파일 60, `base/claude-md/CLAUDE.md` 200, HANDOFF 60, PROGRESS 300, SKILL.md 80.
+- 줄 수 상한(`tools/check-docs.sh`가 CI에서 검사): README 120, 이 파일 60, `base/claude-md/CLAUDE.md` 200, HANDOFF 60, PROGRESS 300, CHANGELOG 400, SKILL.md 80.
   - 넘으면 줄이는 게 아니라 **분리**한다
     - README는 `docs/`로.
     - PROGRESS는 §0 표만 담으므로 보통 넘지 않는다.
