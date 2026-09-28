@@ -37,6 +37,8 @@ say "  hooks 설치: $(cd base/hooks && echo *.sh *.py)"
 for d in base/skills/*/; do
   n="$(basename "${d}")"; [[ "${n}" == _* ]] && continue
   run rm -rf "${CLAUDE_HOME}/skills/${n}"; run cp -r "${d}" "${CLAUDE_HOME}/skills/${n}"; say "  skill 설치: ${n}"
+  # 원본에서 시험하다 생긴 파이썬 캐시는 설치본에 남기지 않는다(Issue #160)
+  run find "${CLAUDE_HOME}/skills/${n}" -type d -name __pycache__ -prune -exec rm -rf {} +
 done
 
 # 3a. agents (서브에이전트 정의) — base/agents/*.md → ~/.claude/agents/. 폴더를 처음 만든 뒤에는 새 세션부터 인식됨

@@ -31,6 +31,8 @@
   - 프로젝트 루트 기본값이 Windows 전용(`/c/Git`)이라 Mac·Linux에서 조용히 "(없음)"이던 문제. 기본값을 이 저장소의 상위 폴더로, 경로가 없으면 안내([Issue #157](https://github.com/yanos0218/AI/issues/157), PATCH)
 - `tools/test-session-start-check.sh`
   - 실제 v0.12.0 태그에 기대 `base/`가 바뀐 뒤 "문서만 바뀐 커밋" 사례가 건너뛰어지던 문제. 시험 안에서 태그와 문서 커밋을 만들어 15건 모두 실행([Issue #158](https://github.com/yanos0218/AI/issues/158), PATCH)
+- `tools/check-install.sh`·`tools/install.sh`·`tools/pack.sh`
+  - 스킬 폴더의 파이썬 캐시(`__pycache__`)까지 비교·복사·압축해 거짓 `DIFF`가 나고 설치본·웹 zip에 캐시가 섞이던 문제. 세 곳 모두 제외([Issue #160](https://github.com/yanos0218/AI/issues/160), PATCH)
 - `tools/check-docs.sh`
   - Mac 기본 bash 3.2에 없는 `mapfile` 때문에 모든 파일을 0줄로 세고 통과시키던 문제, 하위 프로세스 없는 내장 `read`로 줄 수를 세도록 바꿈([Issue #151](https://github.com/yanos0218/AI/issues/151), PATCH)
 - `tools/test-hooks-py.sh`

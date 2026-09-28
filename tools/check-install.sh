@@ -30,8 +30,9 @@ run_checks() {
   for f in base/agents/*.md; do same_or_diff "${f}" "${CLAUDE_HOME}/agents/$(basename "${f}")"; done
   for d in base/skills/*/; do
     n="$(basename "${d}")"; [[ "${n}" == _* ]] && continue
+    # 파이썬 캐시(__pycache__)는 비교하지 않는다. 시험하다 생긴 캐시로 거짓 DIFF가 났다(Issue #160)
     if [[ ! -d "${CLAUDE_HOME}/skills/${n}" ]]; then echo "  MISSING  ${CLAUDE_HOME}/skills/${n}"; drift=1
-    elif diff -rq "${d}" "${CLAUDE_HOME}/skills/${n}" >/dev/null; then echo "  same     ${CLAUDE_HOME}/skills/${n}"
+    elif diff -rq -x __pycache__ "${d}" "${CLAUDE_HOME}/skills/${n}" >/dev/null; then echo "  same     ${CLAUDE_HOME}/skills/${n}"
     else echo "  DIFF     ${CLAUDE_HOME}/skills/${n}"; drift=1; fi
   done
 
