@@ -43,8 +43,8 @@ fi
 search_text="${cmd}
 ${script_content}"
 
-# git commit이 아니면 조용히 통과
-printf '%s' "${search_text}" | grep -Eq 'git[[:space:]]+commit' || exit 0
+# git commit이 아니면 조용히 통과. git -C <경로> commit 형태도 커밋으로 본다(전역 지침이 git -C를 권장, Issue #148)
+printf '%s' "${search_text}" | grep -Eq 'git([[:space:]]+-C[[:space:]]+[^[:space:]]+)*[[:space:]]+commit' || exit 0
 
 fail=0
 msg=""
@@ -55,9 +55,10 @@ if ! out=$(bash tools/check-docs.sh 2>&1); then
   msg="${msg}\\ncheck-docs.sh 실패:\\n$(printf '%s' "${out}" | tail -5)"
 fi
 
-# 2. markdownlint — 스테이징된 .md가 있을 때만
-if git diff --cached --name-only --diff-filter=ACM 2>/dev/null | grep -q '\.md$'; then
-  if ! out=$(npx --yes markdownlint-cli2 "**/*.md" 2>&1); then
+# 2. markdownlint — 스테이징된 .md만(저장소 전체를 보면 느린 시각에 제한 시간을 넘겨 검사가 버려졌다, Issue #148)
+md_files="$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null | grep '\.md$' || true)"
+if [[ -n "${md_files}" ]]; then
+  if ! out=$(printf '%s\n' "${md_files}" | xargs npx --yes markdownlint-cli2 2>&1); then
     fail=1
     msg="${msg}\\nmarkdownlint 실패:\\n$(printf '%s' "${out}" | tail -8)"
   fi

@@ -8,7 +8,8 @@ fail=0
 limit() { # 파일 상한
   local f="${1}" max="${2}"
   [[ -f "${f}" ]] || { echo "MISSING ${f}"; fail=1; return; }
-  local n; n=$(wc -l < "${f}")
+  # 줄 수는 bash 내장 mapfile로 센다. 파일마다 wc를 띄우면 Windows 느린 시각에 24초가 걸려 커밋 검사 훅이 제한 시간을 넘겼다(Issue #148)
+  local -a lines; mapfile -t lines < "${f}"; local n="${#lines[@]}"
   if [[ "${n}" -gt "${max}" ]]; then echo "TOO LONG ${f}: ${n} > ${max}"; fail=1; else echo "ok  ${f} (${n}/${max})"; fi
 }
 

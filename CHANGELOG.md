@@ -55,6 +55,9 @@
 
 ### Fixed
 
+- `tools/check-docs.sh`·`.claude/hooks/pre-commit-check.sh` 커밋 검사가 제한 시간을 넘겨 검사 없이 커밋되던 문제 일부
+  - check-docs.sh 줄 수 세기를 bash 내장으로 바꿔 느린 시각 24초 → 4.6초, 커밋 검사의 markdownlint는 스테이징된 .md만
+  - `git -C <경로> commit` 형태도 커밋으로 판정([Issue #148](https://github.com/yanos0218/AI/issues/148))
 - `base/hooks/git-guardrails.sh`·`gh-throttle.sh`
   - 판정을 bash 내장 기능으로 바꿔 하위 프로세스를 없앰, 제한 시간 5초·9초 → 30초. 느린 시각에 9.5초가 걸려 제한 시간을 넘기면 확인 창 없이 통과될 수 있던 문제([Issue #142](https://github.com/yanos0218/AI/issues/142), PATCH)
 - `base/agents/researcher.md`
