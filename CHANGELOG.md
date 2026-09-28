@@ -26,10 +26,10 @@
 
 - `base/settings.example.json` 훅 대기 줄이기
   - 기록만 하는 config-changelog·bulk-read-log를 `async`로 돌려 명령·편집 뒤 기다리지 않음
-  - `if` 조건으로 gh-throttle은 `gh`·스크립트 실행 명령, bulk-read-log는 `gh`·`git log`, config-changelog 편집 기록은 `~/.claude` 파일만
+  - `if` 조건으로 gh-throttle은 `gh`·`bash` 명령, config-changelog 편집 기록은 `~/.claude` 파일만. 조건은 명령 이름만 써서 heredoc 등에서 같은 훅이 여러 번 뜨지 않게 함
   - 느린 시각 실측 명령 대기 중앙값 42.8초(2026-09-28)의 원인 대응([Issue #147](https://github.com/yanos0218/AI/issues/147), PATCH)
 - `.claude/settings.json`(이 저장소 전용)
-  - 훅 경로를 `${CLAUDE_PROJECT_DIR}` 기준으로 바꿔 작업 폴더를 옮겨도 동작, pre-commit-check는 `if` 조건으로 커밋·스크립트 실행 명령에서만, 제한 시간 120초([Issue #148](https://github.com/yanos0218/AI/issues/148))
+  - 훅 경로를 `${CLAUDE_PROJECT_DIR}` 기준으로 바꿔 작업 폴더를 옮겨도 동작, pre-commit-check는 `if` 조건으로 `git`·`bash` 명령에서만, 같은 도구 호출에 두 번 뜨면 하나만 검사, 제한 시간 120초([Issue #148](https://github.com/yanos0218/AI/issues/148))
 - `base/hooks/` config-changelog·bulk-read-log·verifier-guard 파이썬 전환
   - 셸 입구는 대상 아닌 입력을 하위 프로세스 없이 끝내고, 판정은 파이썬 본체와 공통 모듈 `hooklib.py`가 함(입력 JSON을 정확히 읽어 설명 글·따옴표 안 글 오탐 약 70건 제거, 옛 훅이 놓친 여러 줄 명령 안 `git add` 차단)
   - 막는 훅(verifier-guard)은 파이썬이 없거나 오류면 차단, 기록 훅은 조용히 통과하고 `~/.claude/hook-errors.log`에 기록

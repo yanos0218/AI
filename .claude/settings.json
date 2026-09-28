@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "//": "pre-commit-check는 if 조건으로 커밋·스크립트 실행 명령에서만 돈다. 모든 Bash에 걸면 느린 시각에 명령마다 20초 넘게 기다렸다(Issue #147·#148)",
+  "//": "if 조건은 명령 이름만 쓴다(Bash(git *) 등). \"git commit *\"처럼 인자까지 쓰면 $()·heredoc 명령에서 조건과 상관없이 전부 발동해 같은 훅이 여러 개 동시에 떴다(Issue #147·#148)",
   "hooks": {
     "PreToolUse": [
       {
@@ -18,37 +18,13 @@
         "hooks": [
           {
             "type": "command",
-            "if": "Bash(git commit *)",
-            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/pre-commit-check.sh\"",
-            "timeout": 120
-          },
-          {
-            "type": "command",
-            "if": "Bash(git -C * commit *)",
+            "if": "Bash(git *)",
             "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/pre-commit-check.sh\"",
             "timeout": 120
           },
           {
             "type": "command",
             "if": "Bash(bash *)",
-            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/pre-commit-check.sh\"",
-            "timeout": 120
-          },
-          {
-            "type": "command",
-            "if": "Bash(sh *)",
-            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/pre-commit-check.sh\"",
-            "timeout": 120
-          },
-          {
-            "type": "command",
-            "if": "Bash(source *)",
-            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/pre-commit-check.sh\"",
-            "timeout": 120
-          },
-          {
-            "type": "command",
-            "if": "Bash(./*)",
             "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/pre-commit-check.sh\"",
             "timeout": 120
           }

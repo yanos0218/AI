@@ -25,6 +25,13 @@ case "${input}" in
   *commit*|*.sh*) ;;   # 스크립트로 감싼 커밋(bash x.sh)은 뒤에서 스크립트 내용까지 본다
   *) exit 0 ;;
 esac
+# if 조건 두 개(git·bash)가 같은 명령에 함께 걸리면(heredoc 등 조건을 판정 못 하는 명령) 이 훅이 동시에 두 번 뜬다.
+# 같은 도구 호출(tool_use_id)은 먼저 뜬 하나만 검사하고 나머지는 바로 끝낸다(Issue #148)
+if [[ "${input}" =~ \"tool_use_id\"[[:space:]]*:[[:space:]]*\"([^\"]+)\" ]]; then
+  once="${TMPDIR:-/tmp}/pre-commit-check.${BASH_REMATCH[1]}"
+  mkdir "${once}" 2>/dev/null || exit 0
+  trap 'rmdir "${once}" 2>/dev/null' EXIT
+fi
 cd "$(dirname "${0}")/../.." || exit 0
 cmd="$(printf '%s' "${input}" | sed -n 's/.*"command"[[:space:]]*:[[:space:]]*"\(.*\)".*/\1/p' | head -1)"
 
