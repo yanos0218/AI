@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # 설치본(~/.claude)이 기본 영역(base/)과 어긋났는지, 그리고 프로젝트마다 쌓인 로컬 설정이
 # 무엇인지 보여준다. 월 점검(C-21) 때와 "설정이 이상하다" 싶을 때 실행한다. 아무것도 고치지 않는다.
-#   bash tools/check-install.sh [--summary] [프로젝트 루트=/c/Git]
+#   bash tools/check-install.sh [--summary] [프로젝트 루트=이 저장소의 상위 폴더]
 # --summary: 각 섹션 상세를 다 보여주지 않고 마지막 판정 줄만 출력(릴리즈 컷 등에서 사용,
 # Issue #123 — grep으로 걸러도 "설정 변경 이력" 섹션이 새서 컨텍스트를 불필요하게 채웠음)
 set -u
@@ -11,7 +11,8 @@ QUIET=0
 if [[ "${1:-}" == "--summary" ]]; then QUIET=1; shift; fi
 
 CLAUDE_HOME="${CLAUDE_CONFIG_DIR:-${HOME}/.claude}"
-PROJECTS_ROOT="${1:-/c/Git}"
+# 기본값은 이 저장소를 담은 상위 폴더(Windows C:\Git, Mac /Library/Git). 예전 /c/Git 고정은 Mac·Linux에서 조용히 "(없음)"이었다(Issue #157)
+PROJECTS_ROOT="${1:-$(cd .. && pwd)}"
 PY="$(command -v python3 || command -v python)"
 drift=0
 
@@ -74,6 +75,7 @@ PY
 
   section "프로젝트별 로컬 설정 — '항상 허용' 클릭이 쌓이는 곳. 여러 저장소에 반복되면 base/settings.example.json 승격 후보"
   found=0
+  [[ -d "${PROJECTS_ROOT}" ]] || echo "  프로젝트 루트 ${PROJECTS_ROOT} 가 없음 — 인자로 지정(bash tools/check-install.sh <루트>)"
   for f in "${PROJECTS_ROOT}"/*/.claude/settings.local.json; do
     [[ -e "${f}" ]] || continue; found=1
     echo "  ${f}"
@@ -84,7 +86,7 @@ for k, v in (d.get('permissions') or {}).items():
     for r in v: print(f'    {k}: {r}')
 PY
   done
-  [[ "${found}" = 1 ]] || echo "  (없음)"
+  [[ "${found}" = 1 ]] || echo "  (없음, ${PROJECTS_ROOT}/*/.claude/settings.local.json 기준)"
 
   section "설정 변경 이력 ${CLAUDE_HOME}/config-changelog.md (config-changelog 훅이 쓰는 파일)"
   if [[ -f "${CLAUDE_HOME}/config-changelog.md" ]]; then tail -n 20 "${CLAUDE_HOME}/config-changelog.md" | sed 's/^/  /'; else echo "  (아직 없음 — 훅 미설치)"; fi
