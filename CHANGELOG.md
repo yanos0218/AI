@@ -23,6 +23,8 @@
 
 ### Fixed
 
+- `tools/test-skill.sh`·`tools/test-agent.sh`
+  - `--tools ""`처럼 빈 값이면 Mac bash 3.2에서 `tool_rules` 빈 배열로 멈추던 문제, 빈 배열 안전하게 펼침([Issue #162](https://github.com/yanos0218/AI/issues/162), PATCH)
 - `base/hooks/session-start-check.sh`
   - 원본 저장소가 원격보다 뒤처져도 낡음 알림이 안 뜨던 문제와, 문서만 바뀐 커밋에도 알림이 뜨던 거짓 경보. 하루 한 번 백그라운드 fetch, 뒤처지면 원격 기준, `base/` 트리 해시로 비교(옛 설치본은 태그 비교)([Issue #150](https://github.com/yanos0218/AI/issues/150), PATCH)
 - `base/skills/config-update`

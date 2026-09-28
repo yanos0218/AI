@@ -35,7 +35,7 @@ out="${FIX}.$(basename "${FIX}").jsonl"
 echo "== 스킬 ${name} → ${FIX}/.claude/skills/ · 모델 ${MODEL} · 말: ${PROMPT}"
 IFS=',' read -r -a tool_rules <<<"${TOOLS}"
 (cd "${FIX}" && unset CLAUDECODE CLAUDE_CODE_ENTRYPOINT && "${CLAUDE_BIN}" -p "${PROMPT}" --model "${MODEL}" \
-  --output-format stream-json --verbose --max-turns "${TURNS}" --allowedTools "${tool_rules[@]}") > "${out}" 2>"${out}.err" < /dev/null
+  --output-format stream-json --verbose --max-turns "${TURNS}" --allowedTools ${tool_rules[@]+"${tool_rules[@]}"}) > "${out}" 2>"${out}.err" < /dev/null
 
 PYTHONIOENCODING=utf-8 "${PY}" - "${out}" "${name}" <<'PY'
 import json, sys

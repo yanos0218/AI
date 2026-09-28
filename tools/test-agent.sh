@@ -51,7 +51,7 @@ out="${FIX}.${name}.jsonl"
 echo "== 에이전트 ${name} · 모델 ${MODEL} · $("${CLAUDE_BIN}" --version 2>/dev/null) · 말: ${PROMPT}"
 IFS=',' read -r -a tool_rules <<<"${TOOLS}"
 (cd "${FIX}" && unset CLAUDECODE CLAUDE_CODE_ENTRYPOINT && "${CLAUDE_BIN}" -p "${PROMPT}" --model "${MODEL}" \
-  --output-format stream-json --verbose --max-turns "${TURNS}" ${agents_args[@]+"${agents_args[@]}"} --allowedTools "${tool_rules[@]}") > "${out}" 2>"${out}.err" < /dev/null
+  --output-format stream-json --verbose --max-turns "${TURNS}" ${agents_args[@]+"${agents_args[@]}"} --allowedTools ${tool_rules[@]+"${tool_rules[@]}"}) > "${out}" 2>"${out}.err" < /dev/null
 
 PYTHONIOENCODING=utf-8 "${PY}" - "${out}" "${name}" <<'PY'
 import json, sys
