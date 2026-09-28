@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """토큰 사용 기록 집계(Issue #136). usage.sh가 잠금을 잡은 뒤 부른다 — 직접 실행하지 않는다.
 
-python usage.py <hook|backfill|render|check|status>
+python usage.py <hook|backfill|render|status>
   hook      stdin의 Stop 훅 입력으로 그 세션의 메인·서브에이전트 기록에서 새 줄만 읽는다
   backfill  남아 있는 대화 기록 전체에서 새 줄을 읽는다(켜기 때)
 저장(usage-log/):
@@ -33,7 +33,6 @@ IDLE_SEC = 300            # 이보다 오래 쉬고 난 뒤의 재작성은 "쉬
 PROMPT_CHARS = 80
 PROMPT_FULL = 2000        # 상세에 남기는 요청 원문 길이
 EV_MAX, EV_TEXT = 40, 180 # 요청당 상세 단계 수, 단계마다 남기는 글자 수
-ALERT_RATIO, MIN_SESSIONS = 1.2, 6
 
 
 def parse_ts(ts):
@@ -314,22 +313,6 @@ class Store:
         write_atomic(STATE, json.dumps(self.state, ensure_ascii=False))
 
 
-def median(values):
-    v = sorted(values)
-    n = len(v)
-    return (v[n // 2] if n % 2 else (v[n // 2 - 1] + v[n // 2]) / 2) if n else 0
-
-
-def check():
-    s = sorted(read_jsonl(STARTS), key=lambda r: r['ts'])[-60:]
-    if len(s) < MIN_SESSIONS + 1:
-        return
-    latest, med = s[-1]['ctx'], median([r['ctx'] for r in s[:-1]])
-    if med and latest > med * ALERT_RATIO:
-        print(f'[usage-dashboard] 세션 시작 컨텍스트가 늘었습니다(최근 {latest:,}토큰, 중앙값 {med:,.0f}토큰, '
-              f'+{(latest / med - 1) * 100:.0f}%). 스킬·플러그인·MCP·CLAUDE.md가 늘었는지 /context로 확인하세요. 대시보드: {PAGE}')
-
-
 def status():
     on = os.path.isfile(os.path.join(BASE, 'enabled'))
     hours = sorted(load_json(HOURLY, {}))
@@ -432,7 +415,5 @@ if __name__ == '__main__':
               f'기록 기간 {hours[0][:10] if hours else "-"} ~ {hours[-1][:10] if hours else "-"}')
     elif MODE == 'render':
         render()
-    elif MODE == 'check':
-        check()
     elif MODE == 'status':
         status()

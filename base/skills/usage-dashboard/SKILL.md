@@ -1,7 +1,7 @@
 ---
 name: usage-dashboard
-description: "토큰 사용량을 로컬에 기록하고 5시간 블록·시간·일·월별 대시보드(브라우저)로 보여준다. 저장소·누가(메인/서브에이전트)·모델별로 나눠 보고, 많이 쓴 요청과 원인(긴 요청, 서브에이전트, 캐시 재작성, 컴팩션, 큰 도구 결과)을 보여주며, 세션 시작 크기가 늘면 알린다. 사용자가 '토큰 대시보드 켜줘', '토큰 사용량 기록 시작해줘', '대시보드 열어줘', '토큰 사용량 보여줘', '대시보드 꺼줘', '토큰 기록 상태 알려줘', 'VS Code에서 대시보드 보여줘'라고 하면 사용한다. 기본은 꺼져 있고 요청할 때만 켠다. 한 세션의 컨텍스트 구성만 궁금하면 이 스킬 대신 /context, 계정 한도는 /usage를 안내한다."
-allowed-tools: Bash(bash *usage.sh* status) Bash(bash *usage.sh* open) Bash(bash *usage.sh* render) Bash(bash *usage.sh* check) Bash(bash *usage.sh* serve) Bash(bash *usage.sh* stop)
+description: "토큰 사용량을 로컬에 기록하고 5시간 블록·시간·일·월별 대시보드(브라우저)로 보여준다. 저장소·누가(메인/서브에이전트)·모델별로 나눠 보고, 많이 쓴 요청과 원인(긴 요청, 서브에이전트, 캐시 재작성, 컴팩션, 큰 도구 결과)을 보여주며, 세션 시작 크기가 평소보다 커지면 화면에 강조한다. 사용자가 '토큰 대시보드 켜줘', '토큰 사용량 기록 시작해줘', '대시보드 열어줘', '토큰 사용량 보여줘', '대시보드 꺼줘', '토큰 기록 상태 알려줘', 'VS Code에서 대시보드 보여줘'라고 하면 사용한다. 기본은 꺼져 있고 요청할 때만 켠다. 한 세션의 컨텍스트 구성만 궁금하면 이 스킬 대신 /context, 계정 한도는 /usage를 안내한다."
+allowed-tools: Bash(bash *usage.sh* status) Bash(bash *usage.sh* open) Bash(bash *usage.sh* render) Bash(bash *usage.sh* serve) Bash(bash *usage.sh* stop)
 ---
 
 # usage-dashboard
@@ -29,7 +29,6 @@ allowed-tools: Bash(bash *usage.sh* status) Bash(bash *usage.sh* open) Bash(bash
 | 기록 삭제 | 없음 | 스크립트로 지우지 않는다. 기록 폴더 경로(`~/.claude/usage-log/`)만 알려 주고 사용자가 지우게 한다 |
 
 - `enable`·`disable`은 허용 목록에 넣지 않았다. 실행할 때 권한 확인 창이 한 번 더 뜨는 게 정상이다.
-- `check`는 사람이 부르는 명령이 아니다. 세션 시작 훅이 불러 세션 시작 크기가 중앙값보다 20% 넘게 늘었을 때만 한 줄 알린다.
 
 ## 2. 화면에서 볼 수 있는 것
 

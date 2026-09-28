@@ -10,7 +10,7 @@
 ### Added
 
 - `base/skills/usage-dashboard` 스킬 승격
-  - 요청할 때만 켜는 토큰 사용 기록과 로컬 대시보드(5시간 블록·시간·일·월, 저장소·메인/서브에이전트·모델별, 요청 순위와 원인). `settings.example.json`에 async Stop 훅 등록, 꺼져 있으면 훅은 바로 끝남. Windows·Mac 전용([Issue #136](https://github.com/yanos0218/AI/issues/136), MINOR)
+  - 요청할 때만 켜는 토큰 사용 기록과 로컬 대시보드(5시간 블록·시간·일·월, 저장소·메인/서브에이전트·모델별, 요청 순위와 원인). 세션 시작 크기가 평소보다 커지면 화면에만 강조, 세션 시작 알림(`usage.sh check`)은 뺌(사용자 결정, 대시보드와 중복·세션 시작 지연). `settings.example.json`에 async Stop 훅 등록, 꺼져 있으면 훅은 바로 끝남. Windows·Mac 전용([Issue #136](https://github.com/yanos0218/AI/issues/136), MINOR)
 - `tools/test-session-start-check.sh`
   - 세션 시작 훅의 설정 낡음 판정 시험. 임시 원격·복제본·가짜 HOME으로 원격 앞섬, 문서만 바뀐 커밋, 옛 버전 파일 형식, fetch 주기와 기다리지 않음을 확인([Issue #150](https://github.com/yanos0218/AI/issues/150), PATCH)
 

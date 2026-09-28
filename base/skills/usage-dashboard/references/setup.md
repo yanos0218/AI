@@ -24,7 +24,6 @@ claude-config `install.sh`가 `settings.example.json`의 `hooks.Stop`을 `~/.cla
 
 - `async: true`라 응답을 기다리게 하지 않는다.
 - `install.sh` 없이 스킬만 복사해 쓰는 경우에는 위 항목을 직접 넣고, 경로를 실제 스킬 위치로 바꾼다.
-- 세션 시작 크기 알림은 세션 시작 훅에서 `usage.sh check`를 부를 때만 동작한다.
 - `settings.json` 수정은 사용자 확인 뒤에 한다.
 
 ## 저장 파일과 보관 기간

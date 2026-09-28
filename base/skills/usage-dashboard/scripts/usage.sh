@@ -13,7 +13,6 @@
 #   serve     VS Code 안에서 보도록 이 PC 전용(127.0.0.1) 주소로 띄우고 주소를 클립보드에 복사한다
 #   stop      serve로 띄운 것을 끈다
 #   status    켜짐 여부와 기록 기간
-#   check     세션 시작 크기가 중앙값보다 20% 넘게 늘었으면 한 줄 출력
 # 저장: ${CLAUDE_CONFIG_DIR:-~/.claude}/usage-log/ (시험할 때는 USAGE_LOG_DIR, USAGE_PROJECTS_DIR로 바꾼다)
 # 대상은 Windows·Mac(브라우저로 보는 화면). UI 없는 Linux 서버는 켜지 않는다(2026-09-27 결정).
 set -u
@@ -100,7 +99,7 @@ case "${MODE}" in
     if [[ -f "${LOG}/.server.pid" ]]; then kill "$(cat "${LOG}/.server.pid")" 2>/dev/null; rm -f "${LOG}/.server.pid"; fi
     serving && echo "아직 응답합니다. 다른 곳에서 띄운 서버일 수 있습니다." || echo "껐습니다."
     ;;
-  render|check|status) run_py "${MODE}" ;;
-  *) echo "사용법: bash usage.sh hook|enable|disable|open|render|serve|stop|status|check"; exit 2 ;;
+  render|status) run_py "${MODE}" ;;
+  *) echo "사용법: bash usage.sh hook|enable|disable|open|render|serve|stop|status"; exit 2 ;;
 esac
 exit 0
