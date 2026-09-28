@@ -4,6 +4,8 @@
 
 저장소 전용 규칙은 각 저장소에 두고 여기서는 참조만 한다. 다른 저장소 내용을 복사하지 않는다.
 
+구성 요소가 어떻게 이어지고 어떤 순서로 운영되는지(자산 수명·훅이 도는 시점·세션·릴리즈·점검)는 [docs/operating-flow.md](docs/operating-flow.md).
+
 ## 구조 — 네 묶음
 
 파일은 역할이 넷으로 나뉜다. **①만 실제로 배포**되고, 나머지는 ①을 만들고 지키기 위한 것이다. 폴더 이름이 곧 영역이다.
@@ -21,7 +23,7 @@
 | [base/skills/self-audit/](base/skills/self-audit/SKILL.md) | "self-audit 해줘 / CLAUDE.md 점검해줘"에 발동. 대화 기록을 서브에이전트로 읽어 문서화 안 된 결정·안 지켜진 규칙 후보를 찾음(3시나리오 발동 시험 통과, 2026-09-13) |
 | [base/skills/pdf-extract/](base/skills/pdf-extract/SKILL.md) | "PDF 요약해줘 / PDF 텍스트 뽑아줘"에 발동. MarkItDown으로 텍스트 변환 후 읽어 토큰 절약(4쪽 실측 −62%), 스캔본·글자 깨짐은 직접 읽기로 전환. MarkItDown은 `~/.claude/venvs/markitdown` 가상환경(설치는 사용자 승인 후) |
 | [base/skills/config-update/](base/skills/config-update/SKILL.md) | "설정 업데이트해줘"에 발동. 어느 저장소에 있든 원본 경로(`~/.claude/.claude-config-version`)로 `install.sh`+`check-install.sh` 실행(2시나리오 발동 시험 통과, 2026-09-17) |
-| [base/hooks/](base/hooks/) | 위험한 명령 앞 확인을 강제하는 `git-guardrails.sh`, gh 콘텐츠 생성 명령 앞 지연으로 GitHub 속도 제한을 예방하는 `gh-throttle.sh`, 상태줄 `statusline.sh`, 설정 변경 이력 `config-changelog.sh`, 대량 조회를 조용히 기록하는 `bulk-read-log.sh`, 컴팩션 직전 git 상태·최근 테스트 명령을 저장했다가 컴팩션 직후 보여주는 `compact-snapshot.sh`·`compact-snapshot-show.sh`, 새 세션마다 저장소 표준·설치 버전·self-audit 안내·대량 조회 누적을 조용히 확인하는 `session-start-check.sh`, verifier 에이전트 전용 차단 훅 `verifier-guard.sh`<br>config-changelog·bulk-read-log·verifier-guard는 셸 입구가 대상 아닌 입력을 바로 끝내고, 판정은 파이썬 본체(`*_*.py`)와 공통 모듈 `hooklib.py`가 함. 막는 훅은 파이썬이 없거나 오류면 막음 |
+| [base/hooks/](base/hooks/) | 전역 훅 9개<br>위험 명령 확인 `git-guardrails.sh`, GitHub 쓰기 간격 `gh-throttle.sh`, 상태줄, 설정 변경·대량 조회 기록, 컴팩션 안전망, 세션 시작 점검, verifier 차단. 언제 도는지는 [docs/operating-flow.md](docs/operating-flow.md#훅이-도는-시점) |
 | [base/agents/](base/agents/) | 용도별 서브에이전트<br>조사 `researcher`(Sonnet, 읽기·웹만), 문서·참조 점검 `auditor`(Sonnet, 읽기만), 검사 실행 `verifier`(Haiku, 쓰기·커밋 명령은 `verifier-guard.sh`가 차단). `~/.claude/agents/`에 설치 |
 | [base/settings.example.json](base/settings.example.json) | `~/.claude/settings.json` 예시 (허용·거부 명령, 훅, 상태줄) |
 | [base/rules/](base/rules/) | 모듈 규칙<br>기본 지침을 건드리지 않고 주제별로 붙이는 파일. `~/.claude/rules/`에 설치 |
@@ -36,6 +38,7 @@
 
 | 경로 | 무엇 |
 | --- | --- |
+| [docs/operating-flow.md](docs/operating-flow.md) | 구성 요소가 적용되는 곳, 훅이 도는 시점, 세션·자산·배포·릴리즈·점검 흐름 |
 | [docs/HANDOFF.md](docs/HANDOFF.md) | Claude가 새 대화를 시작할 때 읽는 "지금 상황" 메모<br>무엇이 어디까지 됐고 무엇을 결정했는지 |
 | [docs/PROGRESS.md](docs/PROGRESS.md) | 진행 보드<br>자산별 단계(계획→초안→검증→기본)와 기기별 배포 상태. 할 일은 GitHub Issues(라벨 `task`/`bug`) |
 | [docs/versioning.md](docs/versioning.md) | 이 저장소의 버전·릴리즈 규칙 |
