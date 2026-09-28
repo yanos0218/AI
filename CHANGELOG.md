@@ -18,6 +18,8 @@
   - Mac 기본 bash 3.2에 없는 `mapfile` 때문에 모든 파일을 0줄로 세고 통과시키던 문제, 하위 프로세스 없는 내장 `read`로 줄 수를 세도록 바꿈([Issue #151](https://github.com/yanos0218/AI/issues/151), PATCH)
 - `tools/test-hooks-py.sh`
   - `python` 명령을 고정으로 불러 `python3`만 있는 Mac에서 7건이 실패하던 문제, 훅과 같은 순서(`python` → `python3`)로 고르도록 바꿈([Issue #151](https://github.com/yanos0218/AI/issues/151), PATCH)
+- `tools/test-skill.sh`
+  - 시험 중 스킬이 자신을 다시 설치하면(config-update) 끝날 때 비켜 둔 설치본이 새 폴더 안으로 들어가 이중 폴더가 생기던 문제. 복구 전에 대상 폴더를 치움([Issue #152](https://github.com/yanos0218/AI/issues/152), PATCH)
 - `tools/check-cram.sh`
   - `--staged`에서 추가된 줄 번호 목록을 `awk -v`로 넘겨, Mac 기본 awk가 오류를 내고 여러 줄을 추가한 파일을 건너뛰어 통과시키던 문제. 환경변수로 넘기도록 바꿈([Issue #151](https://github.com/yanos0218/AI/issues/151), PATCH)
 

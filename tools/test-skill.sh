@@ -26,7 +26,8 @@ name="$(basename "${SKILL}")"
 CLAUDE_HOME="${CLAUDE_CONFIG_DIR:-${HOME}/.claude}"; aside=""
 if [[ -d "${CLAUDE_HOME}/skills/${name}" ]]; then
   aside="${CLAUDE_HOME}/skill-test-aside/${name}"; rm -rf "${aside}"; mkdir -p "${CLAUDE_HOME}/skill-test-aside"; mv "${CLAUDE_HOME}/skills/${name}" "${aside}"
-  trap 'mv "${aside}" "${CLAUDE_HOME}/skills/${name}"' EXIT
+  # 시험 중 스킬이 자신을 다시 설치하면(config-update) 같은 이름 폴더가 새로 생겨 mv가 그 안으로 들어가므로 먼저 치운다(2026-09-28)
+  trap 'rm -rf "${CLAUDE_HOME}/skills/${name}"; mv "${aside}" "${CLAUDE_HOME}/skills/${name}"' EXIT
   echo "== 설치본 ${CLAUDE_HOME}/skills/${name} 을 시험 동안 비켜 둠(끝나면 복구)"
 fi
 mkdir -p "${FIX}/.claude/skills"; rm -rf "${FIX}/.claude/skills/${name}"; cp -r "${SKILL}" "${FIX}/.claude/skills/${name}"
