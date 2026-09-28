@@ -30,7 +30,7 @@
 
 ### ② `drafts/` — 만드는 중인 것 (작업 영역)
 
-`base/`와 같은 구조로 초안을 두고, 시험을 통과하면 ①로 옮긴다. 배포·pack 대상이 아니다. 승격 절차는 [drafts/README.md](drafts/README.md).
+`base/`와 같은 구조로 초안을 두고, 시험을 통과하면 ①로 옮긴다. 배포·pack 대상이 아니다. 승격 절차는 [drafts/README.md](drafts/README.md). 초안 목록과 단계는 [docs/PROGRESS.md §0](docs/PROGRESS.md#0-자산-현황--단계와-배포-상태) 표.
 
 ### ③ `docs/` — 이 저장소를 운영하기 위한 문서
 
@@ -46,8 +46,9 @@
 | [docs/research.md](docs/research.md) | 조사 규칙(최신·검증·출처, 기록은 Issues `research` 라벨) |
 | [docs/issue-format.md](docs/issue-format.md) | 이슈 라벨별 작성 형식(개발/버그·에러/조사/제안) |
 | [docs/skill-development.md](docs/skill-development.md) | 새 스킬 만드는 절차와 시험 방법 |
+| [docs/research/](docs/research/README.md) | 2026-09-13 이전 조사 기록(archive)<br>새 조사는 Issues `research` 라벨 |
 | [docs/tool-catalog.md](docs/tool-catalog.md) | 조사한 외부 도구·내장 기능 목록<br>상황별 판정(도입·조건부·쓰지 말 것)과 확인일, 근거 이슈 |
-| [docs/monthly-check.md](docs/monthly-check.md) | 월 점검 체크리스트 12항목 |
+| [docs/monthly-check.md](docs/monthly-check.md) | 월 점검 체크리스트 14항목 |
 | [docs/config-lifecycle.md](docs/config-lifecycle.md) | 다른 저장소에서 작업해도 기본 설정이 유지되는 구조(기본·모듈·프로젝트 층)와 변경 이력 장치 |
 | [CHANGELOG.md](CHANGELOG.md) · [CLAUDE.md](CLAUDE.md) | 기본 영역의 버전별 변경 이력 · 이 저장소 안에서 Claude가 지킬 규칙 |
 
@@ -66,7 +67,7 @@
 | [tools/check-cram.sh](tools/check-cram.sh)·[tools/check-cram.py](tools/check-cram.py) | 목록 줄바꿈 규칙(콜론·em-dash 크램) 검사<br>`--staged`로 커밋 전 자동 검사, `--add-exception`으로 오탐 예외 등록 |
 | [.claude/hooks/](.claude/hooks/) | 저장소 전용 훅<br>`baseline-guard.sh`+`baseline_guard.py`(`base/` 쓰기 확인, 공통 모듈은 `base/hooks/hooklib.py`), `pre-commit-check.sh`(이슈 번호·크램 검사로 커밋 차단), `session-end-check.sh`(base/ 변경 시 PROGRESS §0 갱신, 그 외엔 관련 Issue 댓글·닫기 확인 안내) |
 | [.github/workflows/lint.yml](.github/workflows/lint.yml) | push마다 markdownlint·shellcheck·문서 상한 검사 |
-| [.github/workflows/issue-format-check.yml](.github/workflows/issue-format-check.yml) | 이슈 본문·댓글이 올라오면 목록 줄바꿈 규칙을 검사해 위반을 댓글과 라벨로 알림 |
+| [.github/workflows/issue-format-check.yml](.github/workflows/issue-format-check.yml) | 이슈 본문·댓글이 올라오면 라벨별 필수 헤딩과 목록 줄바꿈 규칙을 검사해 위반을 댓글과 라벨로 알림 |
 | [.github/dependabot.yml](.github/dependabot.yml) | 워크플로가 쓰는 액션 버전 업데이트 |
 
 ## 어디서 무엇이 적용되나
@@ -98,4 +99,4 @@ bash tools/install.sh            # --dry-run 으로 먼저 볼 수 있음
 
 이미 설치돼 있으면 어느 저장소에 있든 "설정 업데이트해줘"라고 말해도 된다(`config-update` 스킬).
 
-CLAUDE.md·훅·스킬을 복사하고 `settings.json`에 `permissions`·`hooks`·`statusLine` 키를 합친다(기기별 `model` 등은 유지). 스킬·훅은 **새 세션**부터 적용된다. 어느 기기에 어느 버전이 깔렸는지는 [docs/PROGRESS.md §0](docs/PROGRESS.md#0-자산-현황--단계와-배포-상태) 표.
+CLAUDE.md·훅·스킬을 복사하고 `settings.json`에 `permissions`·`hooks`·`statusLine`·`env` 키를 합친다(기기별 `model` 등은 유지). 스킬·훅은 **새 세션**부터 적용된다. 어느 기기에 어느 버전이 깔렸는지는 [docs/PROGRESS.md §0](docs/PROGRESS.md#0-자산-현황--단계와-배포-상태) 표.
