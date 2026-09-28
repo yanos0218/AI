@@ -8,7 +8,7 @@
           {
             "type": "command",
             "command": "bash .claude/hooks/baseline-guard.sh",
-            "timeout": 5
+            "timeout": 30
           }
         ]
       },

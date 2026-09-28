@@ -1,13 +1,15 @@
-"""baseline-guard 본체(Issue #144, 이 저장소 전용). 기본 영역 base/를 고치려 하면 확인 창(ask)을 띄운다.
+"""baseline-guard 본체(Issue #144, 이 저장소 전용). 공통 모듈은 저장소의 base/hooks/hooklib.py를 쓴다. 기본 영역 base/를 고치려 하면 확인 창(ask)을 띄운다.
 막는 훅이라 판정은 보수적으로 한다(명령은 heredoc 본문까지 본다, python이 base/를 언급하면 쓰기로 본다).
 옛 셸판과 달라진 점
 - 입력 JSON을 정확히 읽는다(파일 경로에 붙은 다른 필드 글까지 훑지 않음), NotebookEdit의 notebook_path도 본다
 - 출력 버리기(>/dev/null, 2>&1)와 따옴표 안의 >는 쓰기로 보지 않는다(ls base/ 2>/dev/null이 확인 창을 띄우던 오탐)
 이 파일이 오류로 끝나면 셸 입구가 확인 창으로 처리한다."""
+import os
 import re
 import sys
 
-import hooklib as h
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'base', 'hooks'))
+import hooklib as h  # noqa: E402
 
 BASE = re.compile(r'(^|[/\\"\' ])base[/\\]')
 EXEMPT = re.compile(r'(?:[A-Za-z]:)?[^ "\']*base[/\\]skills[/\\]_[^ "\']*')      # base/skills/_template 같은 틀

@@ -25,7 +25,7 @@ same_or_diff() { # $1=base 파일, $2=설치본
 run_checks() {
   section "기본 영역 ↔ 설치본"
   same_or_diff base/claude-md/CLAUDE.md "${CLAUDE_HOME}/CLAUDE.md"
-  for f in base/hooks/*.sh; do same_or_diff "${f}" "${CLAUDE_HOME}/hooks/$(basename "${f}")"; done
+  for f in base/hooks/*.sh base/hooks/*.py; do same_or_diff "${f}" "${CLAUDE_HOME}/hooks/$(basename "${f}")"; done
   for f in base/agents/*.md; do same_or_diff "${f}" "${CLAUDE_HOME}/agents/$(basename "${f}")"; done
   for d in base/skills/*/; do
     n="$(basename "${d}")"; [[ "${n}" == _* ]] && continue

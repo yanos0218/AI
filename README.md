@@ -21,7 +21,7 @@
 | [base/skills/self-audit/](base/skills/self-audit/SKILL.md) | "self-audit 해줘 / CLAUDE.md 점검해줘"에 발동. 대화 기록을 서브에이전트로 읽어 문서화 안 된 결정·안 지켜진 규칙 후보를 찾음(3시나리오 발동 시험 통과, 2026-09-13) |
 | [base/skills/pdf-extract/](base/skills/pdf-extract/SKILL.md) | "PDF 요약해줘 / PDF 텍스트 뽑아줘"에 발동. MarkItDown으로 텍스트 변환 후 읽어 토큰 절약(4쪽 실측 −62%), 스캔본·글자 깨짐은 직접 읽기로 전환. MarkItDown은 `~/.claude/venvs/markitdown` 가상환경(설치는 사용자 승인 후) |
 | [base/skills/config-update/](base/skills/config-update/SKILL.md) | "설정 업데이트해줘"에 발동. 어느 저장소에 있든 원본 경로(`~/.claude/.claude-config-version`)로 `install.sh`+`check-install.sh` 실행(2시나리오 발동 시험 통과, 2026-09-17) |
-| [base/hooks/](base/hooks/) | 위험한 명령 앞 확인을 강제하는 `git-guardrails.sh`, gh 콘텐츠 생성 명령 앞 지연으로 GitHub 속도 제한을 예방하는 `gh-throttle.sh`, 상태줄 `statusline.sh`, 설정 변경 이력 `config-changelog.sh`, 대량 조회를 조용히 기록하는 `bulk-read-log.sh`, 컴팩션 직전 git 상태·최근 테스트 명령을 저장했다가 컴팩션 직후 보여주는 `compact-snapshot.sh`·`compact-snapshot-show.sh`, 새 세션마다 저장소 표준·설치 버전·self-audit 안내·대량 조회 누적을 조용히 확인하는 `session-start-check.sh`, verifier 에이전트 전용 차단 훅 `verifier-guard.sh` |
+| [base/hooks/](base/hooks/) | 위험한 명령 앞 확인을 강제하는 `git-guardrails.sh`, gh 콘텐츠 생성 명령 앞 지연으로 GitHub 속도 제한을 예방하는 `gh-throttle.sh`, 상태줄 `statusline.sh`, 설정 변경 이력 `config-changelog.sh`, 대량 조회를 조용히 기록하는 `bulk-read-log.sh`, 컴팩션 직전 git 상태·최근 테스트 명령을 저장했다가 컴팩션 직후 보여주는 `compact-snapshot.sh`·`compact-snapshot-show.sh`, 새 세션마다 저장소 표준·설치 버전·self-audit 안내·대량 조회 누적을 조용히 확인하는 `session-start-check.sh`, verifier 에이전트 전용 차단 훅 `verifier-guard.sh`<br>config-changelog·bulk-read-log·verifier-guard는 셸 입구가 대상 아닌 입력을 바로 끝내고, 판정은 파이썬 본체(`*_*.py`)와 공통 모듈 `hooklib.py`가 함. 막는 훅은 파이썬이 없거나 오류면 막음 |
 | [base/agents/](base/agents/) | 용도별 서브에이전트<br>조사 `researcher`(Sonnet, 읽기·웹만), 문서·참조 점검 `auditor`(Sonnet, 읽기만), 검사 실행 `verifier`(Haiku, 쓰기·커밋 명령은 `verifier-guard.sh`가 차단). `~/.claude/agents/`에 설치 |
 | [base/settings.example.json](base/settings.example.json) | `~/.claude/settings.json` 예시 (허용·거부 명령, 훅, 상태줄) |
 | [base/rules/](base/rules/) | 모듈 규칙<br>기본 지침을 건드리지 않고 주제별로 붙이는 파일. `~/.claude/rules/`에 설치 |
@@ -62,8 +62,9 @@
 | [tools/pack.sh](tools/pack.sh) | ①의 스킬을 웹 업로드용 zip으로 (zip 없으면 python 폴백) |
 | [tools/check-docs.sh](tools/check-docs.sh) | 문서 줄 수 상한과 필수 파일 검사 (CI와 로컬 공용) |
 | [tools/check-install.sh](tools/check-install.sh) | 설치본 `~/.claude`가 `base/`와 같은지, 프로젝트마다 쌓인 권한·설정 이력은 무엇인지 보고 |
+| [tools/test-hooks-py.sh](tools/test-hooks-py.sh) | 파이썬 본체 훅 시험<br>판정 사례, 파이썬 없음·깨진 입력 때 막는 훅은 막고 기록 훅은 통과하는지, 한글 기록 |
 | [tools/check-cram.sh](tools/check-cram.sh)·[tools/check-cram.py](tools/check-cram.py) | 목록 줄바꿈 규칙(콜론·em-dash 크램) 검사<br>`--staged`로 커밋 전 자동 검사, `--add-exception`으로 오탐 예외 등록 |
-| [.claude/hooks/](.claude/hooks/) | 저장소 전용 훅<br>`baseline-guard.sh`(`base/` 쓰기 확인), `pre-commit-check.sh`(이슈 번호·크램 검사로 커밋 차단), `session-end-check.sh`(base/ 변경 시 PROGRESS §0 갱신, 그 외엔 관련 Issue 댓글·닫기 확인 안내) |
+| [.claude/hooks/](.claude/hooks/) | 저장소 전용 훅<br>`baseline-guard.sh`+`baseline_guard.py`(`base/` 쓰기 확인, 공통 모듈은 `base/hooks/hooklib.py`), `pre-commit-check.sh`(이슈 번호·크램 검사로 커밋 차단), `session-end-check.sh`(base/ 변경 시 PROGRESS §0 갱신, 그 외엔 관련 Issue 댓글·닫기 확인 안내) |
 | [.github/workflows/lint.yml](.github/workflows/lint.yml) | push마다 markdownlint·shellcheck·문서 상한 검사 |
 | [.github/workflows/issue-format-check.yml](.github/workflows/issue-format-check.yml) | 이슈 본문·댓글이 올라오면 목록 줄바꿈 규칙을 검사해 위반을 댓글과 라벨로 알림 |
 | [.github/dependabot.yml](.github/dependabot.yml) | 워크플로가 쓰는 액션 버전 업데이트 |

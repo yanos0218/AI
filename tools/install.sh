@@ -27,9 +27,10 @@ fi
 run cp "${src}" "${dst}"; say "  CLAUDE.md 설치"
 
 # 2. hooks
-for f in base/hooks/*.sh; do run cp "${f}" "${CLAUDE_HOME}/hooks/"; done
+# 셸 입구(*.sh)와 파이썬 본체·공통 모듈(*.py, Issue #144)을 같은 폴더에 둔다
+for f in base/hooks/*.sh base/hooks/*.py; do run cp "${f}" "${CLAUDE_HOME}/hooks/"; done
 run chmod +x "${CLAUDE_HOME}"/hooks/*.sh 2>/dev/null
-say "  hooks 설치: $(ls base/hooks | tr '\n' ' ')"
+say "  hooks 설치: $(cd base/hooks && echo *.sh *.py)"
 
 # 3. skills (_로 시작하는 틀은 제외, 기존 폴더는 교체)
 for d in base/skills/*/; do

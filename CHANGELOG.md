@@ -24,6 +24,13 @@
 
 ### Changed
 
+- `base/hooks/` config-changelog·bulk-read-log·verifier-guard 파이썬 전환
+  - 셸 입구는 대상 아닌 입력을 하위 프로세스 없이 끝내고, 판정은 파이썬 본체와 공통 모듈 `hooklib.py`가 함(입력 JSON을 정확히 읽어 설명 글·따옴표 안 글 오탐 약 70건 제거, 옛 훅이 놓친 여러 줄 명령 안 `git add` 차단)
+  - 막는 훅(verifier-guard)은 파이썬이 없거나 오류면 차단, 기록 훅은 조용히 통과하고 `~/.claude/hook-errors.log`에 기록
+  - `settings.example.json`의 config-changelog·bulk-read-log 제한 시간 5초 → 30초. 느린 시각에 확인 없이 통과되던 문제 해결([Issue #143](https://github.com/yanos0218/AI/issues/143))
+  - `tools/install.sh`·`check-install.sh`가 `base/hooks/*.py`도 복사·대조([Issue #144](https://github.com/yanos0218/AI/issues/144), PATCH)
+- `.claude/hooks/baseline-guard.sh`(이 저장소 전용)
+  - 같은 구조로 전환, 실패하면 확인 창. 제한 시간 30초. 시험은 `tools/test-hooks-py.sh`([Issue #144](https://github.com/yanos0218/AI/issues/144))
 - `base/claude-md/CLAUDE.md` 5절 서브에이전트 문장
   - 전용 에이전트(researcher·auditor·verifier)가 있으면 그것을 쓰고, 에이전트 파일에 모델이 있으면 `model` 값을 넘기지 않음. 나머지는 기존대로 Sonnet([Issue #131](https://github.com/yanos0218/AI/issues/131), PATCH)
 - `base/claude-md/CLAUDE.md` 5절 조사 규칙
