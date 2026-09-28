@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 # session-start-check.sh 1번(전역 설정 낡음 판정) 시험(Issue #150). 임시 원격·복제본·가짜 HOME으로
 # 원격이 앞선 경우, 문서만 바뀐 경우, 옛 버전 파일 형식, fetch 주기와 기다리지 않음을 확인한다.
-#   bash drafts/hooks/test-session-start-check.sh [훅 경로]   (기본: 같은 폴더의 session-start-check.sh)
+#   bash tools/test-session-start-check.sh [훅 경로]   (기본: base/hooks/session-start-check.sh)
 set -u
-here="$(cd "$(dirname "${0}")" && pwd)"
-root="$(cd "${here}/../.." && pwd)"
-hook="${1:-${here}/session-start-check.sh}"
+root="$(cd "$(dirname "${0}")/.." && pwd)"
+hook="${1:-${root}/base/hooks/session-start-check.sh}"
 tmp="$(mktemp -d)"
 trap 'rm -rf "${tmp}"' EXIT
 pass=0; fail=0
@@ -19,7 +18,7 @@ OLD=v0.11.4; NEW=v0.12.0
 OLD_TREE="$(tree_of "${OLD}")"; MAIN_TREE="$(tree_of origin/main)"
 
 ver() { printf '%s\n' "${tmp}/src" "$@" > "${tmp}/home/.claude/.claude-config-version"; }
-run() { printf '{"cwd":"%s","transcript_path":""}' "${tmp}" | HOME="${tmp}/home" CLAUDE_CONFIG_DIR= bash "${hook}" 2>&1; }
+run() { printf '{"cwd":"%s","transcript_path":""}' "${tmp}" | HOME="${tmp}/home" CLAUDE_CONFIG_DIR='' bash "${hook}" 2>&1; }
 expect() { # $1=기대(alert|behind|quiet) $2=설명
   local out; out="$(run)"
   local got=quiet

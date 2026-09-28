@@ -5,6 +5,8 @@
 # 3) self-audit(base/skills/self-audit)을 안 돌린 지 세션이 많이 쌓였는지
 # 4) 대량 조회(서브에이전트 위임 없이 직접 실행)가 얼마나 쌓였는지
 # 읽기만 한다 — 파일을 쓰거나 지우지 않는다. 조건에 안 걸리면 아무 말도 안 한다(2026-09-12, Issue #62 / 2026-09-13, 3번 추가 / 2026-09-15, 4번 추가).
+# 예외: 1번은 하루 한 번 원본 저장소에서 git fetch를 백그라운드로 돌린다. .git 안의 원격 추적 정보만 바뀌고
+# 작업 트리 파일은 건드리지 않는다. 기다리지 않으므로 판정은 직전 fetch 결과로 한다(Issue #150).
 #
 # 4번 배경: PreToolUse/PostToolUse 훅이 매 도구 호출마다 Claude에게 실시간으로
 # 알려주는 게 기술적으로 안 됨을 실제 세션 3개로 확인함(systemMessage·평문 stdout
@@ -31,15 +33,32 @@ except Exception:
 CWD="$(get_field cwd)"
 [[ -n "${CWD}" ]] || exit 0
 
-# 1. 전역 설정 버전 확인
+# 1. 전역 설정 버전 확인 — 설치 때 기록한 base/ 트리 해시(버전 파일 3행)와 최신 base/ 트리 해시를 비교한다.
+# 문서·도구만 바뀐 커밋은 base/ 트리가 같아 알리지 않는다. 3행이 없는 옛 설치본은 태그끼리 비교한다.
+# 최신 = 로컬이 원격(upstream)보다 뒤처져 있으면 원격, 아니면 로컬 HEAD(Issue #150).
 VER_FILE="${HOME}/.claude/.claude-config-version"
 if [[ -f "${VER_FILE}" ]]; then
-  SRC_PATH="$(sed -n '1p' "${VER_FILE}" 2>/dev/null)"
-  INSTALLED_VER="$(sed -n '2p' "${VER_FILE}" 2>/dev/null)"
-  if [[ -n "${SRC_PATH}" ]] && [[ -d "${SRC_PATH}/.git" ]]; then
-    CURRENT_VER="$(git -C "${SRC_PATH}" describe --tags --always 2>/dev/null || true)"
-    if [[ -n "${CURRENT_VER}" ]] && [[ -n "${INSTALLED_VER}" ]] && [[ "${CURRENT_VER}" != "${INSTALLED_VER}" ]]; then
-      echo "[claude-config] 전역 설정이 낡았습니다(설치됨 ${INSTALLED_VER} → 최신 ${CURRENT_VER}). 사용자에게 갱신 여부만 물으세요. 승인되면 config-update 스킬로만 갱신하고, 원본 저장소의 파일은 읽거나 고치지 마세요."
+  { read -r SRC_PATH; read -r INSTALLED_VER; read -r INSTALLED_TREE; } < "${VER_FILE}"
+  if [[ -n "${SRC_PATH:-}" ]] && [[ -n "${INSTALLED_VER:-}" ]] && [[ -d "${SRC_PATH}/.git" ]]; then
+    if [[ -z "$(find "${SRC_PATH}/.git/FETCH_HEAD" -mmin -1440 2>/dev/null)" ]]; then
+      (GIT_TERMINAL_PROMPT=0 git -C "${SRC_PATH}" fetch -q --tags </dev/null >/dev/null 2>&1 &)
+    fi
+    # upstream이 없으면 뒤의 두 줄이 비어 로컬 HEAD 기준이 된다
+    { read -r HEAD_ID; read -r HEAD_TREE; read -r UP_ID; read -r UP_TREE; } < <(git -C "${SRC_PATH}" rev-parse HEAD HEAD:base '@{u}' '@{u}:base' 2>/dev/null)
+    TARGET=HEAD; TARGET_TREE="${HEAD_TREE:-}"; BEHIND=""
+    if [[ -n "${UP_ID:-}" ]] && [[ "${UP_ID}" != "${HEAD_ID:-}" ]] && git -C "${SRC_PATH}" merge-base --is-ancestor HEAD '@{u}' 2>/dev/null; then
+      TARGET='@{u}'; TARGET_TREE="${UP_TREE:-}"; BEHIND=" 원본 저장소가 원격보다 뒤처져 있어 config-update가 먼저 pull합니다."
+    fi
+    STALE=0
+    if [[ -n "${INSTALLED_TREE:-}" ]]; then
+      [[ -n "${TARGET_TREE}" ]] && [[ "${TARGET_TREE}" != "${INSTALLED_TREE}" ]] && STALE=1
+    else
+      TARGET_TAG="$(git -C "${SRC_PATH}" describe --tags --abbrev=0 "${TARGET}" 2>/dev/null || true)"
+      [[ -n "${TARGET_TAG}" ]] && [[ "${TARGET_TAG}" != "${INSTALLED_VER%-[0-9]*-g*}" ]] && STALE=1
+    fi
+    if [[ "${STALE}" == 1 ]]; then
+      CURRENT_VER="$(git -C "${SRC_PATH}" describe --tags --always "${TARGET}" 2>/dev/null || true)"
+      echo "[claude-config] 전역 설정이 낡았습니다(설치됨 ${INSTALLED_VER} → 최신 ${CURRENT_VER}).${BEHIND} 사용자에게 갱신 여부만 물으세요. 승인되면 config-update 스킬로만 갱신하고, 원본 저장소의 파일은 읽거나 고치지 마세요."
     fi
   fi
 fi

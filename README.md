@@ -22,7 +22,7 @@
 | [base/skills/repo-setup/](base/skills/repo-setup/SKILL.md) | "저장소 표준 맞춰줘 / 뭐가 빠졌는지 봐줘"에 발동. [docs/repo-standard.md](docs/repo-standard.md) 9항목 대조 후 고른 것만 생성 |
 | [base/skills/self-audit/](base/skills/self-audit/SKILL.md) | "self-audit 해줘 / CLAUDE.md 점검해줘"에 발동. 대화 기록을 서브에이전트로 읽어 문서화 안 된 결정·안 지켜진 규칙 후보를 찾음(3시나리오 발동 시험 통과, 2026-09-13) |
 | [base/skills/pdf-extract/](base/skills/pdf-extract/SKILL.md) | "PDF 요약해줘 / PDF 텍스트 뽑아줘"에 발동. MarkItDown으로 텍스트 변환 후 읽어 토큰 절약(4쪽 실측 −62%), 스캔본·글자 깨짐은 직접 읽기로 전환. MarkItDown은 `~/.claude/venvs/markitdown` 가상환경(설치는 사용자 승인 후) |
-| [base/skills/config-update/](base/skills/config-update/SKILL.md) | "설정 업데이트해줘"에 발동. 어느 저장소에 있든 원본 경로(`~/.claude/.claude-config-version`)로 `install.sh`+`check-install.sh` 실행(2시나리오 발동 시험 통과, 2026-09-17) |
+| [base/skills/config-update/](base/skills/config-update/SKILL.md) | "설정 업데이트해줘"에 발동. 어느 저장소에 있든 원본 경로(`~/.claude/.claude-config-version`)로 원격을 받아와 `base/`가 바뀌었을 때만 `install.sh`+`check-install.sh` 실행(2시나리오 발동 시험 2026-09-17, 원격 확인 3시나리오 2026-09-28) |
 | [base/hooks/](base/hooks/) | 전역 훅 9개<br>위험 명령 확인 `git-guardrails.sh`, GitHub 쓰기 간격 `gh-throttle.sh`, 상태줄, 설정 변경·대량 조회 기록, 컴팩션 안전망, 세션 시작 점검, verifier 차단. 언제 도는지는 [docs/operating-flow.md](docs/operating-flow.md#훅이-도는-시점) |
 | [base/agents/](base/agents/) | 용도별 서브에이전트<br>조사 `researcher`(Sonnet, 읽기·웹만), 문서·참조 점검 `auditor`(Sonnet, 읽기만), 검사 실행 `verifier`(Haiku, 쓰기·커밋 명령은 `verifier-guard.sh`가 차단). `~/.claude/agents/`에 설치 |
 | [base/settings.example.json](base/settings.example.json) | `~/.claude/settings.json` 예시 (허용·거부 명령, 훅, 상태줄) |
@@ -67,6 +67,7 @@
 | [tools/check-docs.sh](tools/check-docs.sh) | 문서 줄 수 상한과 필수 파일 검사 (CI와 로컬 공용) |
 | [tools/check-install.sh](tools/check-install.sh) | 설치본 `~/.claude`가 `base/`와 같은지, 프로젝트마다 쌓인 권한·설정 이력은 무엇인지 보고 |
 | [tools/test-hooks-py.sh](tools/test-hooks-py.sh) | 파이썬 본체 훅 시험<br>판정 사례, 파이썬 없음·깨진 입력 때 막는 훅은 막고 기록 훅은 통과하는지, 한글 기록 |
+| [tools/test-session-start-check.sh](tools/test-session-start-check.sh) | 세션 시작 훅의 설정 낡음 판정 시험<br>원격 앞섬·문서만 바뀐 커밋·옛 버전 파일 형식·fetch 주기 |
 | [tools/check-cram.sh](tools/check-cram.sh)·[tools/check-cram.py](tools/check-cram.py) | 목록 줄바꿈 규칙(콜론·em-dash 크램) 검사<br>`--staged`로 커밋 전 자동 검사, `--add-exception`으로 오탐 예외 등록 |
 | [.claude/hooks/](.claude/hooks/) | 저장소 전용 훅<br>`baseline-guard.sh`+`baseline_guard.py`(`base/` 쓰기 확인, 공통 모듈은 `base/hooks/hooklib.py`), `pre-commit-check.sh`(이슈 번호·크램 검사로 커밋 차단), `session-end-check.sh`(base/ 변경 시 PROGRESS §0 갱신, 그 외엔 관련 Issue 댓글·닫기 확인 안내) |
 | [.github/workflows/lint.yml](.github/workflows/lint.yml) | push마다 markdownlint·shellcheck·문서 상한 검사 |

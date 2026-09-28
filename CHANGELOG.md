@@ -7,6 +7,11 @@
 
 ## [Unreleased]
 
+### Added
+
+- `tools/test-session-start-check.sh`
+  - 세션 시작 훅의 설정 낡음 판정 시험. 임시 원격·복제본·가짜 HOME으로 원격 앞섬, 문서만 바뀐 커밋, 옛 버전 파일 형식, fetch 주기와 기다리지 않음을 확인([Issue #150](https://github.com/yanos0218/AI/issues/150), PATCH)
+
 ### Changed
 
 - `tools/install.sh`
@@ -14,6 +19,10 @@
 
 ### Fixed
 
+- `base/hooks/session-start-check.sh`
+  - 원본 저장소가 원격보다 뒤처져도 낡음 알림이 안 뜨던 문제와, 문서만 바뀐 커밋에도 알림이 뜨던 거짓 경보. 하루 한 번 백그라운드 fetch, 뒤처지면 원격 기준, `base/` 트리 해시로 비교(옛 설치본은 태그 비교)([Issue #150](https://github.com/yanos0218/AI/issues/150), PATCH)
+- `base/skills/config-update`
+  - 원격을 확인하지 않아 낡은 버전을 최신으로 판정하던 문제. fetch → 뒤처졌고 작업 트리가 깨끗하면 `pull --ff-only` → `base/` 트리 비교 → 다를 때만 설치([Issue #150](https://github.com/yanos0218/AI/issues/150), PATCH)
 - `tools/check-docs.sh`
   - Mac 기본 bash 3.2에 없는 `mapfile` 때문에 모든 파일을 0줄로 세고 통과시키던 문제, 하위 프로세스 없는 내장 `read`로 줄 수를 세도록 바꿈([Issue #151](https://github.com/yanos0218/AI/issues/151), PATCH)
 - `tools/test-hooks-py.sh`
