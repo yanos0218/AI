@@ -13,6 +13,7 @@ say() { printf '%s\n' "$*"; }
 run() { if [[ "${DRY}" = 1 ]]; then say "  (dry) $*"; else "$@"; fi; }
 
 BASE_VER="$(git describe --tags --always 2>/dev/null)"
+BASE_TREE="$(git rev-parse HEAD:base 2>/dev/null)"   # base/ 내용 지문. 문서만 바뀐 커밋과 구별하는 데 씀(Issue #150)
 SRC_ABS="$(pwd)"
 say "== 대상: ${CLAUDE_HOME}  (base 버전: ${BASE_VER})"
 run mkdir -p "${CLAUDE_HOME}/hooks" "${CLAUDE_HOME}/skills" "${CLAUDE_HOME}/agents"
@@ -69,8 +70,9 @@ PY
 fi
 
 # 5. 버전 표시 파일 — SessionStart 훅(session-start-check.sh)이 최신 여부를 조용히 확인하는 데 씀
+#    1행 원본 경로, 2행 버전(표시용), 3행 base/ 트리 해시(비교용)
 if [[ "${DRY}" = 1 ]]; then say "  (dry) 버전 표시 파일 기록: ${SRC_ABS} / ${BASE_VER}"; else
-  printf '%s\n%s\n' "${SRC_ABS}" "${BASE_VER}" > "${CLAUDE_HOME}/.claude-config-version"
+  printf '%s\n%s\n%s\n' "${SRC_ABS}" "${BASE_VER}" "${BASE_TREE}" > "${CLAUDE_HOME}/.claude-config-version"
   say "  버전 표시 기록: ${BASE_VER}"
 fi
 
