@@ -23,6 +23,8 @@
 
 ### Fixed
 
+- `.claude/hooks/session-end-check.sh`
+  - 공백·이름 바뀐 파일의 경로를 일부만 읽어 `base/` 변경을 놓치던 문제와, 규칙과 반대로 "닫기(Closes #N)"를 안내하던 문구. 경로 전체와 옛·새 경로를 읽고 `Refs #N` 안내로 바꿈([Issue #163](https://github.com/yanos0218/AI/issues/163), PATCH)
 - `tools/test-skill.sh`·`tools/test-agent.sh`
   - `--tools ""`처럼 빈 값이면 Mac bash 3.2에서 `tool_rules` 빈 배열로 멈추던 문제, 빈 배열 안전하게 펼침([Issue #162](https://github.com/yanos0218/AI/issues/162), PATCH)
 - `base/hooks/session-start-check.sh`

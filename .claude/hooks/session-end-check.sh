@@ -5,9 +5,11 @@
 # 그 외 변경은 로컬 git만으로는 관련 Issue를 확인할 수 없어(C-54, 2026-09-12,
 # 할 일·문제를 GitHub Issues로 관리) 댓글·닫기 여부를 스스로 점검하라는 안내만 한다.
 # 소음이 되면 .claude/settings.json 에서 뺀다 (C-48).
+# 커밋에는 Closes #N 대신 Refs #N만 쓴다(push 즉시 닫힘 방지, Issue #122).
 set -u
 cd "$(dirname "${0}")/../.." || exit 0
-changed="$(git status --porcelain 2>/dev/null | awk '{print $2}')"
+# 상태 두 글자 뒤 전체를 경로로 본다. 이름 바뀐 파일(old -> new)은 옛·새 경로 둘 다, 따옴표로 감싼 경로는 벗긴다(Issue #163)
+changed="$(git status --porcelain 2>/dev/null | cut -c4- | awk '{ n = index($0, " -> "); if (n) { print substr($0, 1, n - 1); print substr($0, n + 4) } else print }' | sed -E 's/^"(.*)"$/\1/')"
 [[ -n "${changed}" ]] || exit 0                               # 바뀐 게 없으면 조용히
 
 base_changed=0
@@ -24,6 +26,6 @@ fi
 
 n="$(printf '%s\n' "${changed}" | grep -c .)"
 cat <<JSON
-{"systemMessage":"session-end-check: 미커밋 변경 ${n}개. 관련 GitHub Issue가 있으면 댓글이나 닫기(Closes #N)를 했는지 확인하세요. PROGRESS·HANDOFF는 §0 표나 결정 사항이 바뀌었을 때만 갱신하면 됩니다."}
+{"systemMessage":"session-end-check: 미커밋 변경 ${n}개. 관련 GitHub Issue가 있으면 진행 댓글을 남겼는지, 커밋에 Refs #N을 적었는지 확인하세요(닫기는 검증 뒤 gh issue close). PROGRESS·HANDOFF는 §0 표나 결정 사항이 바뀌었을 때만 갱신하면 됩니다."}
 JSON
 exit 0
