@@ -19,9 +19,13 @@
 # 커밋 단계에서 기계적으로 잡는다. 정규식 휴리스틱이라 오탐 시 --add-exception으로
 # 예외 등록(Issue #99).
 set -u
+# 모든 Bash 호출마다 돌므로 commit 글자가 없으면 하위 프로세스 없이 바로 끝낸다(대상 아닌 명령에 6.5초, Issue #143)
+IFS= read -r -d '' input || true
+case "${input}" in
+  *commit*|*.sh*) ;;   # 스크립트로 감싼 커밋(bash x.sh)은 뒤에서 스크립트 내용까지 본다
+  *) exit 0 ;;
+esac
 cd "$(dirname "${0}")/../.." || exit 0
-
-input="$(cat)"
 cmd="$(printf '%s' "${input}" | sed -n 's/.*"command"[[:space:]]*:[[:space:]]*"\(.*\)".*/\1/p' | head -1)"
 
 script_path=""
