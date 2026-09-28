@@ -6,7 +6,7 @@
 - 목록 항목이 "(N) 설명A — 설명B"처럼 한 줄에 길게 늘어지면 본문 줄 + 하위 bullet으로 나눠 쓰는 규칙 추가
 allowed-tools: Bash(git tag --list*) Bash(git log*) Bash(git diff*) Bash(git status*) Bash(gh release view*) Bash(gh run list*) Bash(gh run view*)
 - 예: 기능 추가와 버그 수정이 같이 있으면 **MINOR**; breaking change가 하나라도 있으면 **MAJOR**
-- "필드명: 값"을 나열하는 구조화된 기록(예: 조사 이슈의 질문/조사일)은 값이 짧은 한 줄이면 그대로 둔다. 서술문을 이어붙인 게 아니라 필드 나열이라 대상이 아니다.
+- "필드명: 값"을 나열하는 구조화된 기록(예: 이슈 라벨/제목 규정, 조사 문서의 조사일/질문)은 값이 짧은 한 줄이면 그대로 둔다. 서술문을 이어붙인 게 아니라 필드 나열이라 대상이 아니다.
 - 라벨: `task` + `auto-detected`(이 스킬이 자동으로 찾아낸 것과 사람이 발견한 것을 구분).
 - 제목: `self-audit YYYY-MM-DD: <한 줄 요약>`.
 - 본문: 서브에이전트가 준 근거 한 줄 + "Issue로만" 선택한 이유(있으면).

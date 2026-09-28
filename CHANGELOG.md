@@ -35,6 +35,7 @@
 - `base/rules/docs-format.md`
   - "필드명: 값" 예외를 짧은 한 줄 값으로 좁힘. 문장·항목이 여럿인 값(조사 이슈의 결론·출처·영향 등)은 하위 bullet로 줄바꿈([Issue #133](https://github.com/yanos0218/AI/issues/133), PATCH)
   - GitHub Issue·PR 본문과 코멘트도 음슴체·명사형으로 쓴다는 줄 추가. 기존엔 릴리즈 노트만 규정([Issue #126](https://github.com/yanos0218/AI/issues/126), PATCH)
+  - "필드명: 값" 예외의 예시에서 옛 조사 이슈 양식(질문/조사일, 결론/출처/영향 필드) 언급 제거. 조사 이슈가 `##` 헤딩 양식으로 바뀐 데 따름([Issue #146](https://github.com/yanos0218/AI/issues/146), PATCH)
 - `docs/issue-format.md`·`.github/workflows/issue-format-check.yml` 조사(`research`) 양식
   - `## 조사` 아래 필드 목록 대신 다른 양식처럼 `## 질문`·`## 결론`·`## 조사일`·`## 출처`·`## 영향` 헤딩으로 통일. 자동 검사도 새 헤딩 기준([Issue #146](https://github.com/yanos0218/AI/issues/146))
 
