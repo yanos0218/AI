@@ -43,6 +43,11 @@ run 2 '커밋 $(cat <<EOF) 위반' pre Bash "$(printf '%s\n' "git commit -m \"\$
 run 0 '커밋 제목만' pre Bash 'git commit -m "fix: 제목만 있음"'
 run 0 '커밋 문장형은 대상 아님' pre Bash 'git commit -m "fix: 제목" -m "설명 문장을 한다체로 썼다."'
 run 0 '사용자 승인 통과' pre Bash "FORMAT_GUARD_SKIP=1 gh issue comment 1 --body-file ${D}/bad.md"
+run 2 '본문 글 안의 SKIP 문구는 무시' pre Bash 'git commit -m "fix: x" -m "- a.sh 파일: FORMAT_GUARD_SKIP=1을 붙이면 통과한다는 설명이 길게 붙음"'
+run 2 '같은 명령에서 만든 본문 파일 위반' pre Bash "$(printf '%s\n' "D=\"${D}/new\"; mkdir -p \"\$D\"; cat > \"\$D/n.md\" <<'EOF'" '- `n.sh`: 설명이 한 줄에 길게 붙어 있어 목록 줄바꿈 규칙을 어긴 경우' 'EOF' 'gh issue create --title t --body-file "$D/n.md"')"
+run 0 '같은 명령에서 만든 본문 파일 통과' pre Bash "$(printf '%s\n' "D=\"${D}/new2\"; cat > \"\$D/n.md\" <<'EOF'" '- 수정함' '  - 설명' 'EOF' 'gh issue create --title t --body-file "$D/n.md"')"
+run 0 'heredoc 데이터 안의 명령 글' pre Bash "$(printf '%s\n' "python - <<'EOF'" 'print("git commit -m \"x\" -m \"- a.sh 파일: 설명이 한 줄에 길게 붙어 있는 경우\"")' 'EOF')"
+run 0 '문자열 안의 명령 글' pre Bash 'echo "gh issue comment 1 --body \"- a.sh 파일: 설명이 한 줄에 길게 붙어 있는 경우\""'
 run 0 '꺼내지 못하면 통과' pre Bash 'gh issue comment 1 --body "$(make_body)"'
 run 0 '대상 아닌 명령' pre Bash 'ls -la'
 run 0 'gh 조회' pre Bash 'gh issue view 1 --comments'

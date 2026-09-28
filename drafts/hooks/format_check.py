@@ -137,6 +137,14 @@ def heredoc_after(cmd, pos):
     return None
 
 
+def created_here(cmd, before, path, env):
+    """같은 명령 안에서 cat > 파일 <<'EOF'로 막 만드는 본문 파일(훅은 명령 실행 전에 돌아 파일이 아직 없다)."""
+    for m in re.finditer(r'cat\s*>\s*("([^"]+)"|\'([^\']+)\'|(\S+))\s*<<', cmd[:before]):
+        if expand(m.group(2) or m.group(3) or m.group(4), env) == path:
+            return heredoc_after(cmd, m.start())
+    return None
+
+
 def quoted_value(cmd, pos):
     """pos에서 시작하는 인수 하나. "…"(이스케이프 처리), '…', 따옴표 없는 단어. 실패하면 None."""
     while pos < len(cmd) and cmd[pos] in ' =':
@@ -216,6 +224,8 @@ def option_bodies(cmd, seg_start, seg_end, opts_text, opts_file, env, cwd):
                 body = heredoc_after(cmd, end)
             else:
                 body = read_file(path, cwd) if path else None
+                if body is None and path:
+                    body = created_here(cmd, m.start(), path, env)
         else:
             body = resolve(raw, cmd, end, env, cwd)
         if body is None:
@@ -247,13 +257,37 @@ def segment(cmd, start):
     return len(cmd)
 
 
+def heredoc_spans(cmd):
+    """heredoc 본문 구간들. 그 안의 "gh issue …" 같은 글은 실행되는 명령이 아니라 데이터다."""
+    spans = []
+    for m in HEREDOC.finditer(cmd):
+        nl = cmd.find('\n', m.end())
+        if nl < 0:
+            continue
+        end = re.search(r'^\s*' + re.escape(m.group(2)) + r'\s*$', cmd[nl + 1:], re.M)
+        spans.append((nl + 1, nl + 1 + (end.start() if end else len(cmd))))
+    return spans
+
+
+def at_command_start(cmd, pos):
+    """pos가 명령 자리인지: 앞이 줄 시작·; && || | $( 이고 그 사이에는 변수 대입만 있다.
+    echo "gh issue …"나 python 문자열 안의 글은 명령이 아니다(2026-09-28 실사용 오탐)."""
+    head = cmd[:pos]
+    cut = max(head.rfind(s) + len(s) for s in ('\n', ';', '&&', '||', '|', '$(', '(')) if any(s in head for s in ('\n', ';', '&&', '||', '|', '$(', '(')) else 0
+    return re.fullmatch(r'\s*(?:[A-Za-z_][A-Za-z0-9_]*=(?:"[^"]*"|\'[^\']*\'|\S*)\s+)*', head[cut:]) is not None
+
+
 def targets(cmd, cwd):
     """(종류, 본문 목록 또는 None) 목록."""
     env = {}
     for m in ASSIGN.finditer(cmd):
         env[m.group(1)] = m.group(3) if m.group(3) is not None else (m.group(4) if m.group(4) is not None else m.group(5))
+    spans = heredoc_spans(cmd)
+    real = lambda p: at_command_start(cmd, p) and not any(a <= p < b for a, b in spans)  # noqa: E731
     out = []
     for m in GH.finditer(cmd):
+        if not real(m.start()):
+            continue
         end = segment(cmd, m.start())
         kind = 'release' if m.group(3) else 'gh'
         if kind == 'release':
@@ -262,6 +296,8 @@ def targets(cmd, cwd):
             b = option_bodies(cmd, m.start(), end, ['--body', '-b', '--comment', '-c'], ['--body-file', '-F'], env, cwd)
         out.append((kind, b))
     for m in GIT_COMMIT.finditer(cmd):
+        if not real(m.start()):
+            continue
         end = segment(cmd, m.start())
         b = option_bodies(cmd, m.start(), end, ['-m', '--message'], ['-F', '--file'], env, cwd)
         if b is not None and b:
@@ -276,7 +312,8 @@ def mode_pre(inp):
     cmd = (inp.get('tool_input') or {}).get('command') or ''
     if not (GH.search(cmd) or GIT_COMMIT.search(cmd)):
         return 0
-    if re.search(r'(^|\s)FORMAT_GUARD_SKIP=1\b', cmd):
+    # 명령 맨 앞에 붙인 경우만 인정한다. 본문 글 안에 이 문구가 있어도 통과시키면 안 된다(2026-09-28 실사용에서 발견)
+    if re.search(r'(?:^|[;&|\n])\s*FORMAT_GUARD_SKIP=1\s+(?:gh|git)\b', cmd):
         log('사용자 승인 통과(SKIP)', cmd)
         return 0
     cwd = inp.get('cwd') or os.getcwd()
