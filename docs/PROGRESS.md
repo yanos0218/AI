@@ -38,7 +38,7 @@
 | `bulk-read-log.sh` 훅(PostToolUse) | 기본 (기록·초기화 흐름 직접 실행 확인 2026-09-15, [Issue #100](https://github.com/yanos0218/AI/issues/100)<br>서브에이전트 조회 제외·한글 잘림 수정 2026-09-27 [Issue #134](https://github.com/yanos0218/AI/issues/134)) | ✓ | ✓ (2026-09-16 설치) | ✓ (2026-09-16) | - | - |
 | config-changelog 훅 | 기본 (임시 HOME 7케이스 통과, 2026-09-09) | ✓ v0.4.0 | ✓ | ✓ (2026-09-16) | - | - |
 | statusline 훅 | 기본 (터미널 CLI 전용, VS Code 패널엔 안 나옴) | ✓ 육안 확인 2026-09-12 | ✓ 설치 (VS Code 패널만 써서 표시 없음) | ✓ (2026-09-16) | - | - |
-| `settings.example.json` (권한·훅·상태줄·env) | 기본 | ✓ v0.9.0 | ✓ (`model` 키 유지 병합) | ✓ (2026-09-16) | - | - |
+| `settings.example.json` (권한·훅·상태줄·env) | 기본 (2026-09-28 기록 훅 async, gh-throttle·bulk-read-log·config-changelog `if` 조건, 새 세션 시험으로 `if`·`async` 동작 확인, [Issue #147](https://github.com/yanos0218/AI/issues/147)) | ✓ (2026-09-28 설치) | ✓ (`model` 키 유지 병합) | ✓ (2026-09-16) | - | - |
 | 서브에이전트 재귀 차단(`env.CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`) | 기본 (새 세션에서 재귀 시도 → 차단 실측 확인 2026-09-13, [Issue #75](https://github.com/yanos0218/AI/issues/75)) | ✓ v0.9.0 | ✓ (2026-09-16 `check-install.sh` 대조 확인) | ✓ (2026-09-16, `check-install.sh` env 키 same 확인) | - | - |
 | `base/vscode/` 확장 목록·설정·설치 스크립트 | 기본 | ✓ v0.3.0 | ✓ 확장 13개 (2026-09-09, Settings Sync가 안 켜져 있어 `install.sh`로 설치. settings.json은 기존 것 유지) | - | - | - |
 | baseline-guard·session-end-check 훅 (이 저장소 전용, `.claude/`) | 기본 (새 세션 차단 확인 2026-09-08 / 트리 상태 시험 2026-09-09) | 저장소 안에서만 동작 | 동일 | 동일 | - | - |

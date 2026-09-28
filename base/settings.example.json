@@ -51,7 +51,47 @@
             "type": "command",
             "command": "bash ~/.claude/hooks/git-guardrails.sh",
             "timeout": 30
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "if": "Bash(gh *)",
+            "command": "bash ~/.claude/hooks/gh-throttle.sh",
+            "timeout": 30
           },
+          {
+            "type": "command",
+            "if": "Bash(bash *)",
+            "command": "bash ~/.claude/hooks/gh-throttle.sh",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "if": "Bash(sh *)",
+            "command": "bash ~/.claude/hooks/gh-throttle.sh",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "if": "Bash(source *)",
+            "command": "bash ~/.claude/hooks/gh-throttle.sh",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "if": "Bash(./*)",
+            "command": "bash ~/.claude/hooks/gh-throttle.sh",
+            "timeout": 30
+          }
+        ]
+      },
+      {
+        "matcher": "PowerShell",
+        "hooks": [
           {
             "type": "command",
             "command": "bash ~/.claude/hooks/gh-throttle.sh",
@@ -62,11 +102,27 @@
     ],
     "PostToolUse": [
       {
-        "matcher": "Edit|Write|MultiEdit|Bash|PowerShell",
+        "matcher": "Edit|Write|MultiEdit",
         "hooks": [
           {
             "type": "command",
+            "if": "Edit(~/.claude/**)",
             "command": "bash ~/.claude/hooks/config-changelog.sh",
+            "async": true,
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "if": "Write(~/.claude/**)",
+            "command": "bash ~/.claude/hooks/config-changelog.sh",
+            "async": true,
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "if": "MultiEdit(~/.claude/**)",
+            "command": "bash ~/.claude/hooks/config-changelog.sh",
+            "async": true,
             "timeout": 30
           }
         ]
@@ -76,7 +132,38 @@
         "hooks": [
           {
             "type": "command",
+            "command": "bash ~/.claude/hooks/config-changelog.sh",
+            "async": true,
+            "timeout": 30
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "if": "Bash(gh *)",
             "command": "bash ~/.claude/hooks/bulk-read-log.sh",
+            "async": true,
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "if": "Bash(git log*)",
+            "command": "bash ~/.claude/hooks/bulk-read-log.sh",
+            "async": true,
+            "timeout": 30
+          }
+        ]
+      },
+      {
+        "matcher": "PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/bulk-read-log.sh",
+            "async": true,
             "timeout": 30
           }
         ]

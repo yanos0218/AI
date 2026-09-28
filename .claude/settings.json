@@ -1,5 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "//": "pre-commit-check는 if 조건으로 커밋·스크립트 실행 명령에서만 돈다. 모든 Bash에 걸면 느린 시각에 명령마다 20초 넘게 기다렸다(Issue #147·#148)",
   "hooks": {
     "PreToolUse": [
       {
@@ -7,18 +8,59 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/baseline-guard.sh",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/baseline-guard.sh\"",
             "timeout": 30
           }
         ]
       },
       {
-        "matcher": "Bash|PowerShell",
+        "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/pre-commit-check.sh",
-            "timeout": 20
+            "if": "Bash(git commit *)",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/pre-commit-check.sh\"",
+            "timeout": 120
+          },
+          {
+            "type": "command",
+            "if": "Bash(git -C * commit *)",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/pre-commit-check.sh\"",
+            "timeout": 120
+          },
+          {
+            "type": "command",
+            "if": "Bash(bash *)",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/pre-commit-check.sh\"",
+            "timeout": 120
+          },
+          {
+            "type": "command",
+            "if": "Bash(sh *)",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/pre-commit-check.sh\"",
+            "timeout": 120
+          },
+          {
+            "type": "command",
+            "if": "Bash(source *)",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/pre-commit-check.sh\"",
+            "timeout": 120
+          },
+          {
+            "type": "command",
+            "if": "Bash(./*)",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/pre-commit-check.sh\"",
+            "timeout": 120
+          }
+        ]
+      },
+      {
+        "matcher": "PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/pre-commit-check.sh\"",
+            "timeout": 120
           }
         ]
       }
@@ -28,8 +70,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/session-end-check.sh",
-            "timeout": 5
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/session-end-check.sh\"",
+            "timeout": 30
           }
         ]
       }

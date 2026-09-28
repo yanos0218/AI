@@ -30,19 +30,21 @@ flowchart LR
 
 ## 훅이 도는 시점
 
-같은 시점에 걸린 훅은 동시에 돌고, 도구 호출은 가장 늦게 끝나는 훅을 기다린다. 훅이 많거나 느리면 작업 속도가 그만큼 느려진다.
+같은 시점에 걸린 훅은 동시에 돌고, 도구 호출은 가장 늦게 끝나는 훅을 기다린다. 훅이 많거나 느리면 작업 속도가 그만큼 느려진다. 그래서 필요한 명령에서만 도는 훅은 `if` 조건(권한 규칙 문법)으로 거르고, 기록만 하는 훅은 `async`로 백그라운드에서 돌려 기다리지 않는다([Issue #147](https://github.com/yanos0218/AI/issues/147)).
 
 | 시점 | 전역 훅(`base/hooks/`) | 이 저장소 전용(`.claude/hooks/`) |
 | --- | --- | --- |
 | 세션 시작 | `session-start-check.sh`<br>설치 버전·저장소 표준·self-audit 안내·대량 조회 누적 확인 | - |
 | 컴팩션 직전·직후 | `compact-snapshot.sh`·`compact-snapshot-show.sh`<br>git 상태·최근 검사 명령 저장 후 보여줌 | - |
-| 명령 실행 전(Bash) | `git-guardrails.sh`<br>push·삭제 등 확인<br>`gh-throttle.sh`<br>GitHub 쓰기 명령 간격 조절 | `baseline-guard.sh`<br>`base/` 쓰기 확인<br>`pre-commit-check.sh`<br>커밋 전 문서·스크립트 검사, 이슈 번호 확인 |
+| 명령 실행 전(Bash) | `git-guardrails.sh`<br>push·삭제 등 확인, 모든 명령<br>`gh-throttle.sh`<br>GitHub 쓰기 명령 간격 조절, `gh`·스크립트 실행 명령만 | `baseline-guard.sh`<br>`base/` 쓰기 확인, 모든 명령<br>`pre-commit-check.sh`<br>커밋 전 문서·스크립트 검사, 이슈 번호 확인, `git commit`·`git -C … commit`·스크립트 실행 명령만 |
 | 파일 편집 전(Edit·Write) | - | `baseline-guard.sh` |
-| 명령·편집 뒤 | `config-changelog.sh`<br>`~/.claude` 설정 변경 기록<br>`bulk-read-log.sh`<br>대량 조회 기록 | - |
+| 명령·편집 뒤 | `config-changelog.sh`<br>`~/.claude` 설정 변경 기록, 편집은 `~/.claude` 파일만, 백그라운드<br>`bulk-read-log.sh`<br>대량 조회 기록, `gh`·`git log`만, 백그라운드 | - |
 | 답변 끝 | - | `session-end-check.sh`<br>문서 갱신 누락 안내 |
 | verifier 에이전트 안 | `verifier-guard.sh`<br>쓰기·커밋 명령 차단 | - |
 
 - 초안을 시험하느라 임시로 등록한 훅은 PROGRESS §0 해당 행에 적는다.
+- 저장소 전용 훅은 `${CLAUDE_PROJECT_DIR}` 기준 절대 경로로 등록한다. 상대 경로면 작업 폴더를 옮겼을 때 훅을 못 찾는다.
+- `if` 조건의 `Write(**/*.md)` 같은 경로 규칙은 저장소 안 파일에만 맞는다(저장소 밖 `.md`는 안 걸림, 2026-09-28 실측).
 - 판정이 복잡한 훅은 셸 입구가 대상 아닌 입력을 바로 끝내고, 파이썬 본체(`*_*.py`)와 공통 모듈 `hooklib.py`가 판정한다.
 
 ## 운영 흐름
