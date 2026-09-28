@@ -45,6 +45,8 @@
 
 ### Fixed
 
+- `base/hooks/git-guardrails.sh`·`gh-throttle.sh`
+  - 판정을 bash 내장 기능으로 바꿔 하위 프로세스를 없앰, 제한 시간 5초·9초 → 30초. 느린 시각에 9.5초가 걸려 제한 시간을 넘기면 확인 창 없이 통과될 수 있던 문제([Issue #142](https://github.com/yanos0218/AI/issues/142), PATCH)
 - `base/agents/researcher.md`
   - 웹 도구가 권한 거부되면 멈추고 보고, 홈·설치 폴더 로컬 우회 검색 금지. 같은 시험에서 에이전트 토큰 약 12.1만 → 2.6만([Issue #139](https://github.com/yanos0218/AI/issues/139), PATCH)
 - `base/hooks/bulk-read-log.sh`

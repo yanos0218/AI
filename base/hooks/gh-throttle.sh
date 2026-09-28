@@ -14,21 +14,24 @@
 #
 # 명령을 스크립트 파일로 감싸면(bash x.sh) 문자열 매칭이 뚫리는 우회가 실제
 # 사고로 확인돼, 그런 형태면 스크립트 내용까지 같이 검사한다(Issue #73).
+#
+# 모든 Bash 호출마다 도므로 대상 판정은 bash 내장 기능만 쓴다. grep·sed를 여러 번 띄우던 예전 방식은
+# Windows Git Bash가 느린 시각에 5.6초가 걸려 제한 시간을 넘긴 기록이 있다(Issue #142, 2026-09-28).
 set -u
 
-input="$(cat)"
-cmd="$(printf '%s' "${input}" | sed -n 's/.*"command"[[:space:]]*:[[:space:]]*"\(.*\)".*/\1/p' | head -1)"
+IFS= read -r -d '' input || true
+cmd_re='"command"[[:space:]]*:[[:space:]]*"[[:space:]]*'
 
 script_path=""
-if printf '%s' "${cmd}" | grep -Eq '^[[:space:]]*(bash|sh|source)[[:space:]]+[^&|;]+\.sh'; then
-  script_path="$(printf '%s' "${cmd}" | sed -E 's/^[[:space:]]*(bash|sh|source)[[:space:]]+//' | awk '{print $1}')"
-elif printf '%s' "${cmd}" | grep -Eq '^[[:space:]]*\.\/[^&|;[:space:]]+\.sh'; then
-  script_path="$(printf '%s' "${cmd}" | awk '{print $1}')"
+if [[ "${input}" =~ ${cmd_re}(bash|sh|source)[[:space:]]+([^\&\|\;\"[:space:]]+\.sh) ]]; then
+  script_path="${BASH_REMATCH[2]}"
+elif [[ "${input}" =~ ${cmd_re}(\./[^\&\|\;\"[:space:]]+\.sh) ]]; then
+  script_path="${BASH_REMATCH[1]}"
 fi
 
 script_content=""
 if [[ -n "${script_path}" && -f "${script_path}" ]]; then
-  script_content="$(cat "${script_path}" 2>/dev/null || true)"
+  script_content="$(<"${script_path}")"
 fi
 
 search_text="${input}
@@ -36,7 +39,7 @@ ${script_content}"
 
 pattern='gh[[:space:]]+(issue|pr|release|label)[[:space:]]+(create|comment|close|edit|reopen)|gh[[:space:]]+api[[:space:]].*(--method[[:space:]]+(POST|PATCH|PUT|DELETE)|-X[[:space:]]+(POST|PATCH|PUT|DELETE)|-[fF][[:space:]])'
 
-printf '%s' "${search_text}" | grep -Eq "${pattern}" || exit 0
+[[ "${search_text}" =~ ${pattern} ]] || exit 0
 
 state_dir="${HOME}/.claude/state"
 mkdir -p "${state_dir}" 2>/dev/null
