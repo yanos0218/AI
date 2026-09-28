@@ -7,12 +7,14 @@ hook() { [[ "${1}" == baseline-guard.sh ]] && echo "${root}/.claude/hooks/${1}" 
 tmp="$(mktemp -d)"
 trap 'rm -rf "${tmp}"' EXIT
 export CLAUDE_CONFIG_DIR="${tmp}"
+# 훅과 같은 순서로 파이썬을 고른다. Mac은 python 없이 python3만 있는 경우가 많다
+if hash python 2>/dev/null; then PY=python; else PY=python3; fi
 pass=0; fail=0
 ok() { pass=$((pass + 1)); }
 ng() { fail=$((fail + 1)); echo "실패: ${1}"; }
 
 mk() { # $1=도구 $2=명령 또는 경로 → 입력 JSON
-  TOOL="${1}" VAL="${2}" python -c "
+  TOOL="${1}" VAL="${2}" "${PY}" -c "
 import json, os
 t, v = os.environ['TOOL'], os.environ['VAL']
 ti = {'command': v, 'description': 'git push 전에 rm -rf 설명 글'} if t in ('Bash', 'PowerShell') else {'file_path': v}
@@ -22,7 +24,7 @@ decide() { # $1=훅 $2=도구 $3=값 → 출력의 결정(allow/ask/deny)
   local out
   out="$(mk "${2}" "${3}" | bash "$(hook "${1}")" 2>/dev/null)"
   if [[ -z "${out}" ]]; then echo allow; return; fi
-  printf '%s' "${out}" | python -c "import json,sys; print(json.load(sys.stdin)['hookSpecificOutput']['permissionDecision'])" 2>/dev/null || echo bad-json
+  printf '%s' "${out}" | "${PY}" -c "import json,sys; print(json.load(sys.stdin)['hookSpecificOutput']['permissionDecision'])" 2>/dev/null || echo bad-json
 }
 expect() { local got; got="$(decide "${2}" "${3}" "${4}")"; if [[ "${got}" == "${1}" ]]; then ok; else ng "${5} (기대 ${1}, 실제 ${got})"; fi; }
 
@@ -55,7 +57,7 @@ if PATH=/usr/bin:/bin bash -c 'hash python 2>/dev/null || hash python3 2>/dev/nu
 
 # 기록 훅: 한글 명령이 깨지지 않게 기록
 mk Bash 'gh issue list --limit 50 --json body --search "한글 검색어"' | bash "$(hook bulk-read-log.sh)"
-python -c "import io,sys; t=io.open(sys.argv[1],encoding='utf-8').read(); sys.exit(0 if '한글 검색어' in t else 1)" "${tmp}/bulk-read-log.md" && ok || ng '한글 기록이 UTF-8로 남음'
+"${PY}" -c "import io,sys; t=io.open(sys.argv[1],encoding='utf-8').read(); sys.exit(0 if '한글 검색어' in t else 1)" "${tmp}/bulk-read-log.md" && ok || ng '한글 기록이 UTF-8로 남음'
 mk Write 'C:\Users\me\.claude\settings.json' | bash "$(hook config-changelog.sh)"
 grep -q 'settings.json' "${tmp}/config-changelog.md" 2>/dev/null && ok || ng 'Windows 경로 설정 파일 수정 기록'
 

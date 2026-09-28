@@ -51,8 +51,10 @@ if [[ "${1:-}" == "--staged" ]]; then
     added_lines="$(git diff --cached --unified=0 -- "${f}" | awk '
       /^@@/ { match($0, /\+[0-9]+(,[0-9]+)?/); spec=substr($0, RSTART+1, RLENGTH-1); split(spec, a, ","); start=a[1]; count=(a[2]=="" ? 1 : a[2]); for (i=0;i<count;i++) print start+i }
     ')"
-    git show ":${f}" 2>/dev/null | awk -v path="${f}" -v added="${added_lines}" '
-      BEGIN { n=split(added, arr, "\n"); for (i=1;i<=n;i++) is_added[arr[i]]=1 }
+    # 줄 번호 목록은 여러 줄이라 환경변수로 넘긴다. Mac 기본 awk는 -v 값에 줄바꿈이 있으면
+    # 오류를 내고 이 파일을 통째로 건너뛰어 검사가 무조건 통과했다(2026-09-28)
+    git show ":${f}" 2>/dev/null | ADDED="${added_lines}" awk -v path="${f}" '
+      BEGIN { n=split(ENVIRON["ADDED"], arr, "\n"); for (i=1;i<=n;i++) is_added[arr[i]]=1 }
       { line=$0; gsub(/\t/, "    ", line); print path "\t" FNR "\t" (FNR in is_added ? 1 : 0) "\t" line }
     ' >> "${tmp}"
   done <<< "${files}"

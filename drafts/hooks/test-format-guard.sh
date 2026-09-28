@@ -10,12 +10,14 @@ mkdir -p "${CLAUDE_CONFIG_DIR}"
 printf '%s\n' '## 결과' '' '- 수정 완료' '  - 시험 3건 통과함' > "${tmp}/good.md"
 printf '%s\n' '## 결과' '' '- `a.sh`: 설명이 한 줄에 길게 붙어 있어 목록 줄바꿈 규칙을 어긴 경우' > "${tmp}/bad.md"
 printf '%s\n' '## 결과' '' '- 버그를 수정했습니다' > "${tmp}/formal.md"
+# 훅과 같은 순서로 파이썬을 고른다. Mac은 python 없이 python3만 있는 경우가 많다
+if hash python 2>/dev/null; then PY=python; else PY=python3; fi
 pass=0; fail=0
 
 run() { # $1=기대 종료 코드 $2=설명 $3=훅(pre|post) $4=도구 이름 $5=명령 또는 파일 JSON 조각
   local want="${1}" name="${2}" hook="${3}" tool="${4}" payload="${5}" got
   local script="${here}/format-guard.sh"; [[ "${hook}" == post ]] && script="${here}/md-format-check.sh"
-  got="$(PAYLOAD="${payload}" TOOL="${tool}" CWD="${tmp}" HOOK="${hook}" python - <<'PY' | bash "${script}" 2>/dev/null; echo "${PIPESTATUS[1]}"
+  got="$(PAYLOAD="${payload}" TOOL="${tool}" CWD="${tmp}" HOOK="${hook}" "${PY}" - <<'PY' | bash "${script}" 2>/dev/null; echo "${PIPESTATUS[1]}"
 import json, os
 p = os.environ['PAYLOAD']
 ti = json.loads(p) if os.environ['HOOK'] == 'post' else {'command': p}
