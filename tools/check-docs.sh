@@ -8,8 +8,9 @@ fail=0
 limit() { # 파일 상한
   local f="${1}" max="${2}"
   [[ -f "${f}" ]] || { echo "MISSING ${f}"; fail=1; return; }
-  # 줄 수는 bash 내장 mapfile로 센다. 파일마다 wc를 띄우면 Windows 느린 시각에 24초가 걸려 커밋 검사 훅이 제한 시간을 넘겼다(Issue #148)
-  local -a lines; mapfile -t lines < "${f}"; local n="${#lines[@]}"
+  # 줄 수는 bash 내장 read로 센다. 파일마다 wc를 띄우면 Windows 느린 시각에 24초가 걸려 커밋 검사 훅이 제한 시간을 넘겼다(Issue #148)
+  # mapfile은 Mac 기본 bash 3.2에 없어 모든 파일을 0줄로 세고 통과시켰다(2026-09-28)
+  local n=0 _l; while IFS= read -r _l || [[ -n "${_l}" ]]; do n=$((n + 1)); done < "${f}"
   if [[ "${n}" -gt "${max}" ]]; then echo "TOO LONG ${f}: ${n} > ${max}"; fail=1; else echo "ok  ${f} (${n}/${max})"; fi
 }
 

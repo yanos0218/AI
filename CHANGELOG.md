@@ -7,6 +7,11 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- `tools/check-docs.sh`
+  - Mac 기본 bash 3.2에 없는 `mapfile` 때문에 모든 파일을 0줄로 세고 통과시키던 문제, 하위 프로세스 없는 내장 `read`로 줄 수를 세도록 바꿈([Issue #148](https://github.com/yanos0218/AI/issues/148), PATCH)
+
 ## [0.12.0] - 2026-09-28
 
 ### Added
