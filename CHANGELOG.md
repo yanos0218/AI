@@ -23,7 +23,7 @@
 - `base/hooks/check-cram.py`
   - 목록 줄바꿈 판정기를 `tools/`에서 옮김, 전역 형식 검사 훅과 저장소 커밋 검사(`tools/check-cram.sh`)가 같은 판정기를 씀([Issue #141](https://github.com/yanos0218/AI/issues/141), PATCH)
 - `.github/workflows/lint.yml`
-  - shellcheck 대상에 `base/skills/*/scripts/*.sh`와 `drafts/hooks/*.sh` 추가, 로컬 같은 대상 27개 경고 0건([Issue #161](https://github.com/yanos0218/AI/issues/161), PATCH)
+  - shellcheck 대상에 `base/skills/*/scripts/*.sh`와 `drafts/hooks/*.sh` 추가, 초안 폴더가 비어도 실패하지 않게 빈 글롭은 건너뜀(`nullglob`), 로컬 같은 대상 경고 0건([Issue #161](https://github.com/yanos0218/AI/issues/161), PATCH)
 - `tools/install.sh`
   - 버전 표시 파일 3행에 `base/` 트리 해시를 기록함. 1·2행은 그대로라 기존 세션 시작 훅과 호환, 문서만 바뀐 커밋을 설정 변경과 구별하는 데 씀([Issue #150](https://github.com/yanos0218/AI/issues/150), PATCH)
 

@@ -30,6 +30,8 @@ jobs:
       - name: shellcheck
         run: |
           sudo apt-get update -q && sudo apt-get install -y -q shellcheck
+          # 초안 폴더가 비면 글롭이 문자 그대로 넘어가 실패했다(2026-09-29, Issue #161). 빈 글롭은 건너뛴다
+          shopt -s nullglob
           shellcheck -S warning base/hooks/*.sh base/vscode/install.sh base/skills/*/scripts/*.sh tools/*.sh .claude/hooks/*.sh drafts/hooks/*.sh
 
       - name: 문서 상한·필수 파일
