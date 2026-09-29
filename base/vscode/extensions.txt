@@ -10,6 +10,9 @@ usernamehw.errorlens
 # 문서 · CI (저장소들이 markdownlint와 GitHub Actions를 실제로 돌림)
 davidanson.vscode-markdownlint
 github.vscode-github-actions
+# 설정 파일 없이 동작하고 CI와 같은 기준(2026-09-29 추가, 조사는 research 이슈)
+redhat.vscode-yaml
+timonwong.shellcheck
 
 # 언어별 — 실제 저장소가 있는 스택만
 ms-python.python
@@ -22,5 +25,3 @@ ms-vscode.powershell
 # 원격 · 정적 페이지
 ms-vscode-remote.remote-ssh
 ritwickdey.liveserver
-
-# Mac에서만 추가: swiftlang.swift-vscode (Xcode 필요, Windows에선 무의미)
