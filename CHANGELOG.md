@@ -20,6 +20,8 @@
 
 ### Changed
 
+- `base/claude-md/CLAUDE.md` §8
+  - 설계를 보일 때 채울 칸(무엇을·왜, 바뀌는 파일, 검증 방법, 문서 동기화 대상, 결정 필요) 추가. 새 세션 비교에서 반영 전 2회 모두 검증·문서 칸 없음, 반영 후 2회 모두 채움([Issue #155](https://github.com/yanos0218/AI/issues/155), PATCH)
 - `base/vscode/extensions.txt`
   - `redhat.vscode-yaml`·`timonwong.shellcheck` 추가(설정 파일 없이 동작, CI와 같은 기준), Mac에서 쓰지 않는 Swift 확장 주석 삭제([Issue #165](https://github.com/yanos0218/AI/issues/165), PATCH)
 - `base/hooks/check-cram.py`
