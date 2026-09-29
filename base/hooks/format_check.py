@@ -27,9 +27,9 @@ MAX_LINES = 10
 
 
 def load_cram(cwd):
-    """목록 줄바꿈 판정은 check-cram.py를 그대로 쓴다. 같은 폴더(설치본) → 저장소 tools/ 순서로 찾는다.
+    """목록 줄바꿈 판정은 같은 폴더의 check-cram.py를 그대로 쓴다(설치본 ~/.claude/hooks, 원본 base/hooks).
     그 저장소에 예외 목록(.claude/cram-exceptions.txt)이 있으면 따른다."""
-    for p in (os.path.join(HERE, 'check-cram.py'), os.path.join(HERE, '..', '..', 'tools', 'check-cram.py')):
+    for p in (os.path.join(HERE, 'check-cram.py'),):
         if os.path.isfile(p):
             exc = os.path.join(cwd or '.', '.claude', 'cram-exceptions.txt')
             saved = sys.argv

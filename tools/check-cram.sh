@@ -33,7 +33,7 @@ fi
 # 입력은 "경로<TAB>줄번호<TAB>내용" 한 줄씩. python -로 heredoc을 넘기면 그 heredoc
 # 자체가 프로그램 소스로 stdin을 다 써버려 실제 데이터를 못 읽으므로, 별도 .py 파일로 둔다.
 detect() {
-  PYTHONIOENCODING=utf-8 "${PY}" tools/check-cram.py "${EXCEPTIONS_FILE}"
+  PYTHONIOENCODING=utf-8 "${PY}" base/hooks/check-cram.py "${EXCEPTIONS_FILE}"   # 전역 형식 검사 훅(format_check.py)과 같은 판정기를 쓰려고 base/hooks에 둠(Issue #141)
 }
 
 if [[ "${1:-}" == "--staged" ]]; then

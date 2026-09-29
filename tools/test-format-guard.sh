@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # format-guard.sh·md-format-check.sh 시험(Issue #141). 명령 형태별로 훅 입력 JSON을 만들어 넣고 종료 코드를 대조한다.
-#   bash drafts/hooks/test-format-guard.sh
+#   bash tools/test-format-guard.sh
 set -u
-here="$(cd "$(dirname "${0}")" && pwd)"
+here="$(cd "$(dirname "${0}")/../base/hooks" && pwd)"   # 시험 대상 훅 폴더
 tmp="$(mktemp -d)"
 trap 'rm -rf "${tmp}"' EXIT
 export CLAUDE_CONFIG_DIR="${tmp}/home"   # 통과 기록(format-guard.log)을 시험 폴더에 쓴다

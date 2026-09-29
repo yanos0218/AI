@@ -68,6 +68,18 @@
             "if": "Bash(bash *)",
             "command": "bash ~/.claude/hooks/gh-throttle.sh",
             "timeout": 30
+          },
+          {
+            "type": "command",
+            "if": "Bash(git *)",
+            "command": "bash ~/.claude/hooks/format-guard.sh",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "if": "Bash(gh *)",
+            "command": "bash ~/.claude/hooks/format-guard.sh",
+            "timeout": 30
           }
         ]
       },
@@ -78,11 +90,39 @@
             "type": "command",
             "command": "bash ~/.claude/hooks/gh-throttle.sh",
             "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/format-guard.sh",
+            "timeout": 30
           }
         ]
       }
     ],
     "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "if": "Edit(**/*.md)",
+            "command": "bash ~/.claude/hooks/md-format-check.sh",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "if": "Write(**/*.md)",
+            "command": "bash ~/.claude/hooks/md-format-check.sh",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "if": "MultiEdit(**/*.md)",
+            "command": "bash ~/.claude/hooks/md-format-check.sh",
+            "timeout": 30
+          }
+        ]
+      },
       {
         "matcher": "Edit|Write|MultiEdit",
         "hooks": [

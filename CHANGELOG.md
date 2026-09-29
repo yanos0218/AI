@@ -9,6 +9,10 @@
 
 ### Added
 
+- `base/hooks/format-guard.sh`·`md-format-check.sh`·`format_check.py` 형식 검사 훅 승격
+  - 커밋·이슈·PR·릴리즈 본문을 게시 직전에 검사해 목록 줄바꿈·음슴체 위반이면 막고, `.md`에 새로 쓴 부분은 저장 뒤 사유를 돌려줌. `settings.example.json`에 `git`·`gh` 명령과 `.md` 편집일 때만 뜨게 등록, 같은 호출 중복 실행 방지([Issue #141](https://github.com/yanos0218/AI/issues/141), MINOR)
+- `tools/test-format-guard.sh`
+  - 형식 검사 훅 시험 32건, `drafts/hooks/`에서 옮김([Issue #141](https://github.com/yanos0218/AI/issues/141), PATCH)
 - `base/skills/usage-dashboard` 스킬 승격
   - 요청할 때만 켜는 토큰 사용 기록과 로컬 대시보드(5시간 블록·시간·일·월, 저장소·메인/서브에이전트·모델별, 요청 순위와 원인). 세션 시작 크기가 평소보다 커지면 화면에만 강조, 세션 시작 알림(`usage.sh check`)은 뺌(사용자 결정, 대시보드와 중복·세션 시작 지연). `settings.example.json`에 async Stop 훅 등록, 꺼져 있으면 훅은 바로 끝남. Windows·Mac 전용([Issue #136](https://github.com/yanos0218/AI/issues/136), MINOR)
 - `tools/test-session-start-check.sh`
@@ -16,6 +20,8 @@
 
 ### Changed
 
+- `base/hooks/check-cram.py`
+  - 목록 줄바꿈 판정기를 `tools/`에서 옮김, 전역 형식 검사 훅과 저장소 커밋 검사(`tools/check-cram.sh`)가 같은 판정기를 씀([Issue #141](https://github.com/yanos0218/AI/issues/141), PATCH)
 - `.github/workflows/lint.yml`
   - shellcheck 대상에 `base/skills/*/scripts/*.sh`와 `drafts/hooks/*.sh` 추가, 로컬 같은 대상 27개 경고 0건([Issue #161](https://github.com/yanos0218/AI/issues/161), PATCH)
 - `tools/install.sh`
