@@ -7,6 +7,11 @@
 
 ## [Unreleased]
 
+### Changed
+
+- `CLAUDE.md` 검증 절
+  - `docs/testing.md`로 분리(60/60 → 57줄), 시험 도구 목록·세 OS 호환 규칙·설치는 커밋 뒤 추가, `docs/skill-development.md`에 Mac 시험 준비 추가([Issue #166](https://github.com/yanos0218/AI/issues/166), 버전 등급 미반영 — 문서 전용)
+
 ## [0.13.0] - 2026-09-29
 
 ### Added

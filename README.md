@@ -50,6 +50,7 @@
 | [docs/research.md](docs/research.md) | 조사 규칙(최신·검증·출처, 기록은 Issues `research` 라벨) |
 | [docs/issue-format.md](docs/issue-format.md) | 이슈 라벨별 작성 형식(개발/버그·에러/조사/제안) |
 | [docs/skill-development.md](docs/skill-development.md) | 새 스킬 만드는 절차와 시험 방법 |
+| [docs/testing.md](docs/testing.md) | 바꾼 것별 검사 명령·시험 도구, 세 OS(Mac bash 3.2) 호환 규칙, 설치는 커밋 뒤 |
 | [docs/research/](docs/research/README.md) | 2026-09-13 이전 조사 기록(archive)<br>새 조사는 Issues `research` 라벨 |
 | [docs/tool-catalog.md](docs/tool-catalog.md) | 조사한 외부 도구·내장 기능 목록<br>상황별 판정(도입·조건부·쓰지 말 것)과 확인일, 근거 이슈 |
 | [docs/monthly-check.md](docs/monthly-check.md) | 월 점검 체크리스트 14항목 |
