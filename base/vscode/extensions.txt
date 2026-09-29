@@ -25,3 +25,6 @@ ms-vscode.powershell
 # 원격 · 정적 페이지
 ms-vscode-remote.remote-ssh
 ritwickdey.liveserver
+
+# 화면 — 파일 종류별 아이콘(기능 영향 없음, 2026-09-29 사용자 요청)
+pkief.material-icon-theme

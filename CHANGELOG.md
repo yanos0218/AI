@@ -23,7 +23,7 @@
 - `base/claude-md/CLAUDE.md` §8
   - 설계를 보일 때 채울 칸(무엇을·왜, 바뀌는 파일, 검증 방법, 문서 동기화 대상, 결정 필요) 추가. 새 세션 비교에서 반영 전 2회 모두 검증·문서 칸 없음, 반영 후 2회 모두 채움([Issue #155](https://github.com/yanos0218/AI/issues/155), PATCH)
 - `base/vscode/extensions.txt`
-  - `redhat.vscode-yaml`·`timonwong.shellcheck` 추가(설정 파일 없이 동작, CI와 같은 기준), Mac에서 쓰지 않는 Swift 확장 주석 삭제([Issue #165](https://github.com/yanos0218/AI/issues/165), PATCH)
+  - `redhat.vscode-yaml`·`timonwong.shellcheck` 추가(설정 파일 없이 동작, CI와 같은 기준), 파일 아이콘 `pkief.material-icon-theme` 추가와 `settings.json`에 아이콘 테마 지정, Mac에서 쓰지 않는 Swift 확장 주석 삭제([Issue #165](https://github.com/yanos0218/AI/issues/165), PATCH)
 - `base/hooks/check-cram.py`
   - 목록 줄바꿈 판정기를 `tools/`에서 옮김, 전역 형식 검사 훅과 저장소 커밋 검사(`tools/check-cram.sh`)가 같은 판정기를 씀([Issue #141](https://github.com/yanos0218/AI/issues/141), PATCH)
 - `.github/workflows/lint.yml`

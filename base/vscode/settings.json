@@ -2,6 +2,7 @@
   // 사용자 설정 스냅샷 (%APPDATA%\Code\User\settings.json / ~/Library/Application Support/Code/User/settings.json)
   // 기계마다 다른 값(경로, 폰트 크기 등)은 넣지 않는다 — Settings Sync가 알아서 제외한다.
   "git.autofetch": true,
+  "workbench.iconTheme": "material-icon-theme",
   "editor.linkedEditing": true,
   "liveServer.settings.donotShowInfoMsg": true,
   "redhat.telemetry.enabled": true,
