@@ -9,6 +9,8 @@
 
 ### Changed
 
+- `base/claude-md/CLAUDE.md` §4
+  - 검사 결과는 실제로 검사한 대상 수까지 읽고, 0건이거나 실제와 맞지 않으면 "미검증"으로 보는 규칙 추가. 0줄로 세고 ok를 찍는 검사에서 반영 전 2회 모두 "통과" 보고, 반영 후 2회 모두 문제를 짚음([Issue #167](https://github.com/yanos0218/AI/issues/167), PATCH)
 - `CLAUDE.md` 검증 절
   - `docs/testing.md`로 분리(60/60 → 57줄), 시험 도구 목록·세 OS 호환 규칙·설치는 커밋 뒤 추가, `docs/skill-development.md`에 Mac 시험 준비 추가([Issue #166](https://github.com/yanos0218/AI/issues/166), 버전 등급 미반영 — 문서 전용)
 
