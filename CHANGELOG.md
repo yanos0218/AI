@@ -7,10 +7,14 @@
 
 ## [Unreleased]
 
+## [0.13.1] - 2026-10-07
+
 ### Changed
 
 - `base/claude-md/CLAUDE.md` §1·§2
   - 도구 호출 앞뒤 진행 설명도 한국어, 첫 설명부터 결론 뒤 비유·예시 하나(2026-10-07 self-audit, PATCH)
+- `docs/issue-format.md` 공통 절
+  - 이슈 본문·코멘트에 체크박스를 쓰지 않는 규칙 명시([Issue #171](https://github.com/yanos0218/AI/issues/171), 버전 등급 미반영, 문서 전용)
 - `base/claude-md/CLAUDE.md` §4
   - 검사 결과는 실제로 검사한 대상 수까지 읽고, 0건이거나 실제와 맞지 않으면 "미검증"으로 보는 규칙 추가. 0줄로 세고 ok를 찍는 검사에서 반영 전 2회 모두 "통과" 보고, 반영 후 2회 모두 문제를 짚음([Issue #167](https://github.com/yanos0218/AI/issues/167), PATCH)
 - `CLAUDE.md` 검증 절
