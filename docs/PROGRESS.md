@@ -62,7 +62,7 @@
 | dev-release 스킬 | 기본 (3시나리오 2026-09-08, 문서 동기화 확인 단계 [#121](https://github.com/yanos0218/AI/issues/121)) | ✓ | ✓ | 갱신 대기 | 갱신 대기(v0.11.4) | - |
 | dev-workflow 스킬 | 기본 (3시나리오 2026-09-09) | ✓ | ✓ | 갱신 대기 | 갱신 대기(v0.11.4) | - |
 | repo-setup 스킬 | 기본 (3시나리오 2026-09-09) | ✓ | ✓ | 갱신 대기 | 갱신 대기(v0.11.4) | - |
-| self-audit 스킬 | 기본 (3시나리오 2026-09-13) | ✓ | ✓ | 갱신 대기 | ✗ | Mac·Linux 새 세션 발동 미검증 |
+| self-audit 스킬 | 기본 (3시나리오 2026-09-13, 이슈 본문 형식 수정 2026-10-07 [#172](https://github.com/yanos0218/AI/issues/172)) | ✓ | 갱신 대기 | 갱신 대기 | ✗ | Mac·Linux 새 세션 발동 미검증 |
 | config-update 스킬 | 기본 (원격 확인 수정 3시나리오 2026-09-28 [#150](https://github.com/yanos0218/AI/issues/150)) | ✓ | ✓ | ✗ | ✗ | - |
 | pdf-extract 스킬 | 기본 (2026-09-27 승격, 새 세션 6시나리오 [#132](https://github.com/yanos0218/AI/issues/132)) | ✓ (MarkItDown 가상환경) | ✓ (MarkItDown 가상환경 2026-09-29) | ✗ (Python 3.10+ 가상환경 필요, Rocky는 python3.11) | - (웹은 PDF 직접 처리) | CID 깨짐 PDF 미시험 |
 | usage-dashboard 스킬(요청 시 켜는 기록 훅 + 로컬 대시보드) | 기본 (2026-09-29 승격, Windows 실사용·Mac 화면 확인 [#136](https://github.com/yanos0218/AI/issues/136)) | ✓ | ✓ | - (Linux 제외) | - (로컬 전용) | `claude -p` 세션은 기록 안 됨, 90일 쌓인 뒤(2026-12 말) Windows 처리 시간 측정 |

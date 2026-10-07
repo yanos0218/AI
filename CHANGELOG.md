@@ -7,6 +7,11 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- `self-audit` 스킬 `references/method.md` 3절
+  - 이슈 본문을 저장소 이슈 형식 문서 우선으로 쓰고, 없으면 배경/제안 내용/기대 효과/결정 헤딩. "근거 한 줄 + 이유"만 적어 이슈 형식 검사에 걸리던 문제([Issue #172](https://github.com/yanos0218/AI/issues/172), 새 세션 시험 2회, PATCH)
+
 ## [0.13.1] - 2026-10-07
 
 ### Changed

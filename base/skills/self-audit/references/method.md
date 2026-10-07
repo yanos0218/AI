@@ -32,7 +32,15 @@
 - 라벨: `task` + `auto-detected`(이 스킬이 자동으로 찾아낸 것과 사람이 발견한 것을 구분).
 - `auto-detected` 라벨이 없으면 먼저 `gh label create auto-detected --description "self-audit 스킬이 자동으로 찾아낸 후보" --color FBCA04`로 만든다.
 - 제목: `self-audit YYYY-MM-DD: <한 줄 요약>`.
-- 본문: 서브에이전트가 준 근거 한 줄 + "Issue로만" 선택한 이유(있으면).
+- 본문
+  - 저장소에 이슈 형식 문서(`docs/issue-format.md`, `CONTRIBUTING.md`, `.github/ISSUE_TEMPLATE/` 등)가 있으면 그 문서의 `task`(제안) 형식을 그대로 따른다. 이 절의 기본값보다 우선한다.
+  - 없으면 아래 네 헤딩을 쓴다.
+    - `## 배경`에 서브에이전트가 준 근거와 self-audit 날짜를 적는다.
+    - `## 제안 내용`에 문서 반영 후보 문구를 적는다.
+    - `## 기대 효과`에 무엇이 줄어드는지 적는다.
+    - `## 결정`에 "미정(Issue로만)"과 그렇게 고른 이유를 적는다.
+  - 게시 전에 저장소의 형식 검사 도구가 있으면 돌리고 통과한 뒤 올린다.
+  - (2026-10-07) 이 절이 "근거 한 줄 + 이유"만 적게 해서 claude-config 저장소 이슈 형식 검사에 2건(#169·#170)이 걸린 사례가 근거다([Issue #172](https://github.com/yanos0218/AI/issues/172)).
 
 ## 4. 상한
 
