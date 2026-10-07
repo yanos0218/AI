@@ -24,6 +24,8 @@ mkdir -p ~/.claude/agents && cp base/agents/*.md ~/.claude/agents/
 
 **Rocky/AlmaLinux 등 RHEL 계열 최소 설치본**은 버전마다 기본 포함 도구가 다르다(8.10: git·python3 없음, diff·jq 있음 / 9.x: git·diff 없음, python3·jq 있음 — AlmaLinux 8.10·9.8 WSL로 각각 검증, 2026-09-16). 버전을 따지지 말고 먼저 `dnf install -y git diffutils python3`를 실행한다(이미 있으면 `dnf`가 그냥 건너뛰므로 안전). 안 하면 `install.sh`가 python3/python을 못 찾아 멈추거나, `check-install.sh`가 모든 파일을 "다르다"고 오탐한다([Issue #6](https://github.com/yanos0218/AI/issues/6)).
 
+영문 로케일 Linux 서버에서 Claude 출력의 한글이 깨져 보여도 한글 폰트·로케일은 설치하거나 바꾸지 않고 그대로 쓴다(2026-09-16 결정, [Issue #6](https://github.com/yanos0218/AI/issues/6)). 검증 기준도 특정 배포판이 아니라 RHEL 계열 전체다.
+
 ## Claude.ai (웹 · 데스크톱 · Cowork)
 
 1. `bash tools/pack.sh` → `dist/<스킬이름>.zip` 생성
