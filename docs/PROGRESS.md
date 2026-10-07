@@ -34,7 +34,7 @@
 
 | 표면 | 설치된 것 | 설치일 | 다음 |
 | --- | --- | --- | --- |
-| Windows | `main` f648a6b(v0.13.0 + 3커밋) | 2026-10-07 | 저장소 `.claude/settings.local.json`의 형식 검사 초안 등록 삭제(사용자가 직접) |
+| Windows | `main` f648a6b(v0.13.0 + 3커밋) | 2026-10-07 | - |
 | Mac mini | `main` b1ee603(v0.13.0 + 전역 지침 규칙 2건) | 2026-09-29 | - |
 | Linux(RHEL 계열) | 2026-09-16 설치본(버전 기록 미확인) | 2026-09-16 | 다음 접속 때 `install.sh`, 파이썬 3.9에서 훅 실행 확인 |
 | 웹(Claude.ai) | 스킬 3개 v0.11.4, Project instructions | 2026-09-19~20, 2026-09-12 | v0.13.0 Release zip 5개 업로드, Project instructions 갱신 |
@@ -57,7 +57,7 @@
 | 훅 파이썬 전환(`hooklib.py` + 셸 입구·파이썬 본체) | 기본 (2026-09-28 승격, 30일 명령 766건 대조 [#144](https://github.com/yanos0218/AI/issues/144)) | ✓ | ✓ | ✗ | - | Linux 파이썬 3.9 실행 확인, 파싱 합치기 [#164](https://github.com/yanos0218/AI/issues/164) |
 | statusline 훅 | 기본 (터미널 CLI 전용, VS Code 패널엔 안 나옴) | ✓ | ✓ | ✓ | - | - |
 | 컴팩션 안전망 훅(`compact-snapshot.sh`·`compact-snapshot-show.sh`) | 기본 (2026-09-27 승격, 실제 자동 컴팩션에서 확인 [#104](https://github.com/yanos0218/AI/issues/104)) | ✓ | ✓ | ✗ | - | - |
-| 형식 검사 훅(`format-guard.sh`·`md-format-check.sh`·`format_check.py`·`check-cram.py`) | 기본 (2026-09-29 승격, 시험 32/32, 새 세션에서 위반 커밋 차단 확인 [#141](https://github.com/yanos0218/AI/issues/141)) | ✓ (저장소 `settings.local.json`의 초안 등록 삭제 대기) | ✓ | ✗ | - | 파싱 합치기 [#164](https://github.com/yanos0218/AI/issues/164) |
+| 형식 검사 훅(`format-guard.sh`·`md-format-check.sh`·`format_check.py`·`check-cram.py`) | 기본 (2026-09-29 승격, 시험 32/32, 새 세션에서 위반 커밋 차단 확인 [#141](https://github.com/yanos0218/AI/issues/141)) | ✓ | ✓ | ✗ | - | 파싱 합치기 [#164](https://github.com/yanos0218/AI/issues/164) |
 | 용도별 에이전트 3종(`base/agents/` + `verifier-guard`) | 기본 (2026-09-27 승격, 새 세션 18회 [#131](https://github.com/yanos0218/AI/issues/131)) | ✓ | ✓ | ✗ | - | VS Code 화면에서 위임 사용 확인 |
 | dev-release 스킬 | 기본 (3시나리오 2026-09-08, 문서 동기화 확인 단계 [#121](https://github.com/yanos0218/AI/issues/121)) | ✓ | ✓ | 갱신 대기 | 갱신 대기(v0.11.4) | - |
 | dev-workflow 스킬 | 기본 (3시나리오 2026-09-09) | ✓ | ✓ | 갱신 대기 | 갱신 대기(v0.11.4) | - |
