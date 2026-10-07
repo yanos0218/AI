@@ -128,6 +128,9 @@
   - `Closes #N`은 push하는 순간 자동으로 닫혀서, push 이후에도 검증할 게 남아 있으면 검증이 안 끝난 채 닫히는 위험이 있다([Issue #122](https://github.com/yanos0218/AI/issues/122)).
   - 검증이 전부 끝난 뒤 `gh issue close <N> --comment "..."`로 직접 닫는다. "이번 건은 push 뒤 확인이 더 필요한가"를 매번 판단하지 않고 항상 이 방식으로 통일한다.
 - 본문·코멘트는 음슴체·명사형으로 쓴다([base/rules/docs-format.md](../base/rules/docs-format.md), [Issue #126](https://github.com/yanos0218/AI/issues/126)).
+- 본문·코멘트에 체크박스(`- [ ]`, `- [x]`)를 쓰지 않는다
+  - 할 일 목록은 일반 목록이나 표로 쓰고, 진행 상황은 댓글로 남긴다.
+  - (2026-10-07) 사용자가 정한 규칙인데 문서에 없어서 [Issue #171](https://github.com/yanos0218/AI/issues/171) 본문에 체크박스를 넣었다가 지적받음. 그래서 이 줄을 추가함.
 - `issue-format-check.yml`이 사후에 자동 확인하는 범위
   - 이슈 본문은 라벨별 필수 헤딩 + 크램.
   - 사람이 쓴 코멘트는 크램만(2026-09-26 추가). 위반이면 코멘트별 알림 코멘트가 달린다.
