@@ -71,7 +71,7 @@
 | [tools/test-hooks-py.sh](tools/test-hooks-py.sh) | 파이썬 본체 훅 시험<br>판정 사례, 파이썬 없음·깨진 입력 때 막는 훅은 막고 기록 훅은 통과하는지, 한글 기록 |
 | [tools/test-session-start-check.sh](tools/test-session-start-check.sh) | 세션 시작 훅의 설정 낡음 판정 시험<br>원격 앞섬·문서만 바뀐 커밋·옛 버전 파일 형식·fetch 주기 |
 | [tools/test-format-guard.sh](tools/test-format-guard.sh) | 형식 검사 훅 시험<br>명령 형태별(커밋·이슈·PowerShell·heredoc) 게시 전 판정과 `.md` 저장 후 판정 |
-| [tools/check-cram.sh](tools/check-cram.sh)·[base/hooks/check-cram.py](base/hooks/check-cram.py) | 목록 줄바꿈 규칙(콜론·em-dash 크램) 검사<br>`--staged`로 커밋 전 자동 검사, `--add-exception`으로 오탐 예외 등록 |
+| [tools/check-cram.sh](tools/check-cram.sh)·[base/hooks/check-cram.py](base/hooks/check-cram.py) | 목록 줄바꿈 규칙(콜론·em-dash 크램) 검사<br>한 단어 필드명 + 서술문 아닌 값은 필드 나열로 보고 통과<br>`--staged`로 커밋 전 자동 검사, `--add-exception`으로 오탐 예외 등록 |
 | [.claude/hooks/](.claude/hooks/) | 저장소 전용 훅<br>`baseline-guard.sh`+`baseline_guard.py`(`base/` 쓰기 확인, 공통 모듈은 `base/hooks/hooklib.py`), `pre-commit-check.sh`(이슈 번호·크램 검사로 커밋 차단), `session-end-check.sh`(base/ 변경 시 PROGRESS §0 갱신, 그 외엔 관련 Issue 댓글·닫기 확인 안내) |
 | [.github/workflows/lint.yml](.github/workflows/lint.yml) | push마다 markdownlint·shellcheck·문서 상한 검사 |
 | [.github/workflows/issue-format-check.yml](.github/workflows/issue-format-check.yml) | 이슈 본문·댓글이 올라오면 라벨별 필수 헤딩과 목록 줄바꿈 규칙을 검사해 위반을 댓글과 라벨로 알림 |

@@ -17,6 +17,26 @@ link_pat = re.compile(r'\[[^\]]*—[^\]]*\]\(')
 linkref_pat = re.compile(r'^\[.+?\]:\s*\S')
 bullet_prefix = re.compile(r'^\s*(?:[-*]|\d+\.)\s+')
 code_or_bold_label = re.compile(r'^(`[^`]+`|\*\*[^*]+\*\*)$')
+# "필드명: 값" 예외(docs-format.md): 필드명이 공백 없는 한 단어이고 값이 서술문으로 끝나지 않으면 필드 나열로 본다(Issue #175)
+field_label = re.compile(r'^[\w가-힣][\w가-힣.\-]*$')
+trailing_punct = re.compile(r'[\s.!?)\]"\'`*]+$')
+inner_sentence_break = re.compile(r'[.!?]\s+\S')  # 값에 문장이 여럿이면 예외 아님(docs-format.md 예외의 단서)
+
+
+def ends_like_sentence(value):
+    """값이 서술문으로 끝나는지 — 마지막 한글이 '다'·'요'이거나 받침 ㅁ(음슴체: 함·됨·임 등)이면 문장으로 본다.
+    받침 ㅁ으로 끝나는 명사(예: 시점)도 문장으로 쳐서 지금처럼 잡는다(보수적으로)."""
+    v = trailing_punct.sub('', value)
+    if not v:
+        return False
+    c = v[-1]
+    if c in '다요':
+        return True
+    return '가' <= c <= '힣' and (ord(c) - 0xAC00) % 28 == 16
+
+
+def in_quotes(s, idx):
+    return s[:idx].count('"') % 2 == 1
 
 # 규칙 원문(docs-format.md)이 "주어(파일명·기능명 등)"라고 명시한다: 라벨이 백틱·볼드로
 # 감싼 코드/기능명이면 "필드명: 값" 예외가 아니라 항상 대상 — 짧아도(길이 무관) 플래그.
@@ -72,13 +92,16 @@ def check_line(stripped):
         colon_idx = stripped.find(':', m.start(2))
         if colon_idx == -1:
             colon_idx = stripped.find('：', m.start(2))
-        if colon_idx != -1 and paren_depth_at(stripped, colon_idx) == 0 and not in_backtick(stripped, colon_idx):
+        if colon_idx != -1 and paren_depth_at(stripped, colon_idx) == 0 and not in_backtick(stripped, colon_idx) \
+                and not in_quotes(stripped, colon_idx):
             after = stripped[colon_idx + 1:]
             if after.count(',') + after.count('·') >= 1 or enum_hint.search(t):
                 return None
             label = m.group(2).strip()
             if code_or_bold_label.match(label):
                 return 'colon'  # 파일명·기능명 라벨 — 길이 무관하게 항상 대상
+            if field_label.match(label) and not ends_like_sentence(after) and not inner_sentence_break.search(after):
+                return None  # "필드명: 값" — 서술문이 아닌 값
             if len(t) > 25:
                 return 'colon'
     return None

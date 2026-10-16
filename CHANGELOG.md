@@ -14,6 +14,8 @@
 
 ### Fixed
 
+- `base/hooks/check-cram.py`
+  - 한 단어 필드명에 서술문이 아닌 한 문장 값이 붙은 필드-값 형식 줄과 큰따옴표 안 콜론을 크램으로 잡던 오탐 수정, 예외 목록 6줄 정리([Issue #175](https://github.com/yanos0218/AI/issues/175), 저장소 .md 2,564줄 판정 동일·시험 32/32, PATCH)
 - `self-audit` 스킬 `references/method.md` 3절
   - 이슈 본문을 저장소 이슈 형식 문서 우선으로 쓰고, 없으면 배경/제안 내용/기대 효과/결정 헤딩. "근거 한 줄 + 이유"만 적어 이슈 형식 검사에 걸리던 문제([Issue #172](https://github.com/yanos0218/AI/issues/172), 새 세션 시험 2회, PATCH)
 
