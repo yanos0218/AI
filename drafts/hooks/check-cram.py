@@ -1,0 +1,164 @@
+#!/usr/bin/env python3
+"""base/rules/docs-format.md의 목록 줄바꿈 규칙 위반(콜론·em-dash 크램)을 찾는다.
+tools/check-cram.sh가 이 파일을 호출한다 — 직접 실행하지 않는다."""
+import re
+import sys
+
+exceptions_path = sys.argv[1] if len(sys.argv) > 1 else None
+try:
+    with open(exceptions_path, encoding='utf-8') as f:
+        exceptions = {line.strip() for line in f if line.strip() and not line.startswith('#')}
+except (FileNotFoundError, TypeError):
+    exceptions = set()
+
+colon_pat = re.compile(r'^(\s*(?:[-*]|\d+\.)\s+|\s*)(\*\*[^*]+\*\*|`[^`]+`|[^\s:][^:]{0,40}?)\s*[:：]\s+\S')
+enum_hint = re.compile(r'(\d\s*(개|종|가지|건)|둘|셋|넷|다섯|\([0-9]\)|\([a-z]\))')
+link_pat = re.compile(r'\[[^\]]*—[^\]]*\]\(')
+linkref_pat = re.compile(r'^\[.+?\]:\s*\S')
+bullet_prefix = re.compile(r'^\s*(?:[-*]|\d+\.)\s+')
+code_or_bold_label = re.compile(r'^(`[^`]+`|\*\*[^*]+\*\*)$')
+# "필드명: 값" 예외(docs-format.md): 필드명이 공백 없는 한 단어이고 값이 서술문으로 끝나지 않으면 필드 나열로 본다(Issue #175)
+field_label = re.compile(r'^[\w가-힣][\w가-힣.\-]*$')
+trailing_punct = re.compile(r'[\s.!?)\]"\'`*]+$')
+inner_sentence_break = re.compile(r'[.!?]\s+\S')  # 값에 문장이 여럿이면 예외 아님(docs-format.md 예외의 단서)
+
+
+def ends_like_sentence(value):
+    """값이 서술문으로 끝나는지 — 마지막 한글이 '다'·'요'이거나 받침 ㅁ(음슴체: 함·됨·임 등)이면 문장으로 본다.
+    받침 ㅁ으로 끝나는 명사(예: 시점)도 문장으로 쳐서 지금처럼 잡는다(보수적으로)."""
+    v = trailing_punct.sub('', value)
+    if not v:
+        return False
+    c = v[-1]
+    if c in '다요':
+        return True
+    return '가' <= c <= '힣' and (ord(c) - 0xAC00) % 28 == 16
+
+
+def in_quotes(s, idx):
+    return s[:idx].count('"') % 2 == 1
+
+# 규칙 원문(docs-format.md)이 "주어(파일명·기능명 등)"라고 명시한다: 라벨이 백틱·볼드로
+# 감싼 코드/기능명이면 "필드명: 값" 예외가 아니라 항상 대상 — 짧아도(길이 무관) 플래그.
+# 라벨이 일반 텍스트(질문/결론/이관/결정 같은 필드명)면 여전히 길이로 관대하게 봐준다.
+
+
+def paren_depth_at(s, idx):
+    depth = 0
+    in_code = False
+    for i in range(idx):
+        c = s[i]
+        if c == '`':
+            in_code = not in_code
+        elif not in_code:
+            if c == '(':
+                depth += 1
+            elif c == ')':
+                depth = max(0, depth - 1)
+    return depth
+
+
+def in_backtick(s, idx):
+    return s[:idx].count('`') % 2 == 1
+
+
+def in_link_title(s, idx):
+    """em-dash가 마크다운 링크 텍스트 [저자 — 제목](url) 안에 있는지."""
+    return bool(link_pat.search(s)) and any(
+        m.start() < idx < m.end() for m in link_pat.finditer(s)
+    )
+
+
+def check_line(stripped):
+    t = stripped.strip()
+    if not t or t.startswith(('#', '>', '|', '```')):
+        return None
+    if linkref_pat.match(t):
+        return None  # 마크다운 링크 참조 정의([label]: url) — 라벨:설명 크램이 아니다
+    if t in exceptions:
+        return None
+    for m in re.finditer(r'\s—\s', stripped):
+        idx = m.start()
+        if paren_depth_at(stripped, idx) > 0 or in_backtick(stripped, idx) or in_link_title(stripped, idx):
+            continue
+        subject = bullet_prefix.sub('', stripped[:idx]).strip()
+        if code_or_bold_label.match(subject):
+            return 'emdash'  # 파일명·기능명 라벨 — 길이 무관하게 항상 대상
+        if len(t) > 25:
+            return 'emdash'
+        break
+    m = colon_pat.match(stripped)
+    if m:
+        colon_idx = stripped.find(':', m.start(2))
+        if colon_idx == -1:
+            colon_idx = stripped.find('：', m.start(2))
+        if colon_idx != -1 and paren_depth_at(stripped, colon_idx) == 0 and not in_backtick(stripped, colon_idx) \
+                and not in_quotes(stripped, colon_idx):
+            after = stripped[colon_idx + 1:]
+            if after.count(',') + after.count('·') >= 1 or enum_hint.search(t):
+                return None
+            label = m.group(2).strip()
+            if code_or_bold_label.match(label):
+                return 'colon'  # 파일명·기능명 라벨 — 길이 무관하게 항상 대상
+            if field_label.match(label) and not ends_like_sentence(after) and not inner_sentence_break.search(after):
+                return None  # "필드명: 값" — 서술문이 아닌 값
+            if len(t) > 25:
+                return 'colon'
+    return None
+
+
+table_sep = re.compile(r'^\|?\s*:?-{3,}')
+
+
+def check_table_row(stripped):
+    """표 한 줄: 셀을 나누고 <br> 단위 조각마다 목록 규칙을 적용한다(표에선 <br>이 하위 bullet 대신)."""
+    t = stripped.strip()
+    if table_sep.match(t) or t in exceptions:
+        return None
+    for cell in re.split(r'(?<!\\)\|', t.strip('|')):
+        for seg in cell.split('<br>'):
+            kind = check_line(seg.strip())
+            if kind:
+                return 'table-' + kind
+    return None
+
+
+def main():
+    hits = 0
+    code_state = {}
+    fm_state = {}  # 파일 맨 앞 YAML 머리말(--- ~ ---)은 문서 본문이 아니라 설정이라 검사하지 않는다
+    for raw in sys.stdin:
+        raw = raw.rstrip('\n')
+        if not raw:
+            continue
+        parts = raw.split('\t', 3)
+        if len(parts) != 4:
+            continue
+        path, lineno, is_added, content = parts
+        if lineno == '1' and content.strip() == '---':
+            fm_state[path] = True
+            continue
+        if fm_state.get(path):
+            if content.strip() == '---':
+                fm_state[path] = False
+            continue
+        in_code = code_state.get(path, False)
+        if content.strip().startswith('```'):
+            code_state[path] = not in_code
+            continue
+        if in_code or is_added != '1':
+            continue
+        kind = check_table_row(content) if content.strip().startswith('|') else check_line(content)
+        if kind:
+            hits += 1
+            print(f"{path}:{lineno}: [{kind}] {content.strip()[:120]}")
+
+    if hits:
+        print(f"\n{hits}건 발견. 진짜 크램이면 라벨/설명을 줄바꿈하고, 나열·필드-값 등 예외면:")
+        print("  tools/check-cram.sh --add-exception <file> <line-number>")
+        sys.exit(1)
+    sys.exit(0)
+
+
+if __name__ == '__main__':
+    main()
