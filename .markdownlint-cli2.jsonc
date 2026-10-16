@@ -1,4 +1,5 @@
 {
   // 설정 자체는 .markdownlint.jsonc
-  "ignores": ["node_modules/**", "dist/**"]
+  // model-compare는 규칙 위반을 일부러 심은 시험 문서(tools/measure-model.sh)
+  "ignores": ["node_modules/**", "dist/**", "tools/test-fixtures/model-compare/**"]
 }

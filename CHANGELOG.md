@@ -7,6 +7,11 @@
 
 ## [Unreleased]
 
+### Added
+
+- `tools/measure-model.sh`
+  - 같은 읽기 전용 작업을 모델별로 `claude -p` 반복 실행해 구독 한도 소모(5시간·주간 %p)와 정답률을 비교하는 측정 도구, 시험 문서 `tools/test-fixtures/model-compare/`([Issue #178](https://github.com/yanos0218/AI/issues/178), 기본 영역 아님)
+
 ### Fixed
 
 - `self-audit` 스킬 `references/method.md` 3절
