@@ -7,6 +7,13 @@
 
 ## [Unreleased]
 
+### Changed
+
+- 전역 지침 `base/claude-md/CLAUDE.md`
+  - §2에 큰 작업(커밋 여러 개, 릴리즈, 설계 제시) 끝 보고에서 문제·개선점·파생 문제·아이디어를 훑는 규칙 추가([Issue #169](https://github.com/yanos0218/AI/issues/169))
+  - §4에 CI 대기는 `gh run watch`, 실행은 워크플로 이름과 전체 SHA로 고르는 규칙 추가([Issue #176](https://github.com/yanos0218/AI/issues/176))
+  - 새 세션 전후 비교 2회씩, PATCH
+
 ### Added
 
 - `tools/measure-model.sh`

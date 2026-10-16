@@ -49,7 +49,7 @@
 
 | 자산 | 단계 | Windows | Mac mini | Linux | 웹(Claude.ai) | 다음 행동 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 전역 지침 `base/claude-md/CLAUDE.md` | 기본 (2026-09-29 §4 검사 대상 수·§8 설계 칸 추가 [#167](https://github.com/yanos0218/AI/issues/167) [#155](https://github.com/yanos0218/AI/issues/155)) | ✓ | 갱신 대기 | 갱신 대기 | 갱신 대기(Project instructions 2026-09-12) | - |
+| 전역 지침 `base/claude-md/CLAUDE.md` | 기본 (2026-10-17 §2 큰 작업 끝 점검·§4 CI 대기 추가, 새 세션 전후 2회씩 [#169](https://github.com/yanos0218/AI/issues/169) [#176](https://github.com/yanos0218/AI/issues/176)) | ✓ | 갱신 대기 | 갱신 대기 | 갱신 대기(Project instructions 2026-09-12) | - |
 | 모듈 규칙 `base/rules/docs-format.md` | 기본 (2026-09-28 이슈·PR 음슴체, 필드 예외 범위) | ✓ | ✓ | 갱신 대기 | - | - |
 | `settings.example.json` (권한·훅·상태줄·env) | 기본 (2026-09-29 형식 검사·대시보드 훅 등록 [#141](https://github.com/yanos0218/AI/issues/141) [#136](https://github.com/yanos0218/AI/issues/136), 기록 훅 async·`if` 조건 [#147](https://github.com/yanos0218/AI/issues/147)) | ✓ | ✓ | 갱신 대기 | - | - |
 | 서브에이전트 재귀 차단 `env.CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` | 기본 (재귀 시도 차단 실측 2026-09-13 [#75](https://github.com/yanos0218/AI/issues/75)) | ✓ | ✓ | ✓ | - | - |
