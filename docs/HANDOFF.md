@@ -8,7 +8,7 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 
 ## 현재 상태 (2026-10-17) · 마지막 월 점검: 2026-10-07 ([#171](https://github.com/yanos0218/AI/issues/171), 후속은 하위 이슈)
 
-- 저장소 v0.13.1(2026-10-07), 그 뒤 변경은 [CHANGELOG.md](../CHANGELOG.md) `[Unreleased]`에 쌓임(다음 기기·웹 설치 직전이 컷 시점). 기기별 배포는 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태)이 원본(Mac mini `v0.13.0-2-gb1ee603` 2026-09-29, Windows `v0.13.1-12-gd5d7f3e` 2026-10-17, Linux는 다음 접속 때 `install.sh`, 웹 스킬 3개는 v0.11.4).
+- 저장소 v0.13.1(2026-10-07), 그 뒤 변경은 [CHANGELOG.md](../CHANGELOG.md) `[Unreleased]`에 쌓임(다음 기기·웹 설치 직전이 컷 시점). 기기별 배포는 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태)이 원본(Mac mini `v0.13.0-2-gb1ee603` 2026-09-29, Windows `v0.13.1-18-g1836702` 2026-10-17, Linux는 다음 접속 때 `install.sh`, 웹 스킬 3개는 v0.11.4).
 - 2026-10-16~17에 기본 반영한 것은 크램 검사 필드-값 예외([#175](https://github.com/yanos0218/AI/issues/175)), 전역 지침 §2 큰 작업 끝 점검·§4 CI 대기([#169](https://github.com/yanos0218/AI/issues/169)·[#176](https://github.com/yanos0218/AI/issues/176)). 도구는 설치 버전 PROGRESS 기록 안내·대조([#180](https://github.com/yanos0218/AI/issues/180), 표기는 `git describe` 하나), 모델별 한도 측정 도구([#178](https://github.com/yanos0218/AI/issues/178)). 터미널 CLI 2.1.301 갱신([#179](https://github.com/yanos0218/AI/issues/179)).
 - 진행 중인 것은 형식 검사 훅 파싱 합치기([#164](https://github.com/yanos0218/AI/issues/164)), 훅 대기 줄이기([#147](https://github.com/yanos0218/AI/issues/147)), `architect` 초안([#153](https://github.com/yanos0218/AI/issues/153)). 보류는 모델 선정 기준([#177](https://github.com/yanos0218/AI/issues/177), 확정 설계만 기록)·한도 측정 실행([#178](https://github.com/yanos0218/AI/issues/178), 사용자 요청 시)·config-update 보고 초안([#181](https://github.com/yanos0218/AI/issues/181), 다음 다른 기기 설치 때 검증).
 - 할 일·문제는 GitHub Issues, 결정 근거는 닫힌 이슈와 `git log`. Script 저장소 개인키 건은 그 저장소 일(사용자 결정 대기).
