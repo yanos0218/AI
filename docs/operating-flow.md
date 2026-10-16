@@ -18,6 +18,16 @@ flowchart LR
 
 ## 구성 요소가 적용되는 곳
 
+세션 안에서 각 묶음이 작동하는 때(요약, [Issue #183](https://github.com/yanos0218/AI/issues/183)). 파일 단위는 아래 표와 "훅이 도는 시점"에 있다.
+
+```mermaid
+flowchart LR
+  S[Claude Code 세션] --> G[지침·규칙<br>항상 적용]
+  S --> K[스킬<br>사용자 말이 설명과 맞을 때]
+  S --> A[에이전트<br>조사·점검·검사를 맡길 때]
+  S --> H[훅<br>세션 시작·도구 실행 전후·응답 끝]
+```
+
 | 원본 | 설치 위치 | 적용 범위 |
 | --- | --- | --- |
 | [base/claude-md/CLAUDE.md](../base/claude-md/CLAUDE.md) | `~/.claude/CLAUDE.md`<br>웹은 Project instructions | 모든 저장소의 모든 세션 |
