@@ -154,6 +154,14 @@
         "hooks": [
           {
             "type": "command",
+            "if": "Bash(*.claude*)",
+            "command": "bash ~/.claude/hooks/config-changelog.sh",
+            "async": true,
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "if": "PowerShell(*.claude*)",
             "command": "bash ~/.claude/hooks/config-changelog.sh",
             "async": true,
             "timeout": 30

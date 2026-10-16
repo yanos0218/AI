@@ -23,6 +23,10 @@
 
 ### Fixed
 
+- `base/hooks/config_changelog.py`·`base/settings.example.json`
+  - 보호 경로와 쓰기 명령이 명령 어디에든 따로 있기만 해도 기록하던 오탐 수정(133행 중 실제 쓰기 1행). 같은 명령 조각에서 쓰기 명령 뒤에 보호 경로가 있을 때만, 복사·이동은 목적지만 봄. `$HOME` 경로 인식 추가
+  - Bash·PowerShell 등록에 `.claude`가 든 명령일 때만 뜨는 `if` 조건 추가(모든 명령마다 프로세스가 뜨던 것, [Issue #147](https://github.com/yanos0218/AI/issues/147))
+  - [Issue #173](https://github.com/yanos0218/AI/issues/173), 시험 31/31, PATCH
 - `base/hooks/check-cram.py`
   - 한 단어 필드명에 서술문이 아닌 한 문장 값이 붙은 필드-값 형식 줄과 큰따옴표 안 콜론을 크램으로 잡던 오탐 수정, 예외 목록 6줄 정리([Issue #175](https://github.com/yanos0218/AI/issues/175), 저장소 .md 2,564줄 판정 동일·시험 32/32, PATCH)
 - `self-audit` 스킬 `references/method.md` 3절

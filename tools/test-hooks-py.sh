@@ -61,5 +61,26 @@ mk Bash 'gh issue list --limit 50 --json body --search "한글 검색어"' | bas
 mk Write 'C:\Users\me\.claude\settings.json' | bash "$(hook config-changelog.sh)"
 grep -q 'settings.json' "${tmp}/config-changelog.md" 2>/dev/null && ok || ng 'Windows 경로 설정 파일 수정 기록'
 
+# config-changelog Bash 판정: 같은 명령 조각에서 쓰기 명령 뒤에 보호 경로가 있을 때만 기록(Issue #173)
+cl() { # $1=기대(log|skip) $2=도구 $3=명령 $4=설명
+  rm -f "${tmp}/config-changelog.md"
+  mk "${2}" "${3}" | bash "$(hook config-changelog.sh)"
+  if [[ -f "${tmp}/config-changelog.md" ]]; then got=log; else got=skip; fi
+  [[ "${got}" == "${1}" ]] && ok || ng "config-changelog ${4} (기대 ${1}, 실제 ${got})"
+}
+cl log  Bash "sed -i 's/a/b/' ~/.claude/settings.json" 'sed -i로 설정 수정'
+cl log  Bash 'cp base/claude-md/CLAUDE.md ~/.claude/CLAUDE.md' 'cp 목적지가 설정'
+cl log  Bash 'echo x > ~/.claude/rules/a.md' '리디렉션 대상이 규칙'
+cl log  Bash 'cd /c/Git/AI && cp x "$HOME/.claude/hooks/y.sh"' '$HOME 경로로 복사'
+cl log  Bash 'rm ~/.claude/hooks/old.sh' '훅 삭제'
+cl log  Bash 'cat a | tee ~/.claude/CLAUDE.md' 'tee로 덮어쓰기'
+cl log  PowerShell 'Set-Content -Path C:\Users\me\.claude\settings.json -Value x' 'PowerShell Set-Content'
+cl skip Bash 'grep model ~/.claude/settings.json > /tmp/out.txt' '설정 읽고 다른 곳에 저장'
+cl skip Bash 'cp ~/.claude/settings.json /tmp/backup.json' '설정을 다른 곳으로 복사'
+cl skip Bash 'bash tools/install.sh 2>&1 | tail -4; diff base/x ~/.claude/CLAUDE.md' '설치와 대조'
+cl skip Bash 'sed -n 1,5p ~/.claude/settings.json' '설정 읽기'
+cl skip Bash 'cat ~/.claude/CLAUDE.md; echo done > /tmp/x' '읽기와 무관한 쓰기가 다른 조각'
+cl skip Bash 'git commit -m "cp 설명 ~/.claude/settings.json"' '따옴표 안 글'
+
 echo "통과 ${pass} / 실패 ${fail}"
 [[ "${fail}" -eq 0 ]]
