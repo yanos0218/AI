@@ -18,6 +18,10 @@
    - 스킬은 새 세션에서 3가지 상황([docs/skill-development.md](../docs/skill-development.md) "시험 방법").
    - 에이전트는 [tools/test-agent.sh](../tools/test-agent.sh)로 새 세션 시험.
    - 훅은 시험 스크립트(예: [tools/test-hooks-py.sh](../tools/test-hooks-py.sh))와 실제 명령·세션에서의 동작 확인.
+   - 전역 지침은 문안의 위험도에 맞춘다([Issue #182](https://github.com/yanos0218/AI/issues/182), 2026-10-17).
+     - 행동을 막거나 승인 흐름을 바꾸는 문안은 새 세션 비교. 반영 전 1회를 먼저 돌려 실제로 틀릴 때만 반영 후 2회를 돌린다. 반영 후 조건은 시험 저장소 `CLAUDE.md`에 문안을 넣어 대신할 수 있다.
+     - 실제 사고가 근거인 알림성 문안은 문안 검토로 갈음하고, 지켜지는지는 월 점검 self-audit가 평소 대화 기록에서 확인한다.
+     - 공통으로 통과 기준은 시험 전에 정한다. 시험 상황을 만들 수 없으면 돌리지 않고 미검증으로 둔 뒤 실제 상황에서 확인한다.
 2. 사용자가 "기본에 반영해"라고 명시적으로 요청했다.
 3. `git mv drafts/<경로> base/<경로>`로 옮기고, 커밋 제목은 `feat(<영역>): <이름> 기본 영역 승격`. 관련 Issue는 검증이 끝난 뒤 `gh issue close`로 닫는다. 필요하면 `docs/HANDOFF.md` 결정 사항에 한 줄 추가.
 

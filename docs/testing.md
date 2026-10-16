@@ -12,6 +12,7 @@
 | 훅 | [tools/test-hooks-py.sh](../tools/test-hooks-py.sh)<br>[tools/test-session-start-check.sh](../tools/test-session-start-check.sh)<br>[tools/test-format-guard.sh](../tools/test-format-guard.sh) | 판정 사례·실패 시 동작<br>설정 낡음 판정<br>형식 검사 게시 전·저장 후 |
 | 스킬 | [tools/test-skill.sh](../tools/test-skill.sh) | 새 세션 발동 시험, 방법은 [skill-development.md](skill-development.md) "시험 방법" |
 | 에이전트 | [tools/test-agent.sh](../tools/test-agent.sh) | 위임 대상·도구 호출·훅 차단 |
+| 전역 지침 | 문안 위험도별 기준([drafts/README.md](../drafts/README.md) 승격 조건 1) | 막는·승인 흐름 문안은 반영 전 1회로 실제로 틀리는지 먼저 본 뒤 반영 후 2회<br>사고 근거 알림성 문안은 문안 검토, 준수는 월 점검 self-audit |
 | 설치본 | `bash tools/check-install.sh` | `~/.claude`가 `base/`와 같은지 |
 | 모델 비교 | [tools/measure-model.sh](../tools/measure-model.sh) | 같은 작업을 모델별로 돌려 구독 한도 소모(5시간·주간 %p)와 정답률 비교([Issue #178](https://github.com/yanos0218/AI/issues/178))<br>시험 문서는 [tools/test-fixtures/model-compare/](../tools/test-fixtures/model-compare/)(위반 5개를 일부러 심어 markdownlint 제외)<br>한도를 쓰므로 실행 전 사용자 확인 |
 
