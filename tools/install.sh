@@ -79,4 +79,7 @@ if [[ "${DRY}" = 1 ]]; then say "  (dry) 버전 표시 파일 기록: ${SRC_ABS}
 fi
 
 say "== 설치 끝. 스킬·훅은 새 세션부터 적용. 웹(Claude.ai)은 dist/*.zip 업로드와 Project instructions 갱신이 별도."
+# 설치 직후엔 PROGRESS를 아직 못 고쳤으므로 비교하지 않고 적을 값만 알린다. 대조는 check-install.sh가 한다(Issue #180)
+case "$(uname -s)" in MINGW*|MSYS*|CYGWIN*) surface="Windows";; Darwin) surface="Mac mini";; Linux) surface="Linux";; *) surface="?";; esac
+say "== 기록: docs/PROGRESS.md §0 표면별 설치 버전 '${surface}' 행 → ${BASE_VER} / $(date +%Y-%m-%d) (claude-config 세션에서 갱신)"
 [[ "${DRY}" = 1 ]] || bash tools/check-install.sh | tail -1

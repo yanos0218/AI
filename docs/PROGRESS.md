@@ -32,10 +32,14 @@
 
 설치할 때 이 표만 고친다. 아래 자산 표의 칸은 이 버전 기준이다(2026-09-29 git 기록으로 계산, [#168](https://github.com/yanos0218/AI/issues/168)).
 
+- 버전 표기
+  - 릴리즈 태그 기준 `git describe` 값 하나만 쓴다(예: `v0.13.1-8-gca8f24e` = v0.13.1 이후 8커밋, 커밋 ca8f24e)
+  - `tools/install.sh`가 끝에 적을 값을 출력하고, `tools/check-install.sh`가 이 행과 설치 버전 파일을 대조한다([#180](https://github.com/yanos0218/AI/issues/180))
+
 | 표면 | 설치된 것 | 설치일 | 다음 |
 | --- | --- | --- | --- |
-| Windows | `main` ca8f24e(v0.13.1 + self-audit·check-cram 수정 2건) | 2026-10-17 | - |
-| Mac mini | `main` b1ee603(v0.13.0 + 전역 지침 규칙 1건) | 2026-09-29 | v0.13.1 `install.sh`(전역 지침 §1·§2 추가분) |
+| Windows | `v0.13.1-8-gca8f24e`(self-audit·check-cram 수정 2건) | 2026-10-17 | - |
+| Mac mini | `v0.13.0-2-gb1ee603`(전역 지침 규칙 1건) | 2026-09-29 | v0.13.1 `install.sh`(전역 지침 §1·§2 추가분) |
 | Linux(RHEL 계열) | 2026-09-16 설치본(버전 기록 미확인) | 2026-09-16 | 다음 접속 때 `install.sh`, 파이썬 3.9에서 훅 실행 확인 |
 | 웹(Claude.ai) | 스킬 3개 v0.11.4, Project instructions | 2026-09-19~20, 2026-09-12 | v0.13.1 Release zip 5개 업로드, Project instructions 갱신 |
 

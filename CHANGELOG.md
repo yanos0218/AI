@@ -11,6 +11,8 @@
 
 - `tools/measure-model.sh`
   - 같은 읽기 전용 작업을 모델별로 `claude -p` 반복 실행해 구독 한도 소모(5시간·주간 %p)와 정답률을 비교하는 측정 도구, 시험 문서 `tools/test-fixtures/model-compare/`([Issue #178](https://github.com/yanos0218/AI/issues/178), 기본 영역 아님)
+- `tools/install.sh`·`tools/check-install.sh`
+  - 설치 끝에 PROGRESS §0 기기 행에 적을 버전(`git describe`)을 출력하고, `check-install.sh`가 그 행과 설치 버전 파일을 대조해 한 줄로 보고. PROGRESS 설치 버전 표기를 `git describe` 하나로 통일([Issue #180](https://github.com/yanos0218/AI/issues/180), 기본 영역 아님)
 
 ### Fixed
 

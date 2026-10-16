@@ -95,6 +95,15 @@ PY
 
 if [[ "${QUIET}" = 1 ]]; then run_checks >/dev/null; else run_checks; fi
 
+# PROGRESS §0 표면별 설치 버전 행에 이 기기 설치 버전(git describe, 설치 버전 파일 2행)이 적혔는지(Issue #180).
+# 설치 어긋남과는 별개라 판정(drift)에 넣지 않고, --summary에서도 보이게 판정 줄 바로 위에 한 줄로 낸다
+case "$(uname -s)" in MINGW*|MSYS*|CYGWIN*) surface="Windows";; Darwin) surface="Mac mini";; Linux) surface="Linux";; *) surface="";; esac
+installed_ver="$(sed -n 2p "${CLAUDE_HOME}/.claude-config-version" 2>/dev/null)"
+row="$(grep -m1 "^| ${surface}" docs/PROGRESS.md 2>/dev/null)"
+if [[ -z "${surface}" || -z "${installed_ver}" || -z "${row}" ]]; then echo "기록: PROGRESS §0 설치 버전 확인 못함(표면 ${surface:-?}, 설치 버전 ${installed_ver:-없음})"
+elif [[ "${row}" == *"${installed_ver}"* ]]; then echo "기록: PROGRESS §0 ${surface} 행에 설치 버전 ${installed_ver} 있음"
+else echo "기록: PROGRESS §0 ${surface} 행에 설치 버전 ${installed_ver} 없음 — claude-config 세션에서 그 행을 갱신"; fi
+
 echo
 [[ "${drift}" = 0 ]] && echo "결과: 설치본이 기본 영역과 같다." || echo "결과: 어긋난 항목이 있다(DIFF/MISSING). 의도한 변경이면 base/에 반영, 아니면 재설치(docs/install.md)."
 exit "${drift}"
