@@ -6,9 +6,9 @@
 
 Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원본 저장소. 개발자가 아닌 사용자가 여러 스택의 프로젝트를 오가며 Claude에게 (1) 매번 같은 배경을 다시 설명하지 않고, (2) 멋대로 진행하거나 너무 자주 묻지 않게 하고, (3) 검증 없이 "됐다"는 말을 못 하게 하고, (4) 결론만 짧게 듣도록 만든다. 저장소별 규칙은 각 저장소에 두고 여기서는 **참조만** 한다.
 
-## 현재 상태 (2026-10-16) · 마지막 월 점검: 2026-10-07 ([#171](https://github.com/yanos0218/AI/issues/171), 후속은 하위 이슈)
+## 현재 상태 (2026-10-17) · 마지막 월 점검: 2026-10-07 ([#171](https://github.com/yanos0218/AI/issues/171), 후속은 하위 이슈)
 
-- 저장소 v0.13.1(2026-10-07), 그 뒤 변경은 [CHANGELOG.md](../CHANGELOG.md) `[Unreleased]`에 쌓임(다음 기기·웹 설치 직전이 컷 시점). 기기별 배포는 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태)이 원본(Mac mini v0.13.0 2026-09-29, Windows v0.13.1 + self-audit 수정(d4f9230) 2026-10-07, Linux는 다음 접속 때 `install.sh`, 웹 스킬 3개는 v0.11.4).
+- 저장소 v0.13.1(2026-10-07), 그 뒤 변경은 [CHANGELOG.md](../CHANGELOG.md) `[Unreleased]`에 쌓임(다음 기기·웹 설치 직전이 컷 시점). 기기별 배포는 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태)이 원본(Mac mini v0.13.0 2026-09-29, Windows v0.13.1 + 수정 2건(ca8f24e) 2026-10-17, Linux는 다음 접속 때 `install.sh`, 웹 스킬 3개는 v0.11.4).
 - 2026-09-28~29에 기본 반영한 것은 에이전트 3종([#131](https://github.com/yanos0218/AI/issues/131)), 컴팩션 안전망 훅([#104](https://github.com/yanos0218/AI/issues/104)), 훅 파이썬 전환([#144](https://github.com/yanos0218/AI/issues/144)), 설정 낡음 판정 수정([#150](https://github.com/yanos0218/AI/issues/150)), 토큰 대시보드([#136](https://github.com/yanos0218/AI/issues/136), Stop 훅은 `install.sh`가 등록), 전역 지침 설계 칸([#155](https://github.com/yanos0218/AI/issues/155)), 형식 검사 훅([#141](https://github.com/yanos0218/AI/issues/141), 2026-09-29). 2026-09-29 저장소 점검에서 나온 Mac 호환·커밋 검사 우회·캐시 비교 등 #156~#163 수정.
 - 진행 중인 것은 형식 검사 훅 파싱 합치기([#164](https://github.com/yanos0218/AI/issues/164)), 훅 대기 줄이기([#147](https://github.com/yanos0218/AI/issues/147), 남은 원인은 Windows 프로세스 실행 지연), `architect` 초안([#153](https://github.com/yanos0218/AI/issues/153), 다음번 Opus 재시험). 모델 선정 기준([#177](https://github.com/yanos0218/AI/issues/177))은 확정 설계만 기록, 메인 모델 결정용 한도 측정([#178](https://github.com/yanos0218/AI/issues/178))은 도구만 만들고 보류(사용자 요청 시 실행).
 - 할 일·문제는 GitHub Issues, 결정 근거는 닫힌 이슈와 `git log`. Script 저장소 개인키 건은 그 저장소 일(사용자 결정 대기).
