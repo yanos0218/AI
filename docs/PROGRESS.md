@@ -57,7 +57,7 @@
 | gh-throttle 훅 | 기본 (병렬 직렬화 실측 2026-09-13 [#74](https://github.com/yanos0218/AI/issues/74), 제한 시간 30초 [#142](https://github.com/yanos0218/AI/issues/142)) | ✓ | ✓ | 갱신 대기 | - | - |
 | session-start-check 훅(SessionStart) | 기본 (설정 낡음 판정 수정 2026-09-28 [#150](https://github.com/yanos0218/AI/issues/150), `tools/test-session-start-check.sh` 15/15) | ✓ | ✓ | 갱신 대기 | - | Windows 느린 시각 훅 시간 측정 |
 | bulk-read-log 훅(PostToolUse) | 기본 (2026-09-15 [#100](https://github.com/yanos0218/AI/issues/100), 서브에이전트 조회 제외 [#134](https://github.com/yanos0218/AI/issues/134)) | ✓ | ✓ | 갱신 대기 | - | - |
-| config-changelog 훅 | 기본 (임시 HOME 7케이스 2026-09-09) | ✓ | ✓ | 갱신 대기 | - | - |
+| config-changelog 훅 | 기본 (임시 HOME 7케이스 2026-09-09) | ✓ | ✓ | 갱신 대기 | - | 조각 단위 판정 수정안 `drafts/hooks/` 검증(14/14), Bash 등록 `if` 조건 확인 [#173](https://github.com/yanos0218/AI/issues/173)·[#147](https://github.com/yanos0218/AI/issues/147) |
 | 훅 파이썬 전환(`hooklib.py` + 셸 입구·파이썬 본체) | 기본 (2026-09-28 승격, 30일 명령 766건 대조 [#144](https://github.com/yanos0218/AI/issues/144)) | ✓ | ✓ | ✗ | - | Linux 파이썬 3.9 실행 확인, 파싱 합치기 [#164](https://github.com/yanos0218/AI/issues/164) |
 | statusline 훅 | 기본 (터미널 CLI 전용, VS Code 패널엔 안 나옴) | ✓ | ✓ | ✓ | - | - |
 | 컴팩션 안전망 훅(`compact-snapshot.sh`·`compact-snapshot-show.sh`) | 기본 (2026-09-27 승격, 실제 자동 컴팩션에서 확인 [#104](https://github.com/yanos0218/AI/issues/104)) | ✓ | ✓ | ✗ | - | - |
