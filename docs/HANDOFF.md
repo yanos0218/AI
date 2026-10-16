@@ -9,13 +9,13 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 ## 현재 상태 (2026-10-17) · 마지막 월 점검: 2026-10-07 ([#171](https://github.com/yanos0218/AI/issues/171), 후속은 하위 이슈)
 
 - 저장소 v0.13.1(2026-10-07), 그 뒤 변경은 [CHANGELOG.md](../CHANGELOG.md) `[Unreleased]`에 쌓임(다음 기기·웹 설치 직전이 컷 시점). 기기별 배포는 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태)이 원본(Mac mini `v0.13.0-2-gb1ee603` 2026-09-29, Windows `v0.13.1-12-gd5d7f3e` 2026-10-17, Linux는 다음 접속 때 `install.sh`, 웹 스킬 3개는 v0.11.4).
-- 2026-09-28~29에 기본 반영한 것은 에이전트 3종([#131](https://github.com/yanos0218/AI/issues/131)), 컴팩션 안전망 훅([#104](https://github.com/yanos0218/AI/issues/104)), 훅 파이썬 전환([#144](https://github.com/yanos0218/AI/issues/144)), 설정 낡음 판정 수정([#150](https://github.com/yanos0218/AI/issues/150)), 토큰 대시보드([#136](https://github.com/yanos0218/AI/issues/136), Stop 훅은 `install.sh`가 등록), 전역 지침 설계 칸([#155](https://github.com/yanos0218/AI/issues/155)), 형식 검사 훅([#141](https://github.com/yanos0218/AI/issues/141), 2026-09-29). 2026-09-29 저장소 점검에서 나온 Mac 호환·커밋 검사 우회·캐시 비교 등 #156~#163 수정.
-- 진행 중인 것은 형식 검사 훅 파싱 합치기([#164](https://github.com/yanos0218/AI/issues/164)), 훅 대기 줄이기([#147](https://github.com/yanos0218/AI/issues/147), 남은 원인은 Windows 프로세스 실행 지연), `architect` 초안([#153](https://github.com/yanos0218/AI/issues/153), 다음번 Opus 재시험). 모델 선정 기준([#177](https://github.com/yanos0218/AI/issues/177))은 확정 설계만 기록, 메인 모델 결정용 한도 측정([#178](https://github.com/yanos0218/AI/issues/178))은 도구만 만들고 보류(사용자 요청 시 실행).
+- 2026-10-16~17에 기본 반영한 것은 크램 검사 필드-값 예외([#175](https://github.com/yanos0218/AI/issues/175)), 전역 지침 §2 큰 작업 끝 점검·§4 CI 대기([#169](https://github.com/yanos0218/AI/issues/169)·[#176](https://github.com/yanos0218/AI/issues/176)). 도구는 설치 버전 PROGRESS 기록 안내·대조([#180](https://github.com/yanos0218/AI/issues/180), 표기는 `git describe` 하나), 모델별 한도 측정 도구([#178](https://github.com/yanos0218/AI/issues/178)). 터미널 CLI 2.1.301 갱신([#179](https://github.com/yanos0218/AI/issues/179)).
+- 진행 중인 것은 형식 검사 훅 파싱 합치기([#164](https://github.com/yanos0218/AI/issues/164)), 훅 대기 줄이기([#147](https://github.com/yanos0218/AI/issues/147)), `architect` 초안([#153](https://github.com/yanos0218/AI/issues/153)). 보류는 모델 선정 기준([#177](https://github.com/yanos0218/AI/issues/177), 확정 설계만 기록)·한도 측정 실행([#178](https://github.com/yanos0218/AI/issues/178), 사용자 요청 시)·config-update 보고 초안([#181](https://github.com/yanos0218/AI/issues/181), 다음 다른 기기 설치 때 검증).
 - 할 일·문제는 GitHub Issues, 결정 근거는 닫힌 이슈와 `git log`. Script 저장소 개인키 건은 그 저장소 일(사용자 결정 대기).
 
 ## 다음 할 일
 
-할 일은 GitHub Issues(`gh issue list --state open --label task`)에서 확인한다. [#6](https://github.com/yanos0218/AI/issues/6) Linux 반영은 완료(2026-09-16), 남은 건 [#7](https://github.com/yanos0218/AI/issues/7)/[#8](https://github.com/yanos0218/AI/issues/8)(요구사항 미정) 등이다. Script·Etc 표준 적용은 그 저장소에서 `repo-setup`으로(사용자 지시 시, 순서는 [Issue #56](https://github.com/yanos0218/AI/issues/56)).
+할 일은 GitHub Issues(`gh issue list --state open --label task`)에서 확인한다. 2026-10-17 기준 추천은 [#173](https://github.com/yanos0218/AI/issues/173)(설정 변경 기록 훅 조건, 로컬 시험) → [#174](https://github.com/yanos0218/AI/issues/174)(전역 지침 후보 결정). [#6](https://github.com/yanos0218/AI/issues/6) Linux 반영은 완료(2026-09-16), 남은 건 [#7](https://github.com/yanos0218/AI/issues/7)/[#8](https://github.com/yanos0218/AI/issues/8)(요구사항 미정) 등이다. Script·Etc 표준 적용은 그 저장소에서 `repo-setup`으로(사용자 지시 시, 순서는 [Issue #56](https://github.com/yanos0218/AI/issues/56)).
 
 ## 결정 사항 (다시 묻지 말 것)
 
@@ -55,3 +55,5 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
   - 이슈·코멘트 본문은 크램 확인과 게시 명령을 `&&`로 묶어서 올린다. 순서로만 적어 게시가 그대로 진행된 사례 2건 재발 방지([Issue #118](https://github.com/yanos0218/AI/issues/118)).
 - (2026-09-18) release 커밋에만 거는 좁은 차단 훅 대신, `dev-release` §2 절차에 "바뀐 파일 전체를 훑어 관련 문서 갱신 확인" 단계를 추가했다
   - release 아닌 커밋(`docs/github.md` 미갱신)에서 난 미스는 좁은 훅으로 못 잡았을 사례가 근거([Issue #121](https://github.com/yanos0218/AI/issues/121)).
+- (2026-10-17) 전역 지침 검증은 문안 위험도에 맞춰 토큰을 쓴다([Issue #182](https://github.com/yanos0218/AI/issues/182), `drafts/README.md` 승격 조건 1)
+  - 막는·승인 흐름 문안은 반영 전 1회로 실제로 틀리는지 먼저 보고, 알림성 문안은 문안 검토 + 월 점검 self-audit로 확인.
