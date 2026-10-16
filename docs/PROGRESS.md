@@ -34,7 +34,7 @@
 
 | 표면 | 설치된 것 | 설치일 | 다음 |
 | --- | --- | --- | --- |
-| Windows | v0.13.1 | 2026-10-07 | - |
+| Windows | `main` d4f9230(v0.13.1 + self-audit 수정 1건) | 2026-10-07 | - |
 | Mac mini | `main` b1ee603(v0.13.0 + 전역 지침 규칙 1건) | 2026-09-29 | v0.13.1 `install.sh`(전역 지침 §1·§2 추가분) |
 | Linux(RHEL 계열) | 2026-09-16 설치본(버전 기록 미확인) | 2026-09-16 | 다음 접속 때 `install.sh`, 파이썬 3.9에서 훅 실행 확인 |
 | 웹(Claude.ai) | 스킬 3개 v0.11.4, Project instructions | 2026-09-19~20, 2026-09-12 | v0.13.1 Release zip 5개 업로드, Project instructions 갱신 |
