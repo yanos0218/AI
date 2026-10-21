@@ -7,6 +7,13 @@
 
 ## [Unreleased]
 
+### Changed
+
+- 전역 지침 `base/claude-md/CLAUDE.md`
+  - §2에 질문이 여럿 섞인 메시지는 모두 명시적으로 답하는 규칙 추가([Issue #174](https://github.com/yanos0218/AI/issues/174))
+  - §5 조사 기록 범위를 "결정에 쓴 조사"에서 "사용자가 요청한 조사 포함"으로 확대([Issue #174](https://github.com/yanos0218/AI/issues/174))
+  - 알림성 문안이라 문안 검토로 갈음, 지켜지는지는 월 점검 self-audit에서 확인
+
 ## [0.14.0] - 2026-10-17
 
 ### Changed
