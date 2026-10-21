@@ -2,8 +2,10 @@
 # base/ → ~/.claude 설치 (Windows Git Bash · Mac · Linux 공통, 멱등).
 #   bash tools/install.sh            설치 후 check-install.sh로 대조
 #   bash tools/install.sh --dry-run  무엇이 바뀔지만 보여주고 손대지 않음
-# 하는 일: CLAUDE.md·hooks·skills·agents 복사, settings.json에 permissions·hooks·statusLine·env·model·effortLevel·modelSettings 키 병합(그 밖의 기기별 키는 유지).
-# 하지 않는 일: 기존 CLAUDE.md를 묻지 않고 덮어쓰지 않는다(다르면 백업 후 교체하고 diff 경로를 알린다).
+# 하는 일: CLAUDE.md·hooks·skills·agents 복사, settings.json에 base 값을 병합(규칙은 tools/settings_merge.py, 그 밖의 기기별 키는 유지).
+# 하지 않는 일: 사용자 값을 백업 없이 지우지 않는다(Issue #194).
+#   CLAUDE.md·settings.json은 다르면 .bak.<시각>으로 백업, 내용이 다른 스킬은 ~/.claude/backups/claude-config/<시각>/에 보관한 뒤 교체.
+#   settings.json의 permissions 목록은 합집합, 사용자가 직접 넣은 훅은 남긴다.
 set -u
 cd "$(dirname "${0}")/.." || exit 1
 CLAUDE_HOME="${CLAUDE_CONFIG_DIR:-${HOME}/.claude}"
@@ -12,6 +14,7 @@ DRY=0; [[ "${1:-}" = "--dry-run" ]] && DRY=1
 say() { printf '%s\n' "$*"; }
 run() { if [[ "${DRY}" = 1 ]]; then say "  (dry) $*"; else "$@"; fi; }
 
+TS="$(date +%Y%m%d%H%M%S)"
 BASE_VER="$(git describe --tags --always 2>/dev/null)"
 BASE_TREE="$(git rev-parse HEAD:base 2>/dev/null)"   # base/ 내용 지문. 문서만 바뀐 커밋과 구별하는 데 씀(Issue #150)
 SRC_ABS="$(pwd)"
@@ -33,9 +36,14 @@ for f in base/hooks/*.sh base/hooks/*.py; do run cp "${f}" "${CLAUDE_HOME}/hooks
 run chmod +x "${CLAUDE_HOME}"/hooks/*.sh 2>/dev/null
 say "  hooks 설치: $(cd base/hooks && echo *.sh *.py)"
 
-# 3. skills (_로 시작하는 틀은 제외, 기존 폴더는 교체)
+# 3. skills (_로 시작하는 틀은 제외, 기존 폴더는 교체. 내용이 다르면 교체 전에 backups/로 보관 — 스킬 폴더 안에 두면 스킬로 읽힐 수 있다)
 for d in base/skills/*/; do
   n="$(basename "${d}")"; [[ "${n}" == _* ]] && continue
+  if [[ -d "${CLAUDE_HOME}/skills/${n}" ]] && ! diff -rq -x __pycache__ "${d}" "${CLAUDE_HOME}/skills/${n}" >/dev/null; then
+    bdir="${CLAUDE_HOME}/backups/claude-config/${TS}"
+    say "  skill ${n} 다름 → 기존 폴더를 ${bdir}/${n} 로 보관하고 교체"
+    run mkdir -p "${bdir}"; run cp -r "${CLAUDE_HOME}/skills/${n}" "${bdir}/${n}"
+  fi
   run rm -rf "${CLAUDE_HOME}/skills/${n}"; run cp -r "${d}" "${CLAUDE_HOME}/skills/${n}"; say "  skill 설치: ${n}"
   # 원본에서 시험하다 생긴 파이썬 캐시는 설치본에 남기지 않는다(Issue #160)
   run find "${CLAUDE_HOME}/skills/${n}" -type d -name __pycache__ -prune -exec rm -rf {} +
@@ -53,23 +61,9 @@ if ls base/rules/*.md >/dev/null 2>&1; then
   say "  rules 설치: $(ls base/rules | tr '\n' ' ')"
 fi
 
-# 4. settings.json 병합 — permissions·hooks·statusLine·env·model·effortLevel·modelSettings 는 base 값으로, 나머지 키는 유지
-if [[ "${DRY}" = 1 ]]; then say "  (dry) settings.json 병합: permissions·hooks·statusLine·env·model·effortLevel·modelSettings"; else
-"${PY}" - "${CLAUDE_HOME}/settings.json" base/settings.example.json <<'PY'
-import json, sys, io, os, collections
-dst, src = sys.argv[1], sys.argv[2]
-base = json.load(io.open(src, encoding='utf-8'), object_pairs_hook=collections.OrderedDict)
-cur = collections.OrderedDict()
-if os.path.exists(dst):
-    cur = json.load(io.open(dst, encoding='utf-8'), object_pairs_hook=collections.OrderedDict)
-changed = []
-for k in ('$schema', 'permissions', 'hooks', 'statusLine', 'env', 'model', 'effortLevel', 'modelSettings'):
-    if k in base and cur.get(k) != base[k]:
-        cur[k] = base[k]; changed.append(k)
-io.open(dst, 'w', encoding='utf-8', newline='\n').write(json.dumps(cur, ensure_ascii=False, indent=2) + '\n')
-print('  settings.json 병합: ' + (', '.join(changed) + ' 갱신' if changed else '변경 없음'))
-PY
-fi
+# 4. settings.json 병합 — 규칙은 tools/settings_merge.py(permissions 목록 합집합, base 훅만 교체, 변경 시 .bak 백업)
+if [[ "${DRY}" = 1 ]]; then "${PY}" tools/settings_merge.py install "${CLAUDE_HOME}/settings.json" base/settings.example.json --dry-run
+else "${PY}" tools/settings_merge.py install "${CLAUDE_HOME}/settings.json" base/settings.example.json; fi
 
 # 5. 버전 표시 파일 — SessionStart 훅(session-start-check.sh)이 최신 여부를 조용히 확인하는 데 씀
 #    1행 원본 경로, 2행 버전(표시용), 3행 base/ 트리 해시(비교용)

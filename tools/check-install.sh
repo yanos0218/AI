@@ -36,18 +36,8 @@ run_checks() {
     else echo "  DIFF     ${CLAUDE_HOME}/skills/${n}"; drift=1; fi
   done
 
-  section "settings.json ↔ base/settings.example.json (permissions·hooks·statusLine·env·model·effortLevel·modelSettings 키)"
-  "${PY}" - "${CLAUDE_HOME}/settings.json" base/settings.example.json <<'PY' || drift=1
-import json, sys, io
-a = json.load(io.open(sys.argv[1], encoding='utf-8')); b = json.load(io.open(sys.argv[2], encoding='utf-8'))
-rc = 0
-for k in ('permissions', 'hooks', 'statusLine', 'env', 'model', 'effortLevel', 'modelSettings'):
-    if a.get(k) == b.get(k): print(f'  same     {k}')
-    else: print(f'  DIFF     {k}'); rc = 1
-extra = sorted(set(a) - set(b))
-print(f'  설치본에만 있는 키(기기별, 정상): {extra}')
-sys.exit(rc)
-PY
+  section "settings.json ↔ base/settings.example.json (설치하면 바뀔 항목이 없는가. 사용자 추가 항목은 어긋남이 아님, tools/settings_merge.py)"
+  "${PY}" tools/settings_merge.py check "${CLAUDE_HOME}/settings.json" base/settings.example.json || drift=1
 
   section "사용자 모듈 규칙 ${CLAUDE_HOME}/rules/ (base/rules/에 없는 것은 승격 후보)"
   if [[ -d "${CLAUDE_HOME}/rules" ]] && ls "${CLAUDE_HOME}/rules"/*.md >/dev/null 2>&1; then
