@@ -1,16 +1,16 @@
 # 기본 모델·effort 기준
 
-개발 작업의 기본 모델과 effort를 모든 기기에서 같게 맞추는 기준이다. 결정 근거는 [Issue #187](https://github.com/yanos0218/AI/issues/187), 조사는 [Issue #177](https://github.com/yanos0218/AI/issues/177).
+개발 작업의 기본 모델과 effort를 모든 기기에서 같게 맞추는 기준임. 결정 근거는 [Issue #187](https://github.com/yanos0218/AI/issues/187), 조사는 [Issue #177](https://github.com/yanos0218/AI/issues/177).
 
 ## 결정 (2026-10-21)
 
 - 기본은 Sonnet 5.5, effort는 medium
   - 원본은 [base/settings.example.json](../base/settings.example.json)의 `model`·`effortLevel`·`modelSettings`
-  - `tools/install.sh`가 설치할 때마다 이 값으로 맞춘다(기기에서 `/model`로 바꿔 둔 값도 되돌아옴)
-- 모델은 별칭(`sonnet`)이 아니라 전체 ID로 적는다
+  - `tools/install.sh`가 설치할 때마다 이 값으로 맞춤(기기에서 `/model`로 바꿔 둔 값도 되돌아옴)
+- 모델은 별칭(`sonnet`)이 아니라 전체 ID로 적음
   - 별칭이 가리키는 버전이 CLI 버전마다 달라, 기기 간 차이의 원인이 되기 때문
-  - 새 모델이 나오면 원본의 ID를 직접 올린다
-- 최상위 `effortLevel`은 Opus 5.5에서 무시되므로 `modelSettings`에도 모델별로 적는다
+  - 새 모델이 나오면 원본의 ID를 직접 올림
+- 최상위 `effortLevel`은 Opus 5.5에서 무시되므로 `modelSettings`에도 모델별로 적음
 
 ## 작업별로 고르는 기준
 
@@ -29,11 +29,11 @@
 
 - 모델
   - 그 세션만 바꾸기는 `/model opus`, 선택기에서 `s`
-  - 저장해 다음 세션에도 쓰면 설치 때 원본 값으로 되돌아오므로, 바꾸려면 원본을 고친다
+  - 저장해 다음 세션에도 쓰면 설치 때 원본 값으로 되돌아오므로, 바꾸려면 원본을 고침
 - effort
-  - `/effort <수준>`으로 바꾼다
-  - 세션 중에 바꿔도 캐시는 유지된다(claude.dev 글)
-- plan 모드에서만 Opus를 쓰는 `opusplan` 별칭은 도입하지 않았다
+  - `/effort <수준>`으로 바꿈
+  - 세션 중에 바꿔도 캐시는 유지됨(claude.dev 글)
+- plan 모드에서만 Opus를 쓰는 `opusplan` 별칭은 도입하지 않음
   - 한도 소모 배율을 모르는 상태라 보류
 
 ## 기기에서 어긋났는지 보는 법
@@ -50,8 +50,8 @@
 
 ## 한계
 
-- 5.5 모델 ID는 CLI v2.1.284 이상이 필요하다
+- 5.5 모델 ID는 CLI v2.1.284 이상이 필요함
   - Sonnet 5.5는 v2.1.284, Opus 5.5는 v2.1.280, Haiku 5.5는 v2.1.293 이상
-  - 구버전 기기는 `fingerprint.sh`의 CLI 버전 줄로 확인하고 CLI를 올린다
-- 서브에이전트 모델은 이 설정과 별개다
-  - 각 에이전트 파일의 `model`이 정하고, 전역 지침 §5가 그 밖의 서브에이전트는 Sonnet으로 정한다
+  - 구버전 기기는 `fingerprint.sh`의 CLI 버전 줄로 확인하고 CLI를 올림
+- 서브에이전트 모델은 이 설정과 별개
+  - 각 에이전트 파일의 `model`이 정하고, 전역 지침 §5가 그 밖의 서브에이전트는 Sonnet으로 정함

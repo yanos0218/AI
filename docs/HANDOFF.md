@@ -15,7 +15,7 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 
 ## 다음 할 일
 
-할 일은 GitHub Issues(`gh issue list --state open --label task`)에서 확인한다. 2026-10-21 기준 추천은 [#153](https://github.com/yanos0218/AI/issues/153)(`architect` 초안, `drafts/`라 안전) → [#147](https://github.com/yanos0218/AI/issues/147)(훅 대기 시간). [#174](https://github.com/yanos0218/AI/issues/174)는 보류 2건이 남아 열려 있다. [#7](https://github.com/yanos0218/AI/issues/7)/[#8](https://github.com/yanos0218/AI/issues/8)은 요구사항 미정이다. Script·Etc 표준 적용은 그 저장소에서 `repo-setup`으로(사용자 지시 시, 순서는 [Issue #56](https://github.com/yanos0218/AI/issues/56)).
+할 일은 GitHub Issues(`gh issue list --state open --label task`)에서 확인. 2026-10-21 기준 추천은 [#153](https://github.com/yanos0218/AI/issues/153)(`architect` 초안, `drafts/`라 안전) → [#147](https://github.com/yanos0218/AI/issues/147)(훅 대기 시간). [#174](https://github.com/yanos0218/AI/issues/174)는 보류 2건이 남아 열려 있음. [#7](https://github.com/yanos0218/AI/issues/7)/[#8](https://github.com/yanos0218/AI/issues/8)은 요구사항 미정. Script·Etc 표준 적용은 그 저장소에서 `repo-setup`으로(사용자 지시 시, 순서는 [Issue #56](https://github.com/yanos0218/AI/issues/56)).
 
 ## 결정 사항 (다시 묻지 말 것)
 
@@ -57,4 +57,4 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
   - release 아닌 커밋(`docs/github.md` 미갱신)에서 난 미스는 좁은 훅으로 못 잡았을 사례가 근거([Issue #121](https://github.com/yanos0218/AI/issues/121)).
 - (2026-10-17) 전역 지침 검증은 문안 위험도에 맞춰 토큰을 쓴다([Issue #182](https://github.com/yanos0218/AI/issues/182), `drafts/README.md` 승격 조건 1)
   - 막는·승인 흐름 문안은 반영 전 1회로 실제로 틀리는지 먼저 보고, 알림성 문안은 문안 검토 + 월 점검 self-audit로 확인.
-- (2026-10-21) 개발 작업 기본은 Sonnet 5.5·effort medium, 어려운 설계·디버깅만 `/model opus`. 모델은 전체 ID로 고정하고 설치마다 원본 값으로 덮어쓴다([Issue #187](https://github.com/yanos0218/AI/issues/187), [models.md](models.md)).
+- (2026-10-21) 개발 작업 기본은 Sonnet 5.5·effort medium, 어려운 설계·디버깅만 `/model opus`. 모델은 전체 ID로 고정하고 설치마다 원본 값으로 덮어씀([Issue #187](https://github.com/yanos0218/AI/issues/187), [models.md](models.md)).
