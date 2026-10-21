@@ -9,6 +9,10 @@
 
 ### Changed
 
+- 전역 지침 `base/claude-md/CLAUDE.md` §5 지적 처리 규칙 변경([Issue #190](https://github.com/yanos0218/AI/issues/190))
+  - 실수가 실제 문제로 이어졌을 때만 기록을 제안
+  - 같은 내용의 지적이 기간과 상관없이 누적 2회 이상이면 기록 대신 훅·CI 검사로 강제하는 방안을 먼저 제안
+  - 알림성 문안이라 문안 검토로 갈음, 지켜지는지는 월 점검 self-audit에서 확인
 - 기존 `.md` 문서의 문장형 끝맺음 약 220줄을 음슴체로, 줄바꿈 위반 17줄을 하위 bullet·`<br>`로 정리([Issue #189](https://github.com/yanos0218/AI/issues/189))
   - 대상은 지침 문서(`CLAUDE.md`·`rules/`·`skills/`·`agents/`) 밖의 `.md` 21개, `docs/research/` 보관 기록 포함
   - 의미·링크·코드 값은 그대로, 종결 어미와 줄 구성만 변경
