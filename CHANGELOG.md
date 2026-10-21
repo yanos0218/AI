@@ -20,6 +20,7 @@
 ### Added
 
 - `docs/operating-flow.md`에 5층 구성 매핑 표 추가([Issue #185](https://github.com/yanos0218/AI/issues/185), 문서 전용이라 버전 등급 미반영)
+- `tools/fingerprint.sh` 기기 지문 도구와 `docs/issue-format.md`의 반응 차이 사례 양식 추가([Issue #186](https://github.com/yanos0218/AI/issues/186), 저장소 도구·문서라 버전 등급 미반영)
 
 ## [0.14.0] - 2026-10-17
 

@@ -68,6 +68,7 @@
 | [tools/pack.sh](tools/pack.sh) | ①의 스킬을 웹 업로드용 zip으로 (zip 없으면 python 폴백) |
 | [tools/check-docs.sh](tools/check-docs.sh) | 문서 줄 수 상한과 필수 파일 검사 (CI와 로컬 공용) |
 | [tools/check-install.sh](tools/check-install.sh) | 설치본 `~/.claude`가 `base/`와 같은지, 프로젝트마다 쌓인 권한·설정 이력은 무엇인지 보고 |
+| [tools/fingerprint.sh](tools/fingerprint.sh) | 기기 지문<br>반응에 영향을 주는 값(설치 버전·모델·effort·CLI·확장·memory 수 등)을 10여 줄로 출력, 기기끼리 `diff`로 비교 |
 | [tools/test-hooks-py.sh](tools/test-hooks-py.sh) | 파이썬 본체 훅 시험<br>판정 사례, 파이썬 없음·깨진 입력 때 막는 훅은 막고 기록 훅은 통과하는지, 한글 기록 |
 | [tools/test-session-start-check.sh](tools/test-session-start-check.sh) | 세션 시작 훅의 설정 낡음 판정 시험<br>원격 앞섬·문서만 바뀐 커밋·옛 버전 파일 형식·fetch 주기 |
 | [tools/test-format-guard.sh](tools/test-format-guard.sh) | 형식 검사 훅 시험<br>명령 형태별(커밋·이슈·PowerShell·heredoc) 게시 전 판정과 `.md` 저장 후 판정 |
