@@ -10,12 +10,12 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 
 - 저장소 v0.14.0(2026-10-17), 그 뒤 변경은 [CHANGELOG.md](../CHANGELOG.md) `[Unreleased]`에 쌓임(다음 기기·웹 설치 직전이 컷 시점). 기기별 배포는 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태)이 원본(Mac mini `v0.14.0-15-g482d9c0` 2026-10-21, Windows `v0.13.1-18-g1836702` 2026-10-17, Linux는 다음 접속 때 `install.sh`, 웹 스킬 3개는 v0.11.4).
 - 2026-10-21에 기본 반영한 것은 전역 지침 §2 질문 전부 답변·§5 요청 조사 기록 확대([#174](https://github.com/yanos0218/AI/issues/174), 나머지 후보 2건은 보류), 형식 검사 훅 명령 파싱을 `hooklib.py`로 합침([#164](https://github.com/yanos0218/AI/issues/164)), 기본 모델·effort 고정 키([#187](https://github.com/yanos0218/AI/issues/187), [models.md](models.md)). 반응 차이 점검은 `tools/fingerprint.sh`([#186](https://github.com/yanos0218/AI/issues/186)). `.md` 문장형(음슴체) 저장 검사 추가와 기존 문서 정리([#188](https://github.com/yanos0218/AI/issues/188), [#189](https://github.com/yanos0218/AI/issues/189)).
-- 진행 중인 것은 훅 대기 줄이기([#147](https://github.com/yanos0218/AI/issues/147)), `architect` 초안([#153](https://github.com/yanos0218/AI/issues/153)). 보류는 모델 선정 기준([#177](https://github.com/yanos0218/AI/issues/177), 확정 설계만 기록)·한도 측정 실행([#178](https://github.com/yanos0218/AI/issues/178), 사용자 요청 시)·config-update 보고 초안([#181](https://github.com/yanos0218/AI/issues/181), 다음 다른 기기 설치 때 검증).
+- 진행 중인 것은 훅 대기 줄이기([#147](https://github.com/yanos0218/AI/issues/147)). `architect`는 2026-10-21 기각([PROGRESS §5](PROGRESS.md#5-보류기각)). 보류는 모델 선정 기준([#177](https://github.com/yanos0218/AI/issues/177), 확정 설계만 기록)·한도 측정 실행([#178](https://github.com/yanos0218/AI/issues/178), 사용자 요청 시)·config-update 보고 초안([#181](https://github.com/yanos0218/AI/issues/181), 다음 다른 기기 설치 때 검증).
 - 할 일·문제는 GitHub Issues, 결정 근거는 닫힌 이슈와 `git log`. Script 저장소 개인키 건은 그 저장소 일(사용자 결정 대기).
 
 ## 다음 할 일
 
-할 일은 GitHub Issues(`gh issue list --state open --label task`)에서 확인. 2026-10-21 기준 추천은 [#153](https://github.com/yanos0218/AI/issues/153)(`architect` 초안, `drafts/`라 안전) → [#147](https://github.com/yanos0218/AI/issues/147)(훅 대기 시간). [#174](https://github.com/yanos0218/AI/issues/174)는 보류 2건이 남아 열려 있음. [#7](https://github.com/yanos0218/AI/issues/7)/[#8](https://github.com/yanos0218/AI/issues/8)은 요구사항 미정. Script·Etc 표준 적용은 그 저장소에서 `repo-setup`으로(사용자 지시 시, 순서는 [Issue #56](https://github.com/yanos0218/AI/issues/56)).
+할 일은 GitHub Issues(`gh issue list --state open --label task`)에서 확인. 2026-10-21 기준 추천은 [#147](https://github.com/yanos0218/AI/issues/147)(훅 대기 시간, Mac 재측정부터), 사용자 기기에서는 [#186](https://github.com/yanos0218/AI/issues/186)·[#187](https://github.com/yanos0218/AI/issues/187) 확인(Windows·Linux `install.sh` 후 `fingerprint.sh`). [#174](https://github.com/yanos0218/AI/issues/174)는 보류 2건이 남아 열려 있음. [#7](https://github.com/yanos0218/AI/issues/7)/[#8](https://github.com/yanos0218/AI/issues/8)은 요구사항 미정. Script·Etc 표준 적용은 그 저장소에서 `repo-setup`으로(사용자 지시 시, 순서는 [Issue #56](https://github.com/yanos0218/AI/issues/56)).
 
 ## 결정 사항 (다시 묻지 말 것)
 

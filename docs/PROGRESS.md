@@ -74,7 +74,6 @@
 | `tools/bootstrap.sh` (신규 기기 설치) | 기본 (빈 `HOME` 시뮬레이션 2026-09-17) | - | - | - | - | 실제 신규 기기에서 curl 한 줄 검증 |
 | 저장소 전용 훅(`.claude/hooks/` baseline-guard·pre-commit-check·session-end-check) | 기본 (2026-09-29 커밋 검사 우회·경로 읽기 수정 [#156](https://github.com/yanos0218/AI/issues/156) [#163](https://github.com/yanos0218/AI/issues/163)) | 저장소 안 | 저장소 안 | 저장소 안 | - | - |
 | 이 저장소 CI(lint.yml + check-docs.sh) | 기본 (2026-09-08, shellcheck 대상 확대 [#161](https://github.com/yanos0218/AI/issues/161)) | GitHub | GitHub | GitHub | - | - |
-| 설계 도우미 에이전트 `drafts/agents/architect.md` | 검증 (2026-09-29 새 세션 4회, 메인 토큰 절약 없음 [#153](https://github.com/yanos0218/AI/issues/153)) | - | - | - | - | 초안 유지, 다음번 Opus 메인·큰 설계로 재시험 |
 | 성향 데이터 → 전역 지침 후보 | 초안 (월 점검에서 auto memory·대화 기록 검토 [#9](https://github.com/yanos0218/AI/issues/9) [#15](https://github.com/yanos0218/AI/issues/15)) | - | - | - | - | 월 점검 |
 | 블로그용 스킬 | 계획 (역할 구분 선행 [#7](https://github.com/yanos0218/AI/issues/7)) | - | - | - | - | - |
 | 사업기획용 스킬 | 계획 (요구사항 미정 [#8](https://github.com/yanos0218/AI/issues/8)) | - | - | - | - | - |
@@ -107,3 +106,8 @@ HANDOFF.md "결정 사항" 절이 원본. 여기서는 중복하지 않음.
 - Claude Code GitHub Actions(`@claude` 멘션)
   - `gh pr list`가 이 저장소에서 0건, PR 위에서 도는 기능이라 지금 켜도 쓸 자리가 없음.
   - PR 습관이 생기기 전엔 재검토 안 함([Issue #61](https://github.com/yanos0218/AI/issues/61), 2026-09-13)
+- 설계 도우미 에이전트 `architect`([Issue #153](https://github.com/yanos0218/AI/issues/153), [Issue #145](https://github.com/yanos0218/AI/issues/145), 2026-10-21 기각)
+  - 새 세션 시험(2026-09-29, 메인 Sonnet)에서 메인 토큰 절약 없음(194k 대 190k), 비용 약 2배
+  - 하나로 이어진 작업은 메인 모델 단독이 유리하다는 공식 비용 문서와 위임 1회 평균 약 370만 토큰이라는 30일 실측이 근거
+  - 재시험(메인 Opus, 큰 설계)은 Opus 세션 2회 이상이 필요해 한도 부담이 크고 결론을 바꿀 가능성이 낮아 하지 않음
+  - 설계 틀은 전역 지침 §8, 빠진 항목 훑기는 §2에 이미 반영됨
