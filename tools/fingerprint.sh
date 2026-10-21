@@ -2,8 +2,13 @@
 # 기기 지문(Issue #186) — 같은 지침인데 기기·세션마다 반응이 다를 때, 반응에 영향을 주는 값을 10여 줄로 찍는다.
 # 기기마다 실행해 출력을 diff로 비교한다. 아무것도 고치지 않고, 세션 시작 때 자동으로 돌리지 않는다(토큰 소비 방지).
 #   bash tools/fingerprint.sh > fp-이 기기.txt      다른 기기에서: bash tools/fingerprint.sh | diff fp-이 기기.txt -
+# 각 줄 앞의 [공통]은 기기끼리 같아야 하는 값(차이가 있으면 어긋남), [기기별]은 달라도 정상인 값이다(Issue #197, docs/os-differences.md).
+#   bash tools/fingerprint.sh --common             [공통] 줄만 출력, 두 기기의 이 출력을 diff해서 비어 있으면 일치
 # 공개 저장소 Issue에 붙여도 되도록 사용자명·호스트명·경로·환경변수 값·토큰은 출력하지 않는다(키 이름과 개수만).
 set -u
+COMMON_ONLY=0
+[[ "${1:-}" == "--common" ]] && COMMON_ONLY=1
+SCRIPT_DIR="$(cd "$(dirname "${0}")" && pwd)"
 # 현재 작업 폴더가 속한 저장소(없으면 그 폴더)의 CLAUDE.md·memory를 본다
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 CLAUDE_HOME="${CLAUDE_CONFIG_DIR:-${HOME}/.claude}"
@@ -18,7 +23,7 @@ for d in "${HOME}"/.vscode/extensions/anthropic.claude-code-*; do
   [[ -d "${d}" ]] && EXT="$(basename "${d}" | sed 's/^anthropic\.claude-code-//')"
 done
 
-"${PY}" -I - "${CLAUDE_HOME}" "${ROOT}" "${CLI}" "${EXT}" "$(uname -sm)" <<'PY'
+"${PY}" -I - "${CLAUDE_HOME}" "${ROOT}" "${CLI}" "${EXT}" "$(uname -sm)" "${SCRIPT_DIR}" "${COMMON_ONLY}" <<'PY'
 import glob, hashlib, io, json, os, re, sys
 
 # Windows는 출력이 파이프이면 cp1252·cp949 등으로 나가 한글에서 UnicodeEncodeError가 난다. -I가 PYTHONIOENCODING을 무시하므로 코드에서 고정한다(Issue #197)
@@ -28,7 +33,9 @@ for _stream in (sys.stdout, sys.stderr):
     except AttributeError:
         pass
 
-home, root, cli, ext, osname = sys.argv[1:6]
+home, root, cli, ext, osname, script_dir, common_only = sys.argv[1:8]
+sys.path.insert(0, script_dir)
+import settings_merge as sm
 
 
 def sha(path):
@@ -63,6 +70,21 @@ perm = settings.get('permissions') or {}
 slug = re.sub(r'[^A-Za-z0-9]', '-', root)
 memory = len(glob.glob(os.path.join(home, 'projects', slug, 'memory', '*.md')))
 
+# 같아야 하는 값. 여기 없는 행은 [기기별](달라도 정상)
+COMMON = {'설치 기본영역 해시', '전역 지침', '훅·스킬·에이전트 수', 'settings model', 'settings modelSettings',
+          'settings effortLevel', 'settings env 키', '모델 환경변수', 'settings base 대비', 'permissions 추가 키', '저장소 CLAUDE.md'}
+
+# base/settings.example.json과 병합했을 때 바뀔 키가 없는지, 사용자가 얹은 키·항목은 무엇인지
+base_path = os.path.join(script_dir, '..', 'base', 'settings.example.json')
+try:
+    base = sm.load(base_path)
+    changed = sm.merge(settings, base)[1]
+    vs_base = 'same' if not changed else 'DIFF ' + ' '.join(changed)
+    mine = '; '.join(sm.extras(settings, base)) or '없음'
+except (OSError, ValueError) as e:
+    vs_base, mine = '비교 못 함(%s)' % type(e).__name__, '비교 못 함'
+extra_perm = ' '.join('%s=%s' % (k, json.dumps(v)) for k, v in sorted(perm.items()) if k not in ('allow', 'deny')) or '없음'
+
 rows = [
     ('기기 OS', osname),
     ('설치 버전', ver[1] if len(ver) > 1 else '없음'),
@@ -76,6 +98,9 @@ rows = [
     ('settings env 키', ' '.join(sorted((settings.get('env') or {}).keys())) or '없음'),
     # settings보다 우선하는 환경변수. 모델 이름·수준 값이라 그대로 출력한다
     ('모델 환경변수', ' '.join('%s=%s' % (k, os.environ[k]) for k in ('ANTHROPIC_MODEL', 'ANTHROPIC_DEFAULT_MODEL', 'CLAUDE_CODE_EFFORT_LEVEL', 'CLAUDE_CODE_SUBAGENT_MODEL') if os.environ.get(k)) or '미설정'),
+    ('settings base 대비', vs_base),
+    ('permissions 추가 키', extra_perm),
+    ('사용자 추가 항목', mine),
     ('권한 허용·차단 수', '%d·%d' % (len(perm.get('allow') or []), len(perm.get('deny') or []))),
     ('CLI 버전', cli),
     ('VS Code 확장 버전', ext),
@@ -83,5 +108,8 @@ rows = [
     ('auto memory 파일 수', str(memory)),
 ]
 for k, v in rows:
-    print('%s = %s' % (k, v))
+    tag = '[공통]' if k in COMMON else '[기기별]'
+    if common_only == '1' and tag != '[공통]':
+        continue
+    print('%s %s = %s' % (tag, k, v))
 PY

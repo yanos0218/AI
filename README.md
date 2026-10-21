@@ -75,7 +75,7 @@
 | [tools/settings_merge.py](tools/settings_merge.py) | `install.sh`·`check-install.sh`가 쓰는 settings.json 병합·대조 규칙<br>사용자 값 보존, 변경 시 백업 |
 | [tools/test-install-merge.sh](tools/test-install-merge.sh) | 설치 병합 시험<br>임시 폴더에서 사용자 allow·훅·고친 스킬이 보존되고 백업되는지, 재실행·`--dry-run` 결과 확인 |
 | [tools/measure-model.sh](tools/measure-model.sh) | 모델별 구독 한도 소모 측정<br>같은 읽기 전용 작업을 모델마다 돌려 5시간·주간 한도 사용률과 정답률 비교, 한도를 쓰므로 실행 전 확인 |
-| [tools/fingerprint.sh](tools/fingerprint.sh) | 기기 지문<br>반응에 영향을 주는 값(설치 버전·모델·effort·CLI·확장·memory 수 등)을 10여 줄로 출력, 기기끼리 `diff`로 비교 |
+| [tools/fingerprint.sh](tools/fingerprint.sh) | 기기 지문<br>반응에 영향을 주는 값(설치 버전·모델·effort·CLI·확장·memory 수 등)을 줄마다 [공통](같아야 함)·[기기별](달라도 정상)로 표시해 출력<br>`--common`으로 [공통] 줄만 뽑아 기기끼리 `diff` |
 | [tools/test-hooks-py.sh](tools/test-hooks-py.sh) | 파이썬 본체 훅 시험<br>판정 사례, 파이썬 없음·깨진 입력 때 막는 훅은 막고 기록 훅은 통과하는지, 한글 기록 |
 | [tools/test-session-start-check.sh](tools/test-session-start-check.sh) | 세션 시작 훅의 설정 낡음 판정 시험<br>원격 앞섬·문서만 바뀐 커밋·옛 버전 파일 형식·fetch 주기 |
 | [tools/test-format-guard.sh](tools/test-format-guard.sh) | 형식 검사 훅 시험<br>명령 형태별(커밋·이슈·PowerShell·heredoc) 게시 전 판정과 `.md` 저장 후 판정 |

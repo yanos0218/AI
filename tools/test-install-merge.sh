@@ -111,6 +111,32 @@ chk "fingerprint 종료 코드 0"        '[[ "${rc}" = 0 ]]'
 chk "fingerprint 트레이스백 없음"    '! grep -q Traceback <<<"${out}"'
 chk "fingerprint 한글 항목 출력"     'grep -q "기기 OS" <<<"${out}"'
 
+echo "== 8. fingerprint --common: 사용자 추가는 공통 구역에 안 나오고, 기기 간 어긋남만 나온다"
+export CLAUDE_CONFIG_DIR="${T}/home8"
+bash tools/install.sh >"${T}/out8.txt" 2>&1
+bash tools/fingerprint.sh --common >"${T}/fp-base.txt" 2>&1
+chk "--common은 [공통] 줄만 출력"     '! grep -v "^\[공통\]" "${T}/fp-base.txt" | grep -q .'
+chk "설치 직후 base 대비 same"        'grep -q "settings base 대비 = same" "${T}/fp-base.txt"'
+chk "전체 출력에는 [기기별]도 있음"   'bash tools/fingerprint.sh | grep -q "^\[기기별\]"'
+edit() { "${PY}" - "${CLAUDE_CONFIG_DIR}/settings.json" "$1" <<'PYEOF'
+import io, json, sys
+p = sys.argv[1]
+d = json.load(io.open(p, encoding='utf-8'))
+exec(sys.argv[2])
+io.open(p, 'w', encoding='utf-8', newline='\n').write(json.dumps(d, ensure_ascii=False, indent=2) + '\n')
+PYEOF
+}
+edit "d['permissions']['allow'].append('Bash(my-own *)')"
+bash tools/fingerprint.sh --common >"${T}/fp-user.txt" 2>&1
+chk "사용자 allow 추가는 공통 구역 불변" 'cmp -s "${T}/fp-base.txt" "${T}/fp-user.txt"'
+chk "사용자 추가는 [기기별] 줄에 표시"   'bash tools/fingerprint.sh | grep "^\[기기별\] 사용자 추가 항목" | grep -q "1개"'
+edit "d['permissions']['blockReadsOutsideWorkingDirectories'] = True"
+bash tools/fingerprint.sh --common >"${T}/fp-key.txt" 2>&1
+chk "권한 추가 키는 공통 구역에서 차이로 드러남" '! cmp -s "${T}/fp-base.txt" "${T}/fp-key.txt" && grep -q "blockReadsOutsideWorkingDirectories=true" "${T}/fp-key.txt"'
+edit "d['model'] = 'claude-opus-5-5'"
+bash tools/fingerprint.sh --common >"${T}/fp-model.txt" 2>&1
+chk "model 어긋남이 base 대비 DIFF로 보임" 'grep -q "settings base 대비 = DIFF model" "${T}/fp-model.txt"'
+
 echo
 [[ "${fail}" = 0 ]] && echo "결과: 통과" || echo "결과: 실패 항목 있음"
 exit "${fail}"

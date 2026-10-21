@@ -42,6 +42,9 @@
 ## 비교 방법
 
 - 설치 병합 시험은 CI가 세 운영체제 러너에서 자동으로 돌림([testing.md](testing.md)), Claude Code 자체 동작은 러너에서 못 봐서 기기에서 확인함
-- 기기마다 `bash tools/fingerprint.sh`를 실행해 출력을 `diff`함([testing.md](testing.md) "기기 간 차이")
-- 공통 항목에서 차이가 나오면 어긋남, 기기별·운영체제별 항목의 차이는 정상
-- 비교 출력의 공통·기기별 구분 확장은 [Issue #197](https://github.com/yanos0218/AI/issues/197)에서 설계 중
+- 기기마다 `bash tools/fingerprint.sh --common`을 실행해 출력을 `diff`함([testing.md](testing.md) "기기 간 차이")
+  - 출력 줄은 [공통](같아야 함)과 [기기별](달라도 정상)로 표시되고 `--common`은 [공통]만 뽑음
+  - `diff`가 비어 있으면 일치, 차이가 나오면 어긋남
+  - 사용자가 얹은 권한 키(예: `blockReadsOutsideWorkingDirectories`)도 [공통]에 나오므로 기본 영역에 반영되기 전까지는 차이로 드러남
+- 전체 출력(옵션 없음)은 [기기별] 줄까지 보여 주며 그 차이는 정상
+- 새 항목은 [공통]에 둘지 [기기별]에 둘지 이 문서의 구분 기준으로 정하고 `tools/fingerprint.sh`의 `COMMON` 목록에 반영함
