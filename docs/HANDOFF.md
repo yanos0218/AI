@@ -1,6 +1,6 @@
 # 인수인계 — claude-config
 
-새 세션·새 기기에서 이 파일 하나로 이어서 작업하기 위한 문서. 관련 `.md`를 다시 조사하지 않도록 아래 "문서 지도"가 읽을 곳을 알려줌. 갱신은 세션 끝에 한 번.
+새 세션·새 기기에서 이 파일 하나로 이어서 작업하기 위한 문서(저장소 `CLAUDE.md`가 자동으로 불러옴). 관련 `.md`를 다시 조사하지 않도록 아래 "문서 지도"가 읽을 곳을 알려줌. 갱신은 세션 끝에 한 번.
 
 ## 목적 (변하지 않음)
 
@@ -11,7 +11,7 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 - 변경 이력은 [CHANGELOG.md](../CHANGELOG.md) `[Unreleased]`, 기기별 설치 버전은 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태)이 원본(여기엔 적지 않음).
 - 사용자 기기에서 할 일은 Windows·Linux에서 `bash tools/install.sh` 후 `bash tools/fingerprint.sh`를 이 Mac과 `diff`, 새 세션 상태줄이 Sonnet 5.5인지 확인([#186](https://github.com/yanos0218/AI/issues/186), [#187](https://github.com/yanos0218/AI/issues/187)).
 - 바로 코드를 건드릴 열린 task는 없음. 보류는 [#174](https://github.com/yanos0218/AI/issues/174)(전역 지침 후보 2건), [#178](https://github.com/yanos0218/AI/issues/178)(한도 측정, 사용자 요청 시), [#181](https://github.com/yanos0218/AI/issues/181)(다른 기기 설치 때 검증), 요구사항 미정은 #5·#7·#8·#9·#10.
-- 다음 세션에서 확인할 것은 세션 시작 때 `handoff-stale-check` 알림이 정상 동작하는지, HANDOFF만 읽고 시작이 되는지, HANDOFF 자동 로드(`@import`) 도입 여부 결정([#191](https://github.com/yanos0218/AI/issues/191), [#192](https://github.com/yanos0218/AI/issues/192)).
+- 다음 세션에서 확인할 것은 세션 시작 때 `handoff-stale-check` 알림이 정상 동작하는지, HANDOFF만 읽고 시작이 되는지, HANDOFF 자동 로드(`@import`, 2026-10-21 도입, 세션당 약 2천 토큰)가 실제 세션에서 보이는지([#191](https://github.com/yanos0218/AI/issues/191), [#192](https://github.com/yanos0218/AI/issues/192)).
 - 다음 세션 첫 행동은 `gh issue list --state open`으로 최신 상태 확인(이 요약보다 이슈 최신 댓글이 정확), 새 달 첫 세션이면 월 점검 제안([monthly-check.md](monthly-check.md)).
 
 ## 문서 지도 (작업 종류 → 읽을 문서)

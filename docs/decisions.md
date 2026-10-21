@@ -50,6 +50,10 @@
 
 ## 환경·도구
 
+- (2026-10-21) HANDOFF는 저장소 `CLAUDE.md`의 `@docs/HANDOFF.md` import로 세션 시작 때 자동 로드함([Issue #191](https://github.com/yanos0218/AI/issues/191))
+  - 시험(Haiku, `claude -p` 2.1.304)에서 import가 로드됨을 확인했고 비용은 세션당 1,991 토큰(교대 4회 반복 모두 동일)
+  - 서브에이전트도 `Explore`·`Plan`을 뺀 모두가 같은 양을 추가로 로드함
+  - 대안인 한 줄 알림은 읽기가 Claude의 순응에 달려 채택하지 않음, HANDOFF 40줄 상한이 비용 방어선
 - VS Code 동기화는 내장 Settings Sync가 주, `base/vscode/`는 부트스트랩·백업. Prettier/ESLint/GitLens는 저장소에 설정 파일이 생길 때까지 보류. (2026-09-09) 기본 목록 밖에 추가 설치된 확장은 문제없으면 지우지 않음. Mac은 VS Code만 쓰고 Xcode 안 씀.
 - (2026-10-21) 개발 작업 기본은 Sonnet 5.5·effort medium, 어려운 설계·디버깅만 `/model opus`. 모델은 전체 ID로 고정하고 설치마다 원본 값으로 덮어씀([Issue #187](https://github.com/yanos0218/AI/issues/187), [models.md](models.md)).
 

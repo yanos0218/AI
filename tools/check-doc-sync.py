@@ -4,6 +4,7 @@
   1. 존재 대조  파일이 README·operating-flow에 언급되는지 (새 도구·훅·스킬·에이전트·문서를 추가하고 안내를 빼먹는 것)
   2. 깨진 참조  문서 속 백틱 경로가 실제로 있는지 (파일을 지우거나 이름을 바꾸고 참조를 남기는 것)
   3. 개수 대조  README·operating-flow가 적은 훅·스킬·에이전트·권한 개수가 실제와 같은지
+  (2번에는 저장소 CLAUDE.md의 @import가 가리키는 파일이 있는지도 들어 있다)
 
 고치지 않고 위반을 한 줄씩 출력한 뒤 종료 코드 1로 끝낸다. 3.8 문법만 쓴다(Rocky Linux 3.9, Windows 기본 인코딩 cp949 대비 UTF-8 출력).
 """
@@ -79,6 +80,12 @@ for f in docs:
                 continue
             if not os.path.exists(p):
                 problems.append('깨진 참조: %s:%d `%s`' % (f, n, p))
+
+# 2-2. CLAUDE.md의 @import가 가리키는 파일이 있는지. 없으면 조용히 로드가 끊겨 HANDOFF가 세션에 안 들어온다(Issue #191)
+for n, line in enumerate(read('CLAUDE.md').split('\n'), 1):
+    m = re.match(r'^@(\S+)$', line.strip())
+    if m and not os.path.exists(m.group(1)):
+        problems.append('깨진 import: CLAUDE.md:%d @%s' % (n, m.group(1)))
 
 # 3. 개수 대조(문구가 바뀌어 패턴이 안 맞으면 조용히 건너뛴다)
 def count_check(label, text, pattern, actual, where):

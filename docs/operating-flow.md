@@ -82,7 +82,7 @@ flowchart LR
 
 ### 1. 세션 하나
 
-1. 시작하면 [HANDOFF.md](HANDOFF.md) 하나만 읽고, 나머지는 그 문서 지도가 가리킬 때만 읽음.
+1. 시작하면 [HANDOFF.md](HANDOFF.md)가 저장소 `CLAUDE.md`의 `@` import로 자동 로드되고, 나머지는 그 문서 지도가 가리킬 때만 읽음.
 2. 새 작업은 Issue부터 엶. 형식은 [issue-format.md](issue-format.md).
 3. 작업 단위가 끝나면 로컬 커밋함. `pre-commit-check.sh`가 검사하고, 커밋 메시지에는 `Refs #N`만 씀.
 4. push는 사용자 확인 뒤에 함. `git-guardrails.sh`가 확인 창을 띄움.

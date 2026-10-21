@@ -1,6 +1,8 @@
 # claude-config 저장소 규칙
 
-세션 시작: `docs/HANDOFF.md` 하나만 먼저 읽는다. PROGRESS·결정 사항·그 밖 `.md`는 HANDOFF 문서 지도가 가리킬 때만 읽고, README·docs를 순회하며 다시 조사하지 않는다(전역 §5의 순회 읽기보다 이 규칙이 우선). 최신 상태는 `gh issue list --state open`. 할 일은 `task`, 발견한 문제는 `bug` 라벨.
+세션 시작: `docs/HANDOFF.md`는 아래 `@` import로 이미 로드돼 있으니 다시 읽지 않는다. PROGRESS·결정 사항·그 밖 `.md`는 HANDOFF 문서 지도가 가리킬 때만 읽고, README·docs를 순회하며 다시 조사하지 않는다(전역 §5의 순회 읽기보다 이 규칙이 우선). 최신 상태는 `gh issue list --state open`. 할 일은 `task`, 발견한 문제는 `bug` 라벨.
+
+@docs/HANDOFF.md
 
 ## 기본 영역과 작업 영역
 

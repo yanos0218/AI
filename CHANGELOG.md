@@ -30,6 +30,8 @@
 
 ### Added
 
+- 저장소 `CLAUDE.md`가 `@docs/HANDOFF.md` import로 HANDOFF를 세션 시작 때 자동 로드([Issue #191](https://github.com/yanos0218/AI/issues/191), 저장소 전용이라 버전 등급 미반영)
+  - 시험에서 로드를 확인했고 비용은 세션당 1,991 토큰, `tools/check-doc-sync.py`가 import 대상 파일이 있는지 검사
 - `tools/check-doc-sync.py` 문서 갱신 누락 검사 추가, `tools/check-docs.sh`가 불러 CI와 커밋 전 검사에 적용([Issue #192](https://github.com/yanos0218/AI/issues/192))
   - 도구·훅·스킬·에이전트·문서가 README·operating-flow에 있는지, 문서 속 백틱 경로가 실제로 있는지, 훅·스킬·에이전트·권한 개수 표기가 맞는지 대조
   - 검사로 드러난 누락 2건(README의 `measure-model.sh`, `statusline.sh`)도 같이 고침
