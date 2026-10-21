@@ -41,6 +41,7 @@
 
 ## 비교 방법
 
+- 설치 병합 시험은 CI가 세 운영체제 러너에서 자동으로 돌림([testing.md](testing.md)), Claude Code 자체 동작은 러너에서 못 봐서 기기에서 확인함
 - 기기마다 `bash tools/fingerprint.sh`를 실행해 출력을 `diff`함([testing.md](testing.md) "기기 간 차이")
 - 공통 항목에서 차이가 나오면 어긋남, 기기별·운영체제별 항목의 차이는 정상
 - 비교 출력의 공통·기기별 구분 확장은 [Issue #197](https://github.com/yanos0218/AI/issues/197)에서 설계 중

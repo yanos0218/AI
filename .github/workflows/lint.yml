@@ -1,6 +1,6 @@
 name: Lint
 
-# 문서·스크립트 저장소라 검사도 가볍다: markdownlint, shellcheck, 문서 상한(check-docs.sh), 설치 병합 시험.
+# 문서·스크립트 저장소라 검사도 가볍다: markdownlint, shellcheck, 문서 상한(check-docs.sh), 설치 병합 시험(세 운영체제).
 # 전부 러너에 일회성으로 설치하고 저장소에는 의존성을 두지 않는다.
 # push는 main만, 브랜치 작업은 PR 이벤트로만 — 같은 커밋이 두 번 돌지 않게.
 on:
@@ -37,6 +37,22 @@ jobs:
       - name: 문서 상한·필수 파일
         run: bash tools/check-docs.sh
 
-      # 임시 CLAUDE_CONFIG_DIR만 써서 러너의 홈은 건드리지 않는다(Issue #194)
+  # 같은 저장소를 Windows·Mac에서 쓰므로 세 운영체제에서 같은 시험을 돌린다(Issue #197).
+  # 임시 CLAUDE_CONFIG_DIR만 써서 러너의 홈은 건드리지 않는다(Issue #194).
+  # 공개 저장소라 표준 러너 분이 무료다. 비공개로 바꾸면 Windows 2배·macOS 10배라 다시 검토한다.
+  install-test:
+    name: 설치 병합 시험 (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false   # 한 운영체제가 실패해도 나머지 결과를 끝까지 본다
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    defaults:
+      run:
+        shell: bash      # Windows는 Git Bash
+    steps:
+      - uses: actions/checkout@v7
+
       - name: 설치 병합 시험
         run: bash tools/test-install-merge.sh

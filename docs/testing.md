@@ -14,7 +14,7 @@
 | 에이전트 | [tools/test-agent.sh](../tools/test-agent.sh) | 위임 대상·도구 호출·훅 차단 |
 | 전역 지침 | 문안 위험도별 기준([drafts/README.md](../drafts/README.md) 승격 조건 1) | 막는·승인 흐름 문안은 반영 전 1회로 실제로 틀리는지 먼저 본 뒤 반영 후 2회<br>사고 근거 알림성 문안은 문안 검토, 준수는 월 점검 self-audit |
 | 설치본 | `bash tools/check-install.sh` | `~/.claude`가 `base/`와 같은지 |
-| 설치 병합 | [tools/test-install-merge.sh](../tools/test-install-merge.sh) | 임시 폴더에 사용자 allow·훅·고친 스킬을 넣고 `install.sh`를 돌려 보존·백업·재실행 동일·`--dry-run` 무변경을 확인([Issue #194](https://github.com/yanos0218/AI/issues/194))<br>실제 `~/.claude`는 건드리지 않음<br>CI [lint.yml](../.github/workflows/lint.yml)의 "설치 병합 시험" 단계에서도 돌림 |
+| 설치 병합 | [tools/test-install-merge.sh](../tools/test-install-merge.sh) | 임시 폴더에 사용자 allow·훅·고친 스킬을 넣고 `install.sh`를 돌려 보존·백업·재실행 동일·`--dry-run` 무변경을 확인([Issue #194](https://github.com/yanos0218/AI/issues/194))<br>실제 `~/.claude`는 건드리지 않음<br>CI [lint.yml](../.github/workflows/lint.yml)의 `install-test` 잡이 Ubuntu·macOS·Windows(Git Bash) 세 러너에서 돌림, 공개 저장소라 분 무료([Issue #197](https://github.com/yanos0218/AI/issues/197)) |
 | 기기 간 차이 | [tools/fingerprint.sh](../tools/fingerprint.sh) | 반응이 달라 보일 때 기기별 출력을 `diff`([Issue #186](https://github.com/yanos0218/AI/issues/186))<br>사례 기록 양식은 [issue-format.md](issue-format.md) "반응 차이 사례"<br>자동 실행하지 않음 |
 | 모델 비교 | [tools/measure-model.sh](../tools/measure-model.sh) | 같은 작업을 모델별로 돌려 구독 한도 소모(5시간·주간 %p)와 정답률 비교([Issue #178](https://github.com/yanos0218/AI/issues/178))<br>시험 문서는 [tools/test-fixtures/model-compare/](../tools/test-fixtures/model-compare/)(위반 5개를 일부러 심어 markdownlint 제외)<br>한도를 쓰므로 실행 전 사용자 확인 |
 
