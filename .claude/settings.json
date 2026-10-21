@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "//": "if 조건은 명령 이름만 쓴다(Bash(git *) 등). \"git commit *\"처럼 인자까지 쓰면 $()·heredoc 명령에서 조건과 상관없이 전부 발동해 같은 훅이 여러 개 동시에 떴다(Issue #147·#148)",
+  "//": "pre-commit-check는 if 조건 없이 모든 Bash에 걸고, 스크립트가 commit·.sh 글자가 없으면 바로 끝낸다. if Bash(git *)는 echo x && git commit 같은 복합 명령을 못 잡아 경고·차단이 우회됐다(Issue #192, 같은 훅이 여러 개 동시에 뜨던 문제는 Issue #147·#148)",
   "hooks": {
     "PreToolUse": [
       {
@@ -18,13 +18,6 @@
         "hooks": [
           {
             "type": "command",
-            "if": "Bash(git *)",
-            "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/pre-commit-check.sh\"",
-            "timeout": 120
-          },
-          {
-            "type": "command",
-            "if": "Bash(bash *)",
             "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/pre-commit-check.sh\"",
             "timeout": 120
           }
