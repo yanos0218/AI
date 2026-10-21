@@ -1,6 +1,16 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "//": "~/.claude/settings.json 예시 — CLI·VS Code 확장·Mac·Linux·Windows 공통. model 등 기기별 값은 기존 파일 것을 유지하고 아래 키만 합친다.",
+  "//": "~/.claude/settings.json 예시 — CLI·VS Code 확장·Mac·Linux·Windows 공통. 아래 키를 설치 때마다 이 값으로 맞춘다(기본 모델·effort 포함, docs/models.md). 그 밖의 기기별 키는 유지한다.",
+  "model": "claude-sonnet-5-5",
+  "effortLevel": "medium",
+  "modelSettings": {
+    "claude-sonnet-5-5": {
+      "effortLevel": "medium"
+    },
+    "claude-opus-5-5": {
+      "effortLevel": "medium"
+    }
+  },
   "env": {
     "CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH": "1"
   },

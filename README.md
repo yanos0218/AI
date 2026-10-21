@@ -26,7 +26,7 @@
 | [base/skills/usage-dashboard/](base/skills/usage-dashboard/SKILL.md) | "토큰 대시보드 켜줘 / 대시보드 열어줘"에 발동. 요청할 때만 켜는 토큰 사용 기록(Stop 훅)과 로컬 대시보드, Windows·Mac 전용 |
 | [base/hooks/](base/hooks/) | 전역 훅 11개<br>위험 명령 확인 `git-guardrails.sh`, GitHub 쓰기 간격 `gh-throttle.sh`, 커밋·이슈·문서 형식 검사 `format-guard.sh`·`md-format-check.sh`, 상태줄, 설정 변경·대량 조회 기록, 컴팩션 안전망, 세션 시작 점검, verifier 차단. 언제 도는지는 [docs/operating-flow.md](docs/operating-flow.md#훅이-도는-시점) |
 | [base/agents/](base/agents/) | 용도별 서브에이전트<br>조사 `researcher`(Sonnet, 읽기·웹만), 문서·참조 점검 `auditor`(Sonnet, 읽기만), 검사 실행 `verifier`(Haiku, 쓰기·커밋 명령은 `verifier-guard.sh`가 차단). `~/.claude/agents/`에 설치 |
-| [base/settings.example.json](base/settings.example.json) | `~/.claude/settings.json` 예시 (허용·거부 명령, 훅, 상태줄) |
+| [base/settings.example.json](base/settings.example.json) | `~/.claude/settings.json` 예시 (허용·거부 명령, 훅, 상태줄, 기본 모델·effort) |
 | [base/rules/](base/rules/) | 모듈 규칙<br>기본 지침을 건드리지 않고 주제별로 붙이는 파일. `~/.claude/rules/`에 설치 |
 | [base/vscode/](base/vscode/) | 새 기기에 VS Code 확장·설정을 맞추는 목록과 스크립트 |
 | [base/skills/_template/](base/skills/_template/SKILL.md) | 새 스킬을 시작할 때 복사하는 틀 (배포 제외) |
@@ -50,6 +50,7 @@
 | [docs/research.md](docs/research.md) | 조사 규칙(최신·검증·출처, 기록은 Issues `research` 라벨) |
 | [docs/issue-format.md](docs/issue-format.md) | 이슈 라벨별 작성 형식(개발/버그·에러/조사/제안) |
 | [docs/skill-development.md](docs/skill-development.md) | 새 스킬 만드는 절차와 시험 방법 |
+| [docs/models.md](docs/models.md) | 개발 작업의 기본 모델·effort 기준(Sonnet 5.5 medium), 올리는 법, 기기 간 어긋남 확인 |
 | [docs/testing.md](docs/testing.md) | 바꾼 것별 검사 명령·시험 도구, 세 OS(Mac bash 3.2) 호환 규칙, 설치는 커밋 뒤 |
 | [docs/research/](docs/research/README.md) | 2026-09-13 이전 조사 기록(archive)<br>새 조사는 Issues `research` 라벨 |
 | [docs/tool-catalog.md](docs/tool-catalog.md) | 조사한 외부 도구·내장 기능 목록<br>상황별 판정(도입·조건부·쓰지 말 것)과 확인일, 근거 이슈 |
@@ -107,4 +108,4 @@ bash tools/install.sh            # --dry-run 으로 먼저 볼 수 있음
 
 이미 설치돼 있으면 어느 저장소에 있든 "설정 업데이트해줘"라고 말해도 된다(`config-update` 스킬).
 
-CLAUDE.md·훅·스킬을 복사하고 `settings.json`에 `permissions`·`hooks`·`statusLine`·`env` 키를 합친다(기기별 `model` 등은 유지). 스킬·훅은 **새 세션**부터 적용된다. 어느 기기에 어느 버전이 깔렸는지는 [docs/PROGRESS.md §0](docs/PROGRESS.md#0-자산-현황--단계와-배포-상태) 표.
+CLAUDE.md·훅·스킬을 복사하고 `settings.json`에 `permissions`·`hooks`·`statusLine`·`env`·`model`·`effortLevel`·`modelSettings` 키를 합친다(그 밖의 기기별 키는 유지). 스킬·훅은 **새 세션**부터 적용된다. 어느 기기에 어느 버전이 깔렸는지는 [docs/PROGRESS.md §0](docs/PROGRESS.md#0-자산-현황--단계와-배포-상태) 표.

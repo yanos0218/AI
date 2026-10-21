@@ -67,6 +67,8 @@ rows = [
     ('settings modelSettings', json.dumps(settings.get('modelSettings', '(키 없음)'), ensure_ascii=False, sort_keys=True)),
     ('settings effortLevel', settings.get('effortLevel', '(키 없음)')),
     ('settings env 키', ' '.join(sorted((settings.get('env') or {}).keys())) or '없음'),
+    # settings보다 우선하는 환경변수. 모델 이름·수준 값이라 그대로 출력한다
+    ('모델 환경변수', ' '.join('%s=%s' % (k, os.environ[k]) for k in ('ANTHROPIC_MODEL', 'ANTHROPIC_DEFAULT_MODEL', 'CLAUDE_CODE_EFFORT_LEVEL', 'CLAUDE_CODE_SUBAGENT_MODEL') if os.environ.get(k)) or '미설정'),
     ('권한 허용·차단 수', '%d·%d' % (len(perm.get('allow') or []), len(perm.get('deny') or []))),
     ('CLI 버전', cli),
     ('VS Code 확장 버전', ext),

@@ -19,6 +19,11 @@
 
 ### Added
 
+- `base/settings.example.json`에 기본 모델·effort 고정 키 추가([Issue #187](https://github.com/yanos0218/AI/issues/187))
+  - `model: claude-sonnet-5-5`, `effortLevel: medium`, Sonnet·Opus 5.5 `modelSettings` medium
+  - `tools/install.sh`가 세 키를 설치마다 base 값으로 맞추고 `tools/check-install.sh`가 대조, `tools/fingerprint.sh`가 모델 환경변수 설정 여부 출력
+  - 기존에 기기에서 `/model`로 바꿔 둔 값은 설치 때 되돌아옴, 다음 컷에서 MINOR 후보
+- `docs/models.md` 개발 작업 기본 모델·effort 기준 추가
 - `docs/operating-flow.md`에 5층 구성 매핑 표 추가([Issue #185](https://github.com/yanos0218/AI/issues/185), 문서 전용이라 버전 등급 미반영)
 - `tools/fingerprint.sh` 기기 지문 도구와 `docs/issue-format.md`의 반응 차이 사례 양식 추가([Issue #186](https://github.com/yanos0218/AI/issues/186), 저장소 도구·문서라 버전 등급 미반영)
 
