@@ -21,6 +21,13 @@ done
 "${PY}" -I - "${CLAUDE_HOME}" "${ROOT}" "${CLI}" "${EXT}" "$(uname -sm)" <<'PY'
 import glob, hashlib, io, json, os, re, sys
 
+# Windows는 출력이 파이프이면 cp1252·cp949 등으로 나가 한글에서 UnicodeEncodeError가 난다. -I가 PYTHONIOENCODING을 무시하므로 코드에서 고정한다(Issue #197)
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding='utf-8')
+    except AttributeError:
+        pass
+
 home, root, cli, ext, osname = sys.argv[1:6]
 
 

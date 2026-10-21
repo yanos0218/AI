@@ -106,6 +106,7 @@ chk "check-install 종료 코드 0"      '[[ "${rc}" = 0 ]]'
 chk "check-install 트레이스백 없음"  '! grep -q Traceback <<<"${out}"'
 chk "check-install 판정이 같음"      'grep -q "설치본이 기본 영역과 같다" <<<"${out}"'
 out="$(bash tools/fingerprint.sh 2>&1)"; rc=$?
+[[ "${rc}" = 0 ]] || { echo "  --- fingerprint 출력 끝 15줄(진단)"; printf '%s\n' "${out}" | tail -15; }
 chk "fingerprint 종료 코드 0"        '[[ "${rc}" = 0 ]]'
 chk "fingerprint 트레이스백 없음"    '! grep -q Traceback <<<"${out}"'
 chk "fingerprint 한글 항목 출력"     'grep -q "기기 OS" <<<"${out}"'
