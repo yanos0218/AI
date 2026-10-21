@@ -15,6 +15,7 @@
 | 전역 지침 | 문안 위험도별 기준([drafts/README.md](../drafts/README.md) 승격 조건 1) | 막는·승인 흐름 문안은 반영 전 1회로 실제로 틀리는지 먼저 본 뒤 반영 후 2회<br>사고 근거 알림성 문안은 문안 검토, 준수는 월 점검 self-audit |
 | 설치본 | `bash tools/check-install.sh` | `~/.claude`가 `base/`와 같은지 |
 | 설치 병합 | [tools/test-install-merge.sh](../tools/test-install-merge.sh) | 임시 폴더에 사용자 allow·훅·고친 스킬을 넣고 `install.sh`를 돌려 보존·백업·재실행 동일·`--dry-run` 무변경·오래된 백업 자동 정리(종류별 3개)를 확인([Issue #194](https://github.com/yanos0218/AI/issues/194))<br>실제 `~/.claude`는 건드리지 않음<br>CI [lint.yml](../.github/workflows/lint.yml)의 `install-test` 잡이 Ubuntu·macOS·Windows(Git Bash) 세 러너에서 돌림, 공개 저장소라 분 무료([Issue #197](https://github.com/yanos0218/AI/issues/197)) |
+| 훅 알림·경고 | `claude -p`로 사본 저장소에서 비대화 세션 | 방법은 아래 "훅 알림·경고 시험"([Issue #199](https://github.com/yanos0218/AI/issues/199))<br>한도를 쓰므로 실행 전 사용자 확인 |
 | 기기 간 차이 | [tools/fingerprint.sh](../tools/fingerprint.sh) | 반응이 달라 보일 때 `--common` 출력을 기기끼리 `diff`, 비어 있으면 일치([Issue #186](https://github.com/yanos0218/AI/issues/186), [Issue #197](https://github.com/yanos0218/AI/issues/197))<br>세 러너 CI가 한글 출력·표지 동작을 시험함<br>사례 기록 양식은 [issue-format.md](issue-format.md) "반응 차이 사례"<br>자동 실행하지 않음 |
 | 모델 비교 | [tools/measure-model.sh](../tools/measure-model.sh) | 같은 작업을 모델별로 돌려 구독 한도 소모(5시간·주간 %p)와 정답률 비교([Issue #178](https://github.com/yanos0218/AI/issues/178))<br>시험 문서는 [tools/test-fixtures/model-compare/](../tools/test-fixtures/model-compare/)(위반 5개를 일부러 심어 markdownlint 제외)<br>한도를 쓰므로 실행 전 사용자 확인 |
 
@@ -22,6 +23,24 @@
   - 세션이 "했다"고 말한 것과 실제 파일 변경을 대조함.
 - 검사가 실제로 몇 개를 봤는지 확인함
   - 0줄로 세거나 파일을 건너뛰고 "통과"로 끝난 일이 2026-09-28~29에 세 번 있었음([Issue #151](https://github.com/yanos0218/AI/issues/151)·[Issue #161](https://github.com/yanos0218/AI/issues/161)).
+
+## 훅 알림·경고 시험
+
+SessionStart 알림이나 PreToolUse 경고가 Claude에게 실제로 도착하는지는 스크립트 단독 실행으로 알 수 없음. 사용자가 새 세션을 여러 번 여는 대신 아래로 시험함([Issue #192](https://github.com/yanos0218/AI/issues/192), 2026-10-21).
+
+- 시험 전제
+  - 훅 설정은 세션 시작 때 고정되므로 같은 세션 안에서 설정을 바꿔 시험하지 않음.
+  - 훅은 명령 실행 전에 돌므로 같은 줄에서 훅 파일을 고치면 훅은 고치기 전 상태로 돎(2026-10-21, 이 때문에 "훅 미실행"으로 오진함).
+  - `git add x && git commit`처럼 한 줄이면 훅이 돌 때 add 전이라 스테이징 목록이 비어 있음. 검사 대상은 add 전 상태로 판단해야 함.
+- SessionStart 알림 시험
+  - 저장소를 임시 폴더에 clone하고 알림이 날 상태를 일부러 만듦(예: HANDOFF "지금" 절에 닫힌 이슈 번호). `gh`가 쓰이는 훅은 사본의 origin을 실제 저장소 주소로 바꿈. 사본에서 커밋·push하지 않음.
+  - 사본 폴더에서 `claude -p --model sonnet --max-turns 1 "세션 시작할 때 훅이 준 알림이 있었으면 그대로 옮겨 써줘. 없으면 없다고만 해줘. 도구는 쓰지 마."`를 실행하고 답변에 알림 원문이 있는지 봄.
+  - `claude`가 PATH에 없으면 VS Code 확장의 `~/.vscode/extensions/anthropic.claude-code-*/resources/native-binary/claude`를 씀.
+- PreToolUse 경고 시험
+  - 변경을 먼저 `git add`로 스테이징한 뒤 대상 명령을 따로 실행해 경고가 결과에 붙는지 봄. 훅 스크립트는 사본에서 JSON 입력을 파이프로 넣어 출력과 종료 코드도 봄.
+- 시험이 맞게 열렸는지 확인함
+  - 새 세션이 시험 폴더에서 열렸는지는 `~/.claude/projects/` 아래에 그 폴더 이름의 기록 폴더가 있는지로 봄(2026-10-21, 원래 저장소에서 열려 시험이 무효였던 사례).
+  - 답변에 전역 훅 알림만 있고 저장소 훅 알림이 없으면 훅 실패가 아니라 폴더를 잘못 연 것인지 먼저 의심함.
 
 ## 세 OS에서 도는 스크립트 쓰기
 
