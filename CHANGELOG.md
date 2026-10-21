@@ -9,6 +9,10 @@
 
 ### Changed
 
+- `docs/HANDOFF.md`를 새 세션의 입구로 슬림화([Issue #191](https://github.com/yanos0218/AI/issues/191))
+  - 60줄·10.4KB에서 37줄·3.7KB로, 결정 사항 26개는 `docs/decisions.md`로 이동(내용 변경 없음)
+  - 작업 종류별 문서 지도 추가, 설치 버전·최근 반영 내역 같은 복사본은 제거
+  - 저장소 `CLAUDE.md` 세션 시작 규칙을 HANDOFF 하나만 먼저 읽는 것으로 변경, HANDOFF 상한 60 → 40
 - 전역 지침 `base/claude-md/CLAUDE.md` §5 지적 처리 규칙 변경([Issue #190](https://github.com/yanos0218/AI/issues/190))
   - 실수가 실제 문제로 이어졌을 때만 기록을 제안
   - 같은 내용의 지적이 기간과 상관없이 누적 2회 이상이면 기록 대신 훅·CI 검사로 강제하는 방안을 먼저 제안

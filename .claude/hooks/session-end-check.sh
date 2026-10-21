@@ -26,6 +26,6 @@ fi
 
 n="$(printf '%s\n' "${changed}" | grep -c .)"
 cat <<JSON
-{"systemMessage":"session-end-check: 미커밋 변경 ${n}개. 관련 GitHub Issue가 있으면 진행 댓글을 남겼는지, 커밋에 Refs #N을 적었는지 확인하세요(닫기는 검증 뒤 gh issue close). PROGRESS·HANDOFF는 §0 표나 결정 사항이 바뀌었을 때만 갱신하면 됩니다."}
+{"systemMessage":"session-end-check: 미커밋 변경 ${n}개. 관련 GitHub Issue가 있으면 진행 댓글을 남겼는지, 커밋에 Refs #N을 적었는지 확인하세요(닫기는 검증 뒤 gh issue close). PROGRESS §0 표나 HANDOFF 지금 절은 바뀐 것이 있을 때 세션 끝에 한 번만 갱신하고, 결정 사항은 docs/decisions.md에 적으세요."}
 JSON
 exit 0

@@ -5,11 +5,12 @@
 > **역할 분리**
 >
 > - 이 문서 = **자산 현황 + 배포 상태** (살아있는 표, 계속 갱신). 할 일·완료 이력은 Issues
-> - [HANDOFF.md](HANDOFF.md) = **새 세션이 처음 읽는 요약** (목적, 결정 사항, 이 보드로 가는 안내)
+> - [HANDOFF.md](HANDOFF.md) = **새 세션이 처음 읽는 입구** (목적, 지금 상태, 문서 지도, 핵심 원칙)
+> - [decisions.md](decisions.md) = **굳어진 결정 사항** (주제별)
 > - [README.md](../README.md) = **무엇이 왜 이렇게 만들어졌는지** (구조, 설치, 검토표)
 > - git log = 완료된 변경 이력
 >
-> **업데이트 규칙**: §0 표는 자산 단계·배포 여부가 바뀔 때 갱신한다. 새 할 일은 `gh issue create --label task`로. 세션이 끝날 때 이 표와 HANDOFF "현재 상태"를 같이 갱신한다.
+> **업데이트 규칙**: §0 표는 자산 단계·배포 여부가 바뀔 때 갱신한다. 새 할 일은 `gh issue create --label task`로. 세션이 끝날 때 이 표와 HANDOFF "지금" 절을 같이 갱신한다.
 >
 > **크기 규칙 ([Issue #49](https://github.com/yanos0218/AI/issues/49), 2026-09-08; 범위 조정 [Issue #11](https://github.com/yanos0218/AI/issues/11) 2026-09-12)**: 이 파일은 **§0 자산 현황 표**만 담는다. 할 일·발견한 문제·완료 이력은 전부 GitHub Issue로 관리한다(라벨 `task`/`bug`, open/closed로 진행 상태 구분).
 
@@ -95,7 +96,7 @@
 
 ## 4. 결정 사항 (다시 묻지 말 것)
 
-HANDOFF.md "결정 사항" 절이 원본. 여기서는 중복하지 않음.
+[decisions.md](decisions.md)가 원본. 여기서는 중복하지 않음.
 
 ## 5. 보류·기각
 

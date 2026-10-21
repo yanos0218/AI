@@ -1,6 +1,6 @@
 # claude-config 저장소 규칙
 
-세션 시작: `docs/HANDOFF.md` → `docs/PROGRESS.md`(§0 표) → 열린 Issue(`gh issue list --state open`) 순으로 읽는다. 할 일은 `task`, 발견한 문제는 `bug` 라벨.
+세션 시작: `docs/HANDOFF.md` 하나만 먼저 읽는다. PROGRESS·결정 사항·그 밖 `.md`는 HANDOFF 문서 지도가 가리킬 때만 읽고, README·docs를 순회하며 다시 조사하지 않는다(전역 §5의 순회 읽기보다 이 규칙이 우선). 최신 상태는 `gh issue list --state open`. 할 일은 `task`, 발견한 문제는 `bug` 라벨.
 
 ## 기본 영역과 작업 영역
 
@@ -27,8 +27,8 @@
 
 ## 문서 규칙
 
-- 파일마다 역할이 하나다. README = 입구(구조·설치 요약·링크). HANDOFF = 지금 상황(현재 상태는 **4줄 이하 + 링크**, 상세는 PROGRESS §0). PROGRESS = 자산 단계·배포 표 + 완료 이력. 할 일은 GitHub Issues. 상세 주제는 `docs/<주제>.md` 하나씩.
-- 줄 수 상한(`tools/check-docs.sh`가 CI에서 검사): README 120, 이 파일 60, `base/claude-md/CLAUDE.md` 200, HANDOFF 60, PROGRESS 300, CHANGELOG 400, SKILL.md 80.
+- 파일마다 역할이 하나다. README = 입구(구조·설치 요약·링크). HANDOFF = 새 세션의 입구(지금 상태 **4줄 이하 + 링크**, 문서 지도, 핵심 원칙, 결정 사항은 `docs/decisions.md`로 분리). PROGRESS = 자산 단계·배포 표 + 완료 이력. 할 일은 GitHub Issues. 상세 주제는 `docs/<주제>.md` 하나씩.
+- 줄 수 상한(`tools/check-docs.sh`가 CI에서 검사): README 120, 이 파일 60, `base/claude-md/CLAUDE.md` 200, HANDOFF 40, PROGRESS 300, CHANGELOG 400, SKILL.md 80.
   - 넘으면 줄이는 게 아니라 **분리**한다
     - README는 `docs/`로.
     - PROGRESS는 §0 표만 담으므로 보통 넘지 않는다.
@@ -42,7 +42,7 @@
 ## 문서 갱신
 
 - 세션 끝
-  - `docs/PROGRESS.md`(§0 자산 현황표의 단계·배포 열 + 항목 상태) + `docs/HANDOFF.md`(현재 상태) 갱신.
+  - `docs/PROGRESS.md`(§0 자산 현황표의 단계·배포 열 + 항목 상태) + `docs/HANDOFF.md`(지금 절) 갱신. 세션 끝에 한 번만 고치고 설치 버전은 PROGRESS §0에만 적는다.
   - 관찰 기록 파일은 따로 쓰지 않는다. 요청·작업 방식의 반복은 월 점검에서 `self-audit`가 대화 기록을 직접 읽어 찾는다(2026-09-28 `drafts/observations/` 폐지).
   - 전역 지침 반영은 월 점검 때 후보로만.
 - 할 일과 발견한 문제는 GitHub Issue로 관리한다(라벨 `task`/`bug`, [Issue #11](https://github.com/yanos0218/AI/issues/11) 2026-09-12). 진행 보드는 §0 배포 표만 담당.

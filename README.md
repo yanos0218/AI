@@ -40,7 +40,8 @@
 | 경로 | 무엇 |
 | --- | --- |
 | [docs/operating-flow.md](docs/operating-flow.md) | 구성 요소가 적용되는 곳, 훅이 도는 시점, 세션·자산·배포·릴리즈·점검 흐름 |
-| [docs/HANDOFF.md](docs/HANDOFF.md) | Claude가 새 대화를 시작할 때 읽는 "지금 상황" 메모<br>무엇이 어디까지 됐고 무엇을 결정했는지 |
+| [docs/HANDOFF.md](docs/HANDOFF.md) | Claude가 새 대화를 시작할 때 읽는 입구<br>지금 상태, 작업 종류별 문서 지도, 핵심 원칙 |
+| [docs/decisions.md](docs/decisions.md) | 굳어진 결정 사항(주제별)<br>"다시 묻지 말 것" 목록 |
 | [docs/PROGRESS.md](docs/PROGRESS.md) | 진행 보드<br>자산별 단계(계획→초안→검증→기본)와 기기별 배포 상태. 할 일은 GitHub Issues(라벨 `task`/`bug`) |
 | [docs/versioning.md](docs/versioning.md) | 이 저장소의 버전·릴리즈 규칙 |
 | [docs/install.md](docs/install.md) | 기기·웹별 설치 상세 |

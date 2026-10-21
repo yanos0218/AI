@@ -17,7 +17,7 @@ limit() { # 파일 상한
 limit README.md 120
 limit CLAUDE.md 60
 limit base/claude-md/CLAUDE.md 200
-limit docs/HANDOFF.md 60
+limit docs/HANDOFF.md 40
 limit docs/PROGRESS.md 300
 limit CHANGELOG.md 400
 for s in base/skills/*/SKILL.md drafts/skills/*/SKILL.md; do [[ -f "${s}" ]] && limit "${s}" 80; done

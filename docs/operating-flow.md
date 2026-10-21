@@ -82,12 +82,12 @@ flowchart LR
 
 ### 1. 세션 하나
 
-1. 시작하면 [HANDOFF.md](HANDOFF.md) → [PROGRESS.md](PROGRESS.md) §0 → 열린 Issue 순으로 읽음.
+1. 시작하면 [HANDOFF.md](HANDOFF.md) 하나만 읽고, 나머지는 그 문서 지도가 가리킬 때만 읽음.
 2. 새 작업은 Issue부터 엶. 형식은 [issue-format.md](issue-format.md).
 3. 작업 단위가 끝나면 로컬 커밋함. `pre-commit-check.sh`가 검사하고, 커밋 메시지에는 `Refs #N`만 씀.
 4. push는 사용자 확인 뒤에 함. `git-guardrails.sh`가 확인 창을 띄움.
 5. 검증이 끝나면 `gh issue close`로 직접 닫음.
-6. 끝낼 때 HANDOFF 현재 상태와 PROGRESS §0을 갱신함.
+6. 끝낼 때 HANDOFF "지금" 절과 PROGRESS §0을 한 번만 갱신함.
 
 ### 2. 새 자산 만들기
 
