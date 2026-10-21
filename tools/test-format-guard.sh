@@ -64,6 +64,8 @@ run 0 '.md 아닌 파일' post Edit "{\"file_path\": \"${D}/x.txt\", \"old_strin
 run 0 '.md 문단은 줄바꿈 규칙 대상 아님' post Write "{\"file_path\": \"${D}/x.md\", \"content\": \"질문: 목록이 아닌 일반 문단은 줄바꿈 규칙 대상이 아니므로 검사하지 않음\\n\"}"
 run 2 '.md 문단 문장형 위반(Issue #188)' post Write "{\"file_path\": \"${D}/x.md\", \"content\": \"# 제목\\n\\n이 문단은 문장형으로 끝난다.\\n\"}"
 run 2 '.md 목록 문장형 위반' post Edit "{\"file_path\": \"${D}/x.md\", \"old_string\": \"a\", \"new_string\": \"- 설정을 고친다\"}"
+run 2 '.md 표 셀 문장형 위반' post Edit "{\"file_path\": \"${D}/x.md\", \"old_string\": \"a\", \"new_string\": \"| 항목 | 값을 고친다 |\"}"
+run 0 '.md 표 셀 음슴체 통과' post Edit "{\"file_path\": \"${D}/x.md\", \"old_string\": \"a\", \"new_string\": \"| 항목 | 값을 고침 |\"}"
 run 0 '.md 음슴체 문단 통과' post Write "{\"file_path\": \"${D}/x.md\", \"content\": \"# 제목\\n\\n이 문단은 음슴체로 끝남\\n\"}"
 run 0 '.md 코드 블록·백틱 안 문장형은 제외' post Write "{\"file_path\": \"${D}/x.md\", \"content\": \"예시는 \`했다\`처럼 씀\\n\\n\`\`\`\\n이 줄은 예시이다.\\n\`\`\`\\n\"}"
 run 0 'rules 아래 지침 문서는 제외' post Write "{\"file_path\": \"${D}/rules/x.md\", \"content\": \"이 규칙은 명령형으로 쓴다.\\n\"}"

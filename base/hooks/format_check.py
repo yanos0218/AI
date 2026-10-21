@@ -103,7 +103,9 @@ def check_text(text, kind, cram, eum=False):
                     out.append((i + 1, '음슴체', t))
                     break
         elif kind == 'md' and eum and not t.startswith(('|---', '#')):   # 제목 줄은 명사형이라 보지 않는다
-            for seg in QUOTED.sub('', t).split('<br>'):
+            plain = QUOTED.sub('', t)
+            cells = plain.strip().strip('|').split('|') if is_table else [plain]   # 표는 셀 끝(… 다 |)도 본다
+            for seg in (s for c in cells for s in c.split('<br>')):
                 if SENTENCE_DA.search(seg.strip()):
                     out.append((i + 1, '음슴체', t))
                     break
