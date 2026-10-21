@@ -20,6 +20,8 @@ import os
 import re
 import sys
 
+import hooklib as h   # 명령 나누기(heredoc 구간·명령 자리)는 공통 모듈을 쓴다(Issue #164)
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 HOME = os.environ.get('CLAUDE_CONFIG_DIR') or os.path.expanduser('~/.claude')
 LOG = os.path.join(HOME, 'format-guard.log')
@@ -113,7 +115,6 @@ def log(reason, cmd=''):
 GH = re.compile(r'\bgh\s+(issue|pr)\s+(create|comment|edit|close|review)\b|\bgh\s+release\s+(create|edit)\b')
 GIT_COMMIT = re.compile(r'\bgit(?:\s+-C\s+\S+)?\s+commit\b')
 ASSIGN = re.compile(r'''(?:^|[;&\s])([A-Za-z_][A-Za-z0-9_]*)=("([^"]*)"|'([^']*)'|([^\s;&|]+))''')
-HEREDOC = re.compile(r'''<<-?\s*(['"]?)([A-Za-z_]+)\1''')
 
 
 def expand(s, env):
@@ -123,7 +124,7 @@ def expand(s, env):
 
 def heredoc_after(cmd, pos):
     """pos 뒤 첫 heredoc의 본문. 본문은 그 표시가 있는 줄의 다음 줄부터 끝 표시 줄 전까지."""
-    m = HEREDOC.search(cmd, pos)
+    m = h.HEREDOC.search(cmd, pos)
     if not m:
         return None
     nl = cmd.find('\n', m.end())
@@ -257,33 +258,13 @@ def segment(cmd, start):
     return len(cmd)
 
 
-def heredoc_spans(cmd):
-    """heredoc 본문 구간들. 그 안의 "gh issue …" 같은 글은 실행되는 명령이 아니라 데이터다."""
-    spans = []
-    for m in HEREDOC.finditer(cmd):
-        nl = cmd.find('\n', m.end())
-        if nl < 0:
-            continue
-        end = re.search(r'^\s*' + re.escape(m.group(2)) + r'\s*$', cmd[nl + 1:], re.M)
-        spans.append((nl + 1, nl + 1 + (end.start() if end else len(cmd))))
-    return spans
-
-
-def at_command_start(cmd, pos):
-    """pos가 명령 자리인지: 앞이 줄 시작·; && || | $( 이고 그 사이에는 변수 대입만 있다.
-    echo "gh issue …"나 python 문자열 안의 글은 명령이 아니다(2026-09-28 실사용 오탐)."""
-    head = cmd[:pos]
-    cut = max(head.rfind(s) + len(s) for s in ('\n', ';', '&&', '||', '|', '$(', '(')) if any(s in head for s in ('\n', ';', '&&', '||', '|', '$(', '(')) else 0
-    return re.fullmatch(r'\s*(?:[A-Za-z_][A-Za-z0-9_]*=(?:"[^"]*"|\'[^\']*\'|\S*)\s+)*', head[cut:]) is not None
-
-
 def targets(cmd, cwd):
     """(종류, 본문 목록 또는 None) 목록."""
     env = {}
     for m in ASSIGN.finditer(cmd):
         env[m.group(1)] = m.group(3) if m.group(3) is not None else (m.group(4) if m.group(4) is not None else m.group(5))
-    spans = heredoc_spans(cmd)
-    real = lambda p: at_command_start(cmd, p) and not any(a <= p < b for a, b in spans)  # noqa: E731
+    spans = h.heredoc_spans(cmd)
+    real = lambda p: h.at_command_start(cmd, p) and not any(a <= p < b for a, b in spans)  # noqa: E731
     out = []
     for m in GH.finditer(cmd):
         if not real(m.start()):

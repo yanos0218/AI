@@ -38,6 +38,8 @@ run 2 '릴리즈 노트 파일 위반' pre Bash "gh release create v1 --notes-fi
 run 2 '릴리즈 노트 문장형' pre Bash 'gh release create v1 --notes "- 버그를 수정했습니다"'
 run 0 '릴리즈 노트 음슴체' pre Bash 'gh release create v1 --notes "- 버그 수정함"'
 run 2 '이슈 본문 문장형' pre Bash "gh issue comment 1 --body-file ${D}/formal.md"
+run 2 'env 접두 명령 위반(Issue #164 합친 뒤 검사 대상)' pre Bash 'env A=1 gh issue create --title t --body "- x.sh 파일: 설명이 한 줄에 길게 이어 붙은 목록 항목 문장"'
+run 0 'echo 안의 gh 글은 통과' pre Bash 'echo "gh issue create --body - x.sh 파일: 설명이 한 줄에 길게 이어 붙은 목록"'
 run 2 '커밋 -m 여러 개 위반' pre Bash 'git commit -m "feat: x" -m "- a.sh 파일: 설명이 한 줄에 길게 붙어 있는 경우를 막는다"'
 run 0 '커밋 heredoc 통과' pre Bash "$(printf '%s\n' "git commit -q -F - <<'EOF'" 'feat(x): 제목' '' '- 수정' '  - 설명(괄호)과 "따옴표"' '' 'Refs #1' '' 'Co-Authored-By: A <a@b>' 'EOF')"
 run 2 '커밋 heredoc 위반' pre Bash "$(printf '%s\n' "git commit -q -F - <<'EOF'" 'feat(x): 제목' '' '- `b.sh`: 설명이 한 줄에 길게 붙어 있는 경우를 막는다' 'EOF')"

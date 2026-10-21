@@ -5,8 +5,7 @@
   글에도 반응했다. 여기서는 JSON을 정확히 읽고 명령을 덩어리로 나눠 실제 명령 자리만 본다.
 - Rocky Linux 3.9에서도 돌도록 3.8 문법만 쓴다(match 문, X | Y 타입 표기 금지).
 
-명령 나누기(segment·heredoc_spans·at_command_start)는 base/hooks/format_check.py(Issue #141)와 같은 규칙이다.
-format_check.py가 이 모듈을 쓰도록 합치는 일은 Issue #164(2026-09-29 기본 반영 때는 동작 변화를 피하려고 미룸).
+명령 나누기(heredoc_spans·at_command_start)는 base/hooks/format_check.py(Issue #141)도 이 모듈을 쓴다(Issue #164 합침).
 """
 import datetime
 import io

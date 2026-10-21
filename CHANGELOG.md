@@ -13,6 +13,9 @@
   - §2에 질문이 여럿 섞인 메시지는 모두 명시적으로 답하는 규칙 추가([Issue #174](https://github.com/yanos0218/AI/issues/174))
   - §5 조사 기록 범위를 "결정에 쓴 조사"에서 "사용자가 요청한 조사 포함"으로 확대([Issue #174](https://github.com/yanos0218/AI/issues/174))
   - 알림성 문안이라 문안 검토로 갈음, 지켜지는지는 월 점검 self-audit에서 확인
+- `base/hooks/format_check.py`가 명령 나누기(heredoc 구간·명령 자리)를 `hooklib.py`에서 가져다 씀, 중복 구현 삭제([Issue #164](https://github.com/yanos0218/AI/issues/164))
+  - 판정이 달라지는 경우는 하나: `sudo`·`env`·`time`·`command`·백틱 뒤의 `gh`·`git commit`도 검사 대상이 됨(전엔 통과)
+  - `tools/test-format-guard.sh` 32 → 34건(해당 사례 2건 추가)
 
 ## [0.14.0] - 2026-10-17
 
