@@ -19,6 +19,11 @@
 
 ### Added
 
+- `base/hooks/format_check.py`가 `.md` 저장 때 새로 쓴 내용의 문장형 끝맺음(음슴체)도 검사([Issue #188](https://github.com/yanos0218/AI/issues/188))
+  - 문장 끝이 `다`인 줄을 위반으로 보고 exit 2, 코드 블록·인용·백틱·제목 줄은 제외
+  - 지침 문서(`CLAUDE.md`·`SKILL.md`·`AGENTS.md`, `.claude/`·`rules/`·`skills/`·`agents/`·`commands/`·`test-fixtures/` 아래)는 검사하지 않음
+  - 저장소에 `.claude/no-eumseum-check`(빈 파일)를 두면 그 저장소는 끔
+  - `tools/test-format-guard.sh` 34 → 41건, 기존 문장형 문서를 다시 쓰면 그 부분은 음슴체로 바꿔야 저장 검사를 통과함
 - `base/settings.example.json`에 기본 모델·effort 고정 키 추가([Issue #187](https://github.com/yanos0218/AI/issues/187))
   - `model: claude-sonnet-5-5`, `effortLevel: medium`, Sonnet·Opus 5.5 `modelSettings` medium
   - `tools/install.sh`가 세 키를 설치마다 base 값으로 맞추고 `tools/check-install.sh`가 대조, `tools/fingerprint.sh`가 모델 환경변수 설정 여부 출력

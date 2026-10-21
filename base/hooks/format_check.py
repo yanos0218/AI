@@ -2,7 +2,7 @@
 """형식 검사 훅의 본체(Issue #141). format-guard.sh(PreToolUse)와 md-format-check.sh(PostToolUse)가 부른다.
 
   pre   gh issue·pr·release 작성·댓글·수정, git commit의 본문을 명령에서 꺼내 검사. 위반이면 exit 2
-  post  Edit·Write로 .md에 새로 쓴 내용만 검사. 위반이면 exit 2(파일은 이미 저장됨, Claude가 이어서 고침)
+  post  Edit·Write로 .md에 새로 쓴 내용만 검사(목록 줄바꿈, 문장형 끝맺음). 위반이면 exit 2(파일은 이미 저장됨, Claude가 이어서 고침)
   scan  과거 글 일괄 점검(오탐 측정용): scan <gh|release|commit|md> <파일...>
 
 원칙
@@ -49,12 +49,30 @@ def load_cram(cwd):
 # 이슈·PR·릴리즈 본문의 문장형 끝맺음(음슴체 규칙). 따옴표·백틱 안은 인용이라 지운 뒤 본다
 ENDING = re.compile(r'(습니다|습니까|ㅂ니다|합니다|입니다|됩니다|십시오|한다|했다|된다|됐다|이다|였다|있다|없다|않는다|않았다)(?=[.!?]?\s*$|[.!?]\s)')
 QUOTED = re.compile(r'`[^`]*`|"[^"]*"|“[^”]*”|\'[^\']*\'')
+# .md 본문의 문장형 끝맺음(Issue #188). 음슴체 문서의 문장은 '다'로 끝나지 않으므로 문장 끝이 '다'인 줄을 본다
+# (위 ENDING은 이슈·PR·릴리즈 본문용 좁은 목록. 기존 .md 299줄 중 ENDING은 173줄만 잡았고 넓은 쪽 표본 14줄에 오탐 0)
+SENTENCE_DA = re.compile(r'다(?=[.!?]?\s*$|[.!?]\s)')
+# Claude에게 주는 지침 문서는 명령형이 규칙의 예외라 검사하지 않는다(docs-format-local.md)
+EUM_EXEMPT_DIRS = {'.claude', 'rules', 'skills', 'agents', 'commands', 'test-fixtures'}
+EUM_EXEMPT_NAMES = {'claude.md', 'skill.md', 'agents.md'}
 LIST = re.compile(r'^\s*(?:[-*]|\d+\.)\s+')
 TRAILER = re.compile(r'^(Refs|Closes|Fixes|Co-Authored-By|Signed-off-by|BREAKING CHANGE)\b', re.I)
 
 
-def check_text(text, kind, cram):
-    """위반 줄 목록 [(줄번호, 종류, 내용)]. kind: gh·release·commit(게시 본문), md(파일)."""
+def eumseum_applies(path, cwd):
+    """.md 파일의 문장형 검사 여부. 지침 문서 경로이거나 저장소가 .claude/no-eumseum-check로 끄면 검사하지 않는다."""
+    p = path.replace('\\', '/')
+    base = (cwd or '').replace('\\', '/').rstrip('/')
+    if base and p.startswith(base + '/'):
+        p = p[len(base) + 1:]            # 저장소 밖 상위 폴더 이름(skills 등)에 걸리지 않게 저장소 안 경로만 본다
+    parts = p.split('/')
+    if parts[-1].lower() in EUM_EXEMPT_NAMES or EUM_EXEMPT_DIRS & set(parts[:-1]):
+        return False
+    return not os.path.isfile(os.path.join(cwd or '.', '.claude', 'no-eumseum-check'))
+
+
+def check_text(text, kind, cram, eum=False):
+    """위반 줄 목록 [(줄번호, 종류, 내용)]. kind: gh·release·commit(게시 본문), md(파일, eum이면 문장형도 검사)."""
     lines = text.split('\n')
     out, in_code, start = [], False, 0
     if kind == 'commit':
@@ -82,6 +100,11 @@ def check_text(text, kind, cram):
             plain = QUOTED.sub('', t)
             for seg in plain.split('<br>'):
                 if ENDING.search(seg.strip()):
+                    out.append((i + 1, '음슴체', t))
+                    break
+        elif kind == 'md' and eum and not t.startswith(('|---', '#')):   # 제목 줄은 명사형이라 보지 않는다
+            for seg in QUOTED.sub('', t).split('<br>'):
+                if SENTENCE_DA.search(seg.strip()):
                     out.append((i + 1, '음슴체', t))
                     break
     return out
@@ -323,8 +346,9 @@ def mode_post(inp):
         text = ti.get('content') if 'content' in ti else ti.get('new_string', '')
     if not text:
         return 0
-    cram = load_cram(inp.get('cwd') or os.path.dirname(path))
-    hits = check_text(text, 'md', cram)
+    cwd = inp.get('cwd') or os.path.dirname(path)
+    cram = load_cram(cwd)
+    hits = check_text(text, 'md', cram, eumseum_applies(path, cwd))
     if hits:
         report(hits, f'{os.path.basename(path)}에 새로 쓴 내용')
         return 2
@@ -336,7 +360,7 @@ def mode_scan(kind, files):
     n = 0
     for f in files:
         with io.open(f, encoding='utf-8') as fh:
-            for ln, k, t in check_text(fh.read(), kind, cram):
+            for ln, k, t in check_text(fh.read(), kind, cram, kind == 'md' and eumseum_applies(f, os.getcwd())):
                 print(f'{f}:{ln}: [{k}] {t[:110]}')
                 n += 1
     return 1 if n else 0

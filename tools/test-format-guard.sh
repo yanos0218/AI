@@ -17,7 +17,7 @@ pass=0; fail=0
 run() { # $1=기대 종료 코드 $2=설명 $3=훅(pre|post) $4=도구 이름 $5=명령 또는 파일 JSON 조각
   local want="${1}" name="${2}" hook="${3}" tool="${4}" payload="${5}" got
   local script="${here}/format-guard.sh"; [[ "${hook}" == post ]] && script="${here}/md-format-check.sh"
-  got="$(PAYLOAD="${payload}" TOOL="${tool}" CWD="${tmp}" HOOK="${hook}" "${PY}" - <<'PY' | bash "${script}" 2>/dev/null; echo "${PIPESTATUS[1]}"
+  got="$(PAYLOAD="${payload}" TOOL="${tool}" CWD="${RUN_CWD:-${tmp}}" HOOK="${hook}" "${PY}" - <<'PY' | bash "${script}" 2>/dev/null; echo "${PIPESTATUS[1]}"
 import json, os
 p = os.environ['PAYLOAD']
 ti = json.loads(p) if os.environ['HOOK'] == 'post' else {'command': p}
@@ -61,7 +61,15 @@ run 2 'PowerShell 본문 파일' pre PowerShell "gh issue comment 1 --body-file 
 run 2 '.md 편집 위반' post Edit "{\"file_path\": \"${D}/x.md\", \"old_string\": \"a\", \"new_string\": \"- \`a.sh\`: 설명이 한 줄에 길게 붙어 있는 목록 항목\"}"
 run 0 '.md 쓰기 통과' post Write "{\"file_path\": \"${D}/x.md\", \"content\": \"# 제목\\n\\n- 항목\\n  - 설명\\n\"}"
 run 0 '.md 아닌 파일' post Edit "{\"file_path\": \"${D}/x.txt\", \"old_string\": \"a\", \"new_string\": \"- \`a.sh\`: 설명이 한 줄에 길게 붙어 있는 목록 항목\"}"
-run 0 '.md 문단은 대상 아님' post Write "{\"file_path\": \"${D}/x.md\", \"content\": \"질문: 목록이 아닌 일반 문단은 규칙 대상이 아니므로 검사하지 않는다\\n\"}"
+run 0 '.md 문단은 줄바꿈 규칙 대상 아님' post Write "{\"file_path\": \"${D}/x.md\", \"content\": \"질문: 목록이 아닌 일반 문단은 줄바꿈 규칙 대상이 아니므로 검사하지 않음\\n\"}"
+run 2 '.md 문단 문장형 위반(Issue #188)' post Write "{\"file_path\": \"${D}/x.md\", \"content\": \"# 제목\\n\\n이 문단은 문장형으로 끝난다.\\n\"}"
+run 2 '.md 목록 문장형 위반' post Edit "{\"file_path\": \"${D}/x.md\", \"old_string\": \"a\", \"new_string\": \"- 설정을 고친다\"}"
+run 0 '.md 음슴체 문단 통과' post Write "{\"file_path\": \"${D}/x.md\", \"content\": \"# 제목\\n\\n이 문단은 음슴체로 끝남\\n\"}"
+run 0 '.md 코드 블록·백틱 안 문장형은 제외' post Write "{\"file_path\": \"${D}/x.md\", \"content\": \"예시는 \`했다\`처럼 씀\\n\\n\`\`\`\\n이 줄은 예시이다.\\n\`\`\`\\n\"}"
+run 0 'rules 아래 지침 문서는 제외' post Write "{\"file_path\": \"${D}/rules/x.md\", \"content\": \"이 규칙은 명령형으로 쓴다.\\n\"}"
+run 0 'CLAUDE.md는 제외' post Write "{\"file_path\": \"${D}/CLAUDE.md\", \"content\": \"이 지침은 명령형으로 쓴다.\\n\"}"
+mkdir -p "${tmp}/off/.claude" && : > "${tmp}/off/.claude/no-eumseum-check"
+RUN_CWD="${tmp}/off" run 0 '.claude/no-eumseum-check가 있으면 문장형 검사 끔' post Write "{\"file_path\": \"${tmp}/off/x.md\", \"content\": \"이 문단은 문장형으로 끝난다.\\n\"}"
 
 echo "통과 ${pass} / 실패 ${fail}"
 [[ -f "${CLAUDE_CONFIG_DIR}/format-guard.log" ]] && { echo "통과 기록:"; cut -f2 "${CLAUDE_CONFIG_DIR}/format-guard.log"; }
