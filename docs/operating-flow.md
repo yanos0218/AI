@@ -64,7 +64,7 @@ flowchart LR
 
 | 시점 | 전역 훅(`base/hooks/`) | 이 저장소 전용(`.claude/hooks/`) |
 | --- | --- | --- |
-| 세션 시작 | `session-start-check.sh`<br>설치 버전·저장소 표준·self-audit 안내·대량 조회 누적 확인 | - |
+| 세션 시작 | `session-start-check.sh`<br>설치 버전·저장소 표준·self-audit 안내·대량 조회 누적 확인 | `handoff-stale-check.sh`<br>HANDOFF "지금" 절이 닫힌 이슈를 가리키면 알림, 정상이면 출력 없음 |
 | 컴팩션 직전·직후 | `compact-snapshot.sh`·`compact-snapshot-show.sh`<br>git 상태·최근 검사 명령 저장 후 보여줌 | - |
 | 명령 실행 전(Bash) | `git-guardrails.sh`<br>push·삭제 등 확인, 모든 명령<br>`gh-throttle.sh`<br>GitHub 쓰기 명령 간격 조절, `gh`·`bash` 명령만<br>`format-guard.sh`<br>커밋·이슈·PR·릴리즈 본문 형식 검사, 위반이면 막음, `git`·`gh` 명령만 | `baseline-guard.sh`<br>`base/` 쓰기 확인, 모든 명령<br>`pre-commit-check.sh`<br>커밋 전 문서·스크립트 검사, 이슈 번호 확인, `git`·`bash` 명령만 |
 | 파일 편집 전(Edit·Write) | - | `baseline-guard.sh` |

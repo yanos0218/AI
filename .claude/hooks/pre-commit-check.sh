@@ -112,7 +112,19 @@ if ! printf '%s' "${search_text}" | grep -Eq 'chore\(release\):'; then
   if printf '%s\n' "${touched}" | grep -Eq '^base/|^docs/.*\.md$|^CLAUDE\.md$'; then
     if ! printf '%s' "${search_text}" | grep -Eq '#[0-9]+'; then
       printf '{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"ask","permissionDecisionReason":"base/ 또는 docs 규칙 문서를 바꾸는 커밋인데 메시지에 이슈 번호(#숫자)가 없습니다. 이슈 없이 진행할까요?"}}\n'
+      exit 0
     fi
+  fi
+fi
+
+# 5. 코드·설정을 바꾼 커밋에 CHANGELOG가 없으면 경고만 한다(막지 않음, Issue #192). 전역 지침 §6 "같은 커밋에서 문서 갱신".
+# permissionDecision을 넣지 않아 승인 흐름은 그대로 두고 additionalContext로 Claude에게만 알린다.
+# 예외는 커밋 본문에 "Docs: 해당 없음(이유)". 시험 스크립트(tools/test-*)만 바뀐 커밋과 릴리즈 컷은 대상이 아니다
+if ! printf '%s' "${search_text}" | grep -Eq 'chore\(release\):|Docs: 해당 없음'; then
+  touched="$(git diff --cached --name-only --diff-filter=ACMD 2>/dev/null || true)"
+  code="$(printf '%s\n' "${touched}" | grep -E '^base/|^tools/[^/]+\.(sh|py)$' | grep -vE '^tools/test-' || true)"
+  if [[ -n "${code}" ]] && ! printf '%s\n' "${touched}" | grep -qx 'CHANGELOG.md'; then
+    printf '{"hookSpecificOutput":{"hookEventName":"PreToolUse","additionalContext":"[doc-sync 경고] base/ 또는 tools/ 스크립트를 바꾸는 커밋인데 CHANGELOG.md가 스테이징돼 있지 않습니다. [Unreleased]를 같은 커밋에서 갱신하세요. 갱신할 문서가 없으면 커밋 본문에 「Docs: 해당 없음(이유)」를 적으세요."}}\n'
   fi
 fi
 exit 0

@@ -6,7 +6,7 @@
 
 | 바꾼 것 | 돌릴 것 | 비고 |
 | --- | --- | --- |
-| `.md` 문서 | `npx markdownlint-cli2 "**/*.md"`<br>`bash tools/check-docs.sh` | CI와 같이 모든 `.md`, 제외 폴더는 `.markdownlint-cli2.jsonc`. 줄 길이(MD013)는 무시<br>검사한 수는 `Linting: N files`, 마지막 줄 `0 issues in 0 files`는 "문제 있는 파일 0개"라는 뜻<br>줄 수 상한은 [CLAUDE.md](../CLAUDE.md) "문서 규칙" |
+| `.md` 문서 | `npx markdownlint-cli2 "**/*.md"`<br>`bash tools/check-docs.sh`<br>`python3 tools/check-doc-sync.py` | CI와 같이 모든 `.md`, 제외 폴더는 `.markdownlint-cli2.jsonc`. 줄 길이(MD013)는 무시<br>검사한 수는 `Linting: N files`, 마지막 줄 `0 issues in 0 files`는 "문제 있는 파일 0개"라는 뜻<br>줄 수 상한은 [CLAUDE.md](../CLAUDE.md) "문서 규칙" |
 | 셸 스크립트 | `npx shellcheck -S warning <파일>` | CI 대상은 [.github/workflows/lint.yml](../.github/workflows/lint.yml)(2026-09-29 기준 27개)<br>모든 스크립트를 `${var}`·`[[ ]]` 스타일로 씀<br>`--enable=all`이 더 잡는 것은 전부 스타일이라 쓰지 않음(2026-09-13 확인) |
 | 파이썬 | `python3 -m py_compile <파일>` | 훅은 Rocky Linux 3.9에서도 돌도록 3.8 문법만 |
 | 훅 | [tools/test-hooks-py.sh](../tools/test-hooks-py.sh)<br>[tools/test-session-start-check.sh](../tools/test-session-start-check.sh)<br>[tools/test-format-guard.sh](../tools/test-format-guard.sh) | 판정 사례·실패 시 동작<br>설정 낡음 판정<br>형식 검사 게시 전·저장 후 |
