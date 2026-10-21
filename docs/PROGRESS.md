@@ -81,7 +81,10 @@
 
 ## 1. 완료
 
-완료 이력은 GitHub Issues에 있다(closed, `task`/`bug` 라벨) — `gh issue list --state closed --label task`. 46건은 2026-09-12에 이관, 그 뒤로는 이슈가 닫히는 시점이 곧 완료 시점이다.
+완료 이력은 GitHub Issues에 있다(closed, `task`/`bug` 라벨).
+
+- 조회: `gh issue list --state closed --label task`
+- 46건은 2026-09-12에 이관, 그 뒤로는 이슈가 닫히는 시점이 곧 완료 시점이다.
 
 ## 2. 할 일 — 개발·설정
 
