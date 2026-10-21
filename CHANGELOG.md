@@ -14,6 +14,7 @@
   - 내용이 다른 스킬은 `~/.claude/backups/claude-config/<시각>/`에 보관한 뒤 교체
   - `tools/check-install.sh`는 "설치하면 바뀔 항목이 없는가"로 대조하고 사용자 추가 항목은 정보로 표시
   - 시험 스크립트 `tools/test-install-merge.sh` 추가, CI(`lint.yml`)의 `install-test` 잡이 Ubuntu·macOS·Windows 러너에서 돌림([Issue #197](https://github.com/yanos0218/AI/issues/197))
+  - `settings_merge.py` 출력을 UTF-8로 고정, Windows 러너에서 파이프 출력 인코딩(cp1252)이 한글을 못 써 `UnicodeEncodeError`가 나던 것을 CI로 발견해 수정
   - 깨진 JSON(주석·끝 쉼표)이나 모양이 이상한 `settings.json`은 오류 없이 병합만 건너뛰고 이유를 알림, 파일은 그대로 두며 `install.sh`는 실패 종료 코드로 끝나 성공으로 오해되지 않음
 - `docs/HANDOFF.md`를 새 세션의 입구로 슬림화([Issue #191](https://github.com/yanos0218/AI/issues/191))
   - 60줄·10.4KB에서 37줄·3.7KB로, 결정 사항 26개는 `docs/decisions.md`로 이동(내용 변경 없음)

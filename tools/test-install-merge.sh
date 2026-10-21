@@ -91,6 +91,13 @@ for body in '{"hooks":{"Stop":"oops"}}' '{"permissions":null}' '{"env":[]}' '[]'
   chk "건너뜀: ${body}" '[[ "${rc}" = 3 ]] && ! grep -q Traceback <<<"${out}" && [[ "$(cat "${T}/odd.json")" = "${body}" ]]'
 done
 
+echo "== 6. 출력 인코딩이 cp1252여도 한글 안내가 깨지지 않는다(Windows 파이프 흉내, CI windows-latest에서 발견)"
+echo '{}' > "${T}/enc.json"
+out="$(PYTHONIOENCODING=cp1252 "${PY}" tools/settings_merge.py install "${T}/enc.json" base/settings.example.json 2>&1)"; rc=$?
+chk "종료 코드 0"                    '[[ "${rc}" = 0 ]]'
+chk "트레이스백 없음"                '! grep -q Traceback <<<"${out}"'
+chk "병합 결과가 파일에 쓰임"        'grep -q permissions "${T}/enc.json"'
+
 echo
 [[ "${fail}" = 0 ]] && echo "결과: 통과" || echo "결과: 실패 항목 있음"
 exit "${fail}"

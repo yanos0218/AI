@@ -145,7 +145,17 @@ def extras(cur, base):
     return msgs
 
 
+def utf8_stdio():
+    """Windows는 출력이 파이프일 때 cp1252·cp949 등으로 나가 한글에서 UnicodeEncodeError가 난다(CI windows-latest에서 확인)."""
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(encoding='utf-8')
+        except AttributeError:  # 파이썬 3.6 이하
+            pass
+
+
 def main(argv):
+    utf8_stdio()
     if len(argv) < 4 or argv[1] not in ('install', 'check'):
         sys.stderr.write(__doc__)
         return 2
