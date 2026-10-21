@@ -24,7 +24,7 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 | 이슈 작성·조사 기록 | [issue-format.md](issue-format.md), [research.md](research.md) |
 | 릴리즈 컷·버전 | [versioning.md](versioning.md), `dev-release` 스킬 |
 | 기기 설치·갱신·웹 | [install.md](install.md), [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태) |
-| 모델·effort, 기기 간 반응 차이 | [models.md](models.md), `tools/fingerprint.sh` |
+| 모델·effort, 기기 간 반응 차이, 운영체제별 차이 | [models.md](models.md), [os-differences.md](os-differences.md), `tools/fingerprint.sh` |
 | 검사·시험 방법 | [testing.md](testing.md) |
 | 월 점검 | [monthly-check.md](monthly-check.md) |
 | GitHub 사용·다른 저장소 표준 | [github.md](github.md), [repo-standard.md](repo-standard.md) |

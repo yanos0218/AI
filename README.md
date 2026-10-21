@@ -51,6 +51,7 @@
 | [docs/research.md](docs/research.md) | 조사 규칙(최신·검증·출처, 기록은 Issues `research` 라벨) |
 | [docs/issue-format.md](docs/issue-format.md) | 이슈 라벨별 작성 형식(개발/버그·에러/조사/제안) |
 | [docs/skill-development.md](docs/skill-development.md) | 새 스킬 만드는 절차와 시험 방법 |
+| [docs/os-differences.md](docs/os-differences.md) | 운영체제별 차이 구분표<br>공통·운영체제별(코드·설치)·기기별로 나눈 항목과 새 차이가 생겼을 때 처리 순서 |
 | [docs/models.md](docs/models.md) | 개발 작업의 기본 모델·effort 기준(Sonnet 5.5 medium), 올리는 법, 기기 간 어긋남 확인 |
 | [docs/testing.md](docs/testing.md) | 바꾼 것별 검사 명령·시험 도구, 세 OS(Mac bash 3.2) 호환 규칙, 설치는 커밋 뒤 |
 | [docs/research/](docs/research/README.md) | 2026-09-13 이전 조사 기록(archive)<br>새 조사는 Issues `research` 라벨 |

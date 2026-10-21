@@ -36,6 +36,7 @@
 
 ### Added
 
+- `docs/os-differences.md` 추가, 같은 저장소를 Windows·Mac에서 쓸 때 공통·운영체제별(코드·설치)·기기별 항목을 구분한 표와 새 차이가 생겼을 때의 처리 순서([Issue #197](https://github.com/yanos0218/AI/issues/197))
 - 저장소 `CLAUDE.md`가 `@docs/HANDOFF.md` import로 HANDOFF를 세션 시작 때 자동 로드([Issue #191](https://github.com/yanos0218/AI/issues/191), 저장소 전용이라 버전 등급 미반영)
   - 시험에서 로드를 확인했고 비용은 세션당 1,991 토큰, `tools/check-doc-sync.py`가 import 대상 파일이 있는지 검사
 - `tools/check-doc-sync.py` 문서 갱신 누락 검사 추가, `tools/check-docs.sh`가 불러 CI와 커밋 전 검사에 적용([Issue #192](https://github.com/yanos0218/AI/issues/192))
