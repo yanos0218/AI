@@ -51,7 +51,8 @@
   - `handoff-stale-check.sh`(SessionStart), HANDOFF "지금" 절이 이미 닫힌 이슈를 가리키면 알림
   - `pre-commit-check.sh`에 `base/`·`tools/` 변경인데 CHANGELOG가 없으면 경고 추가(막지 않음, 예외는 커밋 본문 `Docs: 해당 없음(이유)`)
   - 새 세션 시험에서 경고가 화면에 안 보여, `additionalContext`(Claude 전용)에 `systemMessage`(사용자 화면)를 함께 내도록 수정([Issue #192](https://github.com/yanos0218/AI/issues/192))
-  - 원인은 `.claude/settings.json`의 `if: Bash(git *)` 조건이라 `echo x && git commit`처럼 git으로 시작하지 않는 복합 명령에서 훅이 안 떠 경고·커밋 차단이 우회되던 것, 조건을 없애고 스크립트가 `commit` 글자 없으면 바로 끝나게 맡김(비대상 명령 1건 6ms)
+  - 원인은 훅이 명령 실행 전에 돌아 `git add x && git commit`처럼 한 줄이면 add 전이라 스테이징 목록이 비어 경고·커밋 차단(markdownlint·shellcheck)이 통째로 빠지던 것, 명령에 `git add`가 있으면 수정된 추적 파일과 새 파일을, `commit -a`면 수정된 추적 파일을 대상으로 보게 수정
+  - 한계: `git add 파일`이어도 다른 새 파일까지 검사해 무관한 새 `.md` 위반에 막힐 수 있고, 줄바꿈 규칙(크램) 검사는 스테이징분만 봄
 - `base/hooks/format_check.py`가 `.md` 저장 때 새로 쓴 내용의 문장형 끝맺음(음슴체)도 검사([Issue #188](https://github.com/yanos0218/AI/issues/188))
   - 문장 끝이 `다`인 줄을 위반으로 보고 exit 2, 코드 블록·인용·백틱·제목 줄은 제외
   - 지침 문서(`CLAUDE.md`·`SKILL.md`·`AGENTS.md`, `.claude/`·`rules/`·`skills/`·`agents/`·`commands/`·`test-fixtures/` 아래)는 검사하지 않음

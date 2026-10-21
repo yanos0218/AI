@@ -67,6 +67,22 @@ printf '%s' "${search_text}" | grep -Eq 'git([[:space:]]+-C[[:space:]]+[^[:space
 fail=0
 msg=""
 
+# 훅은 명령이 실행되기 전에 돈다. `git add x && git commit`처럼 한 줄이면 add가 아직 안 된 상태라 스테이징 목록이 비어
+# 경고·차단이 통째로 빠졌다(Issue #192). add나 commit -a가 같이 있으면 수정된 추적 파일과 새 파일도 대상으로 본다
+widen=0
+if printf '%s' "${search_text}" | grep -Eq 'commit[^|;&]*[[:space:]](-[a-zA-Z]*a[a-zA-Z]*|--all)([[:space:]]|$)'; then widen=1; fi
+# git add는 새 파일도 올리지만 commit -a는 추적 중인 파일만 올린다
+if printf '%s' "${search_text}" | grep -Eq 'git([[:space:]]+-C[[:space:]]+[^[:space:]]+)*[[:space:]]+add'; then widen=2; fi
+# $1 = diff-filter. 스테이징된 파일(+ widen이면 수정된 추적 파일과 새 파일)
+changed_files() {
+  git diff --cached --name-only --diff-filter="${1}" 2>/dev/null
+  if [[ "${widen}" != 0 ]]; then
+    git diff --name-only --diff-filter="${1}" 2>/dev/null
+    [[ "${widen}" = 2 ]] && git ls-files --others --exclude-standard 2>/dev/null
+  fi
+  return 0
+}
+
 # 1. 문서 상한·필수 파일 — 항상 실행(가볍다)
 if ! out=$(bash tools/check-docs.sh 2>&1); then
   fail=1
@@ -74,7 +90,7 @@ if ! out=$(bash tools/check-docs.sh 2>&1); then
 fi
 
 # 2. markdownlint — 스테이징된 .md만(저장소 전체를 보면 느린 시각에 제한 시간을 넘겨 검사가 버려졌다, Issue #148)
-md_files="$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null | grep '\.md$' || true)"
+md_files="$(changed_files ACM | sort -u | grep '\.md$' || true)"
 if [[ -n "${md_files}" ]]; then
   if ! out=$(printf '%s\n' "${md_files}" | xargs npx --yes markdownlint-cli2 2>&1); then
     fail=1
@@ -83,7 +99,7 @@ if [[ -n "${md_files}" ]]; then
 fi
 
 # 3. shellcheck — 스테이징된 .sh가 있을 때만
-sh_files="$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null | grep '\.sh$' || true)"
+sh_files="$(changed_files ACM | sort -u | grep '\.sh$' || true)"
 if [[ -n "${sh_files}" ]]; then
   if ! out=$(printf '%s\n' "${sh_files}" | xargs npx --yes shellcheck -S warning 2>&1); then
     fail=1
@@ -108,7 +124,7 @@ fi
 # 4. base/·docs 규칙 변경인데 커밋 메시지에 이슈 번호(#숫자)가 없으면 확인
 # (릴리즈 컷 커밋은 예외 — 항상 PROGRESS·HANDOFF를 건드리지만 이슈를 만들지 않는다)
 if ! printf '%s' "${search_text}" | grep -Eq 'chore\(release\):'; then
-  touched="$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null || true)"
+  touched="$(changed_files ACM | sort -u || true)"
   if printf '%s\n' "${touched}" | grep -Eq '^base/|^docs/.*\.md$|^CLAUDE\.md$'; then
     if ! printf '%s' "${search_text}" | grep -Eq '#[0-9]+'; then
       printf '{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"ask","permissionDecisionReason":"base/ 또는 docs 규칙 문서를 바꾸는 커밋인데 메시지에 이슈 번호(#숫자)가 없습니다. 이슈 없이 진행할까요?"}}\n'
@@ -121,7 +137,7 @@ fi
 # permissionDecision을 넣지 않아 승인 흐름은 그대로 두고 additionalContext로 Claude에게, systemMessage로 사용자에게 알린다.
 # 예외는 커밋 본문에 "Docs: 해당 없음(이유)". 시험 스크립트(tools/test-*)만 바뀐 커밋과 릴리즈 컷은 대상이 아니다
 if ! printf '%s' "${search_text}" | grep -Eq 'chore\(release\):|Docs: 해당 없음'; then
-  touched="$(git diff --cached --name-only --diff-filter=ACMD 2>/dev/null || true)"
+  touched="$(changed_files ACMD | sort -u || true)"
   code="$(printf '%s\n' "${touched}" | grep -E '^base/|^tools/[^/]+\.(sh|py)$' | grep -vE '^tools/test-' || true)"
   if [[ -n "${code}" ]] && ! printf '%s\n' "${touched}" | grep -qx 'CHANGELOG.md'; then
     # additionalContext는 Claude에게만 가고 사용자 화면에는 안 보여서(공식 문서), 사용자에게도 보이도록 systemMessage를 함께 낸다(Issue #192)
