@@ -1,12 +1,12 @@
 # 저장소 표준 — GitHub를 쓰는 모든 저장소의 최소선
 
-"GitHub를 쓰는 환경이면 무조건 있어야 하는 것"의 목록. 새 저장소를 만들 때와 기존 저장소를 열 때 대조한다. 전역 지침(§5)이 세션당 한 번 미달 항목을 제안하고, 만드는 건 사용자가 결정한다. 저장소 전용 규칙은 각 저장소 `CLAUDE.md`가 우선.
+"GitHub를 쓰는 환경이면 무조건 있어야 하는 것"의 목록. 새 저장소를 만들 때와 기존 저장소를 열 때 대조함. 전역 지침(§5)이 세션당 한 번 미달 항목을 제안하고, 만드는 건 사용자가 결정함. 저장소 전용 규칙은 각 저장소 `CLAUDE.md`가 우선.
 
 ## 체크리스트
 
 | # | 항목 | 왜 | 최소 형태 |
 | --- | --- | --- | --- |
-| 1 | CI<br>문서 검사 | .md가 늘어나면 형식이 깨져도 아무도 모른다 | `markdownlint-cli2` 워크플로 + `.markdownlint.jsonc`(MD013 끔) |
+| 1 | CI<br>문서 검사 | .md가 늘어나면 형식이 깨져도 아무도 모름 | `markdownlint-cli2` 워크플로 + `.markdownlint.jsonc`(MD013 끔) |
 | 2 | CI<br>테스트/빌드 | "됐다"의 증거. 스택에 맞게 하나 | 정적 사이트: 브라우저 테스트·`node --check`, Java: `gradlew test`, Python: `pytest`, 셸: `shellcheck`, 문서 저장소: 문서 상한 검사 |
 | 3 | `CHANGELOG.md` | 릴리즈가 없는 저장소일수록 미루면 영원히 안 씀(kolo-api 8일 방치 전례) | Keep a Changelog. 릴리즈 없는 저장소는 날짜 섹션, 커밋과 같은 자리에서 갱신 |
 | 4 | 저장소 `CLAUDE.md` | 매 세션 같은 배경 설명 반복을 막음 | 200줄 이하, "날짜 + 사고 + 규칙" 형식, 상세는 `docs/`로 |
@@ -27,4 +27,4 @@
 | Script | ✗ | ✗ (shellcheck 후보) | ✗ | ✗ | ✗ | ✗ | ✓ | **이력에 개인키** ([Issue #56](https://github.com/yanos0218/AI/issues/56)) |
 | Etc | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ | |
 
-Script·Etc는 활동이 적어(마지막 push 2026-06) 보관/최소/전부 중 사용자가 고른다. 자동으로 맞춰 주는 `repo-setup` 스킬은 초안·1시나리오 통과([Issue #56](https://github.com/yanos0218/AI/issues/56)).
+Script·Etc는 활동이 적어(마지막 push 2026-06) 보관/최소/전부 중 사용자가 고름. 자동으로 맞춰 주는 `repo-setup` 스킬은 초안·1시나리오 통과([Issue #56](https://github.com/yanos0218/AI/issues/56)).

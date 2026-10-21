@@ -17,29 +17,29 @@
 | 기기 간 차이 | [tools/fingerprint.sh](../tools/fingerprint.sh) | 반응이 달라 보일 때 기기별 출력을 `diff`([Issue #186](https://github.com/yanos0218/AI/issues/186))<br>사례 기록 양식은 [issue-format.md](issue-format.md) "반응 차이 사례"<br>자동 실행하지 않음 |
 | 모델 비교 | [tools/measure-model.sh](../tools/measure-model.sh) | 같은 작업을 모델별로 돌려 구독 한도 소모(5시간·주간 %p)와 정답률 비교([Issue #178](https://github.com/yanos0218/AI/issues/178))<br>시험 문서는 [tools/test-fixtures/model-compare/](../tools/test-fixtures/model-compare/)(위반 5개를 일부러 심어 markdownlint 제외)<br>한도를 쓰므로 실행 전 사용자 확인 |
 
-- 스킬 발동 시험은 같은 세션 안에서 스킬을 직접 부르는 것으로 대신하지 않는다
-  - 세션이 "했다"고 말한 것과 실제 파일 변경을 대조한다.
-- 검사가 실제로 몇 개를 봤는지 확인한다
+- 스킬 발동 시험은 같은 세션 안에서 스킬을 직접 부르는 것으로 대신하지 않음
+  - 세션이 "했다"고 말한 것과 실제 파일 변경을 대조함.
+- 검사가 실제로 몇 개를 봤는지 확인함
   - 0줄로 세거나 파일을 건너뛰고 "통과"로 끝난 일이 2026-09-28~29에 세 번 있었음([Issue #151](https://github.com/yanos0218/AI/issues/151)·[Issue #161](https://github.com/yanos0218/AI/issues/161)).
 
 ## 세 OS에서 도는 스크립트 쓰기
 
-Windows(Git Bash, bash 5, gawk)에서만 시험하면 Mac(bash 3.2, BSD 도구)에서 조용히 틀린다. 2026-09-28~29에 같은 부류 버그 6건([Issue #151](https://github.com/yanos0218/AI/issues/151)·[Issue #154](https://github.com/yanos0218/AI/issues/154)·[Issue #162](https://github.com/yanos0218/AI/issues/162) 등).
+Windows(Git Bash, bash 5, gawk)에서만 시험하면 Mac(bash 3.2, BSD 도구)에서 조용히 틀림. 2026-09-28~29에 같은 부류 버그 6건([Issue #151](https://github.com/yanos0218/AI/issues/151)·[Issue #154](https://github.com/yanos0218/AI/issues/154)·[Issue #162](https://github.com/yanos0218/AI/issues/162) 등).
 
-- bash 4 이상 전용 문법을 쓰지 않는다
+- bash 4 이상 전용 문법을 쓰지 않음
   - `mapfile`·`readarray`·`declare -A`·`${var,,}` 금지.
-  - `set -u`에서 빈 배열은 `${a[@]+"${a[@]}"}`로 펼친다.
-- GNU 전용 옵션을 쓰지 않는다
+  - `set -u`에서 빈 배열은 `${a[@]+"${a[@]}"}`로 펼침.
+- GNU 전용 옵션을 쓰지 않음
   - `sed -i`(인자 없이), `stat -c`, `date -d`, `readlink -f`, `grep -P` 금지.
-  - `awk -v`에 여러 줄 값을 넘기지 않는다(BSD awk 오류). 환경변수로 넘기고 `ENVIRON`으로 읽는다.
-- 파이썬은 이름을 고정하지 않는다
+  - `awk -v`에 여러 줄 값을 넘기지 않는다(BSD awk 오류). 환경변수로 넘기고 `ENVIRON`으로 읽음.
+- 파이썬은 이름을 고정하지 않음
   - Mac은 `python` 없이 `python3`만 있음. 훅은 `python` → `python3` 순(Windows는 `python3`가 느린 스토어 별칭), 도구는 `command -v python3 || command -v python`.
-- 빈 글롭은 `shopt -s nullglob`으로 건너뛴다
-  - 폴더가 비면 글롭이 문자 그대로 넘어간다.
+- 빈 글롭은 `shopt -s nullglob`으로 건너뜀
+  - 폴더가 비면 글롭이 문자 그대로 넘어감.
 
 ## 설치는 커밋 뒤에
 
-- `base/`를 바꾼 뒤 `bash tools/install.sh`는 커밋한 다음에 돌린다
-  - 설치 스크립트는 커밋된 `base/` 트리 해시를 버전 표시 파일 3행에 기록한다.
+- `base/`를 바꾼 뒤 `bash tools/install.sh`는 커밋한 다음에 돌림
+  - 설치 스크립트는 커밋된 `base/` 트리 해시를 버전 표시 파일 3행에 기록함.
   - 커밋 전에 설치하면 다음 세션에 거짓 "설정이 낡았습니다" 알림이 뜬다(2026-09-29, [Issue #150](https://github.com/yanos0218/AI/issues/150) 반영 중 발견).
-- 설치 뒤에는 `bash tools/check-install.sh`로 대조한다.
+- 설치 뒤에는 `bash tools/check-install.sh`로 대조함.

@@ -9,6 +9,9 @@
 
 ### Changed
 
+- 기존 `.md` 문서의 문장형 끝맺음 약 220줄을 음슴체로, 줄바꿈 위반 17줄을 하위 bullet·`<br>`로 정리([Issue #189](https://github.com/yanos0218/AI/issues/189))
+  - 대상은 지침 문서(`CLAUDE.md`·`rules/`·`skills/`·`agents/`) 밖의 `.md` 21개, `docs/research/` 보관 기록 포함
+  - 의미·링크·코드 값은 그대로, 종결 어미와 줄 구성만 변경
 - 전역 지침 `base/claude-md/CLAUDE.md`
   - §2에 질문이 여럿 섞인 메시지는 모두 명시적으로 답하는 규칙 추가([Issue #174](https://github.com/yanos0218/AI/issues/174))
   - §5 조사 기록 범위를 "결정에 쓴 조사"에서 "사용자가 요청한 조사 포함"으로 확대([Issue #174](https://github.com/yanos0218/AI/issues/174))

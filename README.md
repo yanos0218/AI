@@ -1,18 +1,18 @@
 # claude-config
 
-**개인용 Claude 설정의 원본 저장소.** 개발자가 아닌 사용자가 여러 프로젝트를 오가며 Claude Code(CLI·VS Code)와 Claude.ai(웹·데스크톱)를 쓸 때, 매번 같은 설명을 반복하지 않고 · 멋대로 진행하거나 너무 자주 묻지 않게 하고 · 검증 없이 "됐다"고 못 하게 하고 · 결론만 짧게 듣기 위한 지침·스킬·훅·설정을 여기서 만들고, 검증하고, 각 기기와 웹에 배포한다.
+**개인용 Claude 설정의 원본 저장소.** 개발자가 아닌 사용자가 여러 프로젝트를 오가며 Claude Code(CLI·VS Code)와 Claude.ai(웹·데스크톱)를 쓸 때, 매번 같은 설명을 반복하지 않고 · 멋대로 진행하거나 너무 자주 묻지 않게 하고 · 검증 없이 "됐다"고 못 하게 하고 · 결론만 짧게 듣기 위한 지침·스킬·훅·설정을 여기서 만들고, 검증하고, 각 기기와 웹에 배포함.
 
-저장소 전용 규칙은 각 저장소에 두고 여기서는 참조만 한다. 다른 저장소 내용을 복사하지 않는다.
+저장소 전용 규칙은 각 저장소에 두고 여기서는 참조만 함. 다른 저장소 내용을 복사하지 않음.
 
-구성 요소가 어떻게 이어지고 어떤 순서로 운영되는지(자산 수명·훅이 도는 시점·세션·릴리즈·점검)는 [docs/operating-flow.md](docs/operating-flow.md). 맨 위에 전체 흐름도(그림)가 있다.
+구성 요소가 어떻게 이어지고 어떤 순서로 운영되는지(자산 수명·훅이 도는 시점·세션·릴리즈·점검)는 [docs/operating-flow.md](docs/operating-flow.md). 맨 위에 전체 흐름도(그림)가 있음.
 
 ## 구조 — 네 묶음
 
-파일은 역할이 넷으로 나뉜다. **①만 실제로 배포**되고, 나머지는 ①을 만들고 지키기 위한 것이다. 폴더 이름이 곧 영역이다.
+파일은 역할이 넷으로 나뉨. **①만 실제로 배포**되고, 나머지는 ①을 만들고 지키기 위한 것임. 폴더 이름이 곧 영역임.
 
 ### ① `base/` — 배포되는 것 (기본 영역)
 
-검증을 마치고 사용자가 반영을 요청한 것만 들어온다. `~/.claude`와 Claude.ai에 복사되는 원본. Claude가 여기를 고치려 하면 [baseline-guard.sh](.claude/hooks/baseline-guard.sh)가 확인을 요구한다.
+검증을 마치고 사용자가 반영을 요청한 것만 들어옴. `~/.claude`와 Claude.ai에 복사되는 원본. Claude가 여기를 고치려 하면 [baseline-guard.sh](.claude/hooks/baseline-guard.sh)가 확인을 요구함.
 
 | 경로 | 무엇 |
 | --- | --- |
@@ -33,7 +33,7 @@
 
 ### ② `drafts/` — 만드는 중인 것 (작업 영역)
 
-`base/`와 같은 구조로 초안을 두고, 시험을 통과하면 ①로 옮긴다. 배포·pack 대상이 아니다. 승격 절차는 [drafts/README.md](drafts/README.md). 초안 목록과 단계는 [docs/PROGRESS.md §0](docs/PROGRESS.md#0-자산-현황--단계와-배포-상태) 표.
+`base/`와 같은 구조로 초안을 두고, 시험을 통과하면 ①로 옮김. 배포·pack 대상이 아님. 승격 절차는 [drafts/README.md](drafts/README.md). 초안 목록과 단계는 [docs/PROGRESS.md §0](docs/PROGRESS.md#0-자산-현황--단계와-배포-상태) 표.
 
 ### ③ `docs/` — 이 저장소를 운영하기 위한 문서
 
@@ -81,7 +81,7 @@
 
 ## 어디서 무엇이 적용되나
 
-같은 SKILL.md가 모든 표면에서 통하지만, **넣는 방법과 지원 범위가 다르다.** 웹에 올린 스킬과 `~/.claude/skills/`는 서로 자동 동기화되지 않는다.
+같은 SKILL.md가 모든 표면에서 통하지만, **넣는 방법과 지원 범위가 다르다.** 웹에 올린 스킬과 `~/.claude/skills/`는 서로 자동 동기화되지 않음.
 
 | 표면 | 스킬 | CLAUDE.md | 훅 | 비고 |
 | --- | --- | --- | --- | --- |
@@ -92,11 +92,11 @@
 | Claude Design (`claude.ai/design`) | 없음<br>디자인 시스템(스크린샷·자산·코드베이스) 첨부로 대체 | 없음 | 없음 | 결과를 Claude Code로 handoff 가능 |
 | 클라우드 세션 (claude.ai/code) | 계정 스킬 + 저장소 `.claude/skills/` | 저장소 `CLAUDE.md` | 저장소 settings | 개인 `~/.claude`는 전달 안 됨 |
 
-결론: **원본은 이 저장소, 배포는 두 갈래**다: (1) `~/.claude`에 복사(CLI·VS Code), (2) `pack.sh`로 zip 만들어 웹에 업로드(웹·데스크톱·Cowork). 웹에서 켠 스킬을 CLI로 끌어오는 `CLAUDE_CODE_SYNC_SKILLS=1 claude -p ...`도 있지만 비대화형 전용이라 이 저장소 방식이 더 단순하다.
+결론: **원본은 이 저장소, 배포는 두 갈래**다: (1) `~/.claude`에 복사(CLI·VS Code), (2) `pack.sh`로 zip 만들어 웹에 업로드(웹·데스크톱·Cowork). 웹에서 켠 스킬을 CLI로 끌어오는 `CLAUDE_CODE_SYNC_SKILLS=1 claude -p ...`도 있지만 비대화형 전용이라 이 저장소 방식이 더 단순함.
 
 ## 설치 (요약)
 
-기본 영역이 바뀌면 각 기기에서 다시 설치한다. 상세와 Claude.ai·VS Code 절차는 [docs/install.md](docs/install.md).
+기본 영역이 바뀌면 각 기기에서 다시 설치함. 상세와 Claude.ai·VS Code 절차는 [docs/install.md](docs/install.md).
 
 ```bash
 # 신규 기기 — clone 없이 한 줄로

@@ -2,7 +2,7 @@
 
 - 조사일: 2026-09-09 · 다시 볼 시점: 2026-10-09 (Claude Code 기능, 30일)
 - 질문: `base/skills`·`base/hooks`를 플러그인으로 묶고 이 저장소를 개인 마켓플레이스로 만들면 `tools/install.sh`보다 나은가.
-- 결론: **지금은 하지 않는다(보류).** 플러그인이 실을 수 있는 것은 스킬·훅(PreToolUse/PostToolUse)뿐이고, 전역 지침·rules·permissions·statusLine은 공식적으로 못 싣는다. 이 넷 때문에 `install.sh`는 어차피 남고, 그 `install.sh`가 스킬·훅 복사도 같은 실행에서 이미 한다. 플러그인을 더하면 설치 경로 둘·버전 둘(`plugin.json` + git 태그)·비공개 저장소 인증 설정(기기마다)·스킬 이름 접두사(`AI:dev-release`)가 생기는데, 얻는 것은 "`claude plugin update` 한 줄"뿐이다. 1인·3기기·낮은 갱신 빈도에서는 손해.
+- 결론: **지금은 하지 않는다(보류).** 플러그인이 실을 수 있는 것은 스킬·훅(PreToolUse/PostToolUse)뿐이고, 전역 지침·rules·permissions·statusLine은 공식적으로 못 실음. 이 넷 때문에 `install.sh`는 어차피 남고, 그 `install.sh`가 스킬·훅 복사도 같은 실행에서 이미 함. 플러그인을 더하면 설치 경로 둘·버전 둘(`plugin.json` + git 태그)·비공개 저장소 인증 설정(기기마다)·스킬 이름 접두사(`AI:dev-release`)가 생기는데, 얻는 것은 "`claude plugin update` 한 줄"뿐임. 1인·3기기·낮은 갱신 빈도에서는 손해.
 
 ## 근거
 
@@ -23,7 +23,8 @@
 
 - 스킬이 5개를 넘거나 다른 사람과 나눠 쓰게 될 때(마켓플레이스의 본래 용도).
 - 플러그인이 permissions·CLAUDE.md·rules를 실을 수 있게 바뀔 때(공식 문서 "Limitations" 절 재확인).
-- Claude.ai 웹 업로드([Issue #13](https://github.com/yanos0218/AI/issues/13))가 플러그인 동기화로 대체될 때 — 현재 `plugins/cache/.../synced/`는 claude.ai→Claude Code 방향만 확인(미검증).
+- Claude.ai 웹 업로드([Issue #13](https://github.com/yanos0218/AI/issues/13))가 플러그인 동기화로 대체될 때
+  - 현재 `plugins/cache/.../synced/`는 claude.ai→Claude Code 방향만 확인(미검증).
 
 ## 영향
 
