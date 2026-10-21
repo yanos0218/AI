@@ -12,6 +12,7 @@
 - `tools/install.sh`가 설치 때 사용자가 넣은 값을 지우지 않도록 변경([Issue #194](https://github.com/yanos0218/AI/issues/194), 조사 [Issue #193](https://github.com/yanos0218/AI/issues/193))
   - `settings.json`은 `permissions` 목록 합집합, base 훅만 교체하고 사용자 훅 유지, `env`는 base 키만 덮음, 값이 바뀔 때 `.bak.<시각>` 백업(병합 규칙은 새 `tools/settings_merge.py`)
   - 내용이 다른 스킬은 `~/.claude/backups/claude-config/<시각>/`에 보관한 뒤 교체
+  - 이 도구가 만든 백업(`CLAUDE.md.bak.<시각>`, `settings.json.bak.<시각>`, 보관 폴더)은 설치할 때마다 종류별 최근 3개만 남기고 자동 정리, 직접 만든 이름은 건드리지 않고 병합 실패 때는 정리하지 않음([Issue #196](https://github.com/yanos0218/AI/issues/196))
   - `tools/check-install.sh`는 "설치하면 바뀔 항목이 없는가"로 대조하고 사용자 추가 항목은 정보로 표시
   - 시험 스크립트 `tools/test-install-merge.sh` 추가, CI(`lint.yml`)의 `install-test` 잡이 Ubuntu·macOS·Windows 러너에서 돌림([Issue #197](https://github.com/yanos0218/AI/issues/197))
   - `settings_merge.py` 출력을 UTF-8로 고정, Windows 러너에서 파이프 출력 인코딩(cp1252)이 한글을 못 써 `UnicodeEncodeError`가 나던 것을 CI로 발견해 수정

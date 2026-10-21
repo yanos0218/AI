@@ -137,6 +137,34 @@ edit "d['model'] = 'claude-opus-5-5'"
 bash tools/fingerprint.sh --common >"${T}/fp-model.txt" 2>&1
 chk "model 어긋남이 base 대비 DIFF로 보임" 'grep -q "settings base 대비 = DIFF model" "${T}/fp-model.txt"'
 
+echo "== 9. 오래된 백업은 종류별 최근 3개만 남기고 자동 정리한다(직접 만든 이름은 그대로)"
+H9="${T}/home9"; export CLAUDE_CONFIG_DIR="${H9}"
+mkdir -p "${H9}/backups/claude-config" "${H9}/skills/self-audit"
+for i in 1 2 3 4 5 6; do
+  echo "old${i}" > "${H9}/CLAUDE.md.bak.2020010100000${i}"
+done
+for i in 1 2 3 4 5; do
+  echo "{}" > "${H9}/settings.json.bak.2020010100000${i}"
+  mkdir -p "${H9}/backups/claude-config/2020010100000${i}"
+done
+echo manual > "${H9}/settings.json.bak.pre-blockreads"; echo manual > "${H9}/CLAUDE.md.bak.manual"
+echo "고친" > "${H9}/skills/self-audit/SKILL.md"; echo old > "${H9}/CLAUDE.md"
+bash tools/install.sh --dry-run >"${T}/out9d.txt" 2>&1
+chk "--dry-run은 아무것도 안 지움"        '[[ "$(ls "${H9}"/CLAUDE.md.bak.2020* | wc -l | tr -d " ")" = 6 ]]'
+chk "--dry-run이 정리 대상을 알림"         'grep -q "오래된 백업 정리" "${T}/out9d.txt"'
+bash tools/install.sh >"${T}/out9.txt" 2>&1
+chk "CLAUDE.md 백업은 최근 3개만"         '[[ "$(find "${H9}" -maxdepth 1 -name "CLAUDE.md.bak.[0-9]*" | wc -l | tr -d " ")" = 3 ]]'
+chk "이번 설치가 만든 백업은 남음"        'find "${H9}" -maxdepth 1 -name "CLAUDE.md.bak.2026*" | grep -q .'
+chk "가장 오래된 것부터 지워짐"           '[[ ! -e "${H9}/CLAUDE.md.bak.20200101000001" && -e "${H9}/CLAUDE.md.bak.20200101000006" ]]'
+chk "settings 백업도 3개 이하"            '[[ "$(find "${H9}" -maxdepth 1 -name "settings.json.bak.[0-9]*" | wc -l | tr -d " ")" -le 3 ]]'
+chk "보관 폴더도 3개 이하"                '[[ "$(find "${H9}/backups/claude-config" -maxdepth 1 -type d -name "[0-9]*" | wc -l | tr -d " ")" -le 3 ]]'
+chk "직접 만든 이름은 그대로"             '[[ -f "${H9}/settings.json.bak.pre-blockreads" && -f "${H9}/CLAUDE.md.bak.manual" ]]'
+# 병합 실패 시에는 정리하지 않는다
+for i in 7 8 9; do echo "old${i}" > "${H9}/CLAUDE.md.bak.2020010100000${i}"; done
+printf '{ broken // json\n' > "${H9}/settings.json"
+bash tools/install.sh >"${T}/out9f.txt" 2>&1
+chk "병합 실패 때는 정리하지 않음"        '[[ "$(find "${H9}" -maxdepth 1 -name "CLAUDE.md.bak.[0-9]*" | wc -l | tr -d " ")" -ge 4 ]]'
+
 echo
 [[ "${fail}" = 0 ]] && echo "결과: 통과" || echo "결과: 실패 항목 있음"
 exit "${fail}"

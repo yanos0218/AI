@@ -6,6 +6,7 @@
 # 하지 않는 일: 사용자 값을 백업 없이 지우지 않는다(Issue #194).
 #   CLAUDE.md·settings.json은 다르면 .bak.<시각>으로 백업, 내용이 다른 스킬은 ~/.claude/backups/claude-config/<시각>/에 보관한 뒤 교체.
 #   settings.json의 permissions 목록은 합집합, 사용자가 직접 넣은 훅은 남긴다.
+#   이 도구가 만든 백업(.bak.<14자리>, backups/claude-config/<14자리>)은 종류별 최근 3개만 남기고 자동 정리(직접 만든 이름은 그대로, Issue #196).
 set -u
 cd "$(dirname "${0}")/.." || exit 1
 CLAUDE_HOME="${CLAUDE_CONFIG_DIR:-${HOME}/.claude}"
@@ -65,6 +66,27 @@ fi
 SETTINGS_OK=1
 if [[ "${DRY}" = 1 ]]; then "${PY}" tools/settings_merge.py install "${CLAUDE_HOME}/settings.json" base/settings.example.json --dry-run || SETTINGS_OK=0
 else "${PY}" tools/settings_merge.py install "${CLAUDE_HOME}/settings.json" base/settings.example.json || SETTINGS_OK=0; fi
+
+# 4a. 이 도구가 만든 백업 정리 — 종류별로 최근 KEEP개만 남긴다(Issue #196, 사용자 결정 2026-10-21: 수동 정리는 잊으므로 자동, 3개).
+#     이름이 .bak.<숫자 14자리>인 것만 대상이라 직접 만든 백업(예: settings.json.bak.pre-blockreads)은 건드리지 않는다.
+#     settings.json 병합이 실패했으면 복구에 쓸 수 있으므로 정리하지 않는다.
+KEEP=3
+D14='[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
+prune_old() { # $1=find 대상 폴더 $2=이름 패턴 $3=종류(f|d)
+  [[ -d "$1" ]] || return 0
+  local old
+  old="$(find "$1" -maxdepth 1 -type "$3" -name "$2" 2>/dev/null | sort | awk -v n="${KEEP}" '{a[NR]=$0} END{for(i=1;i<=NR-n;i++)print a[i]}')"
+  [[ -n "${old}" ]] || return 0
+  while IFS= read -r f; do
+    say "  오래된 백업 정리: ${f}"
+    if [[ "$3" = d ]]; then run rm -rf "${f}"; else run rm -f "${f}"; fi
+  done <<< "${old}"
+}
+if [[ "${SETTINGS_OK}" = 1 ]]; then
+  prune_old "${CLAUDE_HOME}" "CLAUDE.md.bak.${D14}" f
+  prune_old "${CLAUDE_HOME}" "settings.json.bak.${D14}" f
+  prune_old "${CLAUDE_HOME}/backups/claude-config" "${D14}" d
+fi
 
 # 5. 버전 표시 파일 — SessionStart 훅(session-start-check.sh)이 최신 여부를 조용히 확인하는 데 씀
 #    1행 원본 경로, 2행 버전(표시용), 3행 base/ 트리 해시(비교용)
