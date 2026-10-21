@@ -98,6 +98,18 @@ chk "종료 코드 0"                    '[[ "${rc}" = 0 ]]'
 chk "트레이스백 없음"                '! grep -q Traceback <<<"${out}"'
 chk "병합 결과가 파일에 쓰임"        'grep -q permissions "${T}/enc.json"'
 
+echo "== 7. 설치 뒤 check-install.sh·fingerprint.sh도 한글 출력이 파이프에서 깨지지 않는다(Windows 러너에서 확인)"
+export CLAUDE_CONFIG_DIR="${T}/home7"
+bash tools/install.sh >"${T}/out7.txt" 2>&1
+out="$(bash tools/check-install.sh 2>&1)"; rc=$?
+chk "check-install 종료 코드 0"      '[[ "${rc}" = 0 ]]'
+chk "check-install 트레이스백 없음"  '! grep -q Traceback <<<"${out}"'
+chk "check-install 판정이 같음"      'grep -q "설치본이 기본 영역과 같다" <<<"${out}"'
+out="$(bash tools/fingerprint.sh 2>&1)"; rc=$?
+chk "fingerprint 종료 코드 0"        '[[ "${rc}" = 0 ]]'
+chk "fingerprint 트레이스백 없음"    '! grep -q Traceback <<<"${out}"'
+chk "fingerprint 한글 항목 출력"     'grep -q "기기 OS" <<<"${out}"'
+
 echo
 [[ "${fail}" = 0 ]] && echo "결과: 통과" || echo "결과: 실패 항목 있음"
 exit "${fail}"
