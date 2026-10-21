@@ -54,6 +54,10 @@
   - 시험(Haiku, `claude -p` 2.1.304)에서 import가 로드됨을 확인했고 비용은 세션당 1,991 토큰(교대 4회 반복 모두 동일)
   - 서브에이전트도 `Explore`·`Plan`을 뺀 모두가 같은 양을 추가로 로드함
   - 대안인 한 줄 알림은 읽기가 Claude의 순응에 달려 채택하지 않음, HANDOFF 40줄 상한이 비용 방어선
+- (2026-10-21) AI 저장소는 의도적으로 공개이고 협력자가 없으며 외부 사용자는 조회만 가능함(사용자 확인, [Issue #198](https://github.com/yanos0218/AI/issues/198))
+  - 공개 저장소라 표준 러너 Actions 분이 무료이고 비밀 스캔을 쓸 수 있어 2026-10-21에 비밀 스캔을 켬, 푸시 보호는 켜지 않음
+  - 외부 사용자에게 권한을 준 적이 없어 낯선 글을 막는 규칙이나 봇 조건은 추가하지 않음(사용자 판단)
+  - 이 저장소 밖의 저장소는 이 문서의 범위가 아님
 - VS Code 동기화는 내장 Settings Sync가 주, `base/vscode/`는 부트스트랩·백업. Prettier/ESLint/GitLens는 저장소에 설정 파일이 생길 때까지 보류. (2026-09-09) 기본 목록 밖에 추가 설치된 확장은 문제없으면 지우지 않음. Mac은 VS Code만 쓰고 Xcode 안 씀.
 - (2026-10-21) 개발 작업 기본은 Sonnet 5.5·effort medium, 어려운 설계·디버깅만 `/model opus`. 모델은 전체 ID로 고정하고 설치마다 원본 값으로 덮어씀([Issue #187](https://github.com/yanos0218/AI/issues/187), [models.md](models.md)).
 

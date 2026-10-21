@@ -22,6 +22,8 @@
 | 운영체제별(코드) | 상태줄 JSON 읽기 도구<br>`jq`가 없는 Linux 등 | jq, python, node 순으로 찾음 | [install.md](install.md) |
 | 운영체제별(설치) | VS Code 설정 파일 위치<br>Windows `%APPDATA%`, Mac `~/Library/Application Support` | 설치 스크립트가 운영체제별로 갈라짐 | [base/vscode/install.sh](../base/vscode/install.sh), [base/vscode/install.ps1](../base/vscode/install.ps1) |
 | 운영체제별(설치) | Mac 전용 확장 `swift-vscode` | 기본 목록에서 빼고 Mac에서 따로 설치 | [install.md](install.md) |
+| 운영체제별(설치) | Linux RHEL 계열 최소 설치본<br>git·diff·python3이 버전마다 없을 수 있음 | 설치 전에 `dnf install -y git diffutils python3`을 실행 | [install.md](install.md) |
+| 공통(운영체제 전용 항목 포함) | settings.json 훅의 `PowerShell` matcher 4곳<br>Windows 전용 도구용이지만 모든 기기에 같이 설치되고 Mac에서는 해당 도구가 없어 쓰이지 않음 | 같은 값을 병합, 무해해서 갈라 두지 않음 | [base/settings.example.json](../base/settings.example.json) |
 | 기기별 | 이 Mac의 `permissions.blockReadsOutsideWorkingDirectories`<br>Windows 확인 전 임시 불일치 | 사용자 `settings.json`에 직접 둠, 기본 영역 반영은 [Issue #195](https://github.com/yanos0218/AI/issues/195) | [Issue #194](https://github.com/yanos0218/AI/issues/194) 확인 절차 |
 | 후보(미확정) | 샌드박스는 Windows 미지원<br>읽기 차단 경로 형식은 Windows에서 미확인 | 설정 값으로 갈라야 하는지 Windows 출력으로 확인 뒤 결정 | [PROGRESS.md §5](PROGRESS.md#5-보류기각) |
 

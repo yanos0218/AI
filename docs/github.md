@@ -38,7 +38,7 @@ PR 습관(브랜치에서 작업 → `gh pr create` → merge)을 먼저 한 저
 | Projects(칸반) | 켜져 있으나 미사용 | 안 씀 | AI 저장소도 PROGRESS §0 표가 매트릭스 역할을 대신함, 토큰에 `read:project` 스코프도 없음 |
 | Wiki·Discussions·Pages | 꺼짐 | 불가/불필요 | Free 비공개 저장소는 Wiki·Pages 불가. 문서는 `docs/`, 서비스는 NAS |
 | 브랜치 보호·룰셋·CODEOWNERS | 없음 | **불가**(Pro 필요) | 대신 로컬 훅(`git-guardrails`)이 push 앞에서 확인. 두 번째 개발자가 오면 Pro($4/월) |
-| Secret scanning·Code scanning | 없음 | 불가(Free 비공개) | 대신 `permissions.deny`로 `.env` 읽기·편집 차단, CLAUDE.md §7 |
+| Secret scanning·Code scanning | 없음<br>AI 저장소는 2026-10-21에 비밀 스캔을 켬([Issue #198](https://github.com/yanos0218/AI/issues/198)) | 불가(Free 비공개)<br>AI 저장소는 공개라 가능 | 대신 `permissions.deny`로 `.env` 읽기·편집 차단, CLAUDE.md §7 |
 | Codespaces | 미사용(월 120시간 무료) | 안 씀 | 브라우저 개발 환경은 Claude Code on the web이 같은 자리 |
 | Copilot | 미사용 | 안 씀 | Claude가 그 역할 |
 | Packages·Gists | 미사용 | 안 씀 | 배포 산출물이 없음 |
