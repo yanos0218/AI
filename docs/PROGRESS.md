@@ -40,7 +40,7 @@
 | 표면 | 설치된 것 | 설치일 | 다음 |
 | --- | --- | --- | --- |
 | Windows | `v0.13.1-18-g1836702`(self-audit·check-cram·config-changelog 수정, 전역 지침 규칙 2건) | 2026-10-17 | - |
-| Mac mini | `v0.14.0-24-gce6113e`(install.sh 사용자 값 보존 병합 포함, base 내용은 이전 설치와 같음) | 2026-10-21 | 해당 없음(최신 설치) |
+| Mac mini | `v0.14.0-37-geb65888`(install.sh 사용자 값 보존 병합·백업 자동 정리 포함, base 내용은 이전 설치와 같음) | 2026-10-21 | 해당 없음(최신 설치) |
 | Linux(RHEL 계열) | 2026-09-16 설치본(버전 기록 미확인) | 2026-09-16 | 다음 접속 때 `install.sh`, 파이썬 3.9에서 훅 실행 확인 |
 | 웹(Claude.ai) | 스킬 3개 v0.11.4, Project instructions | 2026-09-19~20, 2026-09-12 | v0.14.0 Release zip 업로드, Project instructions 갱신 |
 
