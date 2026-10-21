@@ -39,7 +39,7 @@
 | 표면 | 설치된 것 | 설치일 | 다음 |
 | --- | --- | --- | --- |
 | Windows | `v0.13.1-18-g1836702`(self-audit·check-cram·config-changelog 수정, 전역 지침 규칙 2건) | 2026-10-17 | - |
-| Mac mini | `v0.14.0-8-g43cab88`(기본 모델·effort 고정 키 포함) | 2026-10-21 | 해당 없음(최신 설치) |
+| Mac mini | `v0.14.0-13-g09b9cc8`(`.md` 문장형 검사 포함) | 2026-10-21 | 해당 없음(최신 설치) |
 | Linux(RHEL 계열) | 2026-09-16 설치본(버전 기록 미확인) | 2026-09-16 | 다음 접속 때 `install.sh`, 파이썬 3.9에서 훅 실행 확인 |
 | 웹(Claude.ai) | 스킬 3개 v0.11.4, Project instructions | 2026-09-19~20, 2026-09-12 | v0.14.0 Release zip 업로드, Project instructions 갱신 |
 
