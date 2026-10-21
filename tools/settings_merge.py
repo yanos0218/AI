@@ -28,6 +28,27 @@ def load(path):
         return json.load(f, object_pairs_hook=OD)
 
 
+def validate(cur):
+    """직접 편집한 파일의 모양이 예상과 다르면 ValueError. 병합하다 오류를 내지 않고 이유를 알리기 위함."""
+    def need(cond, msg):
+        if not cond:
+            raise ValueError(msg)
+    need(isinstance(cur, dict), '최상위가 객체가 아님')
+    if 'permissions' in cur:
+        need(isinstance(cur['permissions'], dict), 'permissions가 객체가 아님')
+        for k, v in cur['permissions'].items():
+            need(not isinstance(v, (str, type(None))) or k == 'defaultMode', 'permissions.%s 형식이 이상함' % k)
+    if 'hooks' in cur:
+        need(isinstance(cur['hooks'], dict), 'hooks가 객체가 아님')
+        for event, groups in cur['hooks'].items():
+            need(isinstance(groups, list), 'hooks.%s가 목록이 아님' % event)
+            for g in groups:
+                need(isinstance(g, dict) and isinstance(g.get('hooks', []), list)
+                     and all(isinstance(h, dict) for h in g.get('hooks', [])), 'hooks.%s 항목 형식이 이상함' % event)
+    if 'env' in cur:
+        need(isinstance(cur['env'], dict), 'env가 객체가 아님')
+
+
 def script_name(command):
     """훅 명령의 소유 식별자. .claude/hooks/ 아래 스크립트면 그 이름, 아니면 명령 전체."""
     marker = '.claude/hooks/'
@@ -130,9 +151,15 @@ def main(argv):
         return 2
     mode, dst, src = argv[1], argv[2], argv[3]
     dry = '--dry-run' in argv[4:]
-    base = load(src)
     exists = os.path.exists(dst)
-    cur = load(dst) if exists else OD()
+    try:
+        base = load(src)
+        cur = load(dst) if exists else OD()
+        validate(cur)
+    except ValueError as e:  # JSONDecodeError 포함
+        print('  settings.json 병합 실패, 건너뜀: %s (%s)' % (e, dst))
+        print('  → 파일을 고친 뒤(주석·끝 쉼표 없는 JSON) 다시 실행. 파일은 건드리지 않았음')
+        return 3
     new, changed = merge(cur, base)
     if mode == 'check':
         for k in ('permissions', 'hooks', 'env') + SCALAR_KEYS:

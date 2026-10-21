@@ -62,8 +62,9 @@ if ls base/rules/*.md >/dev/null 2>&1; then
 fi
 
 # 4. settings.json 병합 — 규칙은 tools/settings_merge.py(permissions 목록 합집합, base 훅만 교체, 변경 시 .bak 백업)
-if [[ "${DRY}" = 1 ]]; then "${PY}" tools/settings_merge.py install "${CLAUDE_HOME}/settings.json" base/settings.example.json --dry-run
-else "${PY}" tools/settings_merge.py install "${CLAUDE_HOME}/settings.json" base/settings.example.json; fi
+SETTINGS_OK=1
+if [[ "${DRY}" = 1 ]]; then "${PY}" tools/settings_merge.py install "${CLAUDE_HOME}/settings.json" base/settings.example.json --dry-run || SETTINGS_OK=0
+else "${PY}" tools/settings_merge.py install "${CLAUDE_HOME}/settings.json" base/settings.example.json || SETTINGS_OK=0; fi
 
 # 5. 버전 표시 파일 — SessionStart 훅(session-start-check.sh)이 최신 여부를 조용히 확인하는 데 씀
 #    1행 원본 경로, 2행 버전(표시용), 3행 base/ 트리 해시(비교용)
@@ -72,8 +73,10 @@ if [[ "${DRY}" = 1 ]]; then say "  (dry) 버전 표시 파일 기록: ${SRC_ABS}
   say "  버전 표시 기록: ${BASE_VER}"
 fi
 
-say "== 설치 끝. 스킬·훅은 새 세션부터 적용. 웹(Claude.ai)은 dist/*.zip 업로드와 Project instructions 갱신이 별도."
+if [[ "${SETTINGS_OK}" = 1 ]]; then say "== 설치 끝. 스킬·훅은 새 세션부터 적용. 웹(Claude.ai)은 dist/*.zip 업로드와 Project instructions 갱신이 별도."
+else say "== 설치 끝, 단 settings.json 병합은 실패했음(위 메시지 확인). 나머지 파일만 설치됨."; fi
 # 설치 직후엔 PROGRESS를 아직 못 고쳤으므로 비교하지 않고 적을 값만 알린다. 대조는 check-install.sh가 한다(Issue #180)
 case "$(uname -s)" in MINGW*|MSYS*|CYGWIN*) surface="Windows";; Darwin) surface="Mac mini";; Linux) surface="Linux";; *) surface="?";; esac
 say "== 기록: docs/PROGRESS.md §0 표면별 설치 버전 '${surface}' 행 → ${BASE_VER} / $(date +%Y-%m-%d) (claude-config 세션에서 갱신)"
 [[ "${DRY}" = 1 ]] || bash tools/check-install.sh | tail -1
+[[ "${SETTINGS_OK}" = 1 ]] || exit 1

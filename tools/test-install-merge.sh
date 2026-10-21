@@ -2,6 +2,7 @@
 # install.sh가 사용자 값을 지우지 않는지 임시 폴더에서 시험한다(Issue #194).
 #   bash tools/test-install-merge.sh
 # 실제 ~/.claude는 건드리지 않는다(CLAUDE_CONFIG_DIR을 임시 폴더로 지정).
+# shellcheck disable=SC2034  # nbak·out·rc는 chk의 eval 문자열 안에서 씀
 set -u
 cd "$(dirname "${0}")/.." || exit 1
 PY="$(command -v python3 || command -v python)"
@@ -53,7 +54,6 @@ chk "사용자 전용 스킬 유지"        '[[ -f "${CLAUDE_CONFIG_DIR}/skills/
 chk "설치본 대조에서 settings 일치" '"${PY}" tools/settings_merge.py check "$S" base/settings.example.json >/dev/null'
 
 echo "== 2. 두 번째 설치는 결과가 같다"
-# shellcheck disable=SC2034  # chk의 eval 문자열에서 씀
 nbak="$(ls "${CLAUDE_CONFIG_DIR}"/settings.json.bak.* | wc -l | tr -d ' ')"
 cp "$S" "${T}/before.json"
 sleep 1
@@ -71,6 +71,25 @@ bash tools/install.sh --dry-run >"${T}/out3.txt" 2>&1
 chk "settings.json 그대로"          'cmp -s "${T}/dry-before.json" "${CLAUDE_CONFIG_DIR}/settings.json"'
 chk "백업 폴더 안 만들어짐"         '[[ ! -d "${CLAUDE_CONFIG_DIR}/backups" ]]'
 chk "스킬 그대로"                   'grep -q "^고친$" "${CLAUDE_CONFIG_DIR}/skills/self-audit/SKILL.md"'
+
+echo "== 4. 깨진 settings.json은 건드리지 않고 실패를 알린다"
+export CLAUDE_CONFIG_DIR="${T}/home3"; mkdir -p "${CLAUDE_CONFIG_DIR}"
+printf '{ "permissions": { "allow": [ // 주석\n ] } }\n' > "${CLAUDE_CONFIG_DIR}/settings.json"
+cp "${CLAUDE_CONFIG_DIR}/settings.json" "${T}/broken-before.json"
+bash tools/install.sh >"${T}/out4.txt" 2>&1; rc=$?
+chk "설치 종료 코드가 실패"          '[[ "${rc}" != 0 ]]'
+chk "병합 실패 안내가 나옴"          'grep -q "병합 실패" "${T}/out4.txt"'
+chk "트레이스백이 나오지 않음"       '! grep -q Traceback "${T}/out4.txt"'
+chk "마지막 줄이 성공으로 오해되지 않음" '! grep -q "^== 설치 끝\. 스킬" "${T}/out4.txt"'
+chk "깨진 파일 그대로"               'cmp -s "${T}/broken-before.json" "${CLAUDE_CONFIG_DIR}/settings.json"'
+chk "나머지 파일은 설치됨"           '[[ -f "${CLAUDE_CONFIG_DIR}/CLAUDE.md" ]]'
+
+echo "== 5. 모양이 이상한 settings.json도 같은 방식으로 처리한다"
+for body in '{"hooks":{"Stop":"oops"}}' '{"permissions":null}' '{"env":[]}' '[]'; do
+  printf '%s\n' "${body}" > "${T}/odd.json"
+  out="$("${PY}" tools/settings_merge.py install "${T}/odd.json" base/settings.example.json 2>&1)"; rc=$?
+  chk "건너뜀: ${body}" '[[ "${rc}" = 3 ]] && ! grep -q Traceback <<<"${out}" && [[ "$(cat "${T}/odd.json")" = "${body}" ]]'
+done
 
 echo
 [[ "${fail}" = 0 ]] && echo "결과: 통과" || echo "결과: 실패 항목 있음"
