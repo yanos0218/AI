@@ -17,6 +17,10 @@
   - 판정이 달라지는 경우는 하나: `sudo`·`env`·`time`·`command`·백틱 뒤의 `gh`·`git commit`도 검사 대상이 됨(전엔 통과)
   - `tools/test-format-guard.sh` 32 → 34건(해당 사례 2건 추가)
 
+### Added
+
+- `docs/operating-flow.md`에 5층 구성 매핑 표 추가([Issue #185](https://github.com/yanos0218/AI/issues/185), 문서 전용이라 버전 등급 미반영)
+
 ## [0.14.0] - 2026-10-17
 
 ### Changed

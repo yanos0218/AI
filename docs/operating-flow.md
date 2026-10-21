@@ -16,6 +16,26 @@ flowchart LR
   C --> S[Claude Code 세션<br>지침·스킬·에이전트·훅 적용]
 ```
 
+## 5층으로 본 구성
+
+하네스를 공식 문서의 계층에 맞춰 5층으로 본 지도([Issue #185](https://github.com/yanos0218/AI/issues/185), 조사는 [Issue #184](https://github.com/yanos0218/AI/issues/184)). 위 흐름도가 "어떻게 만드는가"라면 이 표는 "무엇이 어느 층인가"다. 파일 위치는 아래 "구성 요소가 적용되는 곳" 표가 원본이다.
+
+| 층 | 역할 | 이 저장소 원본 | 강제력 |
+| --- | --- | --- | --- |
+| 1 기억·규칙 | 항상 깔리는 지침 | [base/claude-md/CLAUDE.md](../base/claude-md/CLAUDE.md), [base/rules/](../base/rules/), 저장소별 `CLAUDE.md`, auto memory | 조언(안 지킬 수 있음) |
+| 2 업무 매뉴얼 | 필요할 때만 불러오는 절차 | [base/skills/](../base/skills/) 7개(`_template` 제외) | 조언, 설명이 맞을 때 발동 |
+| 3 제어·보안 | 막거나 기록하는 장치 | [base/hooks/](../base/hooks/) 셸 입구 11개, [base/settings.example.json](../base/settings.example.json)의 권한(허용 25·차단 7) | 강제(훅 exit 2, 권한 차단)<br>훅은 가드레일이지 보안 경계가 아님, 샌드박스는 보류 |
+| 4 역할 분담 | 격리된 컨텍스트에서 맡기는 일 | [base/agents/](../base/agents/) 3개(`auditor`·`researcher`·`verifier`) | 조언, `verifier`만 훅으로 쓰기 차단 |
+| 5 표준 배포 | 여러 기기에 같은 설정을 깔기 | 플러그인은 미도입<br>대신 [tools/install.sh](../tools/install.sh)·[tools/pack.sh](../tools/pack.sh)·[tools/check-install.sh](../tools/check-install.sh)·`config-update` 스킬 | 대조로 확인(`check-install.sh`) |
+
+- 5층(플러그인) 미도입 이유
+  - 플러그인은 스킬·에이전트·훅·MCP 서버를 묶지만 전역 지침(1층)과 권한 설정은 담지 못해, 도입해도 `install.sh`가 남는다.
+  - 활성 플러그인은 이름·설명이 매 턴 컨텍스트에 올라가 토큰 소비가 는다.
+- 재검토 조건
+  - 기기 간 버전 차이가 계속 문제가 될 때
+  - 다른 사람과 설정을 공유해야 할 때
+  - 그때는 스킬 1개로 먼저 시험한다.
+
 ## 구성 요소가 적용되는 곳
 
 세션 안에서 각 묶음이 작동하는 때(요약, [Issue #183](https://github.com/yanos0218/AI/issues/183)). 파일 단위는 아래 표와 "훅이 도는 시점"에 있다.
