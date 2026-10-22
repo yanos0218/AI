@@ -39,7 +39,7 @@
 
 | 표면 | 설치된 것 | 설치일 | 다음 |
 | --- | --- | --- | --- |
-| Windows | `v0.13.1-18-g1836702`(self-audit·check-cram·config-changelog 수정, 전역 지침 규칙 2건) | 2026-10-17 | - |
+| Windows | `v0.14.0-44-gbad7e43`(install.sh 사용자 값 보존 병합, 모델·effort 고정 키 포함, 읽기 차단 줄 수동 추가 [#195](https://github.com/yanos0218/AI/issues/195)) | 2026-10-22 | 해당 없음(최신 설치) |
 | Mac mini | `v0.14.0-37-geb65888`(install.sh 사용자 값 보존 병합·백업 자동 정리 포함, base 내용은 이전 설치와 같음) | 2026-10-21 | 해당 없음(최신 설치) |
 | Linux(RHEL 계열) | 2026-09-16 설치본(버전 기록 미확인) | 2026-09-16 | 다음 접속 때 `install.sh`, 파이썬 3.9에서 훅 실행 확인 |
 | 웹(Claude.ai) | 스킬 3개 v0.11.4, Project instructions | 2026-09-19~20, 2026-09-12 | v0.14.0 Release zip 업로드, Project instructions 갱신 |
@@ -52,7 +52,7 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | 전역 지침 `base/claude-md/CLAUDE.md` | 기본 (2026-10-17 §2 큰 작업 끝 점검·§4 CI 대기 추가, 새 세션 전후 2회씩 [#169](https://github.com/yanos0218/AI/issues/169) [#176](https://github.com/yanos0218/AI/issues/176)) | ✓ | 갱신 대기 | 갱신 대기 | 갱신 대기(Project instructions 2026-09-12) | - |
 | 모듈 규칙 `base/rules/docs-format.md` | 기본 (2026-09-28 이슈·PR 음슴체, 필드 예외 범위) | ✓ | ✓ | 갱신 대기 | - | - |
-| `settings.example.json` (권한·훅·상태줄·env·기본 모델·effort) | 기본 (2026-09-29 형식 검사·대시보드 훅 등록 [#141](https://github.com/yanos0218/AI/issues/141) [#136](https://github.com/yanos0218/AI/issues/136), 기록 훅 async·`if` 조건 [#147](https://github.com/yanos0218/AI/issues/147), 2026-10-21 모델·effort 고정 키 [#187](https://github.com/yanos0218/AI/issues/187)) | 갱신 대기 | ✓ | 갱신 대기 | - | Windows·Linux `install.sh` 뒤 `fingerprint.sh`로 `settings model` 확인 |
+| `settings.example.json` (권한·훅·상태줄·env·기본 모델·effort) | 기본 (2026-09-29 형식 검사·대시보드 훅 등록 [#141](https://github.com/yanos0218/AI/issues/141) [#136](https://github.com/yanos0218/AI/issues/136), 기록 훅 async·`if` 조건 [#147](https://github.com/yanos0218/AI/issues/147), 2026-10-21 모델·effort 고정 키 [#187](https://github.com/yanos0218/AI/issues/187)) | ✓ | ✓ | 갱신 대기 | - | Linux `install.sh` 뒤 `fingerprint.sh`로 `settings model` 확인 |
 | 서브에이전트 재귀 차단 `env.CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` | 기본 (재귀 시도 차단 실측 2026-09-13 [#75](https://github.com/yanos0218/AI/issues/75)) | ✓ | ✓ | ✓ | - | - |
 | git-guardrails 훅 | 기본 (push 차단 확인 2026-09-08, 제한 시간 초과 통과 문제 수정 2026-09-28 [#142](https://github.com/yanos0218/AI/issues/142)) | ✓ | ✓ | 갱신 대기 | - | - |
 | gh-throttle 훅 | 기본 (병렬 직렬화 실측 2026-09-13 [#74](https://github.com/yanos0218/AI/issues/74), 제한 시간 30초 [#142](https://github.com/yanos0218/AI/issues/142)) | ✓ | ✓ | 갱신 대기 | - | - |
