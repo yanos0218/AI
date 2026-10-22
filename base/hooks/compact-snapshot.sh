@@ -52,10 +52,9 @@ SNAP_FILE="${SNAP_DIR}/${SLUG}.md"
   fi
 
   if [[ -n "${PY}" ]] && [[ -n "${TRANSCRIPT_PATH}" ]] && [[ -f "${TRANSCRIPT_PATH}" ]]; then
-    "${PY}" - "${TRANSCRIPT_PATH}" <<'PYEOF'
+    PYTHONIOENCODING=utf-8 "${PY}" - "${TRANSCRIPT_PATH}" <<'PYEOF'
 import json, re, sys
 
-sys.stdout.reconfigure(encoding="utf-8")
 path = sys.argv[1]
 TEST_RE = re.compile(
     r"\b(npm test|npm run test|pytest|python -m pytest|py_compile|"

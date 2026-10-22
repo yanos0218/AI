@@ -74,6 +74,9 @@
   - `reconfigure`가 없으면 `io.TextIOWrapper`로 감싸도록 `tools/settings_merge.py`·`tools/fingerprint.sh`·`tools/check-doc-sync.py`를 고침
   - locale이 `C`이면 `install.sh`의 `settings.json` 병합이 실패했고 `fingerprint.sh`·`check-doc-sync.py`도 트레이스백으로 끝났음
   - 시험 `tools/test-install-merge.sh`에 6b(ASCII 출력) 추가, `docs/testing.md`에 3.6 규칙 추가
+- `base/hooks/compact-snapshot.sh`가 파이썬 3.6에서 컴팩션 스냅샷의 "최근 테스트/빌드 명령" 절을 조용히 빠뜨리던 것을 수정([Issue #202](https://github.com/yanos0218/AI/issues/202))
+  - 보호 없는 `reconfigure` 호출이 `AttributeError`로 죽었고 훅은 종료 코드 0이라 드러나지 않았음
+  - 다른 훅처럼 `PYTHONIOENCODING=utf-8`을 지정하고 `reconfigure` 줄을 뺌, `tools/test-hooks-py.sh`에 시험 2건 추가
 - `tools/check-doc-sync.py`가 Windows에서 스킬 폴더 이름을 빈 문자열로 읽던 것을 수정([Issue #200](https://github.com/yanos0218/AI/issues/200))
   - `_template`까지 세어 "스킬 7개로 적었는데 실제는 8개"로 실패했고, README 스킬 목록 누락 검사는 조용히 건너뛰고 있었음
 

@@ -82,5 +82,15 @@ cl skip Bash 'sed -n 1,5p ~/.claude/settings.json' '설정 읽기'
 cl skip Bash 'cat ~/.claude/CLAUDE.md; echo done > /tmp/x' '읽기와 무관한 쓰기가 다른 조각'
 cl skip Bash 'git commit -m "cp 설명 ~/.claude/settings.json"' '따옴표 안 글'
 
+# compact-snapshot: 출력 인코딩이 ASCII여도 테스트 결과 절이 빠지지 않는다(파이썬 3.6에는 reconfigure가 없어 조용히 죽었음, Issue #202)
+printf '%s\n' \
+  '{"type":"assistant","message":{"content":[{"type":"tool_use","id":"t1","name":"Bash","input":{"command":"pytest tests/"}}]}}' \
+  '{"type":"user","message":{"content":[{"type":"tool_result","tool_use_id":"t1","content":"3 passed 한글 결과"}]}}' > "${tmp}/transcript.jsonl"
+printf '{"cwd":"%s","transcript_path":"%s/transcript.jsonl"}' "${tmp}" "${tmp}" \
+  | env -u LANG -u LC_ALL -u LC_CTYPE LC_ALL=C PYTHONIOENCODING=ascii bash "$(hook compact-snapshot.sh)"
+snap="$(ls "${tmp}"/compact-snapshots/*.md 2>/dev/null | head -1)"
+grep -q '최근 테스트/빌드 명령' "${snap:-/nonexistent}" 2>/dev/null && ok || ng 'compact-snapshot 테스트 결과 절 기록(ASCII 출력)'
+grep -q '3 passed 한글 결과' "${snap:-/nonexistent}" 2>/dev/null && ok || ng 'compact-snapshot 한글 결과가 UTF-8로 남음'
+
 echo "통과 ${pass} / 실패 ${fail}"
 [[ "${fail}" -eq 0 ]]
