@@ -52,14 +52,14 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | 전역 지침 `base/claude-md/CLAUDE.md` | 기본 (2026-10-17 §2 큰 작업 끝 점검·§4 CI 대기 추가, 새 세션 전후 2회씩 [#169](https://github.com/yanos0218/AI/issues/169) [#176](https://github.com/yanos0218/AI/issues/176)) | ✓ | 갱신 대기 | ✓ | 갱신 대기(Project instructions 2026-09-12) | - |
 | 모듈 규칙 `base/rules/docs-format.md` | 기본 (2026-09-28 이슈·PR 음슴체, 필드 예외 범위) | ✓ | ✓ | ✓ | - | - |
-| `settings.example.json` (권한·훅·상태줄·env·기본 모델·effort) | 기본 (2026-09-29 형식 검사·대시보드 훅 등록 [#141](https://github.com/yanos0218/AI/issues/141) [#136](https://github.com/yanos0218/AI/issues/136), 기록 훅 async·`if` 조건 [#147](https://github.com/yanos0218/AI/issues/147), 2026-10-21 모델·effort 고정 키 [#187](https://github.com/yanos0218/AI/issues/187)) | ✓ | ✓ | ✓ | - | -
+| `settings.example.json` (권한·훅·상태줄·env·기본 모델·effort) | 기본 (2026-09-29 형식 검사·대시보드 훅 등록 [#141](https://github.com/yanos0218/AI/issues/141) [#136](https://github.com/yanos0218/AI/issues/136), 기록 훅 async·`if` 조건 [#147](https://github.com/yanos0218/AI/issues/147), 2026-10-21 모델·effort 고정 키 [#187](https://github.com/yanos0218/AI/issues/187)) | ✓ | ✓ | ✓ | - | - |
 | 서브에이전트 재귀 차단 `env.CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` | 기본 (재귀 시도 차단 실측 2026-09-13 [#75](https://github.com/yanos0218/AI/issues/75)) | ✓ | ✓ | ✓ | - | - |
 | git-guardrails 훅 | 기본 (push 차단 확인 2026-09-08, 제한 시간 초과 통과 문제 수정 2026-09-28 [#142](https://github.com/yanos0218/AI/issues/142)) | ✓ | ✓ | ✓ | - | - |
 | gh-throttle 훅 | 기본 (병렬 직렬화 실측 2026-09-13 [#74](https://github.com/yanos0218/AI/issues/74), 제한 시간 30초 [#142](https://github.com/yanos0218/AI/issues/142)) | ✓ | ✓ | ✓ | - | - |
 | session-start-check 훅(SessionStart) | 기본 (설정 낡음 판정 수정 2026-09-28 [#150](https://github.com/yanos0218/AI/issues/150), `tools/test-session-start-check.sh` 15/15) | ✓ | ✓ | ✓ | - | Windows 느린 시각 훅 시간 측정 |
 | bulk-read-log 훅(PostToolUse) | 기본 (2026-09-15 [#100](https://github.com/yanos0218/AI/issues/100), 서브에이전트 조회 제외 [#134](https://github.com/yanos0218/AI/issues/134)) | ✓ | ✓ | ✓ | - | - |
 | config-changelog 훅 | 기본 (2026-10-17 조각 단위 판정·명령 등록 `if` 반영, 시험 31/31 [#173](https://github.com/yanos0218/AI/issues/173)·[#147](https://github.com/yanos0218/AI/issues/147)) | ✓ | ✓ | ✓ | - | - |
-| 훅 파이썬 전환(`hooklib.py` + 셸 입구·파이썬 본체) | 기본 (2026-09-28 승격, 30일 명령 766건 대조 [#144](https://github.com/yanos0218/AI/issues/144)) | ✓ | ✓ | ✓ | - | Linux 파이썬 3.6.8에서 훅 실행 확인(문서에는 3.9로 적혀 있었으나 실제 3.6.8, [#202](https://github.com/yanos0218/AI/issues/202))
+| 훅 파이썬 전환(`hooklib.py` + 셸 입구·파이썬 본체) | 기본 (2026-09-28 승격, 30일 명령 766건 대조 [#144](https://github.com/yanos0218/AI/issues/144)) | ✓ | ✓ | ✓ | - | Linux 파이썬 3.6.8에서 훅 실행 확인(문서에는 3.9로 적혀 있었으나 실제 3.6.8, [#202](https://github.com/yanos0218/AI/issues/202)) |
 | statusline 훅 | 기본 (터미널 CLI 전용, VS Code 패널엔 안 나옴) | ✓ | ✓ | ✓ | - | - |
 | 컴팩션 안전망 훅(`compact-snapshot.sh`·`compact-snapshot-show.sh`) | 기본 (2026-09-27 승격, 실제 자동 컴팩션에서 확인 [#104](https://github.com/yanos0218/AI/issues/104)) | ✓ | ✓ | ✓ | - | - |
 | 형식 검사 훅(`format-guard.sh`·`md-format-check.sh`·`format_check.py`·`check-cram.py`) | 기본 (2026-09-29 승격, 시험 32/32, 새 세션에서 위반 커밋 차단 확인 [#141](https://github.com/yanos0218/AI/issues/141)) | ✓ | ✓ | ✓ | - | `check-cram.py` 필드-값 형식 예외 판정 2026-10-17 기본 반영 [#175](https://github.com/yanos0218/AI/issues/175)<br>`.md` 문장형 검사 2026-10-21 추가, 시험 41/41 [#188](https://github.com/yanos0218/AI/issues/188) |
