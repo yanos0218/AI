@@ -11,7 +11,7 @@
 | 운영체제별(설치) | 설치 위치나 방법이 운영체제마다 다름 | 설치 스크립트가 운영체제별로 갈라짐 |
 | 기기별 | 운영체제와 무관하게 기기 사정에 따라 다름 | 사용자 `settings.json`에 직접 둔 값, 병합 규칙이 보존함 |
 
-## 지금 확인된 항목 (2026-10-21 Mac에서 코드 조사, Windows 출력은 아직 없음)
+## 지금 확인된 항목 (2026-10-21 Mac에서 코드 조사, 2026-10-22 Windows·AlmaLinux 9 WSL 출력 대조)
 
 | 구분 | 항목 | 처리 방식 | 근거 |
 | --- | --- | --- | --- |
@@ -24,8 +24,11 @@
 | 운영체제별(설치) | Mac 전용 확장 `swift-vscode` | 기본 목록에서 빼고 Mac에서 따로 설치 | [install.md](install.md) |
 | 운영체제별(설치) | Linux RHEL 계열 최소 설치본<br>git·diff·python3이 버전마다 없을 수 있음 | 설치 전에 `dnf install -y git diffutils python3`을 실행 | [install.md](install.md) |
 | 공통(운영체제 전용 항목 포함) | settings.json 훅의 `PowerShell` matcher 4곳<br>Windows 전용 도구용이지만 모든 기기에 같이 설치되고 Mac에서는 해당 도구가 없어 쓰이지 않음 | 같은 값을 병합, 무해해서 갈라 두지 않음 | [base/settings.example.json](../base/settings.example.json) |
-| 기기별 | 이 Mac의 `permissions.blockReadsOutsideWorkingDirectories`<br>Windows 확인 전 임시 불일치 | 사용자 `settings.json`에 직접 둠, 기본 영역 반영은 [Issue #195](https://github.com/yanos0218/AI/issues/195) | [Issue #194](https://github.com/yanos0218/AI/issues/194) 확인 절차 |
-| 후보(미확정) | 샌드박스는 Windows 미지원<br>읽기 차단 경로 형식은 Windows에서 미확인 | 설정 값으로 갈라야 하는지 Windows 출력으로 확인 뒤 결정 | [PROGRESS.md §5](PROGRESS.md#5-보류기각) |
+| 기기별 | Mac·Windows의 `permissions.blockReadsOutsideWorkingDirectories`<br>Linux는 아직 없음, 기본 영역 반영 전 임시 불일치 | 사용자 `settings.json`에 직접 둠, 기본 영역 반영은 [Issue #195](https://github.com/yanos0218/AI/issues/195) | [Issue #194](https://github.com/yanos0218/AI/issues/194) 확인 절차 |
+| 운영체제별(실행 환경) | Windows PowerShell에서 `bash`<br>Git Bash가 아니라 WSL(`C:\WINDOWS\system32\bash.exe`)이 실행돼 `~/.claude`가 없는 리눅스 홈을 봄 | Windows에서는 Git Bash 터미널이나 Claude Code `Bash` 도구에서 실행 | [Issue #194](https://github.com/yanos0218/AI/issues/194) 2026-10-22 |
+| 운영체제별(실행 환경) | Windows `fingerprint.sh` 출력 줄 끝이 CRLF<br>Mac·Linux 출력과 그냥 `diff`하면 모든 줄이 다르게 나옴 | `diff --strip-trailing-cr`로 비교 | [Issue #194](https://github.com/yanos0218/AI/issues/194) 2026-10-22 |
+| 운영체제별(실행 환경) | WSL의 `code`<br>Windows VS Code가 PATH로 잡혀 `check-install.sh`가 확장 16개를 MISSING으로 보고하고 실패로 끝남 | 처리 방식 미정, WSL에서는 확장 항목 MISSING을 무시하고 판정 | [Issue #194](https://github.com/yanos0218/AI/issues/194) 2026-10-22 |
+| 후보(미확정) | 샌드박스는 Windows 미지원 | 설정 값으로 갈라야 하는지 확인 뒤 결정 | [PROGRESS.md §5](PROGRESS.md#5-보류기각) |
 
 - 요약
   - 설정 파일의 값으로 운영체제를 구분해야 하는 항목은 아직 확인된 것이 없음
@@ -45,6 +48,7 @@
 - 기기마다 `bash tools/fingerprint.sh --common`을 실행해 출력을 `diff`함([testing.md](testing.md) "기기 간 차이")
   - 출력 줄은 [공통](같아야 함)과 [기기별](달라도 정상)로 표시되고 `--common`은 [공통]만 뽑음
   - `diff`가 비어 있으면 일치, 차이가 나오면 어긋남
+  - Windows 출력이 섞이면 `diff --strip-trailing-cr`로 비교, Windows에서는 PowerShell이 아니라 Git Bash에서 실행
   - 사용자가 얹은 권한 키(예: `blockReadsOutsideWorkingDirectories`)도 [공통]에 나오므로 기본 영역에 반영되기 전까지는 차이로 드러남
 - 전체 출력(옵션 없음)은 [기기별] 줄까지 보여 주며 그 차이는 정상
 - 새 항목은 [공통]에 둘지 [기기별]에 둘지 이 문서의 구분 기준으로 정하고 `tools/fingerprint.sh`의 `COMMON` 목록에 반영함
