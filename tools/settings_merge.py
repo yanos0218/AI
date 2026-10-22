@@ -9,6 +9,8 @@
   - hooks는 base 훅 스크립트를 가리키는 항목만 base 것으로 바꾸고, 그 밖의 사용자 훅은 남긴다.
   - env는 base 키만 덮고 사용자 키는 남긴다.
   - statusLine·model·effortLevel·modelSettings·$schema는 base 값으로 맞춘다(기본 모델 고정, Issue #187).
+  - base가 읽기 차단(blockReadsOutsideWorkingDirectories)을 켜면 additionalDirectories에 ~/.claude와 원본 저장소를
+    합집합으로 넣는다(Issue #205). 경로는 기기마다 달라 base 파일에 두지 않고 설치 때 계산한다.
   - 값이 바뀌어 다시 쓸 때는 settings.json.bak.<시각>으로 먼저 백업한다.
 """
 import collections
@@ -88,7 +90,26 @@ def merge_hooks(cur, base):
     return out
 
 
-def merge_permissions(cur, base):
+def norm_path(p):
+    return os.path.normcase(os.path.normpath(p))
+
+
+def access_dirs(dst, src):
+    """읽기 차단을 켠 기기에서 스킬(config-update 등)이 읽어야 하는 폴더: 설치본 폴더와 원본 저장소.
+
+    원본 저장소는 src(<저장소>/base/settings.example.json)에서 구한다. 경로는 슬래시 형식으로 쓴다
+    (Windows에서 C:/Users/...가 통하는 것을 2026-10-22 확인).
+    """
+    home = os.path.dirname(os.path.abspath(dst))
+    repo = os.path.dirname(os.path.dirname(os.path.abspath(src)))
+    return [d.replace(os.sep, '/') for d in (home, repo)]
+
+
+def wants_dirs(perms):
+    return perms.get('blockReadsOutsideWorkingDirectories') is True
+
+
+def merge_permissions(cur, base, dirs=()):
     out = OD(cur)
     for k, v in base.items():
         if isinstance(v, list):
@@ -96,14 +117,18 @@ def merge_permissions(cur, base):
             out[k] = have + [x for x in v if x not in have]
         else:
             out[k] = v
+    if dirs and wants_dirs(base):  # base는 permissions 객체
+        have = list(out.get('additionalDirectories', []))
+        known = set(norm_path(x) for x in have if isinstance(x, str))
+        out['additionalDirectories'] = have + [d for d in dirs if norm_path(d) not in known]
     return out
 
 
-def merge(cur, base):
+def merge(cur, base, dirs=()):
     new = OD(cur)
     changed = []
     if 'permissions' in base:
-        v = merge_permissions(cur.get('permissions', OD()), base['permissions'])
+        v = merge_permissions(cur.get('permissions', OD()), base['permissions'], dirs)
         if v != cur.get('permissions'):
             new['permissions'] = v
             changed.append('permissions')
@@ -125,13 +150,14 @@ def merge(cur, base):
     return new, changed
 
 
-def extras(cur, base):
-    """사용자 쪽에만 있는 항목 요약(정보용)."""
+def extras(cur, base, dirs=()):
+    """사용자 쪽에만 있는 항목 요약(정보용). dirs는 설치가 계산해 넣는 허용 폴더라 사용자 추가가 아니다."""
     msgs = []
     bp, cp = base.get('permissions', {}), cur.get('permissions', {})
+    mine = set(norm_path(d) for d in dirs) if wants_dirs(bp) else set()
     for k, v in cp.items():
         if isinstance(v, list):
-            only = [x for x in v if x not in bp.get(k, [])]
+            only = [x for x in v if x not in bp.get(k, []) and not (k == 'additionalDirectories' and isinstance(x, str) and norm_path(x) in mine)]
             if only:
                 msgs.append('permissions.%s 설치본에만 있음 %d개(사용자 추가이거나 base에서 빠진 항목)' % (k, len(only)))
     owned = owned_names(base.get('hooks', {}))
@@ -175,12 +201,13 @@ def main(argv):
         print('  settings.json 병합 실패, 건너뜀: %s (%s)' % (e, dst))
         print('  → 파일을 고친 뒤(주석·끝 쉼표 없는 JSON) 다시 실행. 파일은 건드리지 않았음')
         return 3
-    new, changed = merge(cur, base)
+    dirs = access_dirs(dst, src)
+    new, changed = merge(cur, base, dirs)
     if mode == 'check':
         for k in ('permissions', 'hooks', 'env') + SCALAR_KEYS:
             if k in base:
                 print('  %-8s %s' % ('DIFF' if k in changed else 'same', k))
-        for m in extras(cur, base):
+        for m in extras(cur, base, dirs):
             print('  정보     ' + m)
         return 1 if changed else 0
     if not changed and exists:

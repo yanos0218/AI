@@ -72,14 +72,19 @@ COMMON = {'설치 기본영역 해시', '전역 지침', '훅·스킬·에이전
 
 # base/settings.example.json과 병합했을 때 바뀔 키가 없는지, 사용자가 얹은 키·항목은 무엇인지
 base_path = os.path.join(script_dir, '..', 'base', 'settings.example.json')
+base = {}
 try:
     base = sm.load(base_path)
-    changed = sm.merge(settings, base)[1]
+    dirs = sm.access_dirs(os.path.join(home, 'settings.json'), base_path)
+    changed = sm.merge(settings, base, dirs)[1]
     vs_base = 'same' if not changed else 'DIFF ' + ' '.join(changed)
-    mine = '; '.join(sm.extras(settings, base)) or '없음'
+    mine = '; '.join(sm.extras(settings, base, dirs)) or '없음'
 except (OSError, ValueError) as e:
     vs_base, mine = '비교 못 함(%s)' % type(e).__name__, '비교 못 함'
-extra_perm = ' '.join('%s=%s' % (k, json.dumps(v)) for k, v in sorted(perm.items()) if k not in ('allow', 'deny')) or '없음'
+# base가 정한 키와 설치가 기기별로 계산하는 additionalDirectories(경로가 기기마다 다름)는 사용자 추가가 아니다
+base_perm = base.get('permissions') or {}
+extra_perm = ' '.join('%s=%s' % (k, json.dumps(v)) for k, v in sorted(perm.items())
+                      if k not in ('allow', 'deny', 'additionalDirectories') and k not in base_perm) or '없음'
 
 rows = [
     ('기기 OS', osname),

@@ -24,7 +24,8 @@
 | 운영체제별(설치) | Mac 전용 확장 `swift-vscode` | 기본 목록에서 빼고 Mac에서 따로 설치 | [install.md](install.md) |
 | 운영체제별(설치) | Linux RHEL 계열 최소 설치본<br>git·diff·python3이 버전마다 없을 수 있음 | 설치 전에 `dnf install -y git diffutils python3`을 실행 | [install.md](install.md) |
 | 공통(운영체제 전용 항목 포함) | settings.json 훅의 `PowerShell` matcher 4곳<br>Windows 전용 도구용이지만 모든 기기에 같이 설치되고 Mac에서는 해당 도구가 없어 쓰이지 않음 | 같은 값을 병합, 무해해서 갈라 두지 않음 | [base/settings.example.json](../base/settings.example.json) |
-| 기기별 | Mac·Windows의 `permissions.blockReadsOutsideWorkingDirectories`<br>Linux는 아직 없음, 기본 영역 반영 전 임시 불일치 | 사용자 `settings.json`에 직접 둠, 기본 영역 반영은 [Issue #195](https://github.com/yanos0218/AI/issues/195) | [Issue #194](https://github.com/yanos0218/AI/issues/194) 확인 절차 |
+| 공통 | `permissions.blockReadsOutsideWorkingDirectories` 켜짐 | 같은 값을 병합([Issue #195](https://github.com/yanos0218/AI/issues/195), [Issue #205](https://github.com/yanos0218/AI/issues/205)) | [base/settings.example.json](../base/settings.example.json) |
+| 기기별 | `permissions.additionalDirectories`의 `~/.claude`·원본 저장소 경로<br>기기마다 경로가 다름 | 설치가 기기에 맞게 계산해 병합, 지문의 [공통] 줄에서 뺌 | [tools/settings_merge.py](../tools/settings_merge.py) |
 | 운영체제별(실행 환경) | Windows PowerShell에서 `bash`<br>Git Bash가 아니라 WSL(`C:\WINDOWS\system32\bash.exe`)이 실행돼 `~/.claude`가 없는 리눅스 홈을 봄 | Windows에서는 Git Bash 터미널이나 Claude Code `Bash` 도구에서 실행 | [Issue #194](https://github.com/yanos0218/AI/issues/194) 2026-10-22 |
 | 운영체제별(실행 환경) | Windows `fingerprint.sh` 출력 줄 끝이 CRLF<br>Mac·Linux 출력과 그냥 `diff`하면 모든 줄이 다르게 나옴 | `diff --strip-trailing-cr`로 비교 | [Issue #194](https://github.com/yanos0218/AI/issues/194) 2026-10-22 |
 | 운영체제별(실행 환경) | WSL의 `code`<br>Windows VS Code가 PATH로 잡혀 `check-install.sh`가 확장 16개를 MISSING으로 보고하고 실패로 끝남 | WSL이고 `code`가 `/mnt/` 아래(Windows VS Code)면 MISSING 목록은 보이되 판정에서 제외하고 안내 한 줄, WSL 안 `code`의 MISSING은 그대로 실패로 셈 | [Issue #201](https://github.com/yanos0218/AI/issues/201) 2026-10-22 |
@@ -49,6 +50,6 @@
   - 출력 줄은 [공통](같아야 함)과 [기기별](달라도 정상)로 표시되고 `--common`은 [공통]만 뽑음
   - `diff`가 비어 있으면 일치, 차이가 나오면 어긋남
   - Windows 출력이 섞이면 `diff --strip-trailing-cr`로 비교, Windows에서는 PowerShell이 아니라 Git Bash에서 실행
-  - 사용자가 얹은 권한 키(예: `blockReadsOutsideWorkingDirectories`)도 [공통]에 나오므로 기본 영역에 반영되기 전까지는 차이로 드러남
+  - 사용자가 얹은 권한 키(예: `defaultMode`)는 base에 없으면 [공통]에 나와 차이로 드러남, base가 정한 키와 기기별 경로(`additionalDirectories`)는 나오지 않음
 - 전체 출력(옵션 없음)은 [기기별] 줄까지 보여 주며 그 차이는 정상
 - 새 항목은 [공통]에 둘지 [기기별]에 둘지 이 문서의 구분 기준으로 정하고 `tools/fingerprint.sh`의 `COMMON` 목록에 반영함

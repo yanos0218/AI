@@ -9,6 +9,11 @@
 
 ### Changed
 
+- 작업 폴더 밖 읽기 차단을 기본 영역에 반영, 모든 기기에 `permissions.blockReadsOutsideWorkingDirectories: true`가 설치됨([Issue #195](https://github.com/yanos0218/AI/issues/195), [Issue #205](https://github.com/yanos0218/AI/issues/205), 다음 컷에서 MINOR 후보)
+  - `Read`와 `Bash`로 작업 폴더 밖을 읽으면 거부되고, `python3 -c`·`node -e` 같은 인라인 코드는 확인 창으로 넘어감
+  - 설치가 `~/.claude`와 원본 저장소 경로를 기기에 맞게 계산해 `permissions.additionalDirectories`에 합집합으로 넣음, 안 넣으면 다른 저장소에서 `config-update`가 버전 파일을 못 읽음(2026-10-22 시험)
+  - `tools/fingerprint.sh`의 `permissions 추가 키`는 base가 정한 키와 기기별 경로를 사용자 추가로 세지 않음
+  - 시험 `tools/test-install-merge.sh` 10번 추가
 - `tools/install.sh`가 설치 때 사용자가 넣은 값을 지우지 않도록 변경([Issue #194](https://github.com/yanos0218/AI/issues/194), 조사 [Issue #193](https://github.com/yanos0218/AI/issues/193))
   - `settings.json`은 `permissions` 목록 합집합, base 훅만 교체하고 사용자 훅 유지, `env`는 base 키만 덮음, 값이 바뀔 때 `.bak.<시각>` 백업(병합 규칙은 새 `tools/settings_merge.py`)
   - 내용이 다른 스킬은 `~/.claude/backups/claude-config/<시각>/`에 보관한 뒤 교체

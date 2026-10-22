@@ -6,6 +6,7 @@
 | --- | --- | --- | --- |
 | 실수 방지 | 되돌리기 어려운 명령 앞 확인 강제 | 반영 | `git-guardrails.sh`<br>PreToolUse 훅은 모든 권한 모드에서 먼저 실행됨 |
 | 실수 방지 | 비밀 파일 읽기/편집 거부 | 반영 | `permissions.deny`: `.env`, `secrets/`, `~/.ssh` |
+| 실수 방지 | 작업 폴더 밖 읽기 차단 | 반영 | `permissions.blockReadsOutsideWorkingDirectories`<br>`Read`·`Bash`가 거부되고 `python3 -c` 같은 인라인 코드는 확인 창으로 넘어감<br>`config-update`용으로 `~/.claude`와 원본 저장소는 설치가 `additionalDirectories`에 넣음([Issue #195](https://github.com/yanos0218/AI/issues/195), [Issue #205](https://github.com/yanos0218/AI/issues/205)) |
 | 실수 방지 | 검증 없이 "됐다" 금지 | 반영 | CLAUDE.md §4<br>공식 문서도 "Claude에게 돌릴 수 있는 검사를 주고 증거를 보이게 하라"고 권함 |
 | 실수 방지 | 계획 먼저(plan mode) | 습관 | 여러 파일 건드리거나 방향이 불확실하면 Shift+Tab. 한 문장으로 diff를 설명할 수 있으면 생략 |
 | 실수 방지 | 같은 지적 두 번이면 `/clear` 후 더 나은 프롬프트로 | 습관 | 공식 "correcting over and over" 실패 패턴 |

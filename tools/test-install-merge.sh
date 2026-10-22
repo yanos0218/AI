@@ -168,9 +168,9 @@ edit "d['permissions']['allow'].append('Bash(my-own *)')"
 bash tools/fingerprint.sh --common >"${T}/fp-user.txt" 2>&1
 chk "사용자 allow 추가는 공통 구역 불변" 'cmp -s "${T}/fp-base.txt" "${T}/fp-user.txt"'
 chk "사용자 추가는 [기기별] 줄에 표시"   'bash tools/fingerprint.sh | grep "^\[기기별\] 사용자 추가 항목" | grep -q "1개"'
-edit "d['permissions']['blockReadsOutsideWorkingDirectories'] = True"
+edit "d['permissions']['defaultMode'] = 'acceptEdits'"
 bash tools/fingerprint.sh --common >"${T}/fp-key.txt" 2>&1
-chk "권한 추가 키는 공통 구역에서 차이로 드러남" '! cmp -s "${T}/fp-base.txt" "${T}/fp-key.txt" && grep -q "blockReadsOutsideWorkingDirectories=true" "${T}/fp-key.txt"'
+chk "권한 추가 키는 공통 구역에서 차이로 드러남" '! cmp -s "${T}/fp-base.txt" "${T}/fp-key.txt" && grep -q "defaultMode=" "${T}/fp-key.txt"'
 edit "d['model'] = 'claude-opus-5-5'"
 bash tools/fingerprint.sh --common >"${T}/fp-model.txt" 2>&1
 chk "model 어긋남이 base 대비 DIFF로 보임" 'grep -q "settings base 대비 = DIFF model" "${T}/fp-model.txt"'
@@ -202,6 +202,53 @@ for i in 7 8 9; do echo "old${i}" > "${H9}/CLAUDE.md.bak.2020010100000${i}"; don
 printf '{ broken // json\n' > "${H9}/settings.json"
 bash tools/install.sh >"${T}/out9f.txt" 2>&1
 chk "병합 실패 때는 정리하지 않음"        '[[ "$(find "${H9}" -maxdepth 1 -name "CLAUDE.md.bak.[0-9]*" | wc -l | tr -d " ")" -ge 4 ]]'
+
+echo "== 10. 읽기 차단을 켜면 허용 폴더(설치본 폴더·원본 저장소)를 설치가 계산해 넣는다(Issue #205)"
+H10="${T}/home10"; export CLAUDE_CONFIG_DIR="${H10}"; mkdir -p "${H10}"
+echo '{"permissions":{"additionalDirectories":["/opt/my-extra"]}}' > "${H10}/settings.json"
+bash tools/install.sh >"${T}/out10.txt" 2>&1
+# q10 <확인식>: d=설치본 settings, home·repo=기대 경로. 슬래시·대소문자 차이나 짧은 이름은 같은 경로로 본다
+q10() { "${PY}" - "${H10}/settings.json" "${H10}" "$(pwd)" "$1" <<'PYEOF'
+import io, json, os, sys
+d = json.load(io.open(sys.argv[1], encoding='utf-8'))
+home, repo = sys.argv[2], sys.argv[3]
+def same(a, b):
+    if os.path.normcase(os.path.normpath(a)) == os.path.normcase(os.path.normpath(b)):
+        return True
+    return os.path.exists(a) and os.path.exists(b) and os.path.samefile(a, b)
+def has(p):
+    return any(same(x, p) for x in d.get('permissions', {}).get('additionalDirectories', []))
+sys.exit(0 if eval(sys.argv[4]) else 1)
+PYEOF
+}
+chk "읽기 차단 값이 들어감"               'q10 "d[\"permissions\"].get(\"blockReadsOutsideWorkingDirectories\") is True"'
+chk "설치본 폴더(.claude) 경로가 허용 폴더에 들어감" 'q10 "has(home)"'
+chk "원본 저장소 경로가 들어감"           'q10 "has(repo)"'
+chk "사용자 허용 폴더는 유지"             'q10 "has(\"/opt/my-extra\")"'
+nbak10="$(ls "${H10}"/settings.json.bak.* 2>/dev/null | wc -l | tr -d ' ')"
+bash tools/install.sh >"${T}/out10b.txt" 2>&1
+chk "두 번째 설치는 변경 없음"            'grep -q "settings.json 병합: 변경 없음" "${T}/out10b.txt"'
+chk "백업이 더 늘지 않음"                 '[[ "$(ls "${H10}"/settings.json.bak.* 2>/dev/null | wc -l | tr -d " ")" = "${nbak10}" ]]'
+edit10() { "${PY}" - "${H10}/settings.json" "$1" <<'PYEOF'
+import io, json, sys
+p = sys.argv[1]
+d = json.load(io.open(p, encoding='utf-8'))
+exec(sys.argv[2])
+io.open(p, 'w', encoding='utf-8', newline='\n').write(json.dumps(d, ensure_ascii=False, indent=2) + '\n')
+PYEOF
+}
+edit10 "a = d['permissions']['additionalDirectories']; a[:] = [x + '/' if x != '/opt/my-extra' else x for x in a]"
+bash tools/install.sh >"${T}/out10c.txt" 2>&1
+chk "끝 슬래시만 다른 경로는 중복으로 안 늘림" 'grep -q "settings.json 병합: 변경 없음" "${T}/out10c.txt"'
+"${PY}" tools/settings_merge.py check "${H10}/settings.json" base/settings.example.json >"${T}/check10.txt" 2>&1; rc=$?
+chk "설치 직후 check는 어긋남 없음"       '[[ "${rc}" = 0 ]]'
+chk "설치가 넣은 허용 폴더는 사용자 추가로 안 셈(사용자 것 1개만)" 'grep -q "additionalDirectories 설치본에만 있음 1개" "${T}/check10.txt"'
+bash tools/fingerprint.sh --common >"${T}/fp10.txt" 2>&1
+chk "지문 추가 키에 기기별 경로가 안 나옴" 'grep -q "permissions 추가 키 = 없음" "${T}/fp10.txt"'
+chk "지문 base 대비 same"                 'grep -q "settings base 대비 = same" "${T}/fp10.txt"'
+edit10 "d['permissions']['additionalDirectories'] = ['/opt/my-extra']"
+"${PY}" tools/settings_merge.py check "${H10}/settings.json" base/settings.example.json >/dev/null 2>&1; rc=$?
+chk "허용 폴더가 빠지면 check가 어긋남으로 봄" '[[ "${rc}" = 1 ]]'
 
 echo
 [[ "${fail}" = 0 ]] && echo "결과: 통과" || echo "결과: 실패 항목 있음"
