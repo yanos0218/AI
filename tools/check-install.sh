@@ -50,6 +50,10 @@ run_checks() {
   section "VS Code 확장 ↔ base/vscode/extensions.txt (목록은 최소 보장. 밖에 더 있는 것은 정상)"
   CODE="$(command -v code || true)"
   [[ -z "${CODE}" ]] && [[ -x "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" ]] && CODE="/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
+  # WSL에서 /mnt 아래 code는 Windows VS Code라 WSL 쪽 확장 목록(비어 있음)을 읽어 전부 MISSING이 된다(Issue #201). 마운트 위치를 바꿨으면 WIN_MOUNT_ROOT로 지정
+  win_code=0
+  if [[ -n "${CODE}" ]] && [[ "${CODE}" == "${WIN_MOUNT_ROOT:-/mnt/}"* ]] \
+    && { [[ -n "${WSL_DISTRO_NAME:-}" ]] || grep -qi microsoft /proc/version 2>/dev/null; }; then win_code=1; fi
   if [[ -z "${CODE}" ]]; then echo "  (code 명령 없음 — VS Code에서 'Shell Command: Install code command')"
   else
     installed="$("${CODE}" --list-extensions 2>/dev/null | tr '[:upper:]' '[:lower:]')"
@@ -61,6 +65,7 @@ run_checks() {
     done < base/vscode/extensions.txt
     extra=$(( $(grep -c . <<<"${installed}") - total + missing ))
     if [[ "${missing}" = 0 ]]; then echo "  same     기본 목록 ${total}개 전부 설치됨 (목록 밖 ${extra}개는 그대로 둔다)"
+    elif [[ "${win_code}" = 1 ]]; then echo "  (WSL — 위 code는 Windows VS Code라 빠진 ${missing}개를 판정에 넣지 않음. WSL 안에서 VS Code(Remote - WSL)로 개발하면 bash base/vscode/install.sh, 아니면 Windows Git Bash에서 점검)"
     else drift=1; echo "  → 빠진 ${missing}개는 bash base/vscode/install.sh 로 채운다"; fi
   fi
 

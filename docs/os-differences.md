@@ -27,7 +27,7 @@
 | 기기별 | Mac·Windows의 `permissions.blockReadsOutsideWorkingDirectories`<br>Linux는 아직 없음, 기본 영역 반영 전 임시 불일치 | 사용자 `settings.json`에 직접 둠, 기본 영역 반영은 [Issue #195](https://github.com/yanos0218/AI/issues/195) | [Issue #194](https://github.com/yanos0218/AI/issues/194) 확인 절차 |
 | 운영체제별(실행 환경) | Windows PowerShell에서 `bash`<br>Git Bash가 아니라 WSL(`C:\WINDOWS\system32\bash.exe`)이 실행돼 `~/.claude`가 없는 리눅스 홈을 봄 | Windows에서는 Git Bash 터미널이나 Claude Code `Bash` 도구에서 실행 | [Issue #194](https://github.com/yanos0218/AI/issues/194) 2026-10-22 |
 | 운영체제별(실행 환경) | Windows `fingerprint.sh` 출력 줄 끝이 CRLF<br>Mac·Linux 출력과 그냥 `diff`하면 모든 줄이 다르게 나옴 | `diff --strip-trailing-cr`로 비교 | [Issue #194](https://github.com/yanos0218/AI/issues/194) 2026-10-22 |
-| 운영체제별(실행 환경) | WSL의 `code`<br>Windows VS Code가 PATH로 잡혀 `check-install.sh`가 확장 16개를 MISSING으로 보고하고 실패로 끝남 | 처리 방식 미정, WSL에서는 확장 항목 MISSING을 무시하고 판정 | [Issue #194](https://github.com/yanos0218/AI/issues/194) 2026-10-22 |
+| 운영체제별(실행 환경) | WSL의 `code`<br>Windows VS Code가 PATH로 잡혀 `check-install.sh`가 확장 16개를 MISSING으로 보고하고 실패로 끝남 | WSL이고 `code`가 `/mnt/` 아래(Windows VS Code)면 MISSING 목록은 보이되 판정에서 제외하고 안내 한 줄, WSL 안 `code`의 MISSING은 그대로 실패로 셈 | [Issue #201](https://github.com/yanos0218/AI/issues/201) 2026-10-22 |
 | 후보(미확정) | 샌드박스는 Windows 미지원 | 설정 값으로 갈라야 하는지 확인 뒤 결정 | [PROGRESS.md §5](PROGRESS.md#5-보류기각) |
 
 - 요약

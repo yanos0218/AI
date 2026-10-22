@@ -129,6 +129,26 @@ chk "fingerprint 종료 코드 0"        '[[ "${rc}" = 0 ]]'
 chk "fingerprint 트레이스백 없음"    '! grep -q Traceback <<<"${out}"'
 chk "fingerprint 한글 항목 출력"     'grep -q "기기 OS" <<<"${out}"'
 
+echo "== 7b. WSL에서 Windows VS Code(/mnt 아래 code)가 잡혀도 확장 MISSING이 판정을 깨지 않는다(Issue #201, 가짜 code로 흉내)"
+# 실제 /mnt를 건드리지 않으려고 WIN_MOUNT_ROOT를 임시 폴더로 바꿔 /mnt 역할을 맡긴다. 실제 WSL에서는 사용자가 따로 확인한다
+mkdir -p "${T}/fakewin/bin" "${T}/fakenative"
+printf '#!/usr/bin/env bash\nexit 0\n' > "${T}/fakewin/bin/code"; cp "${T}/fakewin/bin/code" "${T}/fakenative/code"
+chmod +x "${T}/fakewin/bin/code" "${T}/fakenative/code"
+wsl_env=(env CLAUDE_CONFIG_DIR="${T}/home7" WIN_MOUNT_ROOT="${T}/fakewin/" WSL_DISTRO_NAME=Ubuntu)
+out="$(PATH="${T}/fakewin/bin:${PATH}" "${wsl_env[@]}" bash tools/check-install.sh 2>&1)"; rc=$?
+chk "WSL+Windows code: 종료 코드 0"          '[[ "${rc}" = 0 ]]'
+chk "WSL+Windows code: 판정이 같음"          'grep -q "설치본이 기본 영역과 같다" <<<"${out}"'
+chk "WSL+Windows code: 안내가 나옴"          'grep -q "WSL" <<<"${out}"'
+chk "WSL+Windows code: MISSING은 정보로 보임" 'grep -q "MISSING" <<<"${out}"'
+out="$(PATH="${T}/fakenative:${PATH}" "${wsl_env[@]}" bash tools/check-install.sh 2>&1)"; rc=$?
+chk "WSL+WSL 안 code: 진짜 MISSING은 실패로 셈" '[[ "${rc}" = 1 ]]'
+if grep -qi microsoft /proc/version 2>/dev/null; then
+  echo "  건너뜀  실제 WSL이라 WSL 아님 대조는 생략"
+else
+  out="$(PATH="${T}/fakewin/bin:${PATH}" env -u WSL_DISTRO_NAME CLAUDE_CONFIG_DIR="${T}/home7" WIN_MOUNT_ROOT="${T}/fakewin/" bash tools/check-install.sh 2>&1)"; rc=$?
+  chk "WSL 아님: 같은 code여도 실패로 셈"      '[[ "${rc}" = 1 ]]'
+fi
+
 echo "== 8. fingerprint --common: 사용자 추가는 공통 구역에 안 나오고, 기기 간 어긋남만 나온다"
 export CLAUDE_CONFIG_DIR="${T}/home8"
 bash tools/install.sh >"${T}/out8.txt" 2>&1

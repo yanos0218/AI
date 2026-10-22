@@ -70,6 +70,9 @@
 
 ### Fixed
 
+- `tools/check-install.sh`가 WSL에서 Windows VS Code를 잡아 확장 16개를 전부 MISSING으로 보고하고 실패로 끝나던 것을 수정([Issue #201](https://github.com/yanos0218/AI/issues/201))
+  - WSL이고 `code`가 `/mnt/` 아래이면 MISSING 목록은 보이되 판정에서 빼고 안내 한 줄을 냄, WSL 안 `code`의 MISSING은 그대로 실패로 셈
+  - 시험 `tools/test-install-merge.sh`에 7b 추가(가짜 `code`로 흉내), 실제 WSL에서의 확인은 사용자 기기에서 함
 - 파이썬 3.6(RHEL 8 계열 기본)에서 한글 출력이 `UnicodeEncodeError`로 죽던 것을 수정([Issue #202](https://github.com/yanos0218/AI/issues/202))
   - `reconfigure`가 없으면 `io.TextIOWrapper`로 감싸도록 `tools/settings_merge.py`·`tools/fingerprint.sh`·`tools/check-doc-sync.py`를 고침
   - locale이 `C`이면 `install.sh`의 `settings.json` 병합이 실패했고 `fingerprint.sh`·`check-doc-sync.py`도 트레이스백으로 끝났음

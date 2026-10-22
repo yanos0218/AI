@@ -59,7 +59,7 @@ mkdir -p ~/.claude/agents && cp base/agents/*.md ~/.claude/agents/
 | Mac 전용 | swift-vscode | Xcode가 있는 Mac에서만 의미. Windows 목록에서 제외 |
 | 보류 | Prettier, ESLint, GitLens, EditorConfig | 저장소에 설정 파일(`.prettierrc`, `eslint.config.js`, `.editorconfig`)이 없어 켜면 CI와 다른 기준으로 잔소리만 함. 프로젝트에 설정이 생기면 그때 추가 |
 
-"제외"는 기본 목록에 넣지 않는다는 뜻이지 지우라는 뜻이 아님. 기본 목록 밖에 이미 설치된 확장(의존 확장, 기기별로 쓰는 것)은 문제를 일으키지 않는 한 그대로 둔다(2026-09-09 결정). `install.sh`는 설치만 하고 삭제하지 않으며, `check-install.sh`도 VS Code 확장은 대조하지 않음. Settings Sync가 켜져 있으면 Mac에도 같이 반영되니, Mac에서 쓰는 것(swift 등)은 Mac에서 다시 설치함.
+"제외"는 기본 목록에 넣지 않는다는 뜻이지 지우라는 뜻이 아님. 기본 목록 밖에 이미 설치된 확장(의존 확장, 기기별로 쓰는 것)은 문제를 일으키지 않는 한 그대로 둔다(2026-09-09 결정). `install.sh`는 설치만 하고 삭제하지 않으며, `check-install.sh`도 VS Code 확장은 대조하지 않음. Settings Sync가 켜져 있으면 Mac에도 같이 반영되니, Mac에서 쓰는 것(swift 등)은 Mac에서 다시 설치함. WSL에서 `code`가 `/mnt/` 아래 Windows VS Code이면 `check-install.sh`가 MISSING 목록은 보여 주되 판정에서 빼고 안내만 함([Issue #201](https://github.com/yanos0218/AI/issues/201), 마운트 위치를 바꿨으면 `WIN_MOUNT_ROOT`로 지정).
 
 ## Claude Code CLI (터미널)
 
