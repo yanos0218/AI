@@ -48,7 +48,7 @@ for f in names('base/hooks/*.sh'):
     if b not in readme and b not in flow:
         problems.append('README·operating-flow에 없음: %s (훅 목록이나 훅 시점 표에 추가)' % f)
 for d in names('base/skills/*/'):
-    n = os.path.basename(d.rstrip('/'))
+    n = os.path.basename(d.rstrip('/\\'))   # Windows glob은 끝이 \라 둘 다 지운다(Issue #200)
     if not n.startswith('_') and n not in readme:
         problems.append('README에 없음: base/skills/%s (스킬 목록에 추가)' % n)
 for f in names('base/agents/*.md'):
@@ -95,7 +95,7 @@ def count_check(label, text, pattern, actual, where):
 
 
 hooks = len(names('base/hooks/*.sh'))
-skills = len([d for d in names('base/skills/*/') if not os.path.basename(d.rstrip('/')).startswith('_')])
+skills = len([d for d in names('base/skills/*/') if not os.path.basename(d.rstrip('/\\')).startswith('_')])
 agents = len(names('base/agents/*.md'))
 count_check('전역 훅', readme, r'전역 훅 (\d+)개', hooks, 'README')
 count_check('훅 셸 입구', flow, r'셸 입구 (\d+)개', hooks, 'docs/operating-flow.md')

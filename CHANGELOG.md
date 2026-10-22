@@ -68,6 +68,11 @@
 - `docs/operating-flow.md`에 5층 구성 매핑 표 추가([Issue #185](https://github.com/yanos0218/AI/issues/185), 문서 전용이라 버전 등급 미반영)
 - `tools/fingerprint.sh` 기기 지문 도구와 `docs/issue-format.md`의 반응 차이 사례 양식 추가([Issue #186](https://github.com/yanos0218/AI/issues/186), 저장소 도구·문서라 버전 등급 미반영)
 
+### Fixed
+
+- `tools/check-doc-sync.py`가 Windows에서 스킬 폴더 이름을 빈 문자열로 읽던 것을 수정([Issue #200](https://github.com/yanos0218/AI/issues/200))
+  - `_template`까지 세어 "스킬 7개로 적었는데 실제는 8개"로 실패했고, README 스킬 목록 누락 검사는 조용히 건너뛰고 있었음
+
 ## [0.14.0] - 2026-10-17
 
 ### Changed
