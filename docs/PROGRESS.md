@@ -40,7 +40,7 @@
 | 표면 | 설치된 것 | 설치일 | 다음 |
 | --- | --- | --- | --- |
 | Windows | `v0.14.0-44-gbad7e43`(install.sh 사용자 값 보존 병합, 모델·effort 고정 키 포함, 읽기 차단 줄 수동 추가 [#195](https://github.com/yanos0218/AI/issues/195)) | 2026-10-22 | 해당 없음(최신 설치) |
-| Mac mini | `v0.14.0-37-geb65888`(install.sh 사용자 값 보존 병합·백업 자동 정리 포함, base 내용은 이전 설치와 같음) | 2026-10-21 | 해당 없음(최신 설치) |
+| Mac mini | `v0.14.0-57-g988e096`(파이썬 3.6 호환 수정 `compact-snapshot` 반영, 읽기 차단 줄 수동 추가 [#195](https://github.com/yanos0218/AI/issues/195)) | 2026-10-22 | 해당 없음(최신 설치) |
 | Linux(RHEL 계열) | `v0.14.0-51-gb5191f8`(install.sh 사용자 값 보존 병합 포함, 읽기 차단 줄 수동 추가 [#195](https://github.com/yanos0218/AI/issues/195), 파이썬 3.6.8 한글 출력 수정 반영 [#202](https://github.com/yanos0218/AI/issues/202)) | 2026-10-22 | Mac 지문 `diff`([#194](https://github.com/yanos0218/AI/issues/194)), 새 대화형 세션 확인은 2026-10-22 정상 |
 | 웹(Claude.ai) | 스킬 3개 v0.11.4, Project instructions | 2026-09-19~20, 2026-09-12 | v0.14.0 Release zip 업로드, Project instructions 갱신 |
 
