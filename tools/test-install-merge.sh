@@ -205,7 +205,7 @@ chk "병합 실패 때는 정리하지 않음"        '[[ "$(find "${H9}" -maxde
 
 echo "== 10. 읽기 차단을 켜면 허용 폴더(설치본 폴더·원본 저장소)를 설치가 계산해 넣는다(Issue #205)"
 H10="${T}/home10"; export CLAUDE_CONFIG_DIR="${H10}"; mkdir -p "${H10}"
-echo '{"permissions":{"additionalDirectories":["/opt/my-extra"]}}' > "${H10}/settings.json"
+echo '{"permissions":{"additionalDirectories":["user-extra/dir"]}}' > "${H10}/settings.json"
 bash tools/install.sh >"${T}/out10.txt" 2>&1
 # q10 <확인식>: d=설치본 settings, home·repo=기대 경로. 슬래시·대소문자 차이나 짧은 이름은 같은 경로로 본다
 q10() { "${PY}" - "${H10}/settings.json" "${H10}" "$(pwd)" "$1" <<'PYEOF'
@@ -224,7 +224,7 @@ PYEOF
 chk "읽기 차단 값이 들어감"               'q10 "d[\"permissions\"].get(\"blockReadsOutsideWorkingDirectories\") is True"'
 chk "설치본 폴더(.claude) 경로가 허용 폴더에 들어감" 'q10 "has(home)"'
 chk "원본 저장소 경로가 들어감"           'q10 "has(repo)"'
-chk "사용자 허용 폴더는 유지"             'q10 "has(\"/opt/my-extra\")"'
+chk "사용자 허용 폴더는 유지"             'q10 "has(\"user-extra/dir\")"'
 nbak10="$(ls "${H10}"/settings.json.bak.* 2>/dev/null | wc -l | tr -d ' ')"
 bash tools/install.sh >"${T}/out10b.txt" 2>&1
 chk "두 번째 설치는 변경 없음"            'grep -q "settings.json 병합: 변경 없음" "${T}/out10b.txt"'
@@ -237,7 +237,7 @@ exec(sys.argv[2])
 io.open(p, 'w', encoding='utf-8', newline='\n').write(json.dumps(d, ensure_ascii=False, indent=2) + '\n')
 PYEOF
 }
-edit10 "a = d['permissions']['additionalDirectories']; a[:] = [x + '/' if x != '/opt/my-extra' else x for x in a]"
+edit10 "a = d['permissions']['additionalDirectories']; a[:] = [x + '/' if x != 'user-extra/dir' else x for x in a]"
 bash tools/install.sh >"${T}/out10c.txt" 2>&1
 chk "끝 슬래시만 다른 경로는 중복으로 안 늘림" 'grep -q "settings.json 병합: 변경 없음" "${T}/out10c.txt"'
 "${PY}" tools/settings_merge.py check "${H10}/settings.json" base/settings.example.json >"${T}/check10.txt" 2>&1; rc=$?
@@ -246,7 +246,7 @@ chk "설치가 넣은 허용 폴더는 사용자 추가로 안 셈(사용자 것
 bash tools/fingerprint.sh --common >"${T}/fp10.txt" 2>&1
 chk "지문 추가 키에 기기별 경로가 안 나옴" 'grep -q "permissions 추가 키 = 없음" "${T}/fp10.txt"'
 chk "지문 base 대비 same"                 'grep -q "settings base 대비 = same" "${T}/fp10.txt"'
-edit10 "d['permissions']['additionalDirectories'] = ['/opt/my-extra']"
+edit10 "d['permissions']['additionalDirectories'] = ['user-extra/dir']"
 "${PY}" tools/settings_merge.py check "${H10}/settings.json" base/settings.example.json >/dev/null 2>&1; rc=$?
 chk "허용 폴더가 빠지면 check가 어긋남으로 봄" '[[ "${rc}" = 1 ]]'
 
