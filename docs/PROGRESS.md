@@ -41,7 +41,7 @@
 | --- | --- | --- | --- |
 | Windows | `v0.14.0-44-gbad7e43`(install.sh 사용자 값 보존 병합, 모델·effort 고정 키 포함, 읽기 차단 줄 수동 추가 [#195](https://github.com/yanos0218/AI/issues/195)) | 2026-10-22 | 해당 없음(최신 설치) |
 | Mac mini | `v0.14.0-37-geb65888`(install.sh 사용자 값 보존 병합·백업 자동 정리 포함, base 내용은 이전 설치와 같음) | 2026-10-21 | 해당 없음(최신 설치) |
-| Linux(RHEL 계열) | `v0.14.0-47-g95f0570`(install.sh 사용자 값 보존 병합 포함, 읽기 차단 줄 없음, 파이썬 3.6.8에서 병합 시험 3건 실패 [#202](https://github.com/yanos0218/AI/issues/202)) | 2026-10-22 | 읽기 차단 줄 수동 추가 뒤 시험([#194](https://github.com/yanos0218/AI/issues/194)), 파이썬 3.6.8에서 훅 실행 확인, [#202](https://github.com/yanos0218/AI/issues/202) 수정 |
+| Linux(RHEL 계열) | `v0.14.0-51-gb5191f8`(install.sh 사용자 값 보존 병합 포함, 읽기 차단 줄 없음, 파이썬 3.6.8 한글 출력 수정 반영 [#202](https://github.com/yanos0218/AI/issues/202)) | 2026-10-22 | 읽기 차단 줄 수동 추가 뒤 시험([#194](https://github.com/yanos0218/AI/issues/194)), 새 세션에서 훅 동작 확인 |
 | 웹(Claude.ai) | 스킬 3개 v0.11.4, Project instructions | 2026-09-19~20, 2026-09-12 | v0.14.0 Release zip 업로드, Project instructions 갱신 |
 
 ### 자산별 단계와 배포
@@ -59,7 +59,7 @@
 | session-start-check 훅(SessionStart) | 기본 (설정 낡음 판정 수정 2026-09-28 [#150](https://github.com/yanos0218/AI/issues/150), `tools/test-session-start-check.sh` 15/15) | ✓ | ✓ | ✓ | - | Windows 느린 시각 훅 시간 측정 |
 | bulk-read-log 훅(PostToolUse) | 기본 (2026-09-15 [#100](https://github.com/yanos0218/AI/issues/100), 서브에이전트 조회 제외 [#134](https://github.com/yanos0218/AI/issues/134)) | ✓ | ✓ | ✓ | - | - |
 | config-changelog 훅 | 기본 (2026-10-17 조각 단위 판정·명령 등록 `if` 반영, 시험 31/31 [#173](https://github.com/yanos0218/AI/issues/173)·[#147](https://github.com/yanos0218/AI/issues/147)) | ✓ | ✓ | ✓ | - | - |
-| 훅 파이썬 전환(`hooklib.py` + 셸 입구·파이썬 본체) | 기본 (2026-09-28 승격, 30일 명령 766건 대조 [#144](https://github.com/yanos0218/AI/issues/144)) | ✓ | ✓ | ✓ | - | Linux 파이썬 3.6.8에서 훅 실행 확인(문서에는 3.9로 적혀 있었으나 실제 3.6.8, [#202](https://github.com/yanos0218/AI/issues/202)) |
+| 훅 파이썬 전환(`hooklib.py` + 셸 입구·파이썬 본체) | 기본 (2026-09-28 승격, 30일 명령 766건 대조 [#144](https://github.com/yanos0218/AI/issues/144)) | ✓ | ✓ | ✓ | - | Linux 파이썬 3.6.8에서 훅 시험 32/32 통과(2026-10-22, [#202](https://github.com/yanos0218/AI/issues/202)), 새 세션에서 실제 동작 확인 |
 | statusline 훅 | 기본 (터미널 CLI 전용, VS Code 패널엔 안 나옴) | ✓ | ✓ | ✓ | - | - |
 | 컴팩션 안전망 훅(`compact-snapshot.sh`·`compact-snapshot-show.sh`) | 기본 (2026-09-27 승격, 실제 자동 컴팩션에서 확인 [#104](https://github.com/yanos0218/AI/issues/104)) | ✓ | ✓ | ✓ | - | - |
 | 형식 검사 훅(`format-guard.sh`·`md-format-check.sh`·`format_check.py`·`check-cram.py`) | 기본 (2026-09-29 승격, 시험 32/32, 새 세션에서 위반 커밋 차단 확인 [#141](https://github.com/yanos0218/AI/issues/141)) | ✓ | ✓ | ✓ | - | `check-cram.py` 필드-값 형식 예외 판정 2026-10-17 기본 반영 [#175](https://github.com/yanos0218/AI/issues/175)<br>`.md` 문장형 검사 2026-10-21 추가, 시험 41/41 [#188](https://github.com/yanos0218/AI/issues/188) |
