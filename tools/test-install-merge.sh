@@ -98,6 +98,24 @@ chk "종료 코드 0"                    '[[ "${rc}" = 0 ]]'
 chk "트레이스백 없음"                '! grep -q Traceback <<<"${out}"'
 chk "병합 결과가 파일에 쓰임"        'grep -q permissions "${T}/enc.json"'
 
+echo "== 6b. 출력이 ASCII(locale C)여도 install·fingerprint·check-install·check-doc-sync의 한글 출력이 깨지지 않는다(파이썬 3.6 기기에서 발견, Issue #202)"
+# 3.6에는 reconfigure가 없어 감싸기 경로를 탄다. CI 러너(3.7 이상)는 reconfigure 경로만 시험하고, 감싸기 경로는 3.6 기기(RHEL 8 계열)에서만 시험된다
+ascii_env=(env -u LANG -u LC_ALL -u LC_CTYPE LC_ALL=C PYTHONIOENCODING=ascii CLAUDE_CONFIG_DIR="${T}/home6b")
+echo '{"theme":"dark"}' > "${T}/seed6b.json"; mkdir -p "${T}/home6b"; cp "${T}/seed6b.json" "${T}/home6b/settings.json"
+out="$("${ascii_env[@]}" bash tools/install.sh 2>&1)"; rc=$?
+chk "install 종료 코드 0"            '[[ "${rc}" = 0 ]]'
+chk "install 트레이스백 없음"        '! grep -q Traceback <<<"${out}"'
+chk "install 뒤 사용자 키 유지"      'grep -q "\"theme\"" "${T}/home6b/settings.json"'
+out="$("${ascii_env[@]}" bash tools/check-install.sh 2>&1)"; rc=$?
+chk "check-install 종료 코드 0"      '[[ "${rc}" = 0 ]]'
+chk "check-install 트레이스백 없음"  '! grep -q Traceback <<<"${out}"'
+out="$("${ascii_env[@]}" bash tools/fingerprint.sh 2>&1)"; rc=$?
+chk "fingerprint 종료 코드 0"        '[[ "${rc}" = 0 ]]'
+chk "fingerprint 트레이스백 없음"    '! grep -q Traceback <<<"${out}"'
+out="$("${ascii_env[@]}" "${PY}" tools/check-doc-sync.py 2>&1)"; rc=$?
+chk "check-doc-sync 종료 코드 0"     '[[ "${rc}" = 0 ]]'
+chk "check-doc-sync 트레이스백 없음" '! grep -q Traceback <<<"${out}"'
+
 echo "== 7. 설치 뒤 check-install.sh·fingerprint.sh도 한글 출력이 파이프에서 깨지지 않는다(Windows 러너에서 확인)"
 export CLAUDE_CONFIG_DIR="${T}/home7"
 bash tools/install.sh >"${T}/out7.txt" 2>&1

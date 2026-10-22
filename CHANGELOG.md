@@ -70,6 +70,10 @@
 
 ### Fixed
 
+- 파이썬 3.6(RHEL 8 계열 기본)에서 한글 출력이 `UnicodeEncodeError`로 죽던 것을 수정([Issue #202](https://github.com/yanos0218/AI/issues/202))
+  - `reconfigure`가 없으면 `io.TextIOWrapper`로 감싸도록 `tools/settings_merge.py`·`tools/fingerprint.sh`·`tools/check-doc-sync.py`를 고침
+  - locale이 `C`이면 `install.sh`의 `settings.json` 병합이 실패했고 `fingerprint.sh`·`check-doc-sync.py`도 트레이스백으로 끝났음
+  - 시험 `tools/test-install-merge.sh`에 6b(ASCII 출력) 추가, `docs/testing.md`에 3.6 규칙 추가
 - `tools/check-doc-sync.py`가 Windows에서 스킬 폴더 이름을 빈 문자열로 읽던 것을 수정([Issue #200](https://github.com/yanos0218/AI/issues/200))
   - `_template`까지 세어 "스킬 7개로 적었는데 실제는 8개"로 실패했고, README 스킬 목록 누락 검사는 조용히 건너뛰고 있었음
 

@@ -8,7 +8,7 @@
 | --- | --- | --- |
 | `.md` 문서 | `npx markdownlint-cli2 "**/*.md"`<br>`bash tools/check-docs.sh`<br>`python3 tools/check-doc-sync.py` | CI와 같이 모든 `.md`, 제외 폴더는 `.markdownlint-cli2.jsonc`. 줄 길이(MD013)는 무시<br>검사한 수는 `Linting: N files`, 마지막 줄 `0 issues in 0 files`는 "문제 있는 파일 0개"라는 뜻<br>줄 수 상한은 [CLAUDE.md](../CLAUDE.md) "문서 규칙" |
 | 셸 스크립트 | `npx shellcheck -S warning <파일>` | CI 대상은 [.github/workflows/lint.yml](../.github/workflows/lint.yml)(2026-09-29 기준 27개)<br>모든 스크립트를 `${var}`·`[[ ]]` 스타일로 씀<br>`--enable=all`이 더 잡는 것은 전부 스타일이라 쓰지 않음(2026-09-13 확인) |
-| 파이썬 | `python3 -m py_compile <파일>` | 훅은 Rocky Linux 3.9에서도 돌도록 3.8 문법만 |
+| 파이썬 | `python3 -m py_compile <파일>` | Rocky Linux 8 기본 파이썬이 3.6.8이라 훅·도구는 3.6에서도 돌게 씀, 3.7 이상 전용 기능 금지는 아래 "세 OS에서 도는 스크립트 쓰기" |
 | 훅 | [tools/test-hooks-py.sh](../tools/test-hooks-py.sh)<br>[tools/test-session-start-check.sh](../tools/test-session-start-check.sh)<br>[tools/test-format-guard.sh](../tools/test-format-guard.sh) | 판정 사례·실패 시 동작<br>설정 낡음 판정<br>형식 검사 게시 전·저장 후 |
 | 스킬 | [tools/test-skill.sh](../tools/test-skill.sh) | 새 세션 발동 시험, 방법은 [skill-development.md](skill-development.md) "시험 방법" |
 | 에이전트 | [tools/test-agent.sh](../tools/test-agent.sh) | 위임 대상·도구 호출·훅 차단 |
@@ -54,6 +54,12 @@ Windows(Git Bash, bash 5, gawk)에서만 시험하면 Mac(bash 3.2, BSD 도구)�
   - `awk -v`에 여러 줄 값을 넘기지 않는다(BSD awk 오류). 환경변수로 넘기고 `ENVIRON`으로 읽음.
 - 파이썬은 이름을 고정하지 않음
   - Mac은 `python` 없이 `python3`만 있음. 훅은 `python` → `python3` 순(Windows는 `python3`가 느린 스토어 별칭), 도구는 `command -v python3 || command -v python`.
+- 파이썬 3.7 이상 전용 기능을 쓰지 않음
+  - Rocky Linux 8 기본 3.6.8에서 `sys.stdout.reconfigure`, `datetime.fromisoformat`, `subprocess.run(capture_output=)`, `dataclasses`, `from __future__ import annotations`가 없음([Issue #202](https://github.com/yanos0218/AI/issues/202)).
+  - 출력 인코딩은 `reconfigure`가 없으면 `io.TextIOWrapper`로 감쌈([tools/settings_merge.py](../tools/settings_merge.py) `utf8_stdio`), 훅 셸 입구는 `PYTHONIOENCODING=utf-8`을 지정함.
+  - CI 러너는 모두 3.7 이상이라 3.6 경로는 CI가 못 잡음. 파이썬 관련 변경 뒤에는 RHEL 8 계열 기기에서 `tools/test-install-merge.sh`와 `tools/test-hooks-py.sh`를 직접 돌림.
+  - `tools/test-hooks-py.sh`의 입력 도우미는 `python3 -c`에 한글을 실어 3.6에서 `LC_ALL=C`로는 실행되지 않음(명령줄 해석 실패, 훅 결함 아님), `LC_ALL=C.UTF-8`로 돌림.
+  - 예외는 `usage-dashboard`의 `fromisoformat`, Linux 제외 대상이라 그대로 둠.
 - 빈 글롭은 `shopt -s nullglob`으로 건너뜀
   - 폴더가 비면 글롭이 문자 그대로 넘어감.
 

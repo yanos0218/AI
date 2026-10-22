@@ -146,12 +146,17 @@ def extras(cur, base):
 
 
 def utf8_stdio():
-    """Windows는 출력이 파이프일 때 cp1252·cp949 등으로 나가 한글에서 UnicodeEncodeError가 난다(CI windows-latest에서 확인)."""
-    for stream in (sys.stdout, sys.stderr):
+    """Windows는 출력이 파이프일 때 cp1252·cp949 등으로 나가 한글에서 UnicodeEncodeError가 난다(CI windows-latest에서 확인).
+
+    파이썬 3.6에는 reconfigure가 없어 스트림을 UTF-8 래퍼로 바꾼다(RHEL 8 계열 기본 3.6.8, Issue #202).
+    """
+    for name in ('stdout', 'stderr'):
+        stream = getattr(sys, name)
         try:
             stream.reconfigure(encoding='utf-8')
-        except AttributeError:  # 파이썬 3.6 이하
-            pass
+        except AttributeError:
+            setattr(sys, name, io.TextIOWrapper(stream.buffer, encoding='utf-8', errors=stream.errors,
+                                                line_buffering=stream.line_buffering))
 
 
 def main(argv):

@@ -6,7 +6,7 @@
   3. 개수 대조  README·operating-flow가 적은 훅·스킬·에이전트·권한 개수가 실제와 같은지
   (2번에는 저장소 CLAUDE.md의 @import가 가리키는 파일이 있는지도 들어 있다)
 
-고치지 않고 위반을 한 줄씩 출력한 뒤 종료 코드 1로 끝낸다. 3.8 문법만 쓴다(Rocky Linux 3.9, Windows 기본 인코딩 cp949 대비 UTF-8 출력).
+고치지 않고 위반을 한 줄씩 출력한 뒤 종료 코드 1로 끝낸다. 3.6에서도 돈다(Rocky Linux 8 기본 3.6.8, Windows 기본 인코딩 cp949 대비 UTF-8 출력).
 """
 import glob
 import io
@@ -17,7 +17,10 @@ import sys
 
 try:
     sys.stdout.reconfigure(encoding='utf-8')
-except (AttributeError, ValueError):
+except AttributeError:  # 파이썬 3.6에는 reconfigure가 없어 래퍼로 바꾼다(Issue #202)
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors=sys.stdout.errors,
+                                  line_buffering=sys.stdout.line_buffering)
+except ValueError:
     pass
 
 os.chdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))

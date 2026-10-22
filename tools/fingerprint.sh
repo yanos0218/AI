@@ -26,16 +26,12 @@ done
 "${PY}" -I - "${CLAUDE_HOME}" "${ROOT}" "${CLI}" "${EXT}" "$(uname -sm)" "${SCRIPT_DIR}" "${COMMON_ONLY}" <<'PY'
 import glob, hashlib, io, json, os, re, sys
 
-# Windows는 출력이 파이프이면 cp1252·cp949 등으로 나가 한글에서 UnicodeEncodeError가 난다. -I가 PYTHONIOENCODING을 무시하므로 코드에서 고정한다(Issue #197)
-for _stream in (sys.stdout, sys.stderr):
-    try:
-        _stream.reconfigure(encoding='utf-8')
-    except AttributeError:
-        pass
-
 home, root, cli, ext, osname, script_dir, common_only = sys.argv[1:8]
 sys.path.insert(0, script_dir)
 import settings_merge as sm
+
+# Windows는 출력이 파이프이면 cp1252·cp949 등으로 나가 한글에서 UnicodeEncodeError가 난다. -I가 PYTHONIOENCODING을 무시하므로 코드에서 고정한다(Issue #197, 파이썬 3.6 대응 Issue #202)
+sm.utf8_stdio()
 
 
 def sha(path):
