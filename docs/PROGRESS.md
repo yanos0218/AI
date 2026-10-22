@@ -41,7 +41,7 @@
 | --- | --- | --- | --- |
 | Windows | `v0.14.0-44-gbad7e43`(install.sh 사용자 값 보존 병합, 모델·effort 고정 키 포함, 읽기 차단 줄 수동 추가 [#195](https://github.com/yanos0218/AI/issues/195)) | 2026-10-22 | 해당 없음(최신 설치) |
 | Mac mini | `v0.14.0-37-geb65888`(install.sh 사용자 값 보존 병합·백업 자동 정리 포함, base 내용은 이전 설치와 같음) | 2026-10-21 | 해당 없음(최신 설치) |
-| Linux(RHEL 계열) | 2026-09-16 설치본(버전 기록 미확인) | 2026-09-16 | 다음 접속 때 `install.sh`, 파이썬 3.9에서 훅 실행 확인 |
+| Linux(RHEL 계열) | `v0.14.0-47-g95f0570`(install.sh 사용자 값 보존 병합 포함, 읽기 차단 줄 없음, 파이썬 3.6.8에서 병합 시험 3건 실패 [#202](https://github.com/yanos0218/AI/issues/202)) | 2026-10-22 | 읽기 차단 줄 수동 추가 뒤 시험([#194](https://github.com/yanos0218/AI/issues/194)), 파이썬 3.6.8에서 훅 실행 확인, [#202](https://github.com/yanos0218/AI/issues/202) 수정 |
 | 웹(Claude.ai) | 스킬 3개 v0.11.4, Project instructions | 2026-09-19~20, 2026-09-12 | v0.14.0 Release zip 업로드, Project instructions 갱신 |
 
 ### 자산별 단계와 배포
@@ -50,25 +50,25 @@
 
 | 자산 | 단계 | Windows | Mac mini | Linux | 웹(Claude.ai) | 다음 행동 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 전역 지침 `base/claude-md/CLAUDE.md` | 기본 (2026-10-17 §2 큰 작업 끝 점검·§4 CI 대기 추가, 새 세션 전후 2회씩 [#169](https://github.com/yanos0218/AI/issues/169) [#176](https://github.com/yanos0218/AI/issues/176)) | ✓ | 갱신 대기 | 갱신 대기 | 갱신 대기(Project instructions 2026-09-12) | - |
-| 모듈 규칙 `base/rules/docs-format.md` | 기본 (2026-09-28 이슈·PR 음슴체, 필드 예외 범위) | ✓ | ✓ | 갱신 대기 | - | - |
-| `settings.example.json` (권한·훅·상태줄·env·기본 모델·effort) | 기본 (2026-09-29 형식 검사·대시보드 훅 등록 [#141](https://github.com/yanos0218/AI/issues/141) [#136](https://github.com/yanos0218/AI/issues/136), 기록 훅 async·`if` 조건 [#147](https://github.com/yanos0218/AI/issues/147), 2026-10-21 모델·effort 고정 키 [#187](https://github.com/yanos0218/AI/issues/187)) | ✓ | ✓ | 갱신 대기 | - | Linux `install.sh` 뒤 `fingerprint.sh`로 `settings model` 확인 |
+| 전역 지침 `base/claude-md/CLAUDE.md` | 기본 (2026-10-17 §2 큰 작업 끝 점검·§4 CI 대기 추가, 새 세션 전후 2회씩 [#169](https://github.com/yanos0218/AI/issues/169) [#176](https://github.com/yanos0218/AI/issues/176)) | ✓ | 갱신 대기 | ✓ | 갱신 대기(Project instructions 2026-09-12) | - |
+| 모듈 규칙 `base/rules/docs-format.md` | 기본 (2026-09-28 이슈·PR 음슴체, 필드 예외 범위) | ✓ | ✓ | ✓ | - | - |
+| `settings.example.json` (권한·훅·상태줄·env·기본 모델·effort) | 기본 (2026-09-29 형식 검사·대시보드 훅 등록 [#141](https://github.com/yanos0218/AI/issues/141) [#136](https://github.com/yanos0218/AI/issues/136), 기록 훅 async·`if` 조건 [#147](https://github.com/yanos0218/AI/issues/147), 2026-10-21 모델·effort 고정 키 [#187](https://github.com/yanos0218/AI/issues/187)) | ✓ | ✓ | ✓ | - | -
 | 서브에이전트 재귀 차단 `env.CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` | 기본 (재귀 시도 차단 실측 2026-09-13 [#75](https://github.com/yanos0218/AI/issues/75)) | ✓ | ✓ | ✓ | - | - |
-| git-guardrails 훅 | 기본 (push 차단 확인 2026-09-08, 제한 시간 초과 통과 문제 수정 2026-09-28 [#142](https://github.com/yanos0218/AI/issues/142)) | ✓ | ✓ | 갱신 대기 | - | - |
-| gh-throttle 훅 | 기본 (병렬 직렬화 실측 2026-09-13 [#74](https://github.com/yanos0218/AI/issues/74), 제한 시간 30초 [#142](https://github.com/yanos0218/AI/issues/142)) | ✓ | ✓ | 갱신 대기 | - | - |
-| session-start-check 훅(SessionStart) | 기본 (설정 낡음 판정 수정 2026-09-28 [#150](https://github.com/yanos0218/AI/issues/150), `tools/test-session-start-check.sh` 15/15) | ✓ | ✓ | 갱신 대기 | - | Windows 느린 시각 훅 시간 측정 |
-| bulk-read-log 훅(PostToolUse) | 기본 (2026-09-15 [#100](https://github.com/yanos0218/AI/issues/100), 서브에이전트 조회 제외 [#134](https://github.com/yanos0218/AI/issues/134)) | ✓ | ✓ | 갱신 대기 | - | - |
-| config-changelog 훅 | 기본 (2026-10-17 조각 단위 판정·명령 등록 `if` 반영, 시험 31/31 [#173](https://github.com/yanos0218/AI/issues/173)·[#147](https://github.com/yanos0218/AI/issues/147)) | ✓ | ✓ | 갱신 대기 | - | - |
-| 훅 파이썬 전환(`hooklib.py` + 셸 입구·파이썬 본체) | 기본 (2026-09-28 승격, 30일 명령 766건 대조 [#144](https://github.com/yanos0218/AI/issues/144)) | ✓ | ✓ | ✗ | - | Linux 파이썬 3.9 실행 확인 |
+| git-guardrails 훅 | 기본 (push 차단 확인 2026-09-08, 제한 시간 초과 통과 문제 수정 2026-09-28 [#142](https://github.com/yanos0218/AI/issues/142)) | ✓ | ✓ | ✓ | - | - |
+| gh-throttle 훅 | 기본 (병렬 직렬화 실측 2026-09-13 [#74](https://github.com/yanos0218/AI/issues/74), 제한 시간 30초 [#142](https://github.com/yanos0218/AI/issues/142)) | ✓ | ✓ | ✓ | - | - |
+| session-start-check 훅(SessionStart) | 기본 (설정 낡음 판정 수정 2026-09-28 [#150](https://github.com/yanos0218/AI/issues/150), `tools/test-session-start-check.sh` 15/15) | ✓ | ✓ | ✓ | - | Windows 느린 시각 훅 시간 측정 |
+| bulk-read-log 훅(PostToolUse) | 기본 (2026-09-15 [#100](https://github.com/yanos0218/AI/issues/100), 서브에이전트 조회 제외 [#134](https://github.com/yanos0218/AI/issues/134)) | ✓ | ✓ | ✓ | - | - |
+| config-changelog 훅 | 기본 (2026-10-17 조각 단위 판정·명령 등록 `if` 반영, 시험 31/31 [#173](https://github.com/yanos0218/AI/issues/173)·[#147](https://github.com/yanos0218/AI/issues/147)) | ✓ | ✓ | ✓ | - | - |
+| 훅 파이썬 전환(`hooklib.py` + 셸 입구·파이썬 본체) | 기본 (2026-09-28 승격, 30일 명령 766건 대조 [#144](https://github.com/yanos0218/AI/issues/144)) | ✓ | ✓ | ✓ | - | Linux 파이썬 3.6.8에서 훅 실행 확인(문서에는 3.9로 적혀 있었으나 실제 3.6.8, [#202](https://github.com/yanos0218/AI/issues/202))
 | statusline 훅 | 기본 (터미널 CLI 전용, VS Code 패널엔 안 나옴) | ✓ | ✓ | ✓ | - | - |
-| 컴팩션 안전망 훅(`compact-snapshot.sh`·`compact-snapshot-show.sh`) | 기본 (2026-09-27 승격, 실제 자동 컴팩션에서 확인 [#104](https://github.com/yanos0218/AI/issues/104)) | ✓ | ✓ | ✗ | - | - |
-| 형식 검사 훅(`format-guard.sh`·`md-format-check.sh`·`format_check.py`·`check-cram.py`) | 기본 (2026-09-29 승격, 시험 32/32, 새 세션에서 위반 커밋 차단 확인 [#141](https://github.com/yanos0218/AI/issues/141)) | ✓ | ✓ | ✗ | - | `check-cram.py` 필드-값 형식 예외 판정 2026-10-17 기본 반영 [#175](https://github.com/yanos0218/AI/issues/175)<br>`.md` 문장형 검사 2026-10-21 추가, 시험 41/41 [#188](https://github.com/yanos0218/AI/issues/188) |
-| 용도별 에이전트 3종(`base/agents/` + `verifier-guard`) | 기본 (2026-09-27 승격, 새 세션 18회 [#131](https://github.com/yanos0218/AI/issues/131)) | ✓ | ✓ | ✗ | - | VS Code 화면에서 위임 사용 확인 |
-| dev-release 스킬 | 기본 (3시나리오 2026-09-08, 문서 동기화 확인 단계 [#121](https://github.com/yanos0218/AI/issues/121)) | ✓ | ✓ | 갱신 대기 | 갱신 대기(v0.11.4) | - |
-| dev-workflow 스킬 | 기본 (3시나리오 2026-09-09) | ✓ | ✓ | 갱신 대기 | 갱신 대기(v0.11.4) | - |
-| repo-setup 스킬 | 기본 (3시나리오 2026-09-09) | ✓ | ✓ | 갱신 대기 | 갱신 대기(v0.11.4) | - |
-| self-audit 스킬 | 기본 (3시나리오 2026-09-13, 이슈 본문 형식 수정 2026-10-07 [#172](https://github.com/yanos0218/AI/issues/172)) | ✓ | 갱신 대기 | 갱신 대기 | ✗ | Mac·Linux 새 세션 발동 미검증 |
-| config-update 스킬 | 기본 (원격 확인 수정 3시나리오 2026-09-28 [#150](https://github.com/yanos0218/AI/issues/150)) | ✓ | ✓ | ✗ | ✗ | 결과 보고에 PROGRESS 기록 줄 포함 수정안 `drafts/skills/` 초안, 새 세션 시험 대기 [#181](https://github.com/yanos0218/AI/issues/181) |
+| 컴팩션 안전망 훅(`compact-snapshot.sh`·`compact-snapshot-show.sh`) | 기본 (2026-09-27 승격, 실제 자동 컴팩션에서 확인 [#104](https://github.com/yanos0218/AI/issues/104)) | ✓ | ✓ | ✓ | - | - |
+| 형식 검사 훅(`format-guard.sh`·`md-format-check.sh`·`format_check.py`·`check-cram.py`) | 기본 (2026-09-29 승격, 시험 32/32, 새 세션에서 위반 커밋 차단 확인 [#141](https://github.com/yanos0218/AI/issues/141)) | ✓ | ✓ | ✓ | - | `check-cram.py` 필드-값 형식 예외 판정 2026-10-17 기본 반영 [#175](https://github.com/yanos0218/AI/issues/175)<br>`.md` 문장형 검사 2026-10-21 추가, 시험 41/41 [#188](https://github.com/yanos0218/AI/issues/188) |
+| 용도별 에이전트 3종(`base/agents/` + `verifier-guard`) | 기본 (2026-09-27 승격, 새 세션 18회 [#131](https://github.com/yanos0218/AI/issues/131)) | ✓ | ✓ | ✓ | - | VS Code 화면에서 위임 사용 확인 |
+| dev-release 스킬 | 기본 (3시나리오 2026-09-08, 문서 동기화 확인 단계 [#121](https://github.com/yanos0218/AI/issues/121)) | ✓ | ✓ | ✓ | 갱신 대기(v0.11.4) | - |
+| dev-workflow 스킬 | 기본 (3시나리오 2026-09-09) | ✓ | ✓ | ✓ | 갱신 대기(v0.11.4) | - |
+| repo-setup 스킬 | 기본 (3시나리오 2026-09-09) | ✓ | ✓ | ✓ | 갱신 대기(v0.11.4) | - |
+| self-audit 스킬 | 기본 (3시나리오 2026-09-13, 이슈 본문 형식 수정 2026-10-07 [#172](https://github.com/yanos0218/AI/issues/172)) | ✓ | 갱신 대기 | ✓ | ✗ | Mac·Linux 새 세션 발동 미검증 |
+| config-update 스킬 | 기본 (원격 확인 수정 3시나리오 2026-09-28 [#150](https://github.com/yanos0218/AI/issues/150)) | ✓ | ✓ | ✓ | ✗ | 결과 보고에 PROGRESS 기록 줄 포함 수정안 `drafts/skills/` 초안, 새 세션 시험 대기 [#181](https://github.com/yanos0218/AI/issues/181) |
 | pdf-extract 스킬 | 기본 (2026-09-27 승격, 새 세션 6시나리오 [#132](https://github.com/yanos0218/AI/issues/132)) | ✓ (MarkItDown 가상환경) | ✓ (MarkItDown 가상환경 2026-09-29) | ✗ (Python 3.10+ 가상환경 필요, Rocky는 python3.11) | - (웹은 PDF 직접 처리) | CID 깨짐 PDF 미시험 |
 | usage-dashboard 스킬(요청 시 켜는 기록 훅 + 로컬 대시보드) | 기본 (2026-09-29 승격, Windows 실사용·Mac 화면 확인 [#136](https://github.com/yanos0218/AI/issues/136)) | ✓ | ✓ | - (Linux 제외) | - (로컬 전용) | `claude -p` 세션은 기록 안 됨, 90일 쌓인 뒤(2026-12 말) Windows 처리 시간 측정 |
 | `base/vscode/` 확장 목록·설정·설치 스크립트 | 기본 (2026-09-29 16개 [#165](https://github.com/yanos0218/AI/issues/165), Mac 폴백 확인 [#57](https://github.com/yanos0218/AI/issues/57)) | ✓ | ✓ | - | - | - |
