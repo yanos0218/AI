@@ -24,7 +24,7 @@ for d in "${HOME}"/.vscode/extensions/anthropic.claude-code-*; do
 done
 
 "${PY}" -I - "${CLAUDE_HOME}" "${ROOT}" "${CLI}" "${EXT}" "$(uname -sm)" "${SCRIPT_DIR}" "${COMMON_ONLY}" <<'PY'
-import glob, hashlib, io, json, os, re, sys
+import glob, hashlib, io, json, os, re, subprocess, sys
 
 home, root, cli, ext, osname, script_dir, common_only = sys.argv[1:8]
 sys.path.insert(0, script_dir)
@@ -66,6 +66,22 @@ perm = settings.get('permissions') or {}
 slug = re.sub(r'[^A-Za-z0-9]', '-', root)
 memory = len(glob.glob(os.path.join(home, 'projects', slug, 'memory', '*.md')))
 
+# 설치본이 저장소 현재 base/와 같은지(Issue #203). 두 기기의 설치 해시가 같아도 둘 다 낡을 수 있어 저장소와 직접 비교한다
+# 저장소를 pull한 시점에 따라 달라지므로 [기기별]이다
+installed_hash = ver[2] if len(ver) > 2 else ''
+try:
+    repo_hash = subprocess.check_output(['git', '-C', script_dir, 'rev-parse', 'HEAD:base'], stderr=subprocess.DEVNULL).decode().strip()
+except (OSError, subprocess.CalledProcessError):
+    repo_hash = ''
+if not installed_hash:
+    fresh = '비교 못 함(설치 버전 파일에 해시 없음)'
+elif not repo_hash:
+    fresh = '비교 못 함(저장소 base 해시를 못 읽음)'
+elif installed_hash == repo_hash:
+    fresh = '최신'
+else:
+    fresh = '낡음(저장소 %s)' % repo_hash[:8]
+
 # 같아야 하는 값. 여기 없는 행은 [기기별](달라도 정상)
 COMMON = {'설치 기본영역 해시', '전역 지침', '훅·스킬·에이전트 수', 'settings model', 'settings modelSettings',
           'settings effortLevel', 'settings env 키', '모델 환경변수', 'settings base 대비', 'permissions 추가 키', '저장소 CLAUDE.md'}
@@ -90,6 +106,7 @@ rows = [
     ('기기 OS', osname),
     ('설치 버전', ver[1] if len(ver) > 1 else '없음'),
     ('설치 기본영역 해시', (ver[2][:12] if len(ver) > 2 else '없음')),
+    ('설치본', fresh),
     ('전역 지침', sha(os.path.join(home, 'CLAUDE.md'))),
     ('rules 파일', ' '.join(sorted(os.path.basename(p) for p in glob.glob(os.path.join(home, 'rules', '*.md')))) or '없음'),
     ('훅·스킬·에이전트 수', '%d·%d·%d' % (count('hooks/*.sh'), count('skills/*/SKILL.md'), count('agents/*.md'))),

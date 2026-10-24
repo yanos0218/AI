@@ -51,5 +51,9 @@
   - `diff`가 비어 있으면 일치, 차이가 나오면 어긋남
   - Windows 출력이 섞이면 `diff --strip-trailing-cr`로 비교, Windows에서는 PowerShell이 아니라 Git Bash에서 실행
   - 사용자가 얹은 권한 키(예: `defaultMode`)는 base에 없으면 [공통]에 나와 차이로 드러남, base가 정한 키와 기기별 경로(`additionalDirectories`)는 나오지 않음
+- 비교하기 전에 각 기기의 `설치본 = 최신` 줄부터 확인함([Issue #203](https://github.com/yanos0218/AI/issues/203))
+  - 저장소 현재 `base/`와 설치 해시를 직접 비교한 결과이고, 저장소를 pull한 시점에 따라 달라져 [기기별]임
+  - `낡음(저장소 해시)`이면 두 기기 해시가 같아도 둘 다 낡은 것이라 `config-update` 먼저
+  - 이 줄은 그 기기 안의 저장소와 비교하므로, 저장소가 낡았으면 `git pull` 뒤에 봄
 - 전체 출력(옵션 없음)은 [기기별] 줄까지 보여 주며 그 차이는 정상
 - 새 항목은 [공통]에 둘지 [기기별]에 둘지 이 문서의 구분 기준으로 정하고 `tools/fingerprint.sh`의 `COMMON` 목록에 반영함

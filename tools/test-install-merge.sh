@@ -250,6 +250,25 @@ edit10 "d['permissions']['additionalDirectories'] = ['user-extra/dir']"
 "${PY}" tools/settings_merge.py check "${H10}/settings.json" base/settings.example.json >/dev/null 2>&1; rc=$?
 chk "허용 폴더가 빠지면 check가 어긋남으로 봄" '[[ "${rc}" = 1 ]]'
 
+echo "== 11. fingerprint 설치본 줄: 설치 직후 최신, 해시가 다르면 낡음, 해시가 없으면 비교 못 함(Issue #203)"
+H11="${T}/home11"
+CLAUDE_CONFIG_DIR="${H11}" bash tools/install.sh >"${T}/out11.txt" 2>&1
+CLAUDE_CONFIG_DIR="${H11}" bash tools/fingerprint.sh >"${T}/fp11a.txt" 2>&1
+chk "설치 직후는 최신"                    'grep -q "^\[기기별\] 설치본 = 최신$" "${T}/fp11a.txt"'
+chk "설치본 줄은 --common에 안 나옴"      '! CLAUDE_CONFIG_DIR="${H11}" bash tools/fingerprint.sh --common | grep -q "설치본 ="'
+"${PY}" - "${H11}/.claude-config-version" <<'PYEOF'
+import io, sys
+p = sys.argv[1]
+l = io.open(p, encoding='utf-8').read().split('\n')
+l[2] = '0' * 40
+io.open(p, 'w', encoding='utf-8', newline='\n').write('\n'.join(l))
+PYEOF
+CLAUDE_CONFIG_DIR="${H11}" bash tools/fingerprint.sh >"${T}/fp11b.txt" 2>&1
+chk "해시가 다르면 낡음과 저장소 해시"    'grep -q "^\[기기별\] 설치본 = 낡음(저장소 $(git rev-parse HEAD:base | cut -c1-8))$" "${T}/fp11b.txt"'
+head -n 2 "${H11}/.claude-config-version" >"${H11}/v2" && mv "${H11}/v2" "${H11}/.claude-config-version"
+CLAUDE_CONFIG_DIR="${H11}" bash tools/fingerprint.sh >"${T}/fp11c.txt" 2>&1
+chk "3행이 없으면 비교 못 함"             'grep -q "^\[기기별\] 설치본 = 비교 못 함" "${T}/fp11c.txt"'
+
 echo
 [[ "${fail}" = 0 ]] && echo "결과: 통과" || echo "결과: 실패 항목 있음"
 exit "${fail}"
