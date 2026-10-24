@@ -79,6 +79,7 @@
 | [tools/test-hooks-py.sh](tools/test-hooks-py.sh) | 파이썬 본체 훅 시험<br>판정 사례, 파이썬 없음·깨진 입력 때 막는 훅은 막고 기록 훅은 통과하는지, 한글 기록 |
 | [tools/test-session-start-check.sh](tools/test-session-start-check.sh) | 세션 시작 훅의 설정 낡음 판정 시험<br>원격 앞섬·문서만 바뀐 커밋·옛 버전 파일 형식·fetch 주기 |
 | [tools/test-format-guard.sh](tools/test-format-guard.sh) | 형식 검사 훅 시험<br>명령 형태별(커밋·이슈·PowerShell·heredoc) 게시 전 판정과 `.md` 저장 후 판정 |
+| [tools/test-notify.sh](tools/test-notify.sh) | 알림 훅 초안(`drafts/hooks/notify.sh`) 시험<br>가짜 알림 도구와 가짜 `uname`으로 세 운영체제 분기, 오래 걸린 응답만 알림, 주입 방지 |
 | [tools/test-git-guardrails.sh](tools/test-git-guardrails.sh) | git-guardrails 훅 시험<br>판정 유지, 스크립트 오류 때 전체 차단 대신 확인 창, 설정의 `onFailure` 등록 |
 | [tools/test-progress-stale-check.sh](tools/test-progress-stale-check.sh) | PROGRESS 낡음 알림 훅 시험<br>행에 설치 버전이 있음·없음·비교 불가·CRLF 설치 버전 파일 |
 | [tools/check-cram.sh](tools/check-cram.sh)·[base/hooks/check-cram.py](base/hooks/check-cram.py) | 목록 줄바꿈 규칙(콜론·em-dash 크램) 검사<br>한 단어 필드명 + 서술문 아닌 값은 필드 나열로 보고 통과<br>`--staged`로 커밋 전 자동 검사, `--add-exception`으로 오탐 예외 등록 |

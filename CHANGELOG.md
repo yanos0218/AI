@@ -7,6 +7,13 @@
 
 ## [Unreleased]
 
+### Added
+
+- 알림 훅 초안 `drafts/hooks/notify.sh`와 시험 `tools/test-notify.sh` 17건([Issue #5](https://github.com/yanos0218/AI/issues/5), 초안이라 배포 안 됨)
+  - `permission_prompt`면 "승인 대기", `Stop`이 백그라운드 작업 없이 60초 넘게 걸렸으면 "작업 끝" 알림
+  - 본문은 폴더 이름과 `session_id` 앞 8자뿐, 훅 입력은 인자와 환경변수로만 넘겨 주입 방지
+  - 실제 알림 도착과 Windows 분기는 미검증
+
 ### Changed
 
 - 안전 훅 `git-guardrails.sh`가 실패하면 통과하지 않고 차단하도록 설정에 `"onFailure": "block"` 추가, Claude Code 2.1.295 이상 필요([Issue #211](https://github.com/yanos0218/AI/issues/211), 설정 키 추가라 다음 컷에서 MINOR 후보)
