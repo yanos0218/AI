@@ -11,7 +11,7 @@
 
 - `config-update` 스킬 8단계가 `check-install.sh`의 PROGRESS "기록" 줄을 판정 줄과 함께 전달하고, 기록이 "없음"이면 claude-config 세션에서 갱신하라고만 알림([Issue #181](https://github.com/yanos0218/AI/issues/181), 다음 컷에서 PATCH 후보)
   - 보고 문장만 바뀌고 도구 호출·권한은 그대로라 문안 검토로 승격함, `drafts/README.md` 승격 조건에 이 예외를 먼저 추가
-  - 명령 하나씩 실행 문구는 새 세션 시험이 필요해 초안에 남김
+  - 명령을 `;`·`&&`로 묶지 않고 하나씩 실행하라는 문단과 `fetch`·`pull` 거부 시 우회하지 않고 보고하라는 문장도 같이 반영, 새 세션 시험 2시나리오 통과(2026-10-24)
 - 작업 폴더 밖 읽기 차단을 기본 영역에 반영, 모든 기기에 `permissions.blockReadsOutsideWorkingDirectories: true`가 설치됨([Issue #195](https://github.com/yanos0218/AI/issues/195), [Issue #205](https://github.com/yanos0218/AI/issues/205), 다음 컷에서 MINOR 후보)
   - `Read`와 `Bash`로 작업 폴더 밖을 읽으면 거부되고, `python3 -c`·`node -e` 같은 인라인 코드는 확인 창으로 넘어감
   - 설치가 `~/.claude`와 원본 저장소 경로를 기기에 맞게 계산해 `permissions.additionalDirectories`에 합집합으로 넣음, 안 넣으면 다른 저장소에서 `config-update`가 버전 파일을 못 읽음(2026-10-22 시험)

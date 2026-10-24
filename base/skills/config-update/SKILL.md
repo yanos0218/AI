@@ -31,6 +31,8 @@ allowed-tools: Bash(cat ~/.claude/.claude-config-version) Bash(git -C* fetch*) B
 
 8번의 "기록" 줄이 "없음"이면 "claude-config 세션에서 PROGRESS §0 이 기기 행을 갱신해야 합니다"라고만 알린다. 이 세션에서 원본 저장소를 고치지 않는다(아래 "하지 않는 것", [Issue #181](https://github.com/yanos0218/AI/issues/181)).
 
+명령은 하나씩 따로 실행한다. `;`·`&&`로 묶지 않는다. 묶은 명령은 부분마다 허용 규칙을 따지므로 한 부분만 허용되지 않아도 묶음 전체가 거부될 수 있다([공식 문서](https://code.claude.com/docs/en/permissions)). 2번의 `fetch`와 3번의 `pull`은 읽기 전용이 아니라서, 사용자가 허용하지 않은 비대화형 세션(`claude -p`의 `dontAsk`)에서는 거부될 수 있고 이는 의도한 동작이다. 거부되면 우회하지 말고 그대로 보고한다(2026-10-22 Linux `-p` 세션에서 Bash 거부 2회, 거부된 명령의 원문은 확인하지 못함, [Issue #181](https://github.com/yanos0218/AI/issues/181)).
+
 CLAUDE.md는 컴팩션·세션 재시작 시 다시 로드되고, 스킬은 호출할 때마다 디스크에서 새로 읽는다([공식 문서](https://code.claude.com/docs/en/context-window)). 다만 훅 "등록"(어떤 이벤트에 어떤 훅을 실행할지, 권한 목록 — settings.json 구조 자체)이 바뀐 경우는 즉시 반영되는지 검증되지 않았으므로, 그럴 때만 새 세션을 권장한다.
 
 문서·도구만 바뀐 커밋은 `base/` 트리가 같아 "이미 최신"으로 판정한다. `base/`가 실제로 바뀌었을 때만 설치한다([Issue #150](https://github.com/yanos0218/AI/issues/150)).
