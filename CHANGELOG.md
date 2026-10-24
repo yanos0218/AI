@@ -7,12 +7,14 @@
 
 ## [Unreleased]
 
+## [0.15.0] - 2026-10-24
+
 ### Changed
 
-- `config-update` 스킬 8단계가 `check-install.sh`의 PROGRESS "기록" 줄을 판정 줄과 함께 전달하고, 기록이 "없음"이면 claude-config 세션에서 갱신하라고만 알림([Issue #181](https://github.com/yanos0218/AI/issues/181), 다음 컷에서 PATCH 후보)
+- `config-update` 스킬 8단계가 `check-install.sh`의 PROGRESS "기록" 줄을 판정 줄과 함께 전달하고, 기록이 "없음"이면 claude-config 세션에서 갱신하라고만 알림([Issue #181](https://github.com/yanos0218/AI/issues/181))
   - 보고 문장만 바뀌고 도구 호출·권한은 그대로라 문안 검토로 승격함, `drafts/README.md` 승격 조건에 이 예외를 먼저 추가
   - 명령을 `;`·`&&`로 묶지 않고 하나씩 실행하라는 문단과 `fetch`·`pull` 거부 시 우회하지 않고 보고하라는 문장도 같이 반영, 새 세션 시험 2시나리오 통과(2026-10-24)
-- 작업 폴더 밖 읽기 차단을 기본 영역에 반영, 모든 기기에 `permissions.blockReadsOutsideWorkingDirectories: true`가 설치됨([Issue #195](https://github.com/yanos0218/AI/issues/195), [Issue #205](https://github.com/yanos0218/AI/issues/205), 다음 컷에서 MINOR 후보)
+- 작업 폴더 밖 읽기 차단을 기본 영역에 반영, 모든 기기에 `permissions.blockReadsOutsideWorkingDirectories: true`가 설치됨([Issue #195](https://github.com/yanos0218/AI/issues/195), [Issue #205](https://github.com/yanos0218/AI/issues/205))
   - `Read`와 `Bash`로 작업 폴더 밖을 읽으면 거부되고, `python3 -c`·`node -e` 같은 인라인 코드는 확인 창으로 넘어감
   - 설치가 `~/.claude`와 원본 저장소 경로를 기기에 맞게 계산해 `permissions.additionalDirectories`에 합집합으로 넣음, 안 넣으면 다른 저장소에서 `config-update`가 버전 파일을 못 읽음(2026-10-22 시험)
   - `tools/fingerprint.sh`의 `permissions 추가 키`는 base가 정한 키와 기기별 경로를 사용자 추가로 세지 않음
@@ -78,19 +80,19 @@
 - `base/settings.example.json`에 기본 모델·effort 고정 키 추가([Issue #187](https://github.com/yanos0218/AI/issues/187))
   - `model: claude-sonnet-5-5`, `effortLevel: medium`, Sonnet·Opus 5.5 `modelSettings` medium
   - `tools/install.sh`가 세 키를 설치마다 base 값으로 맞추고 `tools/check-install.sh`가 대조, `tools/fingerprint.sh`가 모델 환경변수 설정 여부 출력
-  - 기존에 기기에서 `/model`로 바꿔 둔 값은 설치 때 되돌아옴, 다음 컷에서 MINOR 후보
+  - 기존에 기기에서 `/model`로 바꿔 둔 값은 설치 때 되돌아옴
 - `docs/models.md` 개발 작업 기본 모델·effort 기준 추가
 - `docs/operating-flow.md`에 5층 구성 매핑 표 추가([Issue #185](https://github.com/yanos0218/AI/issues/185), 문서 전용이라 버전 등급 미반영)
 - `tools/fingerprint.sh` 기기 지문 도구와 `docs/issue-format.md`의 반응 차이 사례 양식 추가([Issue #186](https://github.com/yanos0218/AI/issues/186), 저장소 도구·문서라 버전 등급 미반영)
 
 ### Fixed
 
-- `base/vscode/install.sh`가 Windows 작업 폴더를 WSL로 읽을 때 확장 16개를 하나도 설치하지 못하던 것을 수정([Issue #208](https://github.com/yanos0218/AI/issues/208), 다음 컷에서 PATCH 후보)
+- `base/vscode/install.sh`가 Windows 작업 폴더를 WSL로 읽을 때 확장 16개를 하나도 설치하지 못하던 것을 수정([Issue #208](https://github.com/yanos0218/AI/issues/208))
   - `extensions.txt`가 CRLF로 체크아웃돼 확장 ID 끝에 `\r`이 붙었고, 출력을 버려서 실패가 보이지 않았음
   - 스크립트가 읽을 때 CR을 지우고, `.gitattributes`에 `base/vscode/extensions.txt text eol=lf`를 추가함
   - 시험 `tools/test-install-merge.sh` 13번 추가
   - 설정 파일이 Remote - WSL 서버가 읽지 않는 `~/.config/Code/User`에 복사되는 문제는 이번 수정 범위 밖
-- `base/vscode/install.sh`가 WSL에서 Windows VS Code(`/mnt/` 아래 `code`)를 잡아 확장을 Windows 쪽에 설치하고 `settings.json`을 Windows가 읽지 않는 WSL 홈에 복사하던 것을 수정([Issue #204](https://github.com/yanos0218/AI/issues/204), 다음 컷에서 PATCH 후보)
+- `base/vscode/install.sh`가 WSL에서 Windows VS Code(`/mnt/` 아래 `code`)를 잡아 확장을 Windows 쪽에 설치하고 `settings.json`을 Windows가 읽지 않는 WSL 홈에 복사하던 것을 수정([Issue #204](https://github.com/yanos0218/AI/issues/204))
   - 같은 조건이면 `base/vscode/install.ps1`과 WSL 쪽 `code` 안내를 내고 종료 코드 1로 멈춤, `tools/check-install.sh`의 안내 문구도 맞춤
   - 시험 `tools/test-install-merge.sh`에 12번 추가(7건, 가짜 `code`로 흉내), 실제 WSL에서의 확인은 사용자 기기에서 함
 - `tools/check-install.sh`가 WSL에서 Windows VS Code를 잡아 확장 16개를 전부 MISSING으로 보고하고 실패로 끝나던 것을 수정([Issue #201](https://github.com/yanos0218/AI/issues/201))
@@ -145,58 +147,3 @@
   - 검사 결과는 실제로 검사한 대상 수까지 읽고, 0건이거나 실제와 맞지 않으면 "미검증"으로 보는 규칙 추가. 0줄로 세고 ok를 찍는 검사에서 반영 전 2회 모두 "통과" 보고, 반영 후 2회 모두 문제를 짚음([Issue #167](https://github.com/yanos0218/AI/issues/167), PATCH)
 - `CLAUDE.md` 검증 절
   - `docs/testing.md`로 분리(60/60 → 57줄), 시험 도구 목록·세 OS 호환 규칙·설치는 커밋 뒤 추가, `docs/skill-development.md`에 Mac 시험 준비 추가([Issue #166](https://github.com/yanos0218/AI/issues/166), 버전 등급 미반영 — 문서 전용)
-
-## [0.13.0] - 2026-09-29
-
-### Added
-
-- `base/hooks/format-guard.sh`·`md-format-check.sh`·`format_check.py` 형식 검사 훅 승격
-  - 커밋·이슈·PR·릴리즈 본문을 게시 직전에 검사해 목록 줄바꿈·음슴체 위반이면 막고, `.md`에 새로 쓴 부분은 저장 뒤 사유를 돌려줌. `settings.example.json`에 `git`·`gh` 명령과 `.md` 편집일 때만 뜨게 등록, 같은 호출 중복 실행 방지([Issue #141](https://github.com/yanos0218/AI/issues/141), MINOR)
-- `tools/test-format-guard.sh`
-  - 형식 검사 훅 시험 32건, `drafts/hooks/`에서 옮김([Issue #141](https://github.com/yanos0218/AI/issues/141), PATCH)
-- `base/skills/usage-dashboard` 스킬 승격
-  - 요청할 때만 켜는 토큰 사용 기록과 로컬 대시보드(5시간 블록·시간·일·월, 저장소·메인/서브에이전트·모델별, 요청 순위와 원인). 세션 시작 크기가 평소보다 커지면 화면에만 강조, 세션 시작 알림(`usage.sh check`)은 뺌(사용자 결정, 대시보드와 중복·세션 시작 지연). `settings.example.json`에 async Stop 훅 등록, 꺼져 있으면 훅은 바로 끝남. Windows·Mac 전용([Issue #136](https://github.com/yanos0218/AI/issues/136), MINOR)
-- `tools/test-session-start-check.sh`
-  - 세션 시작 훅의 설정 낡음 판정 시험. 임시 원격·복제본·가짜 HOME으로 원격 앞섬, 문서만 바뀐 커밋, 옛 버전 파일 형식, fetch 주기와 기다리지 않음을 확인([Issue #150](https://github.com/yanos0218/AI/issues/150), PATCH)
-
-### Changed
-
-- `base/claude-md/CLAUDE.md` §8
-  - 설계를 보일 때 채울 칸(무엇을·왜, 바뀌는 파일, 검증 방법, 문서 동기화 대상, 결정 필요) 추가. 새 세션 비교에서 반영 전 2회 모두 검증·문서 칸 없음, 반영 후 2회 모두 채움([Issue #155](https://github.com/yanos0218/AI/issues/155), PATCH)
-- `base/vscode/extensions.txt`
-  - `redhat.vscode-yaml`·`timonwong.shellcheck` 추가(설정 파일 없이 동작, CI와 같은 기준), 파일 아이콘 `pkief.material-icon-theme` 추가와 `settings.json`에 아이콘 테마 지정, Mac에서 쓰지 않는 Swift 확장 주석 삭제([Issue #165](https://github.com/yanos0218/AI/issues/165), PATCH)
-- `base/hooks/check-cram.py`
-  - 목록 줄바꿈 판정기를 `tools/`에서 옮김, 전역 형식 검사 훅과 저장소 커밋 검사(`tools/check-cram.sh`)가 같은 판정기를 씀([Issue #141](https://github.com/yanos0218/AI/issues/141), PATCH)
-- `.github/workflows/lint.yml`
-  - shellcheck 대상에 `base/skills/*/scripts/*.sh`와 `drafts/hooks/*.sh` 추가, 초안 폴더가 비어도 실패하지 않게 빈 글롭은 건너뜀(`nullglob`), 로컬 같은 대상 경고 0건([Issue #161](https://github.com/yanos0218/AI/issues/161), PATCH)
-- `tools/install.sh`
-  - 버전 표시 파일 3행에 `base/` 트리 해시를 기록함. 1·2행은 그대로라 기존 세션 시작 훅과 호환, 문서만 바뀐 커밋을 설정 변경과 구별하는 데 씀([Issue #150](https://github.com/yanos0218/AI/issues/150), PATCH)
-
-### Fixed
-
-- `.claude/hooks/session-end-check.sh`
-  - 공백·이름 바뀐 파일의 경로를 일부만 읽어 `base/` 변경을 놓치던 문제와, 규칙과 반대로 "닫기(Closes #N)"를 안내하던 문구. 경로 전체와 옛·새 경로를 읽고 `Refs #N` 안내로 바꿈([Issue #163](https://github.com/yanos0218/AI/issues/163), PATCH)
-- `tools/test-skill.sh`·`tools/test-agent.sh`
-  - `--tools ""`처럼 빈 값이면 Mac bash 3.2에서 `tool_rules` 빈 배열로 멈추던 문제, 빈 배열 안전하게 펼침([Issue #162](https://github.com/yanos0218/AI/issues/162), PATCH)
-- `base/hooks/session-start-check.sh`
-  - 원본 저장소가 원격보다 뒤처져도 낡음 알림이 안 뜨던 문제와, 문서만 바뀐 커밋에도 알림이 뜨던 거짓 경보. 하루 한 번 백그라운드 fetch, 뒤처지면 원격 기준, `base/` 트리 해시로 비교(옛 설치본은 태그 비교)([Issue #150](https://github.com/yanos0218/AI/issues/150), PATCH)
-- `base/skills/config-update`
-  - 원격을 확인하지 않아 낡은 버전을 최신으로 판정하던 문제. fetch → 뒤처졌고 작업 트리가 깨끗하면 `pull --ff-only` → `base/` 트리 비교 → 다를 때만 설치([Issue #150](https://github.com/yanos0218/AI/issues/150), PATCH)
-- `.claude/hooks/pre-commit-check.sh`
-  - 명령을 `sed`로 꺼내며 뒤의 설명 글까지 삼켜, 설명에 "#64"·"chore(release):"가 있으면 이슈 번호 확인을 건너뛰고 커밋이 아닌 명령에 확인 창을 띄우던 문제. JSON으로 정확히 꺼냄([Issue #156](https://github.com/yanos0218/AI/issues/156), PATCH)
-- `tools/check-install.sh`
-  - 프로젝트 루트 기본값이 Windows 전용(`/c/Git`)이라 Mac·Linux에서 조용히 "(없음)"이던 문제. 기본값을 이 저장소의 상위 폴더로, 경로가 없으면 안내([Issue #157](https://github.com/yanos0218/AI/issues/157), PATCH)
-- `tools/test-session-start-check.sh`
-  - 실제 v0.12.0 태그에 기대 `base/`가 바뀐 뒤 "문서만 바뀐 커밋" 사례가 건너뛰어지던 문제. 시험 안에서 태그와 문서 커밋을 만들어 15건 모두 실행([Issue #158](https://github.com/yanos0218/AI/issues/158), PATCH)
-- `tools/check-install.sh`·`tools/install.sh`·`tools/pack.sh`
-  - 스킬 폴더의 파이썬 캐시(`__pycache__`)까지 비교·복사·압축해 거짓 `DIFF`가 나고 설치본·웹 zip에 캐시가 섞이던 문제. 세 곳 모두 제외([Issue #160](https://github.com/yanos0218/AI/issues/160), PATCH)
-- `tools/check-docs.sh`
-  - Mac 기본 bash 3.2에 없는 `mapfile` 때문에 모든 파일을 0줄로 세고 통과시키던 문제, 하위 프로세스 없는 내장 `read`로 줄 수를 세도록 바꿈([Issue #151](https://github.com/yanos0218/AI/issues/151), PATCH)
-- `tools/test-hooks-py.sh`
-  - `python` 명령을 고정으로 불러 `python3`만 있는 Mac에서 7건이 실패하던 문제, 훅과 같은 순서(`python` → `python3`)로 고르도록 바꿈([Issue #151](https://github.com/yanos0218/AI/issues/151), PATCH)
-- `tools/test-skill.sh`
-  - 시험 중 스킬이 자신을 다시 설치하면(config-update) 끝날 때 비켜 둔 설치본이 새 폴더 안으로 들어가 이중 폴더가 생기던 문제. 복구 전에 대상 폴더를 치움([Issue #152](https://github.com/yanos0218/AI/issues/152), PATCH)
-- `tools/test-agent.sh`
-  - Mac에서 PyYAML이 없으면 변환 실패를 무시하고 세션을 띄워 "토큰 0"만 나오던 문제와, `--installed`에서 bash 3.2가 빈 배열로 멈추던 문제. 변환 실패 시 안내 후 종료, 빈 배열 안전하게 펼침([Issue #154](https://github.com/yanos0218/AI/issues/154), PATCH)
-- `tools/check-cram.sh`
-  - `--staged`에서 추가된 줄 번호 목록을 `awk -v`로 넘겨, Mac 기본 awk가 오류를 내고 여러 줄을 추가한 파일을 건너뛰어 통과시키던 문제. 환경변수로 넘기도록 바꿈([Issue #151](https://github.com/yanos0218/AI/issues/151), PATCH)
