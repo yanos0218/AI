@@ -10,7 +10,8 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 
 - 변경 이력은 [CHANGELOG.md](../CHANGELOG.md) `[Unreleased]`, 기기별 설치 버전은 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태)이 원본(여기엔 적지 않음).
 - 2026-10-24에 닫은 일은 읽기 차단 기본 반영, `fingerprint.sh` 설치본 줄, `progress-stale-check.sh` 훅, WSL의 Windows VS Code 중단과 `extensions.txt` CRLF 수정, Windows 시험 지연 원인 기록, `config-update` 보고 문안 기본 반영임. 상세는 CHANGELOG `[Unreleased]`와 [os-differences.md](os-differences.md), 번호는 `gh issue list --state closed`.
-- 남은 확인은 Windows·Linux 설치가 낡음이라 갱신 때 `config-update` 8단계에 기록 줄이 나오는지, 다른 저장소 폴더의 대화형 `config-update`, 인라인 코드 확인 창, VS Code 멀티루트임.
+- 2026-10-24에 v0.15.0을 컷함(MINOR). 웹(Claude.ai)은 Release zip 업로드와 Project instructions 갱신이 남음(사용자 작업).
+- 남은 확인은 Linux 설치가 낡음이라 갱신 때 `config-update` 8단계에 기록 줄이 나오는지, 다른 저장소 폴더의 대화형 `config-update`, 인라인 코드 확인 창, VS Code 멀티루트임.
 - 보류는 [#174](https://github.com/yanos0218/AI/issues/174)(전역 지침 후보 2건), [#178](https://github.com/yanos0218/AI/issues/178)(한도 측정, 사용자 요청 시), 요구사항 미정은 #5·#7·#8·#9·#10. 조사 [#193](https://github.com/yanos0218/AI/issues/193)과 후속 [#197](https://github.com/yanos0218/AI/issues/197)은 2026-10-24 닫음(OS별 구분표·세 러너 CI·`fingerprint --common` 완료, Windows·Mac 공통 출력 대조에서 운영체제 차이 없음, 덧입히기 구조는 실제 차이가 생기면 새 이슈로 설계).
 - 다음 세션 첫 행동은 `gh issue list --state open`으로 최신 상태 확인(이 요약보다 이슈 최신 댓글이 정확), 새 달 첫 세션이면 월 점검 제안([monthly-check.md](monthly-check.md)).
 
