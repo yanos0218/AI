@@ -46,6 +46,9 @@
 
 ### Added
 
+- `.claude/hooks/progress-stale-check.sh`(SessionStart) 추가, PROGRESS §0 이 기기 행에 설치 버전이 없으면 알림([Issue #207](https://github.com/yanos0218/AI/issues/207))
+  - 설치 뒤 기기 행 갱신 누락이 반복돼 문장 규칙 대신 기계 검사로 바꿈, 저장소 전용이라 버전 등급 미반영
+  - `tools/test-progress-stale-check.sh` 11건, CI 설치 병합 시험 잡에서 세 운영체제 실행
 - `tools/fingerprint.sh`에 `설치본` 줄([기기별]) 추가([Issue #203](https://github.com/yanos0218/AI/issues/203))
   - 저장소 현재 `base/` 해시와 설치 해시를 비교해 `최신`·`낡음(저장소 해시)`·`비교 못 함`을 표시함
   - 두 기기의 해시가 같아도 둘 다 낡은 경우를 잡음

@@ -56,3 +56,6 @@ jobs:
 
       - name: 설치 병합 시험
         run: bash tools/test-install-merge.sh
+
+      - name: PROGRESS 낡음 알림 훅 시험
+        run: bash tools/test-progress-stale-check.sh

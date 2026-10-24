@@ -9,7 +9,7 @@
 | `.md` 문서 | `npx markdownlint-cli2 "**/*.md"`<br>`bash tools/check-docs.sh`<br>`python3 tools/check-doc-sync.py` | CI와 같이 모든 `.md`, 제외 폴더는 `.markdownlint-cli2.jsonc`. 줄 길이(MD013)는 무시<br>검사한 수는 `Linting: N files`, 마지막 줄 `0 issues in 0 files`는 "문제 있는 파일 0개"라는 뜻<br>줄 수 상한은 [CLAUDE.md](../CLAUDE.md) "문서 규칙" |
 | 셸 스크립트 | `npx shellcheck -S warning <파일>` | CI 대상은 [.github/workflows/lint.yml](../.github/workflows/lint.yml)(2026-09-29 기준 27개)<br>모든 스크립트를 `${var}`·`[[ ]]` 스타일로 씀<br>`--enable=all`이 더 잡는 것은 전부 스타일이라 쓰지 않음(2026-09-13 확인) |
 | 파이썬 | `python3 -m py_compile <파일>` | Rocky Linux 8 기본 파이썬이 3.6.8이라 훅·도구는 3.6에서도 돌게 씀, 3.7 이상 전용 기능 금지는 아래 "세 OS에서 도는 스크립트 쓰기" |
-| 훅 | [tools/test-hooks-py.sh](../tools/test-hooks-py.sh)<br>[tools/test-session-start-check.sh](../tools/test-session-start-check.sh)<br>[tools/test-format-guard.sh](../tools/test-format-guard.sh) | 판정 사례·실패 시 동작<br>설정 낡음 판정<br>형식 검사 게시 전·저장 후 |
+| 훅 | [tools/test-hooks-py.sh](../tools/test-hooks-py.sh)<br>[tools/test-session-start-check.sh](../tools/test-session-start-check.sh)<br>[tools/test-format-guard.sh](../tools/test-format-guard.sh)<br>[tools/test-progress-stale-check.sh](../tools/test-progress-stale-check.sh) | 판정 사례·실패 시 동작<br>설정 낡음 판정<br>형식 검사 게시 전·저장 후<br>PROGRESS 기기 행 낡음 알림(세 운영체제 CI) |
 | 스킬 | [tools/test-skill.sh](../tools/test-skill.sh) | 새 세션 발동 시험, 방법은 [skill-development.md](skill-development.md) "시험 방법" |
 | 에이전트 | [tools/test-agent.sh](../tools/test-agent.sh) | 위임 대상·도구 호출·훅 차단 |
 | 전역 지침 | 문안 위험도별 기준([drafts/README.md](../drafts/README.md) 승격 조건 1) | 막는·승인 흐름 문안은 반영 전 1회로 실제로 틀리는지 먼저 본 뒤 반영 후 2회<br>사고 근거 알림성 문안은 문안 검토, 준수는 월 점검 self-audit |
