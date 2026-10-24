@@ -12,15 +12,17 @@ PY="$(command -v python3 || command -v python)" || exit 0
 IFS= read -r -d '' input || true
 fields="$(printf '%s' "${input}" | "${PY}" -I -c '
 import sys, json, os, re
+# Windows는 표준 입출력이 cp1252·cp949라 한글 폴더 이름이 깨지거나 UnicodeEncodeError가 난다. -I는 PYTHONIOENCODING을 무시하므로 바이트로 직접 읽고 쓴다
 try:
-    d = json.load(sys.stdin)
+    d = json.loads(sys.stdin.buffer.read().decode("utf-8"))
 except Exception:
     sys.exit(1)
 bg = d.get("background_tasks")
 n = len(bg) if isinstance(bg, list) else 0
 sid = re.sub(r"[^A-Za-z0-9]", "", d.get("session_id") or "")[:8]
 folder = re.split(r"[\\/]+", (d.get("cwd") or "").rstrip("/\\"))[-1].replace("\t", " ").replace("\n", " ")
-print("\t".join([d.get("hook_event_name") or "-", d.get("notification_type") or "-", sid or "-", folder or "-", str(n)]))
+line = "\t".join([d.get("hook_event_name") or "-", d.get("notification_type") or "-", sid or "-", folder or "-", str(n)])
+sys.stdout.buffer.write((line + "\n").encode("utf-8"))
 ' 2>/dev/null)" || exit 0
 IFS=$'\t' read -r event ntype sid folder bgn <<<"${fields}"
 

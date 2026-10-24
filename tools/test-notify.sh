@@ -42,6 +42,9 @@ chk "Linux: notify-send로 감"                       '[[ "$(last2)" = "승인 �
 out="$(run '{"hook_event_name":"Notification","notification_type":"permission_prompt","session_id":"abcdef1234567","cwd":"C:\\work\\MyRepo"}' MINGW64_NT)"
 chk "Windows: powershell에 환경변수로 제목·본문이 감" '[[ "$(last2)" = "승인 대기|MyRepo · abcdef12|" ]] && head -n1 "${CALLS}" | grep -q powershell'
 
+out="$(run '{"hook_event_name":"Notification","notification_type":"permission_prompt","session_id":"abcdef1234567","cwd":"/work/한글폴더"}' Darwin)"
+chk "한글 폴더 이름이 깨지지 않고 본문으로 감"          '[[ "$(last2)" = "승인 대기|한글폴더 · abcdef12|" ]]'
+
 echo "== 2. 다른 알림 유형은 무시"
 run '{"hook_event_name":"Notification","notification_type":"idle_prompt","session_id":"abcdef1234567","cwd":"/work/MyRepo"}' Darwin >/dev/null
 chk "idle_prompt: 알림 없음"                        '[[ ! -s "${CALLS}" ]]'

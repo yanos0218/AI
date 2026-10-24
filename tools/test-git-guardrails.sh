@@ -41,7 +41,7 @@ for groups in d['hooks'].values():
         for h in g.get('hooks', []):
             (with_block if h.get('onFailure') == 'block' else without).append(h['command'])
 ok = len(with_block) == 1 and 'git-guardrails.sh' in with_block[0]
-print('onFailure block 항목: %s' % with_block)
+print('onFailure block entries: %s' % with_block)  # 한글을 쓰면 Windows 파이프(cp1252)에서 UnicodeEncodeError가 난다
 sys.exit(0 if ok else 1)
 PYEOF
 chk "onFailure block은 git-guardrails 하나에만"  '[[ "${rc}" = 0 ]]'
