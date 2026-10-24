@@ -16,6 +16,8 @@
 
 1. 자산 종류에 맞는 시험을 통과했음.
    - 스킬은 새 세션에서 3가지 상황([docs/skill-development.md](../docs/skill-development.md) "시험 방법").
+     - 예외([Issue #181](https://github.com/yanos0218/AI/issues/181), 2026-10-24): 보고·안내 문장만 바꾸고 도구 호출·권한·분기를 바꾸지 않는 수정은 문안 검토로 갈음하고, 반영 뒤 실제 실행에서 보고가 나오는지 확인함.
+     - 명령 실행 방식이나 중단·우회 판단을 바꾸는 문장이 섞여 있으면 그 부분은 초안에 남기고 새 세션 시험을 거침. 전역 지침의 위험도별 기준과 같은 구분임.
    - 에이전트는 [tools/test-agent.sh](../tools/test-agent.sh)로 새 세션 시험.
    - 훅은 시험 스크립트(예: [tools/test-hooks-py.sh](../tools/test-hooks-py.sh))와 실제 명령·세션에서의 동작 확인.
    - 전역 지침은 문안의 위험도에 맞춘다([Issue #182](https://github.com/yanos0218/AI/issues/182), 2026-10-17).
