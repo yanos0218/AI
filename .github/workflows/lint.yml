@@ -65,3 +65,6 @@ jobs:
 
       - name: 알림 훅 초안 시험
         run: bash tools/test-notify.sh
+
+      - name: 실시간 현황 초안 시험
+        run: bash tools/test-live-status.sh
