@@ -30,6 +30,7 @@
 | 운영체제별(실행 환경) | Windows `fingerprint.sh` 출력 줄 끝이 CRLF<br>Mac·Linux 출력과 그냥 `diff`하면 모든 줄이 다르게 나옴 | `diff --strip-trailing-cr`로 비교 | [Issue #194](https://github.com/yanos0218/AI/issues/194) 2026-10-22 |
 | 운영체제별(실행 환경) | WSL의 `code`<br>Windows VS Code가 PATH로 잡혀 `check-install.sh`가 확장 16개를 MISSING으로 보고하고 실패로 끝남 | WSL이고 `code`가 `/mnt/` 아래(Windows VS Code)면 MISSING 목록은 보이되 판정에서 제외하고 안내 한 줄, WSL 안 `code`의 MISSING은 그대로 실패로 셈<br>`base/vscode/install.sh`도 같은 조건이면 `install.ps1`을 안내하고 종료 코드 1로 멈춤 | [Issue #201](https://github.com/yanos0218/AI/issues/201) 2026-10-22<br>[Issue #204](https://github.com/yanos0218/AI/issues/204) 2026-10-24 |
 | 운영체제별(실행 환경) | Windows에서 Git Bash가 프로세스를 만들 때마다 개당 0.4~0.5초 걸림<br>보안 프로그램(AhnLab Safe Transaction)의 파일시스템 필터 드라이버가 원인, 서브셸 50회 18.4초가 중지 뒤 7.2초, `install.sh`가 3분 24초에서 56.8초 | Defender 경로·프로세스 예외는 효과 없음<br>스크립트 쪽 처리 없음, 이 PC에서 개발할 때만 서비스를 중지(금융 작업 때 다시 켬) | [Issue #206](https://github.com/yanos0218/AI/issues/206) 2026-10-24 |
+| 운영체제별(실행 환경) | Windows 작업 폴더를 WSL로 읽으면 `extensions.txt`가 CRLF라 확장 ID 끝에 CR이 붙어 확장이 하나도 설치되지 않음<br>Remote - WSL 서버는 설정을 `~/.vscode-server/data/` 아래에서 읽는데 `install.sh`는 `~/.config/Code/User`에 복사함 | `install.sh`가 읽을 때 CR을 지우고 `.gitattributes`로 LF 고정(수정 뒤 15/16개 설치 확인)<br>설정 복사는 WSL 서버를 지원 범위 밖으로 두고 Settings Sync를 쓰도록 안내 | [Issue #208](https://github.com/yanos0218/AI/issues/208) 2026-10-24 |
 | 후보(미확정) | 샌드박스는 Windows 미지원 | 설정 값으로 갈라야 하는지 확인 뒤 결정 | [PROGRESS.md §5](PROGRESS.md#5-보류기각) |
 
 - 요약
