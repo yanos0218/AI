@@ -40,7 +40,7 @@
 | 표면 | 설치된 것 | 설치일 | 다음 |
 | --- | --- | --- | --- |
 | Windows | `v0.14.0-87-ge7f6fd8`(읽기 차단과 허용 폴더 계산 기본 반영 [#195](https://github.com/yanos0218/AI/issues/195) [#205](https://github.com/yanos0218/AI/issues/205)) | 2026-10-24 | 해당 없음(최신 설치) |
-| Mac mini | `v0.14.0-85-ge1254a7`(`config-update` 결과 보고에 PROGRESS 기록 줄 포함·명령 하나씩 실행 [#181](https://github.com/yanos0218/AI/issues/181), `extensions.txt` CRLF 수정 [#208](https://github.com/yanos0218/AI/issues/208)) | 2026-10-24 | 해당 없음(최신 설치) |
+| Mac mini | `v0.15.0-5-g51fc8a2`(`git-guardrails` onFailure block과 오류 안전망 [#211](https://github.com/yanos0218/AI/issues/211), `config-update` 결과 보고에 PROGRESS 기록 줄 포함·명령 하나씩 실행 [#181](https://github.com/yanos0218/AI/issues/181), `extensions.txt` CRLF 수정 [#208](https://github.com/yanos0218/AI/issues/208)) | 2026-10-24 | 해당 없음(최신 설치) |
 | Linux(RHEL 계열) | `v0.14.0-51-gb5191f8`(install.sh 사용자 값 보존 병합 포함, 읽기 차단 줄 수동 추가 [#195](https://github.com/yanos0218/AI/issues/195), 파이썬 3.6.8 한글 출력 수정 반영 [#202](https://github.com/yanos0218/AI/issues/202)) | 2026-10-22 | Mac 지문 `diff`([#194](https://github.com/yanos0218/AI/issues/194)), 새 대화형 세션 확인은 2026-10-22 정상 |
 | 웹(Claude.ai) | 스킬 3개 v0.11.4, Project instructions | 2026-09-19~20, 2026-09-12 | v0.15.0 Release zip 업로드, Project instructions 갱신 |
 
@@ -52,9 +52,9 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | 전역 지침 `base/claude-md/CLAUDE.md` | 기본 (2026-10-17 §2 큰 작업 끝 점검·§4 CI 대기 추가, 새 세션 전후 2회씩 [#169](https://github.com/yanos0218/AI/issues/169) [#176](https://github.com/yanos0218/AI/issues/176)) | ✓ | ✓ | ✓ | 갱신 대기(Project instructions 2026-09-12) | - |
 | 모듈 규칙 `base/rules/docs-format.md` | 기본 (2026-09-28 이슈·PR 음슴체, 필드 예외 범위) | ✓ | ✓ | ✓ | - | - |
-| `settings.example.json` (권한·훅·상태줄·env·기본 모델·effort) | 기본 (2026-09-29 형식 검사·대시보드 훅 등록 [#141](https://github.com/yanos0218/AI/issues/141) [#136](https://github.com/yanos0218/AI/issues/136), 기록 훅 async·`if` 조건 [#147](https://github.com/yanos0218/AI/issues/147), 2026-10-21 모델·effort 고정 키 [#187](https://github.com/yanos0218/AI/issues/187), 2026-10-22 읽기 차단과 허용 폴더 계산 [#195](https://github.com/yanos0218/AI/issues/195) [#205](https://github.com/yanos0218/AI/issues/205)) | ✓ | ✓ | ✓ | - | 다른 저장소 폴더에서 연 대화형 세션의 `config-update` 확인(Windows·Mac mini, [#195](https://github.com/yanos0218/AI/issues/195) 미검증 항목) |
+| `settings.example.json` (권한·훅·상태줄·env·기본 모델·effort) | 기본 (2026-09-29 형식 검사·대시보드 훅 등록 [#141](https://github.com/yanos0218/AI/issues/141) [#136](https://github.com/yanos0218/AI/issues/136), 기록 훅 async·`if` 조건 [#147](https://github.com/yanos0218/AI/issues/147), 2026-10-21 모델·effort 고정 키 [#187](https://github.com/yanos0218/AI/issues/187), 2026-10-22 읽기 차단과 허용 폴더 계산 [#195](https://github.com/yanos0218/AI/issues/195) [#205](https://github.com/yanos0218/AI/issues/205)) | 갱신 대기 | ✓ | 갱신 대기 | - | 다른 저장소 폴더에서 연 대화형 세션의 `config-update` 확인(Windows·Mac mini, [#195](https://github.com/yanos0218/AI/issues/195) 미검증 항목) |
 | 서브에이전트 재귀 차단 `env.CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` | 기본 (재귀 시도 차단 실측 2026-09-13 [#75](https://github.com/yanos0218/AI/issues/75)) | ✓ | ✓ | ✓ | - | - |
-| git-guardrails 훅 | 기본 (push 차단 확인 2026-09-08, 제한 시간 초과 통과 문제 수정 2026-09-28 [#142](https://github.com/yanos0218/AI/issues/142), 2026-10-24 `onFailure: "block"`과 오류 안전망 [#211](https://github.com/yanos0218/AI/issues/211)) | ✓ | ✓ | ✓ | - | - |
+| git-guardrails 훅 | 기본 (push 차단 확인 2026-09-08, 제한 시간 초과 통과 문제 수정 2026-09-28 [#142](https://github.com/yanos0218/AI/issues/142), 2026-10-24 `onFailure: "block"`과 오류 안전망 [#211](https://github.com/yanos0218/AI/issues/211)) | 갱신 대기 | ✓ | 갱신 대기 | - | - |
 | gh-throttle 훅 | 기본 (병렬 직렬화 실측 2026-09-13 [#74](https://github.com/yanos0218/AI/issues/74), 제한 시간 30초 [#142](https://github.com/yanos0218/AI/issues/142)) | ✓ | ✓ | ✓ | - | - |
 | session-start-check 훅(SessionStart) | 기본 (설정 낡음 판정 수정 2026-09-28 [#150](https://github.com/yanos0218/AI/issues/150), `tools/test-session-start-check.sh` 15/15) | ✓ | ✓ | ✓ | - | Windows 느린 시각 훅 시간 측정 |
 | bulk-read-log 훅(PostToolUse) | 기본 (2026-09-15 [#100](https://github.com/yanos0218/AI/issues/100), 서브에이전트 조회 제외 [#134](https://github.com/yanos0218/AI/issues/134)) | ✓ | ✓ | ✓ | - | - |
