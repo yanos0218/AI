@@ -29,6 +29,7 @@
 | 운영체제별(실행 환경) | Windows PowerShell에서 `bash`<br>Git Bash가 아니라 WSL(`C:\WINDOWS\system32\bash.exe`)이 실행돼 `~/.claude`가 없는 리눅스 홈을 봄 | Windows에서는 Git Bash 터미널이나 Claude Code `Bash` 도구에서 실행 | [Issue #194](https://github.com/yanos0218/AI/issues/194) 2026-10-22 |
 | 운영체제별(실행 환경) | Windows `fingerprint.sh` 출력 줄 끝이 CRLF<br>Mac·Linux 출력과 그냥 `diff`하면 모든 줄이 다르게 나옴 | `diff --strip-trailing-cr`로 비교 | [Issue #194](https://github.com/yanos0218/AI/issues/194) 2026-10-22 |
 | 운영체제별(실행 환경) | WSL의 `code`<br>Windows VS Code가 PATH로 잡혀 `check-install.sh`가 확장 16개를 MISSING으로 보고하고 실패로 끝남 | WSL이고 `code`가 `/mnt/` 아래(Windows VS Code)면 MISSING 목록은 보이되 판정에서 제외하고 안내 한 줄, WSL 안 `code`의 MISSING은 그대로 실패로 셈<br>`base/vscode/install.sh`도 같은 조건이면 `install.ps1`을 안내하고 종료 코드 1로 멈춤 | [Issue #201](https://github.com/yanos0218/AI/issues/201) 2026-10-22<br>[Issue #204](https://github.com/yanos0218/AI/issues/204) 2026-10-24 |
+| 운영체제별(실행 환경) | Windows에서 Git Bash가 프로세스를 만들 때마다 개당 0.4~0.5초 걸림<br>보안 프로그램(AhnLab Safe Transaction)의 파일시스템 필터 드라이버가 원인, 서브셸 50회 18.4초가 중지 뒤 7.2초, `install.sh`가 3분 24초에서 56.8초 | Defender 경로·프로세스 예외는 효과 없음<br>스크립트 쪽 처리 없음, 이 PC에서 개발할 때만 서비스를 중지(금융 작업 때 다시 켬) | [Issue #206](https://github.com/yanos0218/AI/issues/206) 2026-10-24 |
 | 후보(미확정) | 샌드박스는 Windows 미지원 | 설정 값으로 갈라야 하는지 확인 뒤 결정 | [PROGRESS.md §5](PROGRESS.md#5-보류기각) |
 
 - 요약

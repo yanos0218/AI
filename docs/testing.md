@@ -69,3 +69,6 @@ Windows(Git Bash, bash 5, gawk)에서만 시험하면 Mac(bash 3.2, BSD 도구)�
   - 설치 스크립트는 커밋된 `base/` 트리 해시를 버전 표시 파일 3행에 기록함.
   - 커밋 전에 설치하면 다음 세션에 거짓 "설정이 낡았습니다" 알림이 뜬다(2026-09-29, [Issue #150](https://github.com/yanos0218/AI/issues/150) 반영 중 발견).
 - 설치 뒤에는 `bash tools/check-install.sh`로 대조함.
+- Windows에서 설치·시험이 유난히 느리면(`install.sh` 3분 이상) 보안 프로그램의 파일시스템 필터 드라이버를 먼저 의심함
+  - `fltmc filters`로 서드파티 필터를 확인하고, `/usr/bin/true` 50회 반복 시간(정상 약 8초)으로 재 봄.
+  - 2026-10-24 AhnLab Safe Transaction 중지로 28초가 8초가 됨(Defender 예외는 무효, [Issue #206](https://github.com/yanos0218/AI/issues/206)).
