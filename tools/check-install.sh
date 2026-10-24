@@ -65,7 +65,7 @@ run_checks() {
     done < base/vscode/extensions.txt
     extra=$(( $(grep -c . <<<"${installed}") - total + missing ))
     if [[ "${missing}" = 0 ]]; then echo "  same     기본 목록 ${total}개 전부 설치됨 (목록 밖 ${extra}개는 그대로 둔다)"
-    elif [[ "${win_code}" = 1 ]]; then echo "  (WSL — 위 code는 Windows VS Code라 빠진 ${missing}개를 판정에 넣지 않음. WSL 안에서 VS Code(Remote - WSL)로 개발하면 bash base/vscode/install.sh, 아니면 Windows Git Bash에서 점검)"
+    elif [[ "${win_code}" = 1 ]]; then echo "  (WSL — 위 code는 Windows VS Code라 빠진 ${missing}개를 판정에 넣지 않음. Windows VS Code는 Windows에서 base/vscode/install.ps1, WSL 안 VS Code(Remote - WSL)는 WSL 쪽 code가 PATH에 먼저 오게 한 뒤 bash base/vscode/install.sh)"
     else drift=1; echo "  → 빠진 ${missing}개는 bash base/vscode/install.sh 로 채운다"; fi
   fi
 

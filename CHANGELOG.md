@@ -82,6 +82,9 @@
 
 ### Fixed
 
+- `base/vscode/install.sh`가 WSL에서 Windows VS Code(`/mnt/` 아래 `code`)를 잡아 확장을 Windows 쪽에 설치하고 `settings.json`을 Windows가 읽지 않는 WSL 홈에 복사하던 것을 수정([Issue #204](https://github.com/yanos0218/AI/issues/204), 다음 컷에서 PATCH 후보)
+  - 같은 조건이면 `base/vscode/install.ps1`과 WSL 쪽 `code` 안내를 내고 종료 코드 1로 멈춤, `tools/check-install.sh`의 안내 문구도 맞춤
+  - 시험 `tools/test-install-merge.sh`에 12번 추가(7건, 가짜 `code`로 흉내), 실제 WSL에서의 확인은 사용자 기기에서 함
 - `tools/check-install.sh`가 WSL에서 Windows VS Code를 잡아 확장 16개를 전부 MISSING으로 보고하고 실패로 끝나던 것을 수정([Issue #201](https://github.com/yanos0218/AI/issues/201))
   - WSL이고 `code`가 `/mnt/` 아래이면 MISSING 목록은 보이되 판정에서 빼고 안내 한 줄을 냄, WSL 안 `code`의 MISSING은 그대로 실패로 셈
   - 시험 `tools/test-install-merge.sh`에 7b 추가(가짜 `code`로 흉내), 실제 WSL에서의 확인은 사용자 기기에서 함

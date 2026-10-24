@@ -8,6 +8,18 @@ here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MAC_APP_CODE="/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
 if command -v code >/dev/null; then
   CODE=code
+  # WSL에서 PATH의 code가 /mnt 아래(Windows VS Code)면 확장은 Windows 쪽에 들어가고 settings.json은 Windows가 읽지 않는 WSL 홈에 복사된다(Issue #204). 마운트 위치를 바꿨으면 WIN_MOUNT_ROOT로 지정
+  code_path="$(command -v code)"
+  if [[ "${code_path}" == "${WIN_MOUNT_ROOT:-/mnt/}"* ]] \
+    && { [[ -n "${WSL_DISTRO_NAME:-}" ]] || grep -qi microsoft /proc/version 2>/dev/null; }; then
+    {
+      echo "WSL에서 PATH의 code가 Windows VS Code입니다: ${code_path}"
+      echo "여기서 실행하면 확장이 Windows 쪽에 들어가고 settings.json은 Windows가 읽지 않는 WSL 홈에 복사되므로 멈춥니다."
+      echo "  - Windows VS Code를 맞추려면 Windows에서 base/vscode/install.ps1을 실행하세요."
+      echo "  - WSL 안 VS Code(Remote - WSL)를 맞추려면 WSL 쪽 code가 PATH에 먼저 오게 한 뒤 다시 실행하세요."
+    } >&2
+    exit 1
+  fi
 elif [[ "$(uname -s)" == "Darwin" ]] && [[ -x "${MAC_APP_CODE}" ]]; then
   CODE="${MAC_APP_CODE}"
   echo "== code가 PATH에 없어 Mac 앱 내장 경로를 씀: ${CODE}"

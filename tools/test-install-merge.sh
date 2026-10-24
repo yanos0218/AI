@@ -269,6 +269,27 @@ head -n 2 "${H11}/.claude-config-version" >"${H11}/v2" && mv "${H11}/v2" "${H11}
 CLAUDE_CONFIG_DIR="${H11}" bash tools/fingerprint.sh >"${T}/fp11c.txt" 2>&1
 chk "3행이 없으면 비교 못 함"             'grep -q "^\[기기별\] 설치본 = 비교 못 함" "${T}/fp11c.txt"'
 
+echo "== 12. base/vscode/install.sh: WSL에서 /mnt 아래 code(Windows VS Code)면 안내하고 멈춘다(Issue #204, 가짜 code로 흉내)"
+# 가짜 code는 호출되면 로그 파일을 남겨, 멈췄는지(호출 안 됨)와 진행했는지(호출됨)를 가른다. 실제 확장은 설치하지 않는다
+mkdir -p "${T}/fakewin12/bin" "${T}/fakenative12" "${T}/h12a" "${T}/h12b" "${T}/h12c"
+for d in "${T}/fakewin12/bin" "${T}/fakenative12"; do
+  printf '#!/usr/bin/env bash\necho called >>"${CODE_LOG}"\nexit 0\n' > "${d}/code"; chmod +x "${d}/code"
+done
+out="$(PATH="${T}/fakewin12/bin:${PATH}" env HOME="${T}/h12a" CODE_LOG="${T}/log12a" WIN_MOUNT_ROOT="${T}/fakewin12/" WSL_DISTRO_NAME=Ubuntu bash base/vscode/install.sh 2>&1)"; rc=$?
+chk "WSL+Windows code: 종료 코드 1"            '[[ "${rc}" = 1 ]]'
+chk "WSL+Windows code: install.ps1 안내"       'grep -q "install.ps1" <<<"${out}"'
+chk "WSL+Windows code: code를 호출하지 않음"   '[[ ! -e "${T}/log12a" ]]'
+chk "WSL+Windows code: 설정 파일을 복사하지 않음" '[[ -z "$(find "${T}/h12a" -name settings.json 2>/dev/null)" ]]'
+out="$(PATH="${T}/fakenative12:${PATH}" env HOME="${T}/h12b" CODE_LOG="${T}/log12b" WIN_MOUNT_ROOT="${T}/fakewin12/" WSL_DISTRO_NAME=Ubuntu bash base/vscode/install.sh 2>&1)"; rc=$?
+chk "WSL+WSL 안 code: 진행(종료 코드 0)"        '[[ "${rc}" = 0 ]]'
+chk "WSL+WSL 안 code: code를 호출함"           '[[ -e "${T}/log12b" ]]'
+if grep -qi microsoft /proc/version 2>/dev/null; then
+  echo "  건너뜀  실제 WSL이라 WSL 아님 대조는 생략"
+else
+  out="$(PATH="${T}/fakewin12/bin:${PATH}" env -u WSL_DISTRO_NAME HOME="${T}/h12c" CODE_LOG="${T}/log12c" WIN_MOUNT_ROOT="${T}/fakewin12/" bash base/vscode/install.sh 2>&1)"; rc=$?
+  chk "WSL 아님: 같은 code여도 진행"            '[[ "${rc}" = 0 && -e "${T}/log12c" ]]'
+fi
+
 echo
 [[ "${fail}" = 0 ]] && echo "결과: 통과" || echo "결과: 실패 항목 있음"
 exit "${fail}"

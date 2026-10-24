@@ -71,7 +71,7 @@
 | config-update 스킬 | 기본 (원격 확인 수정 3시나리오 2026-09-28 [#150](https://github.com/yanos0218/AI/issues/150)) | ✓ | ✓ | ✓ | ✗ | 결과 보고에 PROGRESS 기록 줄 포함 수정안 `drafts/skills/` 초안, 새 세션 시험 대기 [#181](https://github.com/yanos0218/AI/issues/181) |
 | pdf-extract 스킬 | 기본 (2026-09-27 승격, 새 세션 6시나리오 [#132](https://github.com/yanos0218/AI/issues/132)) | ✓ (MarkItDown 가상환경) | ✓ (MarkItDown 가상환경 2026-09-29) | ✗ (Python 3.10+ 가상환경 필요, Rocky는 python3.11) | - (웹은 PDF 직접 처리) | CID 깨짐 PDF 미시험 |
 | usage-dashboard 스킬(요청 시 켜는 기록 훅 + 로컬 대시보드) | 기본 (2026-09-29 승격, Windows 실사용·Mac 화면 확인 [#136](https://github.com/yanos0218/AI/issues/136)) | ✓ | ✓ | - (Linux 제외) | - (로컬 전용) | `claude -p` 세션은 기록 안 됨, 90일 쌓인 뒤(2026-12 말) Windows 처리 시간 측정 |
-| `base/vscode/` 확장 목록·설정·설치 스크립트 | 기본 (2026-09-29 16개 [#165](https://github.com/yanos0218/AI/issues/165), Mac 폴백 확인 [#57](https://github.com/yanos0218/AI/issues/57)) | ✓ | ✓ | - | - | - |
+| `base/vscode/` 확장 목록·설정·설치 스크립트 | 기본 (2026-09-29 16개 [#165](https://github.com/yanos0218/AI/issues/165), Mac 폴백 확인 [#57](https://github.com/yanos0218/AI/issues/57), 2026-10-24 WSL의 Windows `code` 중단 [#204](https://github.com/yanos0218/AI/issues/204)) | ✓ | ✓ | - | - | - |
 | `tools/bootstrap.sh` (신규 기기 설치) | 기본 (빈 `HOME` 시뮬레이션 2026-09-17) | - | - | - | - | 실제 신규 기기에서 curl 한 줄 검증 |
 | 저장소 전용 훅(`.claude/hooks/` baseline-guard·pre-commit-check·session-end-check) | 기본 (2026-09-29 커밋 검사 우회·경로 읽기 수정 [#156](https://github.com/yanos0218/AI/issues/156) [#163](https://github.com/yanos0218/AI/issues/163)) | 저장소 안 | 저장소 안 | 저장소 안 | - | - |
 | 이 저장소 CI(lint.yml + check-docs.sh) | 기본 (2026-09-08, shellcheck 대상 확대 [#161](https://github.com/yanos0218/AI/issues/161)) | GitHub | GitHub | GitHub | - | - |
