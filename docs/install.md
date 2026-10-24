@@ -24,6 +24,9 @@ mkdir -p ~/.claude/agents && cp base/agents/*.md ~/.claude/agents/
 
 **Rocky/AlmaLinux 등 RHEL 계열 최소 설치본**은 버전마다 기본 포함 도구가 다르다(8.10: git·python3 없음, diff·jq 있음 / 9.x: git·diff 없음, python3·jq 있음 — AlmaLinux 8.10·9.8 WSL로 각각 검증, 2026-09-16). 버전을 따지지 말고 먼저 `dnf install -y git diffutils python3`를 실행한다(이미 있으면 `dnf`가 그냥 건너뛰므로 안전). 안 하면 `install.sh`가 python3/python을 못 찾아 멈추거나, `check-install.sh`가 모든 파일을 "다르다"고 오탐한다([Issue #6](https://github.com/yanos0218/AI/issues/6)).
 
+`git-guardrails` 훅은 설정의 `onFailure: "block"`을 쓰므로 Claude Code 2.1.295 이상이 필요함([Issue #211](https://github.com/yanos0218/AI/issues/211)).
+이 훅이 시작 실패나 시간 초과로 모든 명령을 막으면 `Edit`로 `~/.claude/settings.json`에서 해당 항목의 `"onFailure": "block"` 줄을 지우거나 직접 편집해 복구함.
+
 영문 로케일 Linux 서버에서 Claude 출력의 한글이 깨져 보여도 한글 폰트·로케일은 설치하거나 바꾸지 않고 그대로 쓴다(2026-09-16 결정, [Issue #6](https://github.com/yanos0218/AI/issues/6)). 검증 기준도 특정 배포판이 아니라 RHEL 계열 전체임.
 
 ## Claude.ai (웹 · 데스크톱 · Cowork)

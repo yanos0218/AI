@@ -25,6 +25,10 @@
   - 훅의 `hookSpecificOutput`엔 선택지를 보여줄 필드가 없음.
   - 대신 방법이 여럿인 확인은 계획 단계에서 AskUserQuestion으로 먼저 정하고, 훅은 실행 직전 마지막 확인만 담당하도록 역할을 나눴음.
   - 훅 reason도 패턴별로 구체화([Issue #65](https://github.com/yanos0218/AI/issues/65)).
+- (2026-10-24) 안전 훅 `git-guardrails.sh`에만 `onFailure: "block"`을 켜고, 스크립트 오류는 EXIT 트랩이 확인 창(`ask`)으로 바꿈([Issue #211](https://github.com/yanos0218/AI/issues/211))
+  - 종료 코드 0·2 이외(1 포함)와 시간 초과를 실패로 치므로 그대로 켜면 `set -u` 오류 하나로 모든 명령이 막힘
+  - 시간 초과만 막는 쪽으로 남기고, `gh-throttle`(대기가 본업)·`format-guard`(python 부재 때 커밋이 막힘)는 제외
+  - 최소 버전 Claude Code 2.1.295, 훅이 전체 명령을 막으면 `Edit`로 `~/.claude/settings.json`의 `onFailure` 줄을 지워 복구
 - (2026-09-15) 목록 줄바꿈 규칙 위반은 사람이 수동으로 재검색하는 대신 `tools/check-cram.sh`가 커밋 시 기계적으로 검사·차단한다([Issue #99](https://github.com/yanos0218/AI/issues/99)).
 - (2026-09-15) PreToolUse/PostToolUse 훅은 매 도구 호출마다 Claude에게 실시간으로 알림을 보여줄 수 없다(실제 세션 3개로 확인)
   - 서브에이전트 위임 습관은 `bulk-read-log.sh`의 사후 로그 + `session-start-check.sh`의 개수 기준(10건) 점검으로 대체([Issue #100](https://github.com/yanos0218/AI/issues/100)).

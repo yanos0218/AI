@@ -21,7 +21,18 @@
 # 20번 넘게 띄우면 Windows Git Bash가 느린 시각에 9.5초가 걸려 제한 시간(5초)을 넘겼고, 제한 시간을 넘긴
 # 훅은 막지 못하는 오류로 처리돼 확인 창 없이 통과될 수 있었다(Issue #142, 2026-09-28). 하위 프로세스는
 # git push일 때 문서 목록을 만드는 git 명령뿐이다.
+#
+# 설정에서 onFailure "block"을 켰으므로(Issue #211) 이 스크립트가 시작 실패, 시간 초과, 종료 코드 0·2 이외로 끝나면
+# 모든 Bash·PowerShell 명령이 막힌다. 시간 초과는 스크립트 안에서 못 잡아 막히는 대로 둔다. 그 밖의 예상 밖 종료
+# (set -u의 미정의 변수 등, 종료 코드 1)는 EXIT 트랩이 잡아 전체 차단 대신 확인 창(ask)을 띄우고 종료 코드 0으로 끝낸다.
 set -u
+finished=0
+on_exit() {
+  [[ "${finished}" = 1 ]] && return
+  printf '%s\n' '{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"ask","permissionDecisionReason":"git-guardrails가 예상 밖 오류로 끝나 확인을 요청함. 되돌리기 어려운 명령이 아닌지 확인하세요."}}'
+  exit 0
+}
+trap on_exit EXIT
 
 IFS= read -r -d '' input || true
 cmd_re='"command"[[:space:]]*:[[:space:]]*"[[:space:]]*'
@@ -90,4 +101,5 @@ if [[ -n "${reason}" ]]; then
   printf '{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"ask","permissionDecisionReason":"%s"}}\n' "${msg}"
 fi
 
+finished=1
 exit 0

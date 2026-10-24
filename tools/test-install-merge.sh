@@ -52,6 +52,7 @@ chk "고친 스킬 보관됨"             'grep -rq "내가 고친 스킬" "${CL
 chk "스킬은 base로 교체됨"         'diff -rq -x __pycache__ base/skills/self-audit "${CLAUDE_CONFIG_DIR}/skills/self-audit" >/dev/null'
 chk "사용자 전용 스킬 유지"        '[[ -f "${CLAUDE_CONFIG_DIR}/skills/my-own/SKILL.md" ]]'
 chk "설치본 대조에서 settings 일치" '"${PY}" tools/settings_merge.py check "$S" base/settings.example.json >/dev/null'
+chk "git-guardrails 훅에 onFailure block이 설치됨(Issue #211)" 'q "any(h.get(\"onFailure\") == \"block\" and \"git-guardrails\" in h[\"command\"] for g in d[\"hooks\"][\"PreToolUse\"] for h in g[\"hooks\"])"'
 
 echo "== 2. 두 번째 설치는 결과가 같다"
 nbak="$(ls "${CLAUDE_CONFIG_DIR}"/settings.json.bak.* | wc -l | tr -d ' ')"

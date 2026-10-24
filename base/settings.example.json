@@ -61,7 +61,8 @@
           {
             "type": "command",
             "command": "bash ~/.claude/hooks/git-guardrails.sh",
-            "timeout": 30
+            "timeout": 30,
+            "onFailure": "block"
           }
         ]
       },

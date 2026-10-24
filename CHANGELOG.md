@@ -7,6 +7,14 @@
 
 ## [Unreleased]
 
+### Changed
+
+- 안전 훅 `git-guardrails.sh`가 실패하면 통과하지 않고 차단하도록 설정에 `"onFailure": "block"` 추가, Claude Code 2.1.295 이상 필요([Issue #211](https://github.com/yanos0218/AI/issues/211), 설정 키 추가라 다음 컷에서 MINOR 후보)
+  - 시작 실패와 시간 초과는 모든 Bash·PowerShell 명령을 막고, 스크립트가 예상 밖 오류(종료 코드 1)로 끝나면 EXIT 트랩이 전체 차단 대신 확인 창(`ask`)을 띄움
+  - `gh-throttle`·`format-guard`는 제외, 복구 방법은 `docs/install.md`
+  - 새 세션(Claude Code 2.1.309, Haiku) 시험 6가지: 정상 통과, 종료 코드 1 차단, 시간 초과 차단, 옵션 없으면 통과(현 상태), 실제 훅에 오류 주입 시 확인 창, 실제 훅 정상 명령 통과
+  - `tools/test-git-guardrails.sh` 8건 추가, CI에서 세 운영체제 실행, `tools/test-install-merge.sh`에 설치 확인 1건 추가
+
 ## [0.15.0] - 2026-10-24
 
 ### Changed
