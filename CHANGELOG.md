@@ -82,6 +82,11 @@
 
 ### Fixed
 
+- `base/vscode/install.sh`가 Windows 작업 폴더를 WSL로 읽을 때 확장 16개를 하나도 설치하지 못하던 것을 수정([Issue #208](https://github.com/yanos0218/AI/issues/208), 다음 컷에서 PATCH 후보)
+  - `extensions.txt`가 CRLF로 체크아웃돼 확장 ID 끝에 `\r`이 붙었고, 출력을 버려서 실패가 보이지 않았음
+  - 스크립트가 읽을 때 CR을 지우고, `.gitattributes`에 `base/vscode/extensions.txt text eol=lf`를 추가함
+  - 시험 `tools/test-install-merge.sh` 13번 추가
+  - 설정 파일이 Remote - WSL 서버가 읽지 않는 `~/.config/Code/User`에 복사되는 문제는 이번 수정 범위 밖
 - `base/vscode/install.sh`가 WSL에서 Windows VS Code(`/mnt/` 아래 `code`)를 잡아 확장을 Windows 쪽에 설치하고 `settings.json`을 Windows가 읽지 않는 WSL 홈에 복사하던 것을 수정([Issue #204](https://github.com/yanos0218/AI/issues/204), 다음 컷에서 PATCH 후보)
   - 같은 조건이면 `base/vscode/install.ps1`과 WSL 쪽 `code` 안내를 내고 종료 코드 1로 멈춤, `tools/check-install.sh`의 안내 문구도 맞춤
   - 시험 `tools/test-install-merge.sh`에 12번 추가(7건, 가짜 `code`로 흉내), 실제 WSL에서의 확인은 사용자 기기에서 함

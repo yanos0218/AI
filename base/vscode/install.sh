@@ -29,7 +29,8 @@ else
 fi
 
 echo "== 확장 설치"
-grep -v -E '^\s*(#|$)' "${here}/extensions.txt" | while read -r ext; do
+# Windows 작업 폴더를 WSL이 읽으면 CRLF라 ID 끝에 \r이 붙어 설치가 조용히 실패한다(Issue #208)
+grep -v -E '^\s*(#|$)' "${here}/extensions.txt" | tr -d '\r' | while read -r ext; do
   "${CODE}" --install-extension "${ext}" --force >/dev/null
   echo "  ${ext}"
 done

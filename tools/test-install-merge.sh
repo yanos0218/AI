@@ -290,6 +290,16 @@ else
   chk "WSL 아님: 같은 code여도 진행"            '[[ "${rc}" = 0 && -e "${T}/log12c" ]]'
 fi
 
+echo "== 13. base/vscode/install.sh: extensions.txt가 CRLF여도 확장 ID에 \r이 붙지 않는다(Issue #208)"
+# 가짜 code는 받은 확장 ID를 줄마다 [ID]로 기록해, 끝에 CR이 붙었는지 가른다
+mkdir -p "${T}/vs13/bin" "${T}/h13"
+cp base/vscode/install.sh base/vscode/settings.json "${T}/vs13/"
+printf 'usernamehw.errorlens\r\n# 주석\r\n\r\nredhat.vscode-yaml\r\n' > "${T}/vs13/extensions.txt"
+printf '#!/usr/bin/env bash\nprintf "[%%s]\n" "$2" >>"${CODE_LOG}"\nexit 0\n' > "${T}/vs13/bin/code"; chmod +x "${T}/vs13/bin/code"
+out="$(PATH="${T}/vs13/bin:${PATH}" env -u WSL_DISTRO_NAME HOME="${T}/h13" CODE_LOG="${T}/log13" bash "${T}/vs13/install.sh" 2>&1)"; rc=$?
+chk "CRLF 목록: 종료 코드 0"                   '[[ "${rc}" = 0 ]]'
+chk "CRLF 목록: 확장 ID 2개가 CR 없이 전달됨"   '[[ "$(tr "\n" " " < "${T}/log13")" = "[usernamehw.errorlens] [redhat.vscode-yaml] " ]]'
+
 echo
 [[ "${fail}" = 0 ]] && echo "결과: 통과" || echo "결과: 실패 항목 있음"
 exit "${fail}"

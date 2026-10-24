@@ -4,3 +4,5 @@
 # "LF will be replaced by CRLF" 경고가 반복된다(Issue #123)
 *.md text eol=lf
 *.json text eol=lf
+# 확장 목록은 WSL·리눅스가 읽으므로 LF 고정 — CRLF면 확장 ID 끝에 \r이 붙어 설치가 실패한다(Issue #208)
+base/vscode/extensions.txt text eol=lf
