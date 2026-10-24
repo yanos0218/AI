@@ -6,13 +6,12 @@
 
 Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원본 저장소. 개발자가 아닌 사용자가 여러 스택의 프로젝트를 오가며 Claude에게 (1) 매번 같은 배경을 다시 설명하지 않고, (2) 멋대로 진행하거나 너무 자주 묻지 않게 하고, (3) 검증 없이 "됐다"는 말을 못 하게 하고, (4) 결론만 짧게 듣도록 만듦. 저장소별 규칙은 각 저장소에 두고 여기서는 **참조만** 함.
 
-## 지금 (2026-10-22) · 마지막 월 점검 2026-10-07([#171](https://github.com/yanos0218/AI/issues/171))
+## 지금 (2026-10-24) · 마지막 월 점검 2026-10-07([#171](https://github.com/yanos0218/AI/issues/171))
 
 - 변경 이력은 [CHANGELOG.md](../CHANGELOG.md) `[Unreleased]`, 기기별 설치 버전은 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태)이 원본(여기엔 적지 않음).
-- [#194](https://github.com/yanos0218/AI/issues/194)(설치 사용자 값 보존)는 2026-10-22 세 기기(Windows·Mac mini·Linux Rocky)와 WSL 확인을 마치고 닫음. 하위 [#201](https://github.com/yanos0218/AI/issues/201)(WSL 확장 오탐)·[#202](https://github.com/yanos0218/AI/issues/202)(파이썬 3.6)도 닫음.
-- 다음 후보는 [#195](https://github.com/yanos0218/AI/issues/195)(읽기 차단 기본 영역 반영). 세 기기에서 손으로 켠 임시 불일치이고 `Read`·`Bash` 차단, 인라인 코드는 확인 프롬프트로 확인됨. 새 설정 키라 구현 전 설계 승인 필요.
-- 바로 코드를 건드릴 열린 task는 없음. 보류는 [#174](https://github.com/yanos0218/AI/issues/174)(전역 지침 후보 2건), [#178](https://github.com/yanos0218/AI/issues/178)(한도 측정, 사용자 요청 시), [#181](https://github.com/yanos0218/AI/issues/181)(다른 기기 설치 때 검증), 요구사항 미정은 #5·#7·#8·#9·#10. [#193](https://github.com/yanos0218/AI/issues/193)은 조사 이슈라 사용자가 마무리라고 할 때까지 열어 둠, 후속은 [#195](https://github.com/yanos0218/AI/issues/195)(읽기 차단 기본 반영 결정), [#197](https://github.com/yanos0218/AI/issues/197)(OS별 구분표·세 러너 CI·`fingerprint --common` 완료, 덧입히기 구조는 Windows 출력으로 실제 차이가 확인되면 설계).
-- 문서 갱신 누락 검사(CHANGELOG 경고, `handoff-stale-check` 알림, HANDOFF 자동 로드)는 2026-10-21 새 세션 시험으로 모두 확인을 마침(#192 닫음).
+- 읽기 차단과 허용 폴더 계산은 기본 영역에 반영돼 [#195](https://github.com/yanos0218/AI/issues/195)를 2026-10-24 닫음. 미검증은 다른 저장소 폴더의 대화형 `config-update`(Windows·Mac mini), 인라인 코드 확인 창, VS Code 멀티루트.
+- 다음 후보 task는 [#203](https://github.com/yanos0218/AI/issues/203)(`fingerprint.sh`에 설치본 최신 여부 표시), [#204](https://github.com/yanos0218/AI/issues/204)(WSL에서 Windows VS Code를 잡는 `base/vscode/install.sh`, 기본 영역이라 사용자 요청 뒤), [#206](https://github.com/yanos0218/AI/issues/206)(Windows PC 설치 병합 시험 15분 초과, 실시간 검사 예외는 사용자 승인 필요).
+- 보류는 [#174](https://github.com/yanos0218/AI/issues/174)(전역 지침 후보 2건), [#178](https://github.com/yanos0218/AI/issues/178)(한도 측정, 사용자 요청 시), [#181](https://github.com/yanos0218/AI/issues/181)(다른 기기 설치 때 검증), 요구사항 미정은 #5·#7·#8·#9·#10. [#193](https://github.com/yanos0218/AI/issues/193)은 조사 이슈라 사용자가 마무리라고 할 때까지 열어 둠, 후속은 [#197](https://github.com/yanos0218/AI/issues/197)(OS별 구분표·세 러너 CI·`fingerprint --common` 완료, 덧입히기 구조는 Windows 출력으로 실제 차이가 확인되면 설계).
 - 다음 세션 첫 행동은 `gh issue list --state open`으로 최신 상태 확인(이 요약보다 이슈 최신 댓글이 정확), 새 달 첫 세션이면 월 점검 제안([monthly-check.md](monthly-check.md)).
 
 ## 문서 지도 (작업 종류 → 읽을 문서)
