@@ -164,6 +164,51 @@ def classify_agent(a, parent_alive, now_ms):
     return 'ended', False
 
 
+def scan_teams(now_ms):
+    """에이전트 팀(공식 문서의 `teams/<팀>/config.json`, `tasks/<팀>/*.json` 형식)을 읽는다. 팀 기능이 꺼져 있으면 폴더가 없어 빈 목록.
+    이름·종류·작업 개수만 내보내고, 모양이 달라도 오류 없이 건너뛴다. 실제 팀 파일로는 아직 확인하지 못했다."""
+    base = claude_dir()
+    out = []
+    try:
+        names = sorted(os.listdir(os.path.join(base, 'teams')))
+    except OSError:
+        return out
+    for name in names[:20]:
+        path = os.path.join(base, 'teams', name, 'config.json')
+        try:
+            if os.path.getsize(path) > 1000000:
+                continue
+            with open(path, encoding='utf-8') as f:
+                cfg = json.load(f)
+            mt = int(os.path.getmtime(path) * 1000)
+        except (OSError, ValueError):
+            continue
+        members = []
+        raw = cfg.get('members') if isinstance(cfg, dict) else None
+        for m in (raw if isinstance(raw, list) else [])[:50]:
+            if isinstance(m, dict):
+                n = m.get('name') or m.get('agentId') or m.get('id')
+                t = m.get('agentType') or m.get('type') or m.get('role')
+                members.append({'name': str(n)[:60] if n else '(이름 없음)', 'type': str(t)[:40] if t else ''})
+        tasks = {'pending': 0, 'in_progress': 0, 'completed': 0, 'other': 0}
+        try:
+            tdir = os.path.join(base, 'tasks', name)
+            for fn in os.listdir(tdir)[:500]:
+                if not fn.endswith('.json'):
+                    continue
+                try:
+                    with open(os.path.join(tdir, fn), encoding='utf-8') as f:
+                        st = json.load(f).get('status')
+                except (OSError, ValueError, AttributeError):
+                    continue
+                key = str(st).replace('-', '_').lower()
+                tasks[key if key in tasks else 'other'] += 1
+        except OSError:
+            pass
+        out.append({'name': name[:60], 'members': members, 'tasks': tasks, 'updated_ms': mt})
+    return out
+
+
 def usage_summary(now=None):
     """usage-dashboard의 시간별 집계(hourly.json)에서 오늘·최근 5시간 실사용 토큰(입력+출력, 캐시 읽기 제외)을 메인과 서브에이전트로 나눠 돌려준다."""
     out = {'shown': SHOW_USAGE, 'enabled': False, 'available': False}
@@ -272,6 +317,11 @@ class State:
         self.last_try_ms = None
         self.agents = []
         self.agents_unreadable = 0
+        self.teams = []
+
+    def update_teams(self, teams):
+        with self.lock:
+            self.teams = list(teams)
 
     def update_agents(self, agents, unreadable):
         with self.lock:
@@ -373,12 +423,13 @@ class State:
             concurrent = sum(1 for s in out for a in s['agents'] if a['state'] in ('running', 'quiet'))
             return {'server_ms': now_ms, 'ok': self.error is None, 'error': self.error,
                     'last_ok_ms': self.last_ok_ms, 'poll_sec': POLL_SEC, 'window_sec': WINDOW_SEC,
-                    'agents_unreadable': self.agents_unreadable, 'concurrent': concurrent, 'sessions': out}
+                    'agents_unreadable': self.agents_unreadable, 'concurrent': concurrent, 'teams': list(self.teams), 'sessions': out}
 
 
 STATE = State()
 FETCH = fetch_agents      # 시험에서 바꿔 끼운다
 SCAN = scan_subagents
+SCAN_TEAMS = scan_teams
 
 
 def poll_loop(stop):
@@ -390,6 +441,10 @@ def poll_loop(stop):
             STATE.update_agents(*SCAN(now_ms))
         except Exception:                         # 형식이 바뀌어도 세션 화면은 계속 돌게 한다
             STATE.update_agents([], 1)
+        try:
+            STATE.update_teams(SCAN_TEAMS(now_ms))
+        except Exception:
+            STATE.update_teams([])
         stop.wait(POLL_SEC)
 
 

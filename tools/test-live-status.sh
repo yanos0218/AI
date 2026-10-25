@@ -263,6 +263,31 @@ srv2.shutdown(); srv2.server_close()
 shutil.rmtree(ux, ignore_errors=True)
 os.environ.pop('LIVE_CLAUDE_DIR', None)
 
+# 5e. 에이전트 팀(공식 문서 형식으로 만든 가짜 폴더)
+tm = tempfile.mkdtemp()
+os.environ['LIVE_CLAUDE_DIR'] = tm
+r('teams_none_without_folder', live.scan_teams(0) == [])
+os.makedirs(os.path.join(tm, 'teams', 'alpha')); os.makedirs(os.path.join(tm, 'tasks', 'alpha'))
+with open(os.path.join(tm, 'teams', 'alpha', 'config.json'), 'w') as f:
+    json.dump({'members': [{'name': 'lead', 'agentType': 'general-purpose'}, {'name': 'rev'}, 'junk']}, f)
+for i, st in enumerate(['pending', 'in_progress', 'completed', 'completed', 'weird']):
+    with open(os.path.join(tm, 'tasks', 'alpha', '%d.json' % i), 'w') as f:
+        json.dump({'status': st, 'subject': 'SECRET-TITLE'}, f)
+with open(os.path.join(tm, 'tasks', 'alpha', 'bad.json'), 'w') as f:
+    f.write('{not json')
+os.makedirs(os.path.join(tm, 'teams', 'broken'))
+with open(os.path.join(tm, 'teams', 'broken', 'config.json'), 'w') as f:
+    f.write('[1,2')
+tt = live.scan_teams(0)
+r('teams_reads_only_valid_team', len(tt) == 1 and tt[0]['name'] == 'alpha')
+r('teams_members_tolerant', [m['name'] for m in tt[0]['members']] == ['lead', 'rev'] and tt[0]['members'][0]['type'] == 'general-purpose')
+r('teams_task_counts', tt[0]['tasks'] == {'pending': 1, 'in_progress': 1, 'completed': 2, 'other': 1})
+r('teams_no_task_text_exported', 'SECRET-TITLE' not in json.dumps(tt))
+st = live.State(); st.update_teams(tt)
+r('teams_in_snapshot', st.snapshot(1)['teams'][0]['name'] == 'alpha')
+os.environ.pop('LIVE_CLAUDE_DIR', None)
+shutil.rmtree(tm, ignore_errors=True)
+
 # 5d. 토큰 대시보드 초안 템플릿(drafts/skills/usage-dashboard)
 import re, io, subprocess
 tpl = io.open('drafts/skills/usage-dashboard/scripts/dashboard.html', encoding='utf-8').read()
@@ -430,6 +455,15 @@ chk "사용량 화면에도 Host 검사"                              'py usage_
 chk "/api/state에 사용량 요약이 들어감"                       'py api_state_includes_usage'
 chk "끄면 /usage/도 404"                                    'py usage_route_404_when_off'
 chk "화면 파일이 없으면 404"                                 'py usage_missing_page_404'
+
+echo "== 2f. 에이전트 팀"
+chk "팀 폴더가 없으면 빈 목록"                             'py teams_none_without_folder'
+chk "읽을 수 있는 팀만 목록에 넣음"                         'py teams_reads_only_valid_team'
+chk "구성원 모양이 달라도 오류 없이 읽음"                    'py teams_members_tolerant'
+chk "공유 작업은 상태별 개수만 셈"                          'py teams_task_counts'
+chk "작업 제목은 내보내지 않음"                            'py teams_no_task_text_exported'
+chk "팀이 화면 데이터에 들어감"                            'py teams_in_snapshot'
+chk "화면에 에이전트 팀 구역이 있음"                        'grep -q "에이전트 팀" "${SK}/scripts/live.html" && grep -q "teamlist" "${SK}/scripts/live.html"'
 
 echo "== 2d. 토큰 대시보드 초안 템플릿(연결 화면)"
 chk "보조 글자색 대비 4.5:1 이상(밝은 테마)"                'py usage_tpl_light_contrast'

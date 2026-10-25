@@ -46,6 +46,7 @@
   .pill { white-space:nowrap; font-size:.8rem; font-weight:700; padding:1px 8px; border-radius:999px; background:var(--ended-bg); color:var(--ended); }
   .pill.idle { background:var(--idle-bg); color:var(--idle); } .pill.new { background:var(--busy-bg); color:var(--busy); }
   .li.new { background:var(--busy-bg); border-radius:8px; padding-inline:10px; margin:2px -10px; }
+  .tlist { margin-left:0; padding-left:0; border-left:0; } .tkid::before { display:none; }
   .kid.done { border-style:dashed; border-color:var(--busy); } #headline.done { color:var(--link); }
   .pulse { display:inline-block; animation:pulse 1.4s ease-in-out infinite; }
   @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.35; } }
@@ -75,6 +76,8 @@
 <h2>지금 진행 중</h2>
 <div id="active"></div>
 <div id="activenone" class="none" hidden>지금 진행 중인 작업이 없습니다.</div>
+
+<div id="teams" hidden><h2>에이전트 팀 <span class="small">(팀 구성원과 공유 작업 목록)</span></h2><div id="teamlist" class="kids tlist"></div></div>
 
 <h2>쉬는 중 <span class="small">(Claude가 응답을 끝내고 내 입력을 기다림)</span></h2>
 <div id="idle" class="list"></div>
@@ -212,6 +215,17 @@
       else if (!u.available) tile('오늘 실사용 토큰', '-', '아직 기록이 없음');
       else tile('오늘 실사용 토큰', fmtTok(u.today.main + u.today.sub), '메인 ' + fmtTok(u.today.main) + ' · 서브 ' + fmtTok(u.today.sub) + ' · 최근 5시간 ' + fmtTok(u.last5h.main + u.last5h.sub) + ' · 기록 갱신 ' + fmt(now - u.updated_ms) + ' 전');
     }
+
+    var tw = document.getElementById('teams'), tl = clear('teamlist'), teams = data.teams || [];
+    tw.hidden = !teams.length;
+    teams.forEach(function (t) {
+      var tk = t.tasks, c = el('div', 'kid tkid'), top = el('div', 'top'), left = el('div');
+      left.appendChild(el('div', 't', t.name));
+      left.appendChild(el('div', 'd', t.members.length ? t.members.map(function (m) { return m.name + (m.type ? '(' + m.type + ')' : ''); }).join(', ') : '구성원 정보 없음'));
+      top.appendChild(left); top.appendChild(chip('running', '◆', '팀 ' + t.members.length + '명', false)); c.appendChild(top);
+      c.appendChild(el('div', 'small', '공유 작업: 진행 ' + tk.in_progress + ' · 대기 ' + tk.pending + ' · 완료 ' + tk.completed + (tk.other ? ' · 기타 ' + tk.other : '') + ' · 설정 갱신 ' + fmt(now - t.updated_ms) + ' 전'));
+      tl.appendChild(c);
+    });
 
     var act = clear('active'); active.forEach(function (s) { act.appendChild(sessionCard(s, now)); });
     document.getElementById('activenone').hidden = active.length > 0;

@@ -9,7 +9,8 @@
 
 ### Added
 
-- 실시간 세션 현황 화면 초안 `drafts/skills/live-status/`와 시험 `tools/test-live-status.sh` 93건([Issue #213](https://github.com/yanos0218/AI/issues/213), 초안이라 배포 안 됨)
+- 실시간 세션 현황 화면 초안 `drafts/skills/live-status/`와 시험 `tools/test-live-status.sh` 100건([Issue #213](https://github.com/yanos0218/AI/issues/213), 초안이라 배포 안 됨)
+- 실시간 현황 에이전트 팀 구역 초안(문서 형식 기준, 실제 팀 파일 미확인)
 - 실시간 현황 화면 개선 초안(방금 끝남·내 차례 강조, 탭 제목·아이콘, 만·억 단위)
 - 토큰 대시보드 화면 초안 `drafts/skills/usage-dashboard/scripts/dashboard.html`(기본 영역 `base/`는 그대로)
   - 맨 위 한 문장 요약, 보조 글자 대비 4.5:1 이상, 글자 12px 이상
