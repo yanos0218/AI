@@ -29,7 +29,7 @@ TEMPLATE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dashboard.h
 BIG_CHARS = 20000         # 이보다 큰 도구 결과만 따로 기록
 KEEP_DAYS = 90            # 요청·도구 기록 보관 기간
 REWRITE_MIN = 10000       # 캐시에 새로 쓴 양이 이보다 크고 읽은 양보다 많으면 "캐시 재작성"으로 본다
-IDLE_SEC = 300            # 이보다 오래 쉬고 난 뒤의 재작성은 "쉬어서 캐시 만료"(캐시 수명 5분)
+TTL_DEFAULT = 300         # 캐시 종류를 모를 때 쓰는 수명(5분). 구독의 메인 대화는 1시간형이라 기록의 ephemeral_1h 쓰기량으로 알아낸다(2026-10-25 #214)
 PROMPT_CHARS = 80
 PROMPT_FULL = 2000        # 상세에 남기는 요청 원문 길이
 EV_MAX, EV_TEXT = 40, 180 # 요청당 상세 단계 수, 단계마다 남기는 글자 수
@@ -177,6 +177,7 @@ class Store:
         names, n = {}, 0
         first_turn = off == 0 and kind == 'main'
         last_ts = ss['last'] if kind == 'main' else None
+        last_ttl = ss.get('ttl') if kind == 'main' else None     # 직전 응답이 남긴 캐시의 수명(초). 쉰 시간은 이것과 견준다
         for raw in data[:end].splitlines():
             try:
                 e = json.loads(raw)
@@ -226,6 +227,7 @@ class Store:
                     t = parse_ts(ts) or datetime.datetime.now().astimezone()
                     fam = family(m.get('model'))
                     new_in, cache, out = delta[0] + delta[1], delta[2], delta[3]
+                    ttl_now = cache_ttl(u)
                     b = self.hourly.setdefault(t.strftime('%Y-%m-%dT%H'), {}).setdefault(proj, {}) \
                         .setdefault(kind, {}).setdefault(fam, {'turns': 0, 'in': 0, 'cache': 0, 'out': 0})
                     b['turns'] += new_turn
@@ -251,9 +253,10 @@ class Store:
                             r['rewrites'] += 1
                             r['rewrite_tokens'] += cc
                             lt = parse_ts(last_ts) if last_ts else None
-                            if lt and (t - lt).total_seconds() > IDLE_SEC:
+                            if lt and (t - lt).total_seconds() > (last_ttl or ttl_now or TTL_DEFAULT):
                                 r['idle_rewrites'] += 1
                     if kind == 'main':
+                        last_ttl = ttl_now or last_ttl
                         last_ts = ts           # 쉰 시간은 직전 API 호출(응답)부터 잰다. 사용자 입력 시각이 아니라
                     if first_turn and new_turn:
                         first_turn = False
@@ -277,6 +280,7 @@ class Store:
         self.state['msgs'][path] = dict(list(mem.items())[-50:])   # 다음 번에 이어질 수 있는 최근 응답만 기억
         if kind == 'main':
             ss['last'] = last_ts
+            ss['ttl'] = last_ttl
             ss['agents'] = dict(list(ss['agents'].items())[-300:])
         return n, proj
 
@@ -350,6 +354,18 @@ def render():
     shown = {r['rid']: det[r['rid']] for r in data['requests'] if r['rid'] in det}
     write_atomic(DETAILS_JS, 'window.DETAILS=' + json.dumps(shown, ensure_ascii=False).replace('</', '<\\/') + ';')
     write_atomic(PAGE, page)
+
+
+def cache_ttl(u):
+    """응답이 남긴 캐시의 수명(초). 1시간형을 썼으면 3600, 5분형만 썼으면 300, 쓰기가 없거나 옛 기록이면 None."""
+    cc = u.get('cache_creation')
+    if not isinstance(cc, dict):
+        return None
+    if cc.get('ephemeral_1h_input_tokens', 0) > 0:
+        return 3600
+    if cc.get('ephemeral_5m_input_tokens', 0) > 0:
+        return 300
+    return None
 
 
 def signals(reqs):

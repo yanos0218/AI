@@ -288,9 +288,47 @@ r('teams_in_snapshot', st.snapshot(1)['teams'][0]['name'] == 'alpha')
 os.environ.pop('LIVE_CLAUDE_DIR', None)
 shutil.rmtree(tm, ignore_errors=True)
 
-# 5d. 토큰 대시보드 초안 템플릿(drafts/skills/usage-dashboard)
+# 5f. 캐시 만료 판정: 기록에 남은 캐시 수명(1시간형·5분형)에 맞춰 "쉬어서 만료"를 센다
+ud = tempfile.mkdtemp()
+os.environ['USAGE_LOG_DIR'] = os.path.join(ud, 'log')
+sys.path.insert(0, 'base/skills/usage-dashboard/scripts')
+import usage
+def tline(sid, minute, mid, cc, cr, kind):
+    cr_obj = None if kind is None else ({'ephemeral_1h_input_tokens': cc, 'ephemeral_5m_input_tokens': 0} if kind == '1h' else {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': cc})
+    u = {'input_tokens': 10, 'cache_creation_input_tokens': cc, 'cache_read_input_tokens': cr, 'output_tokens': 5}
+    if cr_obj is not None:
+        u['cache_creation'] = cr_obj
+    ts = '2026-10-20T%02d:%02d:00.000Z' % (minute // 60, minute % 60)
+    return json.dumps({'type': 'assistant', 'timestamp': ts, 'cwd': '/work/p', 'message': {'id': mid, 'model': 'claude-sonnet-5-5', 'content': [], 'usage': u}})
+def ttl_case(sid, kind, gaps):
+    os.makedirs(os.path.join(ud, 'p'), exist_ok=True)
+    path = os.path.join(ud, 'p', sid + '.jsonl')
+    ts0 = '2026-10-20T00:00:00.000Z'
+    lines = [json.dumps({'type': 'user', 'uuid': 'u-' + sid, 'timestamp': ts0, 'cwd': '/work/p', 'message': {'role': 'user', 'content': 'hello'}})]
+    minute = 1
+    lines.append(tline(sid, minute, sid + 'm0', 50000, 0, kind))
+    for i, g in enumerate(gaps):
+        minute += g
+        lines.append(tline(sid, minute, '%sm%d' % (sid, i + 1), 50000, 10, kind))
+    with open(path, 'w') as f:
+        f.write('\n'.join(lines) + '\n')
+    st = usage.Store()
+    st.add_file(path, 'main', sid, 'p')
+    return list(st.requests.values())[-1]
+r1 = ttl_case('aaaa1111', '1h', [10, 180])
+r('ttl_1h_rewrites_counted', r1['rewrites'] == 2)
+r('ttl_1h_ten_minutes_not_expired', r1['idle_rewrites'] == 1)
+r2 = ttl_case('bbbb2222', '5m', [10])
+r('ttl_5m_ten_minutes_expired', r2['rewrites'] == 1 and r2['idle_rewrites'] == 1)
+r3 = ttl_case('cccc3333', None, [10])
+r('ttl_unknown_uses_five_minutes', r3['rewrites'] == 1 and r3['idle_rewrites'] == 1)
+r('ttl_cache_ttl_helper', usage.cache_ttl({'cache_creation': {'ephemeral_1h_input_tokens': 5}}) == 3600 and usage.cache_ttl({'cache_creation': {'ephemeral_5m_input_tokens': 5}}) == 300 and usage.cache_ttl({}) is None and usage.cache_ttl({'cache_creation': {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': 0}}) is None)
+os.environ.pop('USAGE_LOG_DIR', None)
+shutil.rmtree(ud, ignore_errors=True)
+
+# 5d. 토큰 대시보드 화면 템플릿(base/skills/usage-dashboard, 2026-10-25 승격)
 import re, io, subprocess
-tpl = io.open('drafts/skills/usage-dashboard/scripts/dashboard.html', encoding='utf-8').read()
+tpl = io.open('base/skills/usage-dashboard/scripts/dashboard.html', encoding='utf-8').read()
 def lum(hx):
     hx = hx.lstrip('#'); c = [int(hx[i:i + 2], 16) / 255.0 for i in (0, 2, 4)]
     f = lambda v: v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4
@@ -308,9 +346,8 @@ sizes = [float(x) for x in re.findall(r'font-size:([0-9.]+)px', tpl)]
 r('usage_tpl_no_tiny_text', min(sizes) >= 12.0)
 td = tempfile.mkdtemp()
 sd = os.path.join(td, 'scripts'); os.makedirs(sd)
-for fn in ('usage.py',):
-    shutil.copy(os.path.join('base/skills/usage-dashboard/scripts', fn), sd)
-shutil.copy('drafts/skills/usage-dashboard/scripts/dashboard.html', sd)
+shutil.copy('base/skills/usage-dashboard/scripts/usage.py', sd)
+shutil.copy('base/skills/usage-dashboard/scripts/dashboard.html', sd)
 logd = os.path.join(td, 'log'); os.makedirs(logd)
 with open(os.path.join(logd, 'hourly.json'), 'w') as f:
     json.dump({time.strftime('%Y-%m-%dT%H'): {'AI': {'main': {'sonnet': {'turns': 3, 'in': 5000, 'cache': 90000, 'out': 800}}}}}, f)
@@ -465,7 +502,13 @@ chk "작업 제목은 내보내지 않음"                            'py teams_
 chk "팀이 화면 데이터에 들어감"                            'py teams_in_snapshot'
 chk "화면에 에이전트 팀 구역이 있음"                        'grep -q "에이전트 팀" "${SK}/scripts/live.html" && grep -q "teamlist" "${SK}/scripts/live.html"'
 
-echo "== 2d. 토큰 대시보드 초안 템플릿(연결 화면)"
+echo "== 2g. 캐시 만료 판정(기본 영역 usage.py)"
+chk "1시간형 캐시 기록이면 3시간 쉬면 만료, 10분은 만료 아님"  'py ttl_1h_rewrites_counted && py ttl_1h_ten_minutes_not_expired'
+chk "5분형 캐시 기록이면 10분 쉬어도 만료"                    'py ttl_5m_ten_minutes_expired'
+chk "캐시 종류를 모르는 옛 기록은 5분으로 판정"               'py ttl_unknown_uses_five_minutes'
+chk "캐시 수명 해석 함수가 1시간·5분·없음을 가림"              'py ttl_cache_ttl_helper'
+
+echo "== 2d. 토큰 대시보드 화면 템플릿(기본 영역)"
 chk "보조 글자색 대비 4.5:1 이상(밝은 테마)"                'py usage_tpl_light_contrast'
 chk "보조 글자색 대비 4.5:1 이상(어두운 테마)"              'py usage_tpl_dark_contrast'
 chk "데이터 자리표시자가 하나만 있음"                       'py usage_tpl_one_placeholder'

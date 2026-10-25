@@ -9,24 +9,27 @@
 
 ### Added
 
-- 실시간 세션 현황 화면 초안 `drafts/skills/live-status/`와 시험 `tools/test-live-status.sh` 100건([Issue #213](https://github.com/yanos0218/AI/issues/213), 초안이라 배포 안 됨)
-- 실시간 현황 에이전트 팀 구역 초안(문서 형식 기준, 실제 팀 파일 미확인)
-- 실시간 현황 화면 개선 초안(방금 끝남·내 차례 강조, 탭 제목·아이콘, 만·억 단위)
-- 토큰 대시보드 화면 초안 `drafts/skills/usage-dashboard/scripts/dashboard.html`(기본 영역 `base/`는 그대로)
-  - 맨 위 한 문장 요약, 보조 글자 대비 4.5:1 이상, 글자 12px 이상
-  - 시험 `tools/test-live-status.sh`가 기본 `usage.py`로 렌더링해 확인
+- 실시간 세션 현황 화면 초안 `drafts/skills/live-status/`와 시험 `tools/test-live-status.sh` 104건([Issue #213](https://github.com/yanos0218/AI/issues/213), 초안이라 배포 안 됨)
   - 파이썬 표준 라이브러리 서버가 `claude agents --json`(세션)과 Claude Code가 남기는 서브에이전트 기록 파일을 읽어 구조도(세션 아래 서브에이전트)와 최근 30분 타임라인을 보여 줌, 기본 포트 8766
   - 서브에이전트 상태는 `meta.json`의 `finished`와 기록 파일 수정 시각으로 판정(작업 중·조용함·끝남, finished 표시가 없는 옛 기록은 끝남 추정), 기록은 첫 줄만 읽음, 문서화되지 않은 형식이라 읽지 못하면 화면에 알림
   - 127.0.0.1에만 묶고 Host 검사, 대화 내용과 전체 경로와 전체 ID는 내보내지 않음, 작업 제목은 `LIVE_SHOW_TITLES=0`으로 숨김, 일시적으로 목록이 비어도 연속 3번 안 보일 때만 끝남으로 처리
   - 화면은 핵심 정보 순서로 설계: 한 문장 요약과 숫자 타일 넷(작업 중 세션, 서브에이전트 진행, 가장 오래 걸리는 중, 오늘 실사용 토큰), 지금 진행 중, 쉬는 중, 접어 둔 최근 끝난 것, 타임라인, 읽는 법
   - 토큰은 usage-dashboard의 `usage-log/hourly.json` 집계(입력+출력, 캐시 읽기 제외)를 읽고, 같은 서버가 기존 사용량 화면을 `/usage/`로 연결(허용 파일 2개만, 돌아가는 줄만 주입), `LIVE_SHOW_USAGE=0`으로 끔
-  - 에이전트 팀과 배경 셸 명령은 미표시, 화면은 WebKit 캡처로 밝은·어두운 테마와 좁은 폭을 확인했고 사용자 확인 전
+  - 배경 셸 명령은 미표시, 화면은 WebKit 캡처로 밝은·어두운 테마와 좁은 폭을 확인했고 사용자 확인 전
+  - 에이전트 팀 구역(공식 문서 형식의 `teams/`·`tasks/` 파일을 읽어 구성원과 공유 작업 개수만 표시, 실제 팀 파일은 미확인)
+  - 방금 끝난 일을 "내 차례"·"방금 끝남"으로 강조, 탭 제목·아이콘에 상태 표시, 토큰 단위를 만·억으로 통일
 - 알림 훅 초안 `drafts/hooks/notify.sh`와 시험 `tools/test-notify.sh` 18건([Issue #5](https://github.com/yanos0218/AI/issues/5), 초안이라 배포 안 됨)
   - `permission_prompt`면 "승인 대기", `Stop`이 백그라운드 작업 없이 60초 넘게 걸렸으면 "작업 끝" 알림
   - 본문은 폴더 이름과 `session_id` 앞 8자뿐, 훅 입력은 인자와 환경변수로만 넘겨 주입 방지
   - 실제 알림 도착과 Windows 분기는 미검증
 
 ### Changed
+
+- 토큰 대시보드(`usage-dashboard`) 캐시 만료 판정과 화면 개선을 기본 영역에 반영([Issue #215](https://github.com/yanos0218/AI/issues/215), [Issue #214](https://github.com/yanos0218/AI/issues/214) 조사 근거)
+  - `usage.py`가 "쉬어서 캐시 만료"를 5분 고정이 아니라 기록에 남은 캐시 종류(1시간형 3600초·5분형 300초, 모르면 5분)로 판정, 구독의 메인 대화는 1시간형이라 이전엔 과대 집계
+  - 이전에 쌓은 기록의 쉰 뒤 횟수는 5분 기준 그대로(최근 30일 요약에서 점차 사라짐)
+  - `dashboard.html`에 맨 위 한 문장 요약, 보조 글자 대비 4.5:1 이상, 글자 12px 이상, 세션 시작 크기 도움말, 캐시 재작성 설명을 캐시 수명에 맞게 정정
+  - `tools/test-live-status.sh`에 만료 판정 시험 4건 추가(시험을 5분 고정으로 되돌리면 실패하는 것 확인)
 
 - 안전 훅 `git-guardrails.sh`가 실패하면 통과하지 않고 차단하도록 설정에 `"onFailure": "block"` 추가, Claude Code 2.1.295 이상 필요([Issue #211](https://github.com/yanos0218/AI/issues/211), 설정 키 추가라 다음 컷에서 MINOR 후보)
   - 시작 실패와 시간 초과는 모든 Bash·PowerShell 명령을 막고, 스크립트가 예상 밖 오류(종료 코드 1)로 끝나면 EXIT 트랩이 전체 차단 대신 확인 창(`ask`)을 띄움
