@@ -7,47 +7,67 @@
 <style>
   :root { --bg:#f6f7f9; --card:#fff; --text:#1d2430; --muted:#5b6575; --line:#d9dee6;
           --busy:#0a7a3d; --busy-bg:#e3f5ea; --idle:#4b5565; --idle-bg:#eceff3;
-          --unknown:#8a5a00; --unknown-bg:#fff2d6; --ended:#6b7280; --ended-bg:#f1f2f4; --warn:#a31515; --warn-bg:#fde8e8; }
+          --quiet:#8a5a00; --quiet-bg:#fff2d6; --ended:#6b7280; --ended-bg:#f1f2f4; --warn:#a31515; --warn-bg:#fde8e8; --bar:#7aa7f0; }
   @media (prefers-color-scheme: dark) {
     :root { --bg:#14181f; --card:#1d232d; --text:#e8ecf2; --muted:#a3adbd; --line:#2f3846;
             --busy:#58d68d; --busy-bg:#173626; --idle:#b7c0cf; --idle-bg:#272f3b;
-            --unknown:#f5c26b; --unknown-bg:#3b2f14; --ended:#8d97a8; --ended-bg:#222833; --warn:#ff8f8f; --warn-bg:#3d1b1b; }
+            --quiet:#f5c26b; --quiet-bg:#3b2f14; --ended:#8d97a8; --ended-bg:#222833; --warn:#ff8f8f; --warn-bg:#3d1b1b; --bar:#4b78c2; }
   }
   * { box-sizing: border-box; }
   body { margin:0; padding:16px; background:var(--bg); color:var(--text); font:16px/1.5 system-ui, -apple-system, "Segoe UI", "Noto Sans KR", sans-serif; }
-  h1 { font-size:1.1rem; margin:0 0 4px; }
-  #summary { font-size:1.6rem; font-weight:700; margin:4px 0 12px; }
-  #banner { display:none; padding:10px 14px; border-radius:8px; margin-bottom:12px; font-weight:600; background:var(--warn-bg); color:var(--warn); }
-  #meta { color:var(--muted); font-size:.85rem; margin-bottom:12px; }
-  #list { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:12px; }
-  .card { background:var(--card); border:2px solid var(--line); border-radius:12px; padding:14px 16px; }
-  .card.busy { border-color:var(--busy); } .card.unknown { border-color:var(--unknown); }
-  .card.ended { opacity:.7; }
+  h1 { font-size:1.1rem; margin:0 0 4px; } h2 { font-size:1rem; margin:20px 0 8px; color:var(--muted); }
+  #summary { font-size:1.5rem; font-weight:700; margin:4px 0 2px; } #summary2 { color:var(--muted); margin-bottom:10px; }
+  .banner { display:none; padding:10px 14px; border-radius:8px; margin-bottom:10px; font-weight:600; background:var(--warn-bg); color:var(--warn); }
+  #meta { color:var(--muted); font-size:.82rem; margin-top:16px; }
+  #tree { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:14px; align-items:start; }
+  .card { background:var(--card); border:2px solid var(--line); border-radius:12px; padding:12px 14px; }
+  .card.busy, .card.running { border-color:var(--busy); } .card.unknown, .card.quiet { border-color:var(--quiet); }
+  .card.ended, .card.gone { opacity:.72; }
   .top { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; }
-  .name { font-size:1.35rem; font-weight:700; overflow-wrap:anywhere; }
-  .folder { color:var(--muted); font-size:.9rem; overflow-wrap:anywhere; }
-  .chip { white-space:nowrap; padding:4px 10px; border-radius:999px; font-weight:700; font-size:.95rem; }
-  .busy .chip { color:var(--busy); background:var(--busy-bg); } .idle .chip { color:var(--idle); background:var(--idle-bg); }
-  .unknown .chip { color:var(--unknown); background:var(--unknown-bg); } .ended .chip { color:var(--ended); background:var(--ended-bg); }
-  .big { font-size:1.25rem; font-weight:600; margin-top:10px; } .small { color:var(--muted); font-size:.9rem; margin-top:2px; }
+  .name { font-size:1.25rem; font-weight:700; overflow-wrap:anywhere; } .folder { color:var(--muted); font-size:.88rem; overflow-wrap:anywhere; }
+  .chip { white-space:nowrap; padding:3px 10px; border-radius:999px; font-weight:700; font-size:.9rem; }
+  .busy .chip, .running .chip { color:var(--busy); background:var(--busy-bg); } .idle .chip { color:var(--idle); background:var(--idle-bg); }
+  .unknown .chip, .quiet .chip { color:var(--quiet); background:var(--quiet-bg); } .ended .chip, .gone .chip { color:var(--ended); background:var(--ended-bg); }
+  .big { font-size:1.1rem; font-weight:600; margin-top:8px; } .small { color:var(--muted); font-size:.88rem; margin-top:2px; }
+  .kids { margin:10px 0 0 14px; padding-left:14px; border-left:3px solid var(--line); display:grid; gap:8px; }
+  .kid { position:relative; background:var(--card); border:2px solid var(--line); border-radius:10px; padding:8px 12px; }
+  .kid::before { content:""; position:absolute; left:-17px; top:18px; width:14px; border-top:3px solid var(--line); }
+  .kid .t { font-weight:700; overflow-wrap:anywhere; } .kid .d { font-size:.92rem; overflow-wrap:anywhere; }
   .pulse { display:inline-block; animation:pulse 1.4s ease-in-out infinite; }
   @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.35; } }
   @media (prefers-reduced-motion: reduce) { .pulse { animation:none; } }
-  #empty { color:var(--muted); padding:24px 0; }
+  #empty { color:var(--muted); padding:16px 0; }
+  #tl { background:var(--card); border:2px solid var(--line); border-radius:12px; padding:10px 12px; }
+  .axis, .row { display:grid; grid-template-columns:minmax(120px,28%) 1fr; gap:10px; align-items:center; }
+  .axis { color:var(--muted); font-size:.8rem; margin-bottom:4px; } .axis .scale { position:relative; height:1.2em; }
+  .axis .scale span { position:absolute; transform:translateX(-50%); white-space:nowrap; } .axis .scale span:first-child { transform:none; } .axis .scale span:last-child { transform:translateX(-100%); }
+  .row { margin:3px 0; } .row .lbl { font-size:.85rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .track { position:relative; height:20px; background:var(--idle-bg); border-radius:5px; }
+  .bar { position:absolute; top:2px; bottom:2px; border-radius:4px; background:var(--bar); min-width:4px; }
+  .bar.running { background:var(--busy); } .bar.quiet { background:var(--quiet); } .bar.ended { background:var(--bar); }
+  @media (max-width: 640px) { .axis, .row { grid-template-columns:1fr; gap:2px; } .axis > div:first-child { display:none; } .row { margin:8px 0; } }
+  .bar.est { background-image:repeating-linear-gradient(45deg, transparent 0 5px, rgba(255,255,255,.35) 5px 10px); }
 </style>
 </head>
 <body>
 <h1>Claude Code 세션 현황</h1>
 <div id="summary" aria-live="polite">불러오는 중…</div>
-<div id="banner" role="alert"></div>
-<div id="meta"></div>
-<div id="list"></div>
+<div id="summary2"></div>
+<div id="banner" class="banner" role="alert"></div>
+<div id="banner2" class="banner" role="alert"></div>
+<h2>구조도 (세션과 서브에이전트)</h2>
+<div id="tree"></div>
 <div id="empty" hidden>지금 돌고 있는 세션이 없습니다.</div>
+<h2>타임라인 (최근 <span id="winmin">30</span>분, 오른쪽 끝이 지금)</h2>
+<div id="tl"><div class="axis"><div></div><div class="scale" id="scale"></div></div><div id="rows"></div><div id="tlempty" class="small" hidden>이 시간 안에 활동한 서브에이전트가 없습니다.</div></div>
+<div id="meta"></div>
 <script>
 (function () {
   var data = null, fetchedPerf = 0, failedSince = null;
-  var ICON = { busy: '▶', idle: '⏸', ended: '■', unknown: '?' };
-  var LABEL = { busy: '작업 중', idle: '쉬는 중', ended: '끝남', unknown: '확인 불가' };
+  var S_ICON = { busy: '▶', idle: '⏸', ended: '■', unknown: '?', gone: '■' };
+  var S_LABEL = { busy: '작업 중', idle: '쉬는 중', ended: '끝남', unknown: '확인 불가', gone: '종료된 세션' };
+  var A_ICON = { running: '▶', quiet: '◔', ended: '■' };
+  var A_LABEL = { running: '작업 중', quiet: '조용함', ended: '끝남' };
 
   function fmt(ms) {
     if (ms == null || ms < 0) return '-';
@@ -58,48 +78,95 @@
   }
   function serverNow() { return data.server_ms + (performance.now() - fetchedPerf); }
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function aLabel(a) { return A_LABEL[a.state] + (a.state === 'ended' && !a.exact ? '(추정)' : ''); }
+  function aTitle(a) { return a.type + (a.title ? ' · ' + a.title : ''); }
+
+  function agentCard(a, now) {
+    var k = el('div', 'kid ' + a.state), top = el('div', 'top'), left = el('div');
+    left.appendChild(el('div', 't', a.type || '(종류 없음)'));
+    if (a.title) left.appendChild(el('div', 'd', a.title));
+    var chip = el('div', 'chip');
+    chip.appendChild(el('span', a.state === 'running' ? 'pulse' : '', A_ICON[a.state] + ' '));
+    chip.appendChild(document.createTextNode(aLabel(a)));
+    top.appendChild(left); top.appendChild(chip); k.appendChild(top);
+    var end = a.state === 'ended' ? a.last_ms : now;
+    k.appendChild(el('div', 'small', (a.state === 'ended' ? '걸린 시간 ' : '시작 후 ') + fmt(end - a.started_ms) + ' · 마지막 활동 ' + fmt(now - a.last_ms) + ' 전'));
+    return k;
+  }
+
+  function renderTree(now, counts) {
+    var tree = document.getElementById('tree');
+    tree.textContent = '';
+    data.sessions.forEach(function (s) {
+      counts.s[s.state]++;
+      var card = el('div', 'card ' + s.state), top = el('div', 'top'), left = el('div');
+      left.appendChild(el('div', 'name', s.state === 'gone' ? '종료된 세션 · ' + s.short_id : (s.name || '(이름 없음)')));
+      left.appendChild(el('div', 'folder', s.folder));
+      var chip = el('div', 'chip');
+      chip.appendChild(el('span', s.state === 'busy' ? 'pulse' : '', S_ICON[s.state] + ' '));
+      chip.appendChild(document.createTextNode(S_LABEL[s.state]));
+      top.appendChild(left); top.appendChild(chip); card.appendChild(top);
+      if (s.state === 'busy') {
+        if (s.busy_since_ms && s.busy_exact) card.appendChild(el('div', 'big', '이번 요청 ' + fmt(now - s.busy_since_ms) + '째'));
+        else card.appendChild(el('div', 'big', '작업 중 · 이 화면을 켠 뒤 ' + fmt(now - s.first_seen_ms) + '째'));
+      } else if (s.state === 'ended') card.appendChild(el('div', 'big', '끝남 · ' + fmt(now - s.ended_ms) + ' 전'));
+      else if (s.state === 'unknown') card.appendChild(el('div', 'big', '알 수 없는 상태: ' + (s.raw_status || '-')));
+      else if (s.state === 'idle') card.appendChild(el('div', 'big', '쉬는 중'));
+      if (s.started_ms) card.appendChild(el('div', 'small', '세션 시작 후 ' + fmt(now - s.started_ms)));
+      if (s.agents.length) {
+        var kids = el('div', 'kids');
+        s.agents.forEach(function (a) { counts.a[a.state]++; kids.appendChild(agentCard(a, now)); });
+        card.appendChild(kids);
+      } else if (s.state !== 'gone') card.appendChild(el('div', 'small', '최근 ' + Math.round(data.window_sec / 60) + '분 안에 활동한 서브에이전트 없음'));
+      tree.appendChild(card);
+    });
+  }
+
+  function renderTimeline(now) {
+    var rows = document.getElementById('rows'), scale = document.getElementById('scale'), W = data.window_sec * 1000, t0 = now - W;
+    rows.textContent = ''; scale.textContent = '';
+    for (var m = 0; m <= data.window_sec / 60; m += 5) {
+      var sp = el('span', '', m === data.window_sec / 60 ? '지금' : '-' + (data.window_sec / 60 - m) + '분');
+      sp.style.left = (m * 60000 / W * 100) + '%'; scale.appendChild(sp);
+    }
+    var all = [];
+    data.sessions.forEach(function (s) { s.agents.forEach(function (a) { all.push({ a: a, who: s.state === 'gone' ? s.short_id : (s.name || s.short_id) }); }); });
+    all.sort(function (x, y) { return x.a.started_ms - y.a.started_ms; });
+    document.getElementById('tlempty').hidden = all.length > 0;
+    all.forEach(function (it) {
+      var a = it.a, end = a.state === 'ended' ? a.last_ms : now;
+      var row = el('div', 'row'), lbl = el('div', 'lbl', it.who + ' · ' + aTitle(a)), track = el('div', 'track');
+      lbl.title = lbl.textContent;
+      var left = Math.max(0, (a.started_ms - t0) / W * 100), right = Math.min(100, (end - t0) / W * 100);
+      var bar = el('div', 'bar ' + a.state + (a.state === 'ended' && !a.exact ? ' est' : ''));
+      bar.style.left = left + '%'; bar.style.width = Math.max(0.4, right - left) + '%';
+      bar.title = aLabel(a) + ' · ' + fmt(end - a.started_ms);
+      track.appendChild(bar); row.appendChild(lbl); row.appendChild(track); rows.appendChild(row);
+    });
+  }
 
   function render() {
-    var list = document.getElementById('list'), banner = document.getElementById('banner');
     if (!data) return;
     var now = serverNow(), msgs = [];
     if (failedSince !== null) msgs.push('서버에 연결되지 않음 · 마지막 정상 갱신 ' + fmt(performance.now() - fetchedPerf) + ' 전');
     else if (!data.ok) msgs.push('세션 목록을 읽지 못함 · ' + data.error);
     else if (data.last_ok_ms && now - data.last_ok_ms > 10000) msgs.push('데이터 갱신이 ' + fmt(now - data.last_ok_ms) + ' 전부터 멈춤');
-    banner.style.display = msgs.length ? 'block' : 'none';
-    banner.textContent = msgs.join(' / ');
+    var b = document.getElementById('banner'); b.style.display = msgs.length ? 'block' : 'none'; b.textContent = msgs.join(' / ');
+    var b2 = document.getElementById('banner2');
+    b2.style.display = data.agents_unreadable ? 'block' : 'none';
+    b2.textContent = data.agents_unreadable ? '서브에이전트 기록 ' + data.agents_unreadable + '개를 읽지 못함 · Claude Code가 파일 형식을 바꿨을 수 있음' : '';
 
-    var counts = { busy: 0, idle: 0, ended: 0, unknown: 0 };
-    list.textContent = '';
-    data.sessions.forEach(function (s) {
-      counts[s.state]++;
-      var card = el('div', 'card ' + s.state), top = el('div', 'top'), left = el('div');
-      left.appendChild(el('div', 'name', s.name || '(이름 없음)'));
-      left.appendChild(el('div', 'folder', s.folder));
-      var chip = el('div', 'chip');
-      chip.appendChild(el('span', s.state === 'busy' ? 'pulse' : '', ICON[s.state] + ' '));
-      chip.appendChild(document.createTextNode(LABEL[s.state]));
-      top.appendChild(left); top.appendChild(chip); card.appendChild(top);
-      if (s.state === 'busy') {
-        if (s.busy_since_ms && s.busy_exact) card.appendChild(el('div', 'big', '이번 요청 ' + fmt(now - s.busy_since_ms) + '째'));
-        else card.appendChild(el('div', 'big', '작업 중 · 이 화면을 켠 뒤 ' + fmt(now - s.first_seen_ms) + '째'));
-      } else if (s.state === 'ended') {
-        card.appendChild(el('div', 'big', '끝남 · ' + fmt(now - s.ended_ms) + ' 전'));
-      } else if (s.state === 'unknown') {
-        card.appendChild(el('div', 'big', '알 수 없는 상태: ' + (s.raw_status || '-')));
-      } else {
-        card.appendChild(el('div', 'big', '쉬는 중'));
-      }
-      if (s.started_ms) card.appendChild(el('div', 'small', '세션 시작 후 ' + fmt(now - s.started_ms)));
-      list.appendChild(card);
-    });
-    var parts = ['작업 중 ' + counts.busy, '쉬는 중 ' + counts.idle];
-    if (counts.unknown) parts.push('확인 불가 ' + counts.unknown);
-    if (counts.ended) parts.push('끝남 ' + counts.ended);
-    document.getElementById('summary').textContent = parts.join(' · ');
-    document.title = (counts.busy ? '▶ ' + counts.busy + ' 작업 중' : '세션 현황') + (banner.style.display === 'block' ? ' ⚠' : '');
+    var counts = { s: { busy: 0, idle: 0, ended: 0, unknown: 0, gone: 0 }, a: { running: 0, quiet: 0, ended: 0 } };
+    renderTree(now, counts);
+    renderTimeline(now);
+    var p = ['세션 작업 중 ' + counts.s.busy, '쉬는 중 ' + counts.s.idle];
+    if (counts.s.unknown) p.push('확인 불가 ' + counts.s.unknown);
+    document.getElementById('summary').textContent = p.join(' · ');
+    document.getElementById('summary2').textContent = '서브에이전트 작업 중 ' + counts.a.running + ' · 조용함 ' + counts.a.quiet + ' · 끝남 ' + counts.a.ended + ' · 지금 동시에 ' + data.concurrent + '개';
+    document.title = ((counts.s.busy || counts.a.running) ? '▶ ' + counts.s.busy + '+' + counts.a.running + ' 작업 중' : '세션 현황') + ((b.style.display === 'block') ? ' ⚠' : '');
     document.getElementById('empty').hidden = data.sessions.length > 0;
-    document.getElementById('meta').textContent = '화면은 서버 시각 기준으로 1초마다 갱신, 서버는 ' + data.poll_sec + '초마다 세션 목록을 읽음 · 서브에이전트는 표시하지 않음';
+    document.getElementById('winmin').textContent = Math.round(data.window_sec / 60);
+    document.getElementById('meta').textContent = '화면은 1초마다, 서버는 ' + data.poll_sec + '초마다 갱신 · 세션은 claude agents --json, 서브에이전트는 Claude Code가 남기는 기록 파일(문서화되지 않은 형식)에서 읽음 · 조용함은 마지막 활동이 90초 넘게 없는 것(도구를 오래 실행 중일 수 있어 멈춤으로 단정하지 않음), 줄무늬 막대는 끝남을 추정한 것 · 에이전트 팀은 아직 표시하지 않음';
   }
 
   function poll() {

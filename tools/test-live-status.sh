@@ -90,6 +90,91 @@ s6.update(None, 'boom', t0 + 2000)
 snap = s6.snapshot(t0 + 2000)
 r('error_reported', snap['ok'] is False and snap['error'] == 'boom' and len(snap['sessions']) == 1)
 
+# 5b. 서브에이전트 스캔(이 기기 파일 모양을 본뜬 가짜 폴더)
+import shutil, calendar
+fx = tempfile.mkdtemp()
+os.environ['LIVE_CLAUDE_DIR'] = fx
+now = time.time(); now_ms = int(now * 1000)
+def iso(t):
+    return time.strftime('%Y-%m-%dT%H:%M:%S', time.gmtime(t)) + '.%03dZ' % int((t % 1) * 1000)
+def mk(proj, sid, aid, typ, title, start_ago, last_ago, finished=None, text='SECRET_PROMPT_TEXT', meta_raw=None, with_log=True, first_ts=True):
+    d = os.path.join(fx, 'projects', proj, sid, 'subagents'); os.makedirs(d, exist_ok=True)
+    meta = {'agentType': typ, 'description': title, 'spawnDepth': 1}
+    if finished is not None:
+        meta['finished'] = finished
+    with open(os.path.join(d, 'agent-%s.meta.json' % aid), 'w', encoding='utf-8') as f:
+        f.write(meta_raw if meta_raw is not None else json.dumps(meta, ensure_ascii=False))
+    if not with_log:
+        return
+    j = os.path.join(d, 'agent-%s.jsonl' % aid)
+    with open(j, 'w', encoding='utf-8') as f:
+        first = {'type': 'user', 'message': {'content': text}}
+        if first_ts:
+            first['timestamp'] = iso(now - start_ago)
+        f.write(json.dumps(first) + '\n')
+        f.write(json.dumps({'type': 'assistant', 'timestamp': iso(now - last_ago), 'message': {'content': 'SECRET_REPLY_TEXT'}}) + '\n')
+    os.utime(j, (now - last_ago, now - last_ago))
+SA, SB, SZ = 'aaaaaaaa-1111-2222-3333-444444444444', 'bbbbbbbb-1111-2222-3333-444444444444', 'zzzzzzzz-1111-2222-3333-444444444444'
+mk('-Users-x-AI', SA, 'run00001', 'researcher', '진행 중 조사', 360, 5)
+mk('-Users-x-AI', SA, 'quiet001', 'general-purpose', '긴 실행', 540, 180)
+mk('-Users-x-AI', SA, 'fin00001', 'researcher', '끝난 조사', 840, 540, True)
+mk('-Users-x-AI', SA, 'old00001', 'Explore', '오래된 기록', 1560, 1200)
+mk('-Users-x-AI', SA, 'outside1', 'Explore', '창 밖', 9000, 7200)
+mk('-Users-x-OldProj', SZ, 'gone0001', 'researcher', '끝난 세션의 조사', 1200, 900, True)
+mk('-Users-x-AI', SA, 'broken01', 'x', 'x', 10, 5, meta_raw='{not json')
+mk('-Users-x-AI', SA, 'nolog001', 'Explore', '기록 파일 없음', 0, 0, with_log=False)
+mk('-Users-x-AI', SA, 'nots0001', 'Explore', '첫 줄에 시각 없음', 0, 20, first_ts=False)
+agents, unreadable = live.scan_subagents(now_ms)
+ids = set(a['agent_id'] for a in agents)
+r('scan_window_excludes_old', 'outside1' not in ids and 'run00001' in ids)
+r('scan_unreadable_counted', unreadable == 1 and 'broken01' not in ids)
+r('scan_no_log_uses_meta', 'nolog001' in ids)
+r('scan_first_line_without_ts_falls_back', [a for a in agents if a['agent_id'] == 'nots0001'][0]['started_ms'] is not None)
+rf = live.State()
+rf.update([ag(SA, 'busy', name='ai-10', cwd='/Users/x/AI')], None, now_ms)
+rf.update_agents(agents, unreadable)
+snap = rf.snapshot(now_ms)
+main = [s for s in snap['sessions'] if s['name'] == 'ai-10'][0]
+kinds = dict((a['id'], (a['state'], a['exact'])) for a in main['agents'])
+r('agent_running', kinds['run00001'] == ('running', True))
+r('agent_quiet', kinds['quiet001'][0] == 'quiet')
+r('agent_finished_exact', kinds['fin00001'] == ('ended', True))
+r('agent_old_unfinished_ended_estimated', kinds['old00001'] == ('ended', False))
+r('agent_order_running_first', [a['state'] for a in main['agents']][0] == 'running' and [a['state'] for a in main['agents']][-1] == 'ended')
+gone = [s for s in snap['sessions'] if s['state'] == 'gone']
+r('gone_session_shown_with_agents', len(gone) == 1 and gone[0]['agents'][0]['id'] == 'gone0001' and gone[0]['folder'] == 'Users-x-OldProj')
+r('concurrent_counts_running_and_quiet', snap['concurrent'] == 4)   # 작업 중 3(run00001, nolog001, nots0001) + 조용함 1(quiet001)
+r('agents_unreadable_exposed', snap['agents_unreadable'] == 1)
+body = json.dumps(snap, ensure_ascii=False)
+r('no_transcript_text', 'SECRET' not in body)
+r('no_full_agent_or_session_id', SA not in body and 'run00001' in body and 'aaaaaaaa-1111' not in body)
+# 부모 세션이 사라진 뒤: 방금까지 쓰던 것은 그대로, 오래 조용하면 끝남(추정)
+rg = live.State()
+rg.update([ag(SA, 'idle', name='ai-10')], None, now_ms)
+for k in range(3):
+    rg.update([], None, now_ms + (k + 1) * 2000)
+rg.update_agents(agents, 0)
+s2 = [s for s in rg.snapshot(now_ms + 6000)['sessions'] if s['name'] == 'ai-10'][0]
+k2 = dict((a['id'], a['state']) for a in s2['agents'])
+r('parent_gone_quiet_agent_ended', s2['state'] == 'ended' and k2['quiet001'] == 'ended' and k2['run00001'] == 'running')
+live.SHOW_TITLES = False
+agents2, _ = live.scan_subagents(now_ms)
+rt = live.State(); rt.update_agents(agents2, 0)
+r('titles_hidden_option', '진행 중 조사' not in json.dumps(rt.snapshot(now_ms), ensure_ascii=False))
+live.SHOW_TITLES = True
+# 큰 기록 파일은 첫 줄만 읽는다
+big = os.path.join(fx, 'projects', '-Users-x-AI', SA, 'subagents')
+mk('-Users-x-AI', SA, 'big00001', 'Explore', '큰 기록', 100, 1)
+with open(os.path.join(big, 'agent-big00001.jsonl'), 'a', encoding='utf-8') as f:
+    f.write(('x' * 1000 + '\n') * 5000)
+os.utime(os.path.join(big, 'agent-big00001.jsonl'), (now - 1, now - 1))
+t_start = time.time(); live.scan_subagents(now_ms); elapsed = time.time() - t_start
+r('big_file_scan_fast', elapsed < 1.0)
+r('iso_parse', live.iso_to_ms('2026-10-24T12:08:50.361Z') == calendar.timegm((2026, 10, 24, 12, 8, 50, 0, 0, 0)) * 1000 + 361 and live.iso_to_ms('nope') is None and live.iso_to_ms(None) is None)
+r('missing_claude_dir_ok', (lambda: (os.environ.__setitem__('LIVE_CLAUDE_DIR', os.path.join(fx, 'nope')), live.scan_subagents(now_ms))[1])() == ([], 0))
+os.environ['LIVE_CLAUDE_DIR'] = fx
+shutil.rmtree(fx, ignore_errors=True)
+
 # 6. HTTP
 live.STATE = live.State()
 live.STATE.update([ag('abcdef12-0000-0000-0000-000000000000', 'busy', name='web')], None, int(time.time() * 1000))
@@ -179,6 +264,27 @@ echo "== 2. 개인정보"
 chk "전체 경로를 내보내지 않음(Windows 경로 포함)"        'py no_full_path'
 chk "전체 세션 ID를 내보내지 않음(앞 8자만)"              'py no_full_session_id'
 chk "폴더 이름만 내보냄"                                 'py folder_only'
+
+echo "== 2b. 서브에이전트 스캔"
+chk "30분 밖 기록은 제외하고 안은 포함"                   'py scan_window_excludes_old'
+chk "깨진 meta는 읽지 못한 개수로만 알리고 계속 진행"       'py scan_unreadable_counted'
+chk "기록 파일이 없으면 meta 시각으로 대신함"              'py scan_no_log_uses_meta'
+chk "첫 줄에 시각이 없으면 대체 시각을 씀"                 'py scan_first_line_without_ts_falls_back'
+chk "최근 활동이 있으면 작업 중"                          'py agent_running'
+chk "활동이 90초 넘게 없으면 조용함(멈춤으로 단정 안 함)"   'py agent_quiet'
+chk "finished가 true면 확실한 끝남"                       'py agent_finished_exact'
+chk "finished 표시 없는 오래된 기록은 끝남(추정)"          'py agent_old_unfinished_ended_estimated'
+chk "정렬은 작업 중이 위, 끝남이 아래"                     'py agent_order_running_first'
+chk "목록에 없는 세션의 최근 서브에이전트는 종료된 세션으로 표시" 'py gone_session_shown_with_agents'
+chk "지금 동시에는 작업 중과 조용함을 센다"                'py concurrent_counts_running_and_quiet'
+chk "읽지 못한 기록 개수를 화면에 알림"                    'py agents_unreadable_exposed'
+chk "대화 내용(기록 본문)을 내보내지 않음"                 'py no_transcript_text'
+chk "전체 세션·에이전트 ID를 내보내지 않음"                'py no_full_agent_or_session_id'
+chk "부모 세션이 사라지면 조용한 서브에이전트는 끝남"       'py parent_gone_quiet_agent_ended'
+chk "작업 제목 숨김 옵션"                                  'py titles_hidden_option'
+chk "큰 기록 파일도 빠르게 스캔(첫 줄만 읽음)"             'py big_file_scan_fast'
+chk "시각 문자열 해석(파이썬 3.6 호환 직접 구현)"           'py iso_parse'
+chk "설정 폴더가 없어도 오류 없이 빈 결과"                 'py missing_claude_dir_ok'
 
 echo "== 3. HTTP"
 chk "루트가 화면(HTML)을 줌"                             'py http_root_200_html'

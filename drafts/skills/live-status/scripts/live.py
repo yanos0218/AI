@@ -4,10 +4,15 @@
 `claude agents --json`(공식 인터페이스, 활성 세션을 JSON으로 주고 끝남)을 몇 초마다 읽어 세션별 상태를 추적하고,
 127.0.0.1에만 묶은 작은 웹 서버로 live.html과 /api/state를 준다. 파이썬 표준 라이브러리만 쓴다.
 
-- 서브에이전트는 `claude agents --json` 출력에 없어 보여 주지 않는다.
-- 대화 내용과 전체 경로는 읽지도 보여 주지도 않는다(이름·폴더 이름·상태·시각만).
-- 환경변수: LIVE_PORT(기본 8766), LIVE_POLL_SEC(기본 2), CLAUDE_BIN(claude 실행 파일 경로).
+서브에이전트는 `claude agents --json`에 없어서 ${CLAUDE_CONFIG_DIR:-~/.claude}/projects/<프로젝트>/<세션 ID>/subagents/ 아래
+agent-<ID>.meta.json(종류·작업 제목·finished)과 agent-<ID>.jsonl(첫 줄의 시작 시각, 파일 수정 시각 = 마지막 활동)에서 읽는다.
+이 파일 형식은 문서화되어 있지 않아 Claude Code가 바꾸면 깨질 수 있다. 읽기 전용이고 기록 파일은 첫 줄 외에는 열지 않는다.
+
+- 대화 내용과 전체 경로는 읽지도 보여 주지도 않는다(이름·폴더 이름·종류·작업 제목·상태·시각만).
+- 환경변수: LIVE_PORT(기본 8766), LIVE_POLL_SEC(기본 2), CLAUDE_BIN(claude 실행 파일 경로),
+  LIVE_CLAUDE_DIR(설정 폴더, 시험용), LIVE_SHOW_TITLES(0이면 서브에이전트 작업 제목을 숨김).
 """
+import calendar
 import glob
 import json
 import os
@@ -30,6 +35,11 @@ PORT = int(os.environ.get('LIVE_PORT', '8766'))
 POLL_SEC = float(os.environ.get('LIVE_POLL_SEC', '2'))
 KEEP_ENDED_SEC = 15 * 60          # 사라진 세션을 "끝남"으로 화면에 남겨 두는 시간
 MISSING_POLLS = 3                 # 연속으로 이만큼 안 보여야 끝난 것으로 본다(일시적으로 목록이 비어도 깜박이지 않게)
+WINDOW_SEC = 30 * 60              # 서브에이전트를 이 시간 안에 활동한 것만 보여 준다(타임라인 길이)
+FRESH_SEC = 90                    # 마지막 활동이 이 안이면 작업 중
+END_ESTIMATE_SEC = 10 * 60        # 이보다 오래 활동이 없으면 끝남(추정). 그 사이는 조용함(도구를 오래 실행하는 중일 수 있어 멈춤이라 단정하지 않음)
+GONE_END_SEC = 60                 # 부모 세션이 사라졌으면 이 시간 이상 조용한 서브에이전트는 끝남(추정)
+SHOW_TITLES = os.environ.get('LIVE_SHOW_TITLES', '1') != '0'
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 
@@ -42,6 +52,110 @@ def utf8_stdio():
             stream.reconfigure(encoding='utf-8', errors='replace')
         elif hasattr(stream, 'buffer'):
             setattr(sys, name, io.TextIOWrapper(stream.buffer, encoding='utf-8', errors='replace', line_buffering=True))
+
+
+_ISO = re.compile(r'^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)(?:\.(\d+))?Z$')
+
+
+def iso_to_ms(text):
+    """2026-10-24T12:08:50.361Z 형식을 밀리초로. 파이썬 3.6에는 fromisoformat이 없어 직접 읽는다. 못 읽으면 None."""
+    m = _ISO.match(text or '')
+    if not m:
+        return None
+    y, mo, d, h, mi, s, frac = m.groups()
+    base = calendar.timegm((int(y), int(mo), int(d), int(h), int(mi), int(s), 0, 0, 0))
+    return base * 1000 + int((frac or '0')[:3].ljust(3, '0'))
+
+
+def claude_dir():
+    return os.environ.get('LIVE_CLAUDE_DIR') or os.environ.get('CLAUDE_CONFIG_DIR') or os.path.join(os.path.expanduser('~'), '.claude')
+
+
+_FIRST_TS = {}      # 기록 파일 경로 -> 첫 줄의 시작 시각(바뀌지 않으므로 한 번만 읽는다)
+
+
+def first_timestamp_ms(path):
+    if path in _FIRST_TS:
+        return _FIRST_TS[path]
+    ms = None
+    try:
+        with open(path, 'rb') as f:
+            line = f.readline(65536)         # 첫 줄만 읽는다. 기록은 통째로 읽지 않는다(수 MB가 될 수 있음)
+        ms = iso_to_ms(json.loads(line.decode('utf-8', errors='replace')).get('timestamp'))
+    except (OSError, ValueError, AttributeError):
+        ms = None
+    if ms is not None:
+        _FIRST_TS[path] = ms
+    return ms
+
+
+def scan_subagents(now_ms):
+    """최근 WINDOW_SEC 안에 활동한 서브에이전트를 (목록, 읽지 못한 개수)로 돌려준다. 모든 오류는 삼키고 개수로만 알린다."""
+    root = os.path.join(claude_dir(), 'projects')
+    out, unreadable = [], 0
+    try:
+        projects = list(os.scandir(root))
+    except OSError:
+        return out, 0
+    for proj in projects:
+        try:
+            sessions = list(os.scandir(proj.path)) if proj.is_dir() else []
+        except OSError:
+            continue
+        for sess in sessions:
+            sub = os.path.join(sess.path, 'subagents')
+            try:
+                names = os.listdir(sub) if sess.is_dir() else []
+            except OSError:
+                continue
+            for name in names:
+                if not (name.startswith('agent-') and name.endswith('.meta.json')):
+                    continue
+                aid = name[len('agent-'):-len('.meta.json')]
+                meta_path = os.path.join(sub, name)
+                log_path = os.path.join(sub, 'agent-%s.jsonl' % aid)
+                try:
+                    last_ms = int(os.path.getmtime(log_path) * 1000)
+                except OSError:
+                    try:
+                        last_ms = int(os.path.getmtime(meta_path) * 1000)
+                    except OSError:
+                        continue
+                if now_ms - last_ms > WINDOW_SEC * 1000:
+                    continue
+                try:
+                    with open(meta_path, 'rb') as f:
+                        meta = json.loads(f.read().decode('utf-8', errors='replace'))
+                    if not isinstance(meta, dict):
+                        raise ValueError('meta가 객체가 아님')
+                except (OSError, ValueError):
+                    unreadable += 1
+                    continue
+                started = first_timestamp_ms(log_path)
+                if started is None:
+                    started = int(os.path.getmtime(meta_path) * 1000)
+                depth = meta.get('spawnDepth')
+                out.append({
+                    'session_id': sess.name, 'agent_id': aid, 'type': str(meta.get('agentType') or ''),
+                    'title': str(meta.get('description') or '')[:80] if SHOW_TITLES else '',
+                    'finished': meta.get('finished') is True, 'started_ms': started, 'last_ms': max(last_ms, started),
+                    'depth': depth if isinstance(depth, int) else None, 'project': proj.name,
+                })
+    return out, unreadable
+
+
+def classify_agent(a, parent_alive, now_ms):
+    """(상태, 확실한가). 상태는 running·quiet·ended. finished 표시가 없는 옛 기록은 마지막 활동 시각으로 추정한다."""
+    if a['finished']:
+        return 'ended', True
+    age = (now_ms - a['last_ms']) / 1000.0
+    if not parent_alive and age > GONE_END_SEC:
+        return 'ended', False
+    if age <= FRESH_SEC:
+        return 'running', True
+    if age <= END_ESTIMATE_SEC:
+        return 'quiet', False
+    return 'ended', False
 
 
 def find_claude():
@@ -102,6 +216,13 @@ class State:
         self.error = None
         self.last_ok_ms = None
         self.last_try_ms = None
+        self.agents = []
+        self.agents_unreadable = 0
+
+    def update_agents(self, agents, unreadable):
+        with self.lock:
+            self.agents = list(agents)
+            self.agents_unreadable = unreadable
 
     def update(self, agents, error, now_ms):
         with self.lock:
@@ -137,6 +258,7 @@ class State:
                 rec['kind'] = str(a.get('kind') or '')
                 rec['started_ms'] = a.get('startedAt') if isinstance(a.get('startedAt'), (int, float)) else None
                 rec['short_id'] = re.sub(r'[^A-Za-z0-9]', '', str(a.get('sessionId') or ''))[:8]
+                rec['sid_full'] = str(a.get('sessionId') or '')
             for sid, rec in list(self.sessions.items()):
                 if sid not in seen:
                     rec['missing'] += 1
@@ -145,36 +267,71 @@ class State:
                 if rec['ended_ms'] is not None and now_ms - rec['ended_ms'] > KEEP_ENDED_SEC * 1000:
                     del self.sessions[sid]
 
+    @staticmethod
+    def _agents_view(items, parent_alive, now_ms):
+        view = []
+        for a in items:
+            state, exact = classify_agent(a, parent_alive, now_ms)
+            view.append({'id': re.sub(r'[^A-Za-z0-9]', '', a['agent_id'])[:8], 'type': a['type'], 'title': a['title'],
+                         'state': state, 'exact': exact, 'started_ms': a['started_ms'], 'last_ms': a['last_ms'], 'depth': a['depth']})
+        rank = {'running': 0, 'quiet': 1, 'ended': 2}
+        view.sort(key=lambda v: (rank[v['state']], -v['last_ms']))
+        return view
+
     def snapshot(self, now_ms):
         with self.lock:
-            out = []
+            by_sid = {}
+            for a in self.agents:
+                by_sid.setdefault(a['session_id'], []).append(a)
+            out, known = [], set()
             for rec in self.sessions.values():
-                if rec['ended_ms'] is not None:
+                alive = rec['ended_ms'] is None
+                if not alive:
                     state = 'ended'
                 elif rec['status'] in ('busy', 'idle'):
                     state = rec['status']
                 else:
                     state = 'unknown'
+                sid = rec.get('sid_full', '')
+                known.add(sid)
                 out.append({
                     'name': rec.get('name'), 'folder': rec.get('folder'), 'kind': rec.get('kind'), 'short_id': rec.get('short_id'),
                     'state': state, 'raw_status': rec.get('status'),
                     'started_ms': rec.get('started_ms'), 'busy_since_ms': rec['busy_since_ms'], 'busy_exact': rec['busy_exact'],
                     'ended_ms': rec['ended_ms'], 'first_seen_ms': rec['first_seen_ms'],
+                    'agents': self._agents_view(by_sid.get(sid, []), alive, now_ms),
                 })
-            order = {'busy': 0, 'unknown': 1, 'idle': 2, 'ended': 3}
-            out.sort(key=lambda s: (order[s['state']], (s['name'] or '')))
+            # 세션 목록에는 없지만 최근 서브에이전트 기록이 있는 세션(이미 끝난 세션)
+            for sid, items in by_sid.items():
+                if sid in known:
+                    continue
+                out.append({
+                    'name': None, 'folder': items[0]['project'].lstrip('-') or '-', 'kind': '', 'short_id': re.sub(r'[^A-Za-z0-9]', '', sid)[:8],
+                    'state': 'gone', 'raw_status': None, 'started_ms': None, 'busy_since_ms': None, 'busy_exact': False,
+                    'ended_ms': None, 'first_seen_ms': now_ms, 'agents': self._agents_view(items, False, now_ms),
+                })
+            order = {'busy': 0, 'unknown': 1, 'idle': 2, 'ended': 3, 'gone': 4}
+            out.sort(key=lambda s: (order[s['state']], (s['name'] or ''), s['short_id']))
+            concurrent = sum(1 for s in out for a in s['agents'] if a['state'] in ('running', 'quiet'))
             return {'server_ms': now_ms, 'ok': self.error is None, 'error': self.error,
-                    'last_ok_ms': self.last_ok_ms, 'poll_sec': POLL_SEC, 'sessions': out}
+                    'last_ok_ms': self.last_ok_ms, 'poll_sec': POLL_SEC, 'window_sec': WINDOW_SEC,
+                    'agents_unreadable': self.agents_unreadable, 'concurrent': concurrent, 'sessions': out}
 
 
 STATE = State()
 FETCH = fetch_agents      # 시험에서 바꿔 끼운다
+SCAN = scan_subagents
 
 
 def poll_loop(stop):
     while not stop.is_set():
+        now_ms = int(time.time() * 1000)
         agents, error = FETCH()
-        STATE.update(agents or [], error, int(time.time() * 1000))
+        STATE.update(agents or [], error, now_ms)
+        try:
+            STATE.update_agents(*SCAN(now_ms))
+        except Exception:                         # 형식이 바뀌어도 세션 화면은 계속 돌게 한다
+            STATE.update_agents([], 1)
         stop.wait(POLL_SEC)
 
 
