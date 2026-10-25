@@ -296,7 +296,7 @@ class State:
                 status = str(a.get('status') or '')
                 rec = self.sessions.get(sid)
                 if rec is None:
-                    rec = {'first_seen_ms': now_ms, 'busy_since_ms': None, 'busy_exact': False, 'ended_ms': None, 'status': None, 'missing': 0}
+                    rec = {'first_seen_ms': now_ms, 'busy_since_ms': None, 'busy_exact': False, 'idle_since_ms': None, 'ended_ms': None, 'status': None, 'missing': 0}
                     self.sessions[sid] = rec
                 rec['missing'] = 0
                 if rec['ended_ms'] is not None:      # 다시 나타남
@@ -304,7 +304,11 @@ class State:
                 if status == 'busy' and rec['status'] != 'busy':
                     rec['busy_since_ms'] = now_ms
                     rec['busy_exact'] = rec['status'] is not None    # 처음 본 순간부터 busy면 정확한 시작 시각을 모름
-                if status != 'busy':
+                if status == 'busy':
+                    rec['idle_since_ms'] = None
+                else:
+                    if rec['status'] == 'busy':
+                        rec['idle_since_ms'] = now_ms        # 작업이 끝나고 내 차례가 된 시각(화면이 방금 끝남을 눈에 띄게 하는 데 씀)
                     rec['busy_since_ms'] = None
                 rec['status'] = status
                 rec['name'] = str(a.get('name') or '')
@@ -352,7 +356,7 @@ class State:
                     'name': rec.get('name'), 'folder': rec.get('folder'), 'kind': rec.get('kind'), 'short_id': rec.get('short_id'),
                     'state': state, 'raw_status': rec.get('status'),
                     'started_ms': rec.get('started_ms'), 'busy_since_ms': rec['busy_since_ms'], 'busy_exact': rec['busy_exact'],
-                    'ended_ms': rec['ended_ms'], 'first_seen_ms': rec['first_seen_ms'],
+                    'idle_since_ms': rec.get('idle_since_ms'), 'ended_ms': rec['ended_ms'], 'first_seen_ms': rec['first_seen_ms'],
                     'agents': self._agents_view(by_sid.get(sid, []), alive, now_ms),
                 })
             # 세션 목록에는 없지만 최근 서브에이전트 기록이 있는 세션(이미 끝난 세션)
@@ -362,7 +366,7 @@ class State:
                 out.append({
                     'name': None, 'folder': items[0]['project'].lstrip('-') or '-', 'kind': '', 'short_id': re.sub(r'[^A-Za-z0-9]', '', sid)[:8],
                     'state': 'gone', 'raw_status': None, 'started_ms': None, 'busy_since_ms': None, 'busy_exact': False,
-                    'ended_ms': None, 'first_seen_ms': now_ms, 'agents': self._agents_view(items, False, now_ms),
+                    'idle_since_ms': None, 'ended_ms': None, 'first_seen_ms': now_ms, 'agents': self._agents_view(items, False, now_ms),
                 })
             order = {'busy': 0, 'unknown': 1, 'idle': 2, 'ended': 3, 'gone': 4}
             out.sort(key=lambda s: (order[s['state']], (s['name'] or ''), s['short_id']))
@@ -407,7 +411,7 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header('Content-Length', str(len(data)))
         self.send_header('Cache-Control', 'no-store')
         self.send_header('X-Content-Type-Options', 'nosniff')
-        self.send_header('Content-Security-Policy', csp or "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'")
+        self.send_header('Content-Security-Policy', csp or "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src data:; frame-ancestors 'none'")
         for k, v in (extra or {}).items():
             self.send_header(k, v)
         self.end_headers()

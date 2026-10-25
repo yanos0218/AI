@@ -50,6 +50,19 @@ s2.update([ag('bbbbbbbb-1', 'busy')], None, t0)
 x = by(s2.snapshot(t0), 'bbbbbbbb')
 r('first_seen_busy_not_exact', x['state'] == 'busy' and x['busy_exact'] is False and x['first_seen_ms'] == t0)
 
+# 1b. busy -> idle 전환 시각(내 차례가 된 시점), 처음부터 idle이면 없음, 다시 busy가 되면 지움
+s7 = live.State()
+s7.update([ag('77777777-1', 'idle')], None, t0)
+r('idle_since_none_when_first_seen_idle', by(s7.snapshot(t0), '77777777')['idle_since_ms'] is None)
+s7.update([ag('77777777-1', 'busy')], None, t0 + 2000)
+r('idle_since_none_while_busy', by(s7.snapshot(t0 + 2000), '77777777')['idle_since_ms'] is None)
+s7.update([ag('77777777-1', 'idle')], None, t0 + 9000)
+r('idle_since_recorded_on_busy_to_idle', by(s7.snapshot(t0 + 9000), '77777777')['idle_since_ms'] == t0 + 9000)
+s7.update([ag('77777777-1', 'idle')], None, t0 + 11000)
+r('idle_since_kept_while_idle', by(s7.snapshot(t0 + 11000), '77777777')['idle_since_ms'] == t0 + 9000)
+s7.update([ag('77777777-1', 'busy')], None, t0 + 13000)
+r('idle_since_cleared_on_busy_again', by(s7.snapshot(t0 + 13000), '77777777')['idle_since_ms'] is None)
+
 # 2. 사라짐은 연속 3번 안 보여야 끝남, 다시 나타나면 복귀하고 busy_since 유지
 s3 = live.State()
 s3.update([ag('cccccccc-1', 'idle')], None, t0)
@@ -250,6 +263,42 @@ srv2.shutdown(); srv2.server_close()
 shutil.rmtree(ux, ignore_errors=True)
 os.environ.pop('LIVE_CLAUDE_DIR', None)
 
+# 5d. 토큰 대시보드 초안 템플릿(drafts/skills/usage-dashboard)
+import re, io, subprocess
+tpl = io.open('drafts/skills/usage-dashboard/scripts/dashboard.html', encoding='utf-8').read()
+def lum(hx):
+    hx = hx.lstrip('#'); c = [int(hx[i:i + 2], 16) / 255.0 for i in (0, 2, 4)]
+    f = lambda v: v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4
+    return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2])
+def ratio(a, b):
+    la, lb = lum(a), lum(b)
+    return (max(la, lb) + 0.05) / (min(la, lb) + 0.05)
+light = re.search(r':root\{--bg:(#\w+);--s1:(#\w+);.*?--ink3:(#\w+)', tpl, re.S)
+dark = re.search(r'data-theme=dark\]\{--bg:(#\w+);--s1:(#\w+);.*?--ink3:(#\w+)', tpl, re.S)
+r('usage_tpl_light_contrast', light is not None and ratio(light.group(3), light.group(2)) >= 4.5 and ratio(light.group(3), light.group(1)) >= 4.5)
+r('usage_tpl_dark_contrast', dark is not None and ratio(dark.group(3), dark.group(2)) >= 4.5 and ratio(dark.group(3), dark.group(1)) >= 4.5)
+r('usage_tpl_one_placeholder', tpl.count('__DATA__') == 1)
+r('usage_tpl_has_headline', 'id="headline"' in tpl and 'function headline()' in tpl)
+sizes = [float(x) for x in re.findall(r'font-size:([0-9.]+)px', tpl)]
+r('usage_tpl_no_tiny_text', min(sizes) >= 12.0)
+td = tempfile.mkdtemp()
+sd = os.path.join(td, 'scripts'); os.makedirs(sd)
+for fn in ('usage.py',):
+    shutil.copy(os.path.join('base/skills/usage-dashboard/scripts', fn), sd)
+shutil.copy('drafts/skills/usage-dashboard/scripts/dashboard.html', sd)
+logd = os.path.join(td, 'log'); os.makedirs(logd)
+with open(os.path.join(logd, 'hourly.json'), 'w') as f:
+    json.dump({time.strftime('%Y-%m-%dT%H'): {'AI': {'main': {'sonnet': {'turns': 3, 'in': 5000, 'cache': 90000, 'out': 800}}}}}, f)
+env = dict(os.environ); env['USAGE_LOG_DIR'] = logd; env['PYTHONIOENCODING'] = 'utf-8'
+try:
+    rc = subprocess.call([sys.executable, '-I', os.path.join(sd, 'usage.py'), 'render'], env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+except OSError:
+    rc = -1
+page_path = os.path.join(logd, 'dashboard.html')
+page = io.open(page_path, encoding='utf-8').read() if os.path.exists(page_path) else ''
+r('usage_tpl_renders_with_base_script', rc == 0 and '__DATA__' not in page and 'function headline()' in page)
+shutil.rmtree(td, ignore_errors=True)
+
 # 6. HTTP
 live.STATE = live.State()
 live.STATE.update([ag('abcdef12-0000-0000-0000-000000000000', 'busy', name='web')], None, int(time.time() * 1000))
@@ -270,6 +319,7 @@ code, h, data = get('/api/state')
 j = json.loads(data.decode('utf-8'))
 r('http_state_json', code == 200 and j['ok'] is True and j['sessions'][0]['name'] == 'web' and j['sessions'][0]['short_id'] == 'abcdef12')
 r('http_headers', h['cache-control'] == 'no-store' and "default-src 'none'" in h['content-security-policy'] and h['x-content-type-options'] == 'nosniff')
+r('http_csp_allows_data_icon', 'img-src data:' in h['content-security-policy'] and "connect-src 'self'" in h['content-security-policy'])
 r('http_localhost_host_ok', get('/api/state', 'localhost:%d' % port)[0] == 200)
 r('http_bad_host_403', get('/api/state', 'evil.example:%d' % port)[0] == 403)
 r('http_host_without_port_403', get('/api/state', '127.0.0.1')[0] == 403)
@@ -380,6 +430,24 @@ chk "사용량 화면에도 Host 검사"                              'py usage_
 chk "/api/state에 사용량 요약이 들어감"                       'py api_state_includes_usage'
 chk "끄면 /usage/도 404"                                    'py usage_route_404_when_off'
 chk "화면 파일이 없으면 404"                                 'py usage_missing_page_404'
+
+echo "== 2d. 토큰 대시보드 초안 템플릿(연결 화면)"
+chk "보조 글자색 대비 4.5:1 이상(밝은 테마)"                'py usage_tpl_light_contrast'
+chk "보조 글자색 대비 4.5:1 이상(어두운 테마)"              'py usage_tpl_dark_contrast'
+chk "데이터 자리표시자가 하나만 있음"                       'py usage_tpl_one_placeholder'
+chk "맨 위 한 문장 요약이 있음"                            'py usage_tpl_has_headline'
+chk "글자 크기가 12px 아래로 내려가지 않음"                 'py usage_tpl_no_tiny_text'
+chk "기본 usage.py로 렌더링되고 요약 함수가 들어감"          'py usage_tpl_renders_with_base_script'
+
+echo "== 2e. 방금 끝남과 내 차례"
+chk "처음부터 쉬는 중이면 끝난 시각 없음"                   'py idle_since_none_when_first_seen_idle'
+chk "작업 중에는 끝난 시각 없음"                           'py idle_since_none_while_busy'
+chk "작업 중에서 쉬는 중이 되면 그 시각을 기록"              'py idle_since_recorded_on_busy_to_idle'
+chk "쉬는 동안 끝난 시각 유지"                             'py idle_since_kept_while_idle'
+chk "다시 작업 중이 되면 지움"                             'py idle_since_cleared_on_busy_again'
+chk "탭 아이콘(data:)을 허용하는 보안 헤더"                 'py http_csp_allows_data_icon'
+chk "화면에 방금 끝남·내 차례 표시와 탭 아이콘 코드가 있음"   'grep -q "방금 끝남" "${SK}/scripts/live.html" && grep -q "내 차례" "${SK}/scripts/live.html" && grep -q "setIcon" "${SK}/scripts/live.html"'
+chk "토큰 단위는 만·억(K·M 아님)"                          'grep -q "억" "${SK}/scripts/live.html" && ! grep -Eq "toFixed\\([^)]*\\) \\+ .(K|M)." "${SK}/scripts/live.html"'
 
 echo "== 3. HTTP"
 chk "루트가 화면(HTML)을 줌"                             'py http_root_200_html'
