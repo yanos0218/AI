@@ -62,6 +62,15 @@ Windows(Git Bash, bash 5, gawk)에서만 시험하면 Mac(bash 3.2, BSD 도구)�
   - 예외는 `usage-dashboard`의 `fromisoformat`, Linux 제외 대상이라 그대로 둠.
 - 빈 글롭은 `shopt -s nullglob`으로 건너뜀
   - 폴더가 비면 글롭이 문자 그대로 넘어감.
+- 임시 경로를 네이티브 프로그램에 직접 넘기지 않음
+  - Windows Git Bash의 `/tmp/...`는 네이티브 파이썬·node가 못 찾음(2026-10-25, 실시간 현황 시험에서 `FileNotFoundError`, [Issue #213](https://github.com/yanos0218/AI/issues/213)).
+  - 파일 입출력은 셸 리다이렉트로 하고, node처럼 경로를 인자로 받는 것에는 `cygpath -m`을 거침.
+- 서버를 띄우는 파이썬은 이름 조회에 기대지 않음
+  - 표준 `HTTPServer`는 바인드 때 `getfqdn`(역방향 DNS 조회)을 불러, DNS가 없는 macOS 러너에서 서버가 뜨기 전에 멈춤(같은 날, 파이썬 3.15).
+  - 127.0.0.1 전용 서버는 `socketserver.TCPServer.server_bind`만 쓰고, 시험은 `socket.getfqdn`을 예외로 바꿔 놓고 열어 봄.
+- 새 시험 스크립트는 푸시 전에 CI 환경 차이를 먼저 의심함
+  - 처음 CI에 올라가는 시험은 로컬 Mac에서 통과해도 Windows 경로·DNS·최신 파이썬에서 실패할 수 있음.
+  - 시작 실패는 서버 로그·프로세스·포트를 시험 출력에 남겨 한 번에 원인을 보게 함.
 
 ## 설치는 커밋 뒤에
 
