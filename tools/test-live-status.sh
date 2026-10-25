@@ -175,6 +175,81 @@ r('missing_claude_dir_ok', (lambda: (os.environ.__setitem__('LIVE_CLAUDE_DIR', o
 os.environ['LIVE_CLAUDE_DIR'] = fx
 shutil.rmtree(fx, ignore_errors=True)
 
+# 5c. 토큰 사용량 요약과 /usage/ 연결
+ux = tempfile.mkdtemp()
+ul = os.path.join(ux, 'usage-log'); os.makedirs(ul)
+os.environ['LIVE_CLAUDE_DIR'] = ux
+now = time.time()
+def hk(ago_h):
+    return time.strftime('%Y-%m-%dT%H', time.localtime(now - ago_h * 3600))
+def fam(i, o, cache=9999999):
+    return {'sonnet': {'turns': 1, 'in': i, 'cache': cache, 'out': o}}
+hourly = {hk(0): {'AI': {'main': fam(100, 10), 'sub:researcher': fam(20, 2)}},
+          hk(1): {'AI': {'main': fam(200, 20)}, 'kolo': {'sub:Explore': fam(40, 4)}},
+          hk(3): {'AI': {'main': fam(300, 30)}},
+          hk(30): {'AI': {'main': fam(5000, 500)}}}
+with open(os.path.join(ul, 'hourly.json'), 'w') as f:
+    json.dump(hourly, f)
+today = time.strftime('%Y-%m-%d', time.localtime(now))
+exp5_main = 110 + 220 + 330; exp5_sub = 22 + 44
+exp_today_main = sum(v for k, v in ((hk(0), 110), (hk(1), 220), (hk(3), 330), (hk(30), 5500)) if k.startswith(today))
+u = live.usage_summary(now)
+r('usage_not_enabled_flag_missing', u['available'] is True and u['enabled'] is False)
+open(os.path.join(ul, 'enabled'), 'w').close()
+u = live.usage_summary(now)
+r('usage_enabled_flag', u['enabled'] is True)
+r('usage_last5h_sums_in_plus_out_without_cache', u['last5h'] == {'main': exp5_main, 'sub': exp5_sub})
+r('usage_today_sums_by_date', u['today']['main'] == exp_today_main)
+r('usage_sub_types_top', u['sub_types_today'][0]['type'] in ('researcher', 'Explore') and all(isinstance(x['tokens'], int) for x in u['sub_types_today']))
+os.remove(os.path.join(ul, 'hourly.json'))
+r('usage_missing_file_not_available', live.usage_summary(now)['available'] is False)
+with open(os.path.join(ul, 'hourly.json'), 'w') as f:
+    f.write('{broken')
+r('usage_broken_file_not_available', live.usage_summary(now)['available'] is False)
+with open(os.path.join(ul, 'hourly.json'), 'w') as f:
+    json.dump({hk(0): {'AI': {'main': 'bad', 'x': {'sub:y': ['bad']}}}, hk(1): 5}, f)
+r('usage_odd_shapes_do_not_crash', live.usage_summary(now)['available'] is True)
+live.SHOW_USAGE = False
+r('usage_off_option', live.usage_summary(now) == {'shown': False, 'enabled': False, 'available': False})
+live.SHOW_USAGE = True
+with open(os.path.join(ul, 'dashboard.html'), 'w', encoding='utf-8') as f:
+    f.write('<!doctype html><html><head></head><body><h1>old</h1><script src="details.js"></script></body></html>')
+with open(os.path.join(ul, 'details.js'), 'w') as f:
+    f.write('window.DETAILS={};')
+with open(os.path.join(ul, 'state.json'), 'w') as f:
+    f.write('{"secret": "SECRET_STATE"}')
+live.STATE = live.State()
+srv2 = live.make_server(0)
+port2 = srv2.server_address[1]
+threading.Thread(target=srv2.serve_forever, daemon=True).start()
+def get2(path, host=None):
+    c = http.client.HTTPConnection('127.0.0.1', port2, timeout=5)
+    c.putrequest('GET', path, skip_host=True)
+    c.putheader('Host', host if host is not None else '127.0.0.1:%d' % port2)
+    c.endheaders()
+    resp = c.getresponse(); data = resp.read(); h = dict((k.lower(), v) for k, v in resp.getheaders())
+    c.close()
+    return resp.status, h, data
+code, h, data = get2('/usage')
+r('usage_redirect_slash', code == 301 and h.get('location') == '/usage/')
+code, h, data = get2('/usage/')
+r('usage_page_served_with_nav', code == 200 and b'<h1>old</h1>' in data and data.count(b'live') >= 0 and data.count(b'\xec\x8b\xa4\xec\x8b\x9c\xea\xb0\x84 \xed\x98\x84\xed\x99\xa9') == 1 and data.index(b'<body>') < data.index(b'<h1>'))
+r('usage_csp_allows_self_script', "script-src 'self'" in h['content-security-policy'] and 'frame-ancestors' in h['content-security-policy'])
+code, h, data = get2('/usage/details.js')
+r('usage_js_served', code == 200 and 'javascript' in h['content-type'])
+r('usage_other_files_404', all(get2(p)[0] == 404 for p in ('/usage/state.json', '/usage/hourly.json', '/usage/../state.json', '/usage/%2e%2e/state.json', '/usage/requests.json')))
+r('usage_bad_host_403', get2('/usage/', 'evil.example:%d' % port2)[0] == 403)
+code, h, data = get2('/api/state')
+r('api_state_includes_usage', json.loads(data.decode('utf-8'))['usage']['shown'] is True)
+live.SHOW_USAGE = False
+r('usage_route_404_when_off', get2('/usage/')[0] == 404 and get2('/usage/details.js')[0] == 404)
+live.SHOW_USAGE = True
+os.remove(os.path.join(ul, 'dashboard.html'))
+r('usage_missing_page_404', get2('/usage/')[0] == 404)
+srv2.shutdown(); srv2.server_close()
+shutil.rmtree(ux, ignore_errors=True)
+os.environ.pop('LIVE_CLAUDE_DIR', None)
+
 # 6. HTTP
 live.STATE = live.State()
 live.STATE.update([ag('abcdef12-0000-0000-0000-000000000000', 'busy', name='web')], None, int(time.time() * 1000))
@@ -285,6 +360,26 @@ chk "작업 제목 숨김 옵션"                                  'py titles_hi
 chk "큰 기록 파일도 빠르게 스캔(첫 줄만 읽음)"             'py big_file_scan_fast'
 chk "시각 문자열 해석(파이썬 3.6 호환 직접 구현)"           'py iso_parse'
 chk "설정 폴더가 없어도 오류 없이 빈 결과"                 'py missing_claude_dir_ok'
+
+echo "== 2c. 토큰 사용량 연결"
+chk "기록이 꺼져 있으면 꺼짐으로 알림"                      'py usage_not_enabled_flag_missing'
+chk "켜져 있으면 켜짐"                                      'py usage_enabled_flag'
+chk "최근 5시간은 입력+출력만 더함(캐시 읽기 제외)"          'py usage_last5h_sums_in_plus_out_without_cache'
+chk "오늘 합계는 날짜로 가름"                               'py usage_today_sums_by_date'
+chk "서브에이전트 종류별 상위를 줌"                          'py usage_sub_types_top'
+chk "집계 파일이 없으면 기록 없음"                           'py usage_missing_file_not_available'
+chk "깨진 집계 파일도 오류 없이 기록 없음"                    'py usage_broken_file_not_available'
+chk "모양이 이상한 집계도 죽지 않음"                         'py usage_odd_shapes_do_not_crash'
+chk "LIVE_SHOW_USAGE=0이면 요약을 끔"                        'py usage_off_option'
+chk "/usage가 /usage/로 이동"                               'py usage_redirect_slash'
+chk "/usage/가 기존 화면을 주고 맨 위에 돌아가는 줄을 한 번만 끼움" 'py usage_page_served_with_nav'
+chk "사용량 화면용 보안 헤더(자기 스크립트만 허용, 프레임 금지)"  'py usage_csp_allows_self_script'
+chk "details.js를 줌"                                       'py usage_js_served'
+chk "허용 목록 밖 파일과 상위 경로는 404(state.json 등)"       'py usage_other_files_404'
+chk "사용량 화면에도 Host 검사"                              'py usage_bad_host_403'
+chk "/api/state에 사용량 요약이 들어감"                       'py api_state_includes_usage'
+chk "끄면 /usage/도 404"                                    'py usage_route_404_when_off'
+chk "화면 파일이 없으면 404"                                 'py usage_missing_page_404'
 
 echo "== 3. HTTP"
 chk "루트가 화면(HTML)을 줌"                             'py http_root_200_html'

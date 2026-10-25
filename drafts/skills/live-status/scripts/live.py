@@ -9,8 +9,12 @@ agent-<ID>.meta.json(종류·작업 제목·finished)과 agent-<ID>.jsonl(첫 �
 이 파일 형식은 문서화되어 있지 않아 Claude Code가 바꾸면 깨질 수 있다. 읽기 전용이고 기록 파일은 첫 줄 외에는 열지 않는다.
 
 - 대화 내용과 전체 경로는 읽지도 보여 주지도 않는다(이름·폴더 이름·종류·작업 제목·상태·시각만).
+토큰 사용량은 usage-dashboard가 남기는 `<설정 폴더>/usage-log/hourly.json` 집계를 읽어 쓴다(토큰을 다시 계산하지 않는다, 그 집계는
+응답이 여러 줄로 기록될 때 생기는 중복을 이미 보정한다). 같은 서버가 기존 사용량 화면을 /usage/ 아래로 그대로 보여 준다.
+
 - 환경변수: LIVE_PORT(기본 8766), LIVE_POLL_SEC(기본 2), CLAUDE_BIN(claude 실행 파일 경로),
-  LIVE_CLAUDE_DIR(설정 폴더, 시험용), LIVE_SHOW_TITLES(0이면 서브에이전트 작업 제목을 숨김).
+  LIVE_CLAUDE_DIR(설정 폴더, 시험용), LIVE_SHOW_TITLES(0이면 서브에이전트 작업 제목을 숨김),
+  LIVE_SHOW_USAGE(0이면 토큰 요약과 /usage/를 끔, 사용량 화면에는 요청 내용 일부가 들어 있음).
 """
 import calendar
 import glob
@@ -40,6 +44,8 @@ FRESH_SEC = 90                    # 마지막 활동이 이 안이면 작업 중
 END_ESTIMATE_SEC = 10 * 60        # 이보다 오래 활동이 없으면 끝남(추정). 그 사이는 조용함(도구를 오래 실행하는 중일 수 있어 멈춤이라 단정하지 않음)
 GONE_END_SEC = 60                 # 부모 세션이 사라졌으면 이 시간 이상 조용한 서브에이전트는 끝남(추정)
 SHOW_TITLES = os.environ.get('LIVE_SHOW_TITLES', '1') != '0'
+SHOW_USAGE = os.environ.get('LIVE_SHOW_USAGE', '1') != '0'
+USAGE_FILES = {'': 'dashboard.html', 'dashboard.html': 'dashboard.html', 'details.js': 'details.js'}   # /usage/ 아래로 내보낼 파일(이 둘만)
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 
@@ -156,6 +162,54 @@ def classify_agent(a, parent_alive, now_ms):
     if age <= END_ESTIMATE_SEC:
         return 'quiet', False
     return 'ended', False
+
+
+def usage_summary(now=None):
+    """usage-dashboard의 시간별 집계(hourly.json)에서 오늘·최근 5시간 실사용 토큰(입력+출력, 캐시 읽기 제외)을 메인과 서브에이전트로 나눠 돌려준다."""
+    out = {'shown': SHOW_USAGE, 'enabled': False, 'available': False}
+    if not SHOW_USAGE:
+        return out
+    base = os.path.join(claude_dir(), 'usage-log')
+    out['enabled'] = os.path.exists(os.path.join(base, 'enabled'))
+    path = os.path.join(base, 'hourly.json')
+    try:
+        mtime = os.path.getmtime(path)
+        with open(path, 'rb') as f:
+            data = json.loads(f.read().decode('utf-8', errors='replace'))
+        if not isinstance(data, dict):
+            raise ValueError('hourly가 객체가 아님')
+    except (OSError, ValueError):
+        return out
+    now = time.time() if now is None else now
+    today = time.strftime('%Y-%m-%d', time.localtime(now))
+    last5 = set(time.strftime('%Y-%m-%dT%H', time.localtime(now - i * 3600)) for i in range(5))    # 현재 시각을 포함한 정시 5칸
+    totals = {'today': {'main': 0, 'sub': 0}, 'last5h': {'main': 0, 'sub': 0}}
+    sub_types = {}
+    for hour, projects in data.items():
+        in_today, in_last5 = str(hour).startswith(today), hour in last5
+        if not (in_today or in_last5) or not isinstance(projects, dict):
+            continue
+        for kinds in projects.values():
+            if not isinstance(kinds, dict):
+                continue
+            for kind, families in kinds.items():
+                if not isinstance(families, dict):
+                    continue
+                n = 0
+                for v in families.values():
+                    if isinstance(v, dict):
+                        n += int(v.get('in') or 0) + int(v.get('out') or 0)
+                side = 'main' if kind == 'main' else 'sub'
+                if in_today:
+                    totals['today'][side] += n
+                    if side == 'sub':
+                        sub_types[str(kind)[4:] or '?'] = sub_types.get(str(kind)[4:] or '?', 0) + n
+                if in_last5:
+                    totals['last5h'][side] += n
+    top = sorted(sub_types.items(), key=lambda kv: -kv[1])[:3]
+    out.update({'available': True, 'updated_ms': int(mtime * 1000), 'today': totals['today'], 'last5h': totals['last5h'],
+                'sub_types_today': [{'type': k, 'tokens': v} for k, v in top]})
+    return out
 
 
 def find_claude():
@@ -346,14 +400,16 @@ class Handler(BaseHTTPRequestHandler):
         port = self.server.server_address[1]
         return host in ('127.0.0.1:%d' % port, 'localhost:%d' % port)
 
-    def _send(self, code, body, ctype):
+    def _send(self, code, body, ctype, csp=None, extra=None):
         data = body if isinstance(body, bytes) else body.encode('utf-8')
         self.send_response(code)
         self.send_header('Content-Type', ctype)
         self.send_header('Content-Length', str(len(data)))
         self.send_header('Cache-Control', 'no-store')
         self.send_header('X-Content-Type-Options', 'nosniff')
-        self.send_header('Content-Security-Policy', "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'")
+        self.send_header('Content-Security-Policy', csp or "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'")
+        for k, v in (extra or {}).items():
+            self.send_header(k, v)
         self.end_headers()
         self.wfile.write(data)
 
@@ -366,9 +422,36 @@ class Handler(BaseHTTPRequestHandler):
             with open(os.path.join(HERE, 'live.html'), 'rb') as f:
                 self._send(200, f.read(), 'text/html; charset=utf-8')
         elif path == '/api/state':
-            self._send(200, json.dumps(STATE.snapshot(int(time.time() * 1000)), ensure_ascii=False), 'application/json; charset=utf-8')
+            snap = STATE.snapshot(int(time.time() * 1000))
+            snap['usage'] = usage_summary()
+            self._send(200, json.dumps(snap, ensure_ascii=False), 'application/json; charset=utf-8')
+        elif path == '/usage':
+            self._send(301, '', 'text/plain; charset=utf-8', extra={'Location': '/usage/'})
+        elif path.startswith('/usage/'):
+            self._usage(path[len('/usage/'):])
         else:
             self._send(404, 'not found', 'text/plain; charset=utf-8')
+
+    def _usage(self, rel):
+        """기존 사용량 화면을 그대로 내보낸다(허용 목록 두 파일만). 화면 맨 위에 실시간 현황으로 돌아가는 줄만 끼워 넣는다."""
+        name = USAGE_FILES.get(rel) if SHOW_USAGE else None
+        if name is None:
+            self._send(404, 'not found', 'text/plain; charset=utf-8')
+            return
+        try:
+            with open(os.path.join(claude_dir(), 'usage-log', name), 'rb') as f:
+                data = f.read()
+        except OSError:
+            self._send(404, '사용량 기록이 없습니다. usage-dashboard 스킬로 먼저 켜세요.', 'text/plain; charset=utf-8')
+            return
+        csp = "default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'self'; frame-ancestors 'none'"
+        if name.endswith('.js'):
+            self._send(200, data, 'application/javascript; charset=utf-8', csp=csp)
+            return
+        nav = ('<div style="background:#1d2430;color:#fff;padding:6px 16px;font:14px system-ui,sans-serif">'
+               '<a href="/" style="color:#9cc2ff">← 실시간 현황</a> · 이 화면에는 요청 내용 일부가 들어 있습니다</div>').encode('utf-8')
+        data = data.replace(b'<body>', b'<body>' + nav, 1)
+        self._send(200, data, 'text/html; charset=utf-8', csp=csp)
 
     def do_POST(self):
         self._send(405, 'method not allowed', 'text/plain; charset=utf-8')

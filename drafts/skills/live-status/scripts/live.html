@@ -3,26 +3,32 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>세션 현황</title>
+<title>작업 현황</title>
 <style>
   :root { --bg:#f6f7f9; --card:#fff; --text:#1d2430; --muted:#5b6575; --line:#d9dee6;
           --busy:#0a7a3d; --busy-bg:#e3f5ea; --idle:#4b5565; --idle-bg:#eceff3;
-          --quiet:#8a5a00; --quiet-bg:#fff2d6; --ended:#6b7280; --ended-bg:#f1f2f4; --warn:#a31515; --warn-bg:#fde8e8; --bar:#7aa7f0; }
+          --quiet:#8a5a00; --quiet-bg:#fff2d6; --ended:#6b7280; --ended-bg:#f1f2f4; --warn:#a31515; --warn-bg:#fde8e8; --bar:#7aa7f0; --link:#1a56c4; }
   @media (prefers-color-scheme: dark) {
     :root { --bg:#14181f; --card:#1d232d; --text:#e8ecf2; --muted:#a3adbd; --line:#2f3846;
             --busy:#58d68d; --busy-bg:#173626; --idle:#b7c0cf; --idle-bg:#272f3b;
-            --quiet:#f5c26b; --quiet-bg:#3b2f14; --ended:#8d97a8; --ended-bg:#222833; --warn:#ff8f8f; --warn-bg:#3d1b1b; --bar:#4b78c2; }
+            --quiet:#f5c26b; --quiet-bg:#3b2f14; --ended:#8d97a8; --ended-bg:#222833; --warn:#ff8f8f; --warn-bg:#3d1b1b; --bar:#4b78c2; --link:#8db4ff; }
   }
   * { box-sizing: border-box; }
-  body { margin:0; padding:16px; background:var(--bg); color:var(--text); font:16px/1.5 system-ui, -apple-system, "Segoe UI", "Noto Sans KR", sans-serif; }
-  h1 { font-size:1.1rem; margin:0 0 4px; } h2 { font-size:1rem; margin:20px 0 8px; color:var(--muted); }
-  #summary { font-size:1.5rem; font-weight:700; margin:4px 0 2px; } #summary2 { color:var(--muted); margin-bottom:10px; }
-  .banner { display:none; padding:10px 14px; border-radius:8px; margin-bottom:10px; font-weight:600; background:var(--warn-bg); color:var(--warn); }
-  #meta { color:var(--muted); font-size:.82rem; margin-top:16px; }
-  #tree { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:14px; align-items:start; }
+  body { margin:0; padding:16px; max-width:1100px; margin-inline:auto; background:var(--bg); color:var(--text); font:16px/1.5 system-ui, -apple-system, "Segoe UI", "Noto Sans KR", sans-serif; }
+  a { color:var(--link); }
+  .head { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+  h1 { font-size:1.05rem; margin:0; } h2 { font-size:1rem; margin:22px 0 8px; color:var(--muted); }
+  .right { display:flex; gap:14px; align-items:center; flex-wrap:wrap; font-size:.9rem; }
+  .beat { font-weight:600; } .beat.ok { color:var(--busy); } .beat.bad { color:var(--warn); }
+  .hero { margin:10px 0 12px; } #headline { font-size:1.7rem; font-weight:800; line-height:1.25; } #headline.work { color:var(--busy); } #headline.bad { color:var(--warn); }
+  #subline { color:var(--muted); margin-top:2px; }
+  .tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-bottom:6px; }
+  .tile { background:var(--card); border:2px solid var(--line); border-radius:12px; padding:10px 14px; }
+  .tile .k { color:var(--muted); font-size:.85rem; } .tile .v { font-size:1.9rem; font-weight:800; line-height:1.2; } .tile .s { color:var(--muted); font-size:.82rem; }
+  .banner { display:none; padding:10px 14px; border-radius:8px; margin:8px 0; font-weight:600; background:var(--warn-bg); color:var(--warn); }
+  #active { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:14px; align-items:start; }
   .card { background:var(--card); border:2px solid var(--line); border-radius:12px; padding:12px 14px; }
   .card.busy, .card.running { border-color:var(--busy); } .card.unknown, .card.quiet { border-color:var(--quiet); }
-  .card.ended, .card.gone { opacity:.72; }
   .top { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; }
   .name { font-size:1.25rem; font-weight:700; overflow-wrap:anywhere; } .folder { color:var(--muted); font-size:.88rem; overflow-wrap:anywhere; }
   .chip { white-space:nowrap; padding:3px 10px; border-radius:999px; font-weight:700; font-size:.9rem; }
@@ -33,10 +39,16 @@
   .kid { position:relative; background:var(--card); border:2px solid var(--line); border-radius:10px; padding:8px 12px; }
   .kid::before { content:""; position:absolute; left:-17px; top:18px; width:14px; border-top:3px solid var(--line); }
   .kid .t { font-weight:700; overflow-wrap:anywhere; } .kid .d { font-size:.92rem; overflow-wrap:anywhere; }
+  .list { background:var(--card); border:2px solid var(--line); border-radius:12px; padding:2px 14px; }
+  .li { display:flex; gap:10px; align-items:baseline; justify-content:space-between; flex-wrap:wrap; padding:8px 0; border-bottom:1px solid var(--line); }
+  .li:last-child { border-bottom:0; } .li .a { font-weight:700; overflow-wrap:anywhere; } .li .b { color:var(--muted); font-size:.88rem; }
+  .pill { white-space:nowrap; font-size:.8rem; font-weight:700; padding:1px 8px; border-radius:999px; background:var(--ended-bg); color:var(--ended); }
+  .pill.idle { background:var(--idle-bg); color:var(--idle); }
   .pulse { display:inline-block; animation:pulse 1.4s ease-in-out infinite; }
   @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.35; } }
   @media (prefers-reduced-motion: reduce) { .pulse { animation:none; } }
-  #empty { color:var(--muted); padding:16px 0; }
+  .none { color:var(--muted); padding:6px 0; }
+  details { margin-top:14px; } summary { cursor:pointer; font-weight:700; color:var(--muted); padding:4px 0; } details > .inner { margin-top:8px; }
   #tl { background:var(--card); border:2px solid var(--line); border-radius:12px; padding:10px 12px; }
   .axis, .row { display:grid; grid-template-columns:minmax(120px,28%) 1fr; gap:10px; align-items:center; }
   .axis { color:var(--muted); font-size:.8rem; margin-bottom:4px; } .axis .scale { position:relative; height:1.2em; }
@@ -44,23 +56,43 @@
   .row { margin:3px 0; } .row .lbl { font-size:.85rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .track { position:relative; height:20px; background:var(--idle-bg); border-radius:5px; }
   .bar { position:absolute; top:2px; bottom:2px; border-radius:4px; background:var(--bar); min-width:4px; }
-  .bar.running { background:var(--busy); } .bar.quiet { background:var(--quiet); } .bar.ended { background:var(--bar); }
-  @media (max-width: 640px) { .axis, .row { grid-template-columns:1fr; gap:2px; } .axis > div:first-child { display:none; } .row { margin:8px 0; } }
+  .bar.running { background:var(--busy); } .bar.quiet { background:var(--quiet); }
+  @media (max-width: 640px) { .axis, .row { grid-template-columns:1fr; gap:2px; } .axis > div:first-child { display:none; } .row { margin:8px 0; } #headline { font-size:1.4rem; } }
   .bar.est { background-image:repeating-linear-gradient(45deg, transparent 0 5px, rgba(255,255,255,.35) 5px 10px); }
+  .help li { margin:4px 0; } .help { color:var(--muted); font-size:.92rem; padding-left:1.1rem; }
 </style>
 </head>
 <body>
-<h1>Claude Code 세션 현황</h1>
-<div id="summary" aria-live="polite">불러오는 중…</div>
-<div id="summary2"></div>
+<div class="head"><h1>Claude Code 작업 현황</h1><div class="right"><span id="beat" class="beat"></span><a id="usagelink" href="/usage/" hidden>사용량 대시보드 →</a></div></div>
+<div class="hero"><div id="headline" aria-live="polite">불러오는 중…</div><div id="subline"></div></div>
 <div id="banner" class="banner" role="alert"></div>
 <div id="banner2" class="banner" role="alert"></div>
-<h2>구조도 (세션과 서브에이전트)</h2>
-<div id="tree"></div>
-<div id="empty" hidden>지금 돌고 있는 세션이 없습니다.</div>
-<h2>타임라인 (최근 <span id="winmin">30</span>분, 오른쪽 끝이 지금)</h2>
-<div id="tl"><div class="axis"><div></div><div class="scale" id="scale"></div></div><div id="rows"></div><div id="tlempty" class="small" hidden>이 시간 안에 활동한 서브에이전트가 없습니다.</div></div>
-<div id="meta"></div>
+<div class="tiles" id="tiles"></div>
+
+<h2>지금 진행 중</h2>
+<div id="active"></div>
+<div id="activenone" class="none" hidden>지금 진행 중인 작업이 없습니다.</div>
+
+<h2>쉬는 중 <span class="small">(Claude가 응답을 끝내고 내 입력을 기다림)</span></h2>
+<div id="idle" class="list"></div>
+<div id="idlenone" class="none" hidden>쉬는 중인 세션이 없습니다.</div>
+
+<details id="d-ended"><summary id="s-ended">최근 끝난 것</summary><div class="inner"><div id="ended" class="list"></div><div id="endednone" class="none" hidden>최근 30분 안에 끝난 것이 없습니다.</div></div></details>
+
+<details id="d-tl" open><summary>타임라인 (최근 <span id="winmin">30</span>분, 오른쪽 끝이 지금)</summary>
+  <div class="inner"><div id="tl"><div class="axis"><div></div><div class="scale" id="scale"></div></div><div id="rows"></div><div id="tlempty" class="small" hidden>이 시간 안에 활동한 서브에이전트가 없습니다.</div></div></div>
+</details>
+
+<details id="d-help"><summary>이 화면 읽는 법</summary>
+  <div class="inner"><ul class="help">
+    <li>서브에이전트는 Claude가 일을 나눠 맡기는 보조 작업자입니다. 세션 카드 아래에 연결선으로 이어집니다.</li>
+    <li>작업 중은 마지막 활동이 90초 안, 조용함은 90초~10분 동안 활동이 없는 것입니다. 도구를 오래 실행하는 중일 수 있어 멈춤이라고 단정하지 않습니다.</li>
+    <li>끝남(추정)은 끝났다는 표시가 없는 옛 기록을 마지막 활동 시각으로 짐작한 것이고, 타임라인에서는 줄무늬 막대입니다.</li>
+    <li>"이번 요청 N분째"는 이 화면이 상태 변화를 본 시점부터 센 시간입니다. 화면을 켜기 전부터 돌던 작업은 "화면을 켠 뒤"로 표시합니다.</li>
+    <li>토큰은 입력+출력 실사용량(캐시 읽기 제외)이고, 사용량 기록이 응답이 끝날 때마다 갱신하므로 응답 도중에는 늘지 않습니다.</li>
+    <li>세션은 claude agents --json, 서브에이전트는 Claude Code가 남기는 기록 파일(문서화되지 않은 형식)에서 읽습니다. 에이전트 팀과 배경 셸 명령은 아직 표시하지 않습니다.</li>
+  </ul></div>
+</details>
 <script>
 (function () {
   var data = null, fetchedPerf = 0, failedSince = null;
@@ -76,97 +108,122 @@
     if (m > 0) return m + '분 ' + (s % 60) + '초';
     return s + '초';
   }
+  function fmtTok(n) { if (n < 1000) return String(n); if (n < 1e6) return (n / 1000).toFixed(n < 1e4 ? 1 : 0) + 'K'; return (n / 1e6).toFixed(1) + 'M'; }
   function serverNow() { return data.server_ms + (performance.now() - fetchedPerf); }
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function clear(id) { var n = document.getElementById(id); n.textContent = ''; return n; }
   function aLabel(a) { return A_LABEL[a.state] + (a.state === 'ended' && !a.exact ? '(추정)' : ''); }
-  function aTitle(a) { return a.type + (a.title ? ' · ' + a.title : ''); }
+  function chip(state, icon, label, pulsing) { var c = el('div', 'chip'); c.appendChild(el('span', pulsing ? 'pulse' : '', icon + ' ')); c.appendChild(document.createTextNode(label)); return c; }
+  function sName(s) { return s.state === 'gone' ? '종료된 세션 · ' + s.short_id : (s.name || '(이름 없음)'); }
+  function isActive(a) { return a.state === 'running' || a.state === 'quiet'; }
 
   function agentCard(a, now) {
     var k = el('div', 'kid ' + a.state), top = el('div', 'top'), left = el('div');
     left.appendChild(el('div', 't', a.type || '(종류 없음)'));
     if (a.title) left.appendChild(el('div', 'd', a.title));
-    var chip = el('div', 'chip');
-    chip.appendChild(el('span', a.state === 'running' ? 'pulse' : '', A_ICON[a.state] + ' '));
-    chip.appendChild(document.createTextNode(aLabel(a)));
-    top.appendChild(left); top.appendChild(chip); k.appendChild(top);
-    var end = a.state === 'ended' ? a.last_ms : now;
-    k.appendChild(el('div', 'small', (a.state === 'ended' ? '걸린 시간 ' : '시작 후 ') + fmt(end - a.started_ms) + ' · 마지막 활동 ' + fmt(now - a.last_ms) + ' 전'));
+    top.appendChild(left); top.appendChild(chip(a.state, A_ICON[a.state], aLabel(a), a.state === 'running')); k.appendChild(top);
+    k.appendChild(el('div', 'small', '시작 후 ' + fmt(now - a.started_ms) + ' · 마지막 활동 ' + fmt(now - a.last_ms) + ' 전'));
     return k;
   }
-
-  function renderTree(now, counts) {
-    var tree = document.getElementById('tree');
-    tree.textContent = '';
-    data.sessions.forEach(function (s) {
-      counts.s[s.state]++;
-      var card = el('div', 'card ' + s.state), top = el('div', 'top'), left = el('div');
-      left.appendChild(el('div', 'name', s.state === 'gone' ? '종료된 세션 · ' + s.short_id : (s.name || '(이름 없음)')));
-      left.appendChild(el('div', 'folder', s.folder));
-      var chip = el('div', 'chip');
-      chip.appendChild(el('span', s.state === 'busy' ? 'pulse' : '', S_ICON[s.state] + ' '));
-      chip.appendChild(document.createTextNode(S_LABEL[s.state]));
-      top.appendChild(left); top.appendChild(chip); card.appendChild(top);
-      if (s.state === 'busy') {
-        if (s.busy_since_ms && s.busy_exact) card.appendChild(el('div', 'big', '이번 요청 ' + fmt(now - s.busy_since_ms) + '째'));
-        else card.appendChild(el('div', 'big', '작업 중 · 이 화면을 켠 뒤 ' + fmt(now - s.first_seen_ms) + '째'));
-      } else if (s.state === 'ended') card.appendChild(el('div', 'big', '끝남 · ' + fmt(now - s.ended_ms) + ' 전'));
-      else if (s.state === 'unknown') card.appendChild(el('div', 'big', '알 수 없는 상태: ' + (s.raw_status || '-')));
-      else if (s.state === 'idle') card.appendChild(el('div', 'big', '쉬는 중'));
-      if (s.started_ms) card.appendChild(el('div', 'small', '세션 시작 후 ' + fmt(now - s.started_ms)));
-      if (s.agents.length) {
-        var kids = el('div', 'kids');
-        s.agents.forEach(function (a) { counts.a[a.state]++; kids.appendChild(agentCard(a, now)); });
-        card.appendChild(kids);
-      } else if (s.state !== 'gone') card.appendChild(el('div', 'small', '최근 ' + Math.round(data.window_sec / 60) + '분 안에 활동한 서브에이전트 없음'));
-      tree.appendChild(card);
-    });
+  function sessionCard(s, now) {
+    var card = el('div', 'card ' + s.state), top = el('div', 'top'), left = el('div');
+    left.appendChild(el('div', 'name', sName(s))); left.appendChild(el('div', 'folder', s.folder));
+    top.appendChild(left); top.appendChild(chip(s.state, S_ICON[s.state], S_LABEL[s.state], s.state === 'busy')); card.appendChild(top);
+    if (s.state === 'busy') {
+      if (s.busy_since_ms && s.busy_exact) card.appendChild(el('div', 'big', '이번 요청 ' + fmt(now - s.busy_since_ms) + '째'));
+      else card.appendChild(el('div', 'big', '작업 중 · 이 화면을 켠 뒤 ' + fmt(now - s.first_seen_ms) + '째'));
+    } else if (s.state === 'unknown') card.appendChild(el('div', 'big', '알 수 없는 상태: ' + (s.raw_status || '-')));
+    else if (s.state === 'idle') card.appendChild(el('div', 'big', '쉬는 중이지만 보조 작업자가 일하는 중'));
+    if (s.started_ms) card.appendChild(el('div', 'small', '세션 시작 후 ' + fmt(now - s.started_ms)));
+    var act = s.agents.filter(isActive);
+    if (act.length) { var kids = el('div', 'kids'); act.forEach(function (a) { kids.appendChild(agentCard(a, now)); }); card.appendChild(kids); }
+    return card;
   }
-
-  function renderTimeline(now) {
-    var rows = document.getElementById('rows'), scale = document.getElementById('scale'), W = data.window_sec * 1000, t0 = now - W;
-    rows.textContent = ''; scale.textContent = '';
-    for (var m = 0; m <= data.window_sec / 60; m += 5) {
-      var sp = el('span', '', m === data.window_sec / 60 ? '지금' : '-' + (data.window_sec / 60 - m) + '분');
-      sp.style.left = (m * 60000 / W * 100) + '%'; scale.appendChild(sp);
-    }
-    var all = [];
-    data.sessions.forEach(function (s) { s.agents.forEach(function (a) { all.push({ a: a, who: s.state === 'gone' ? s.short_id : (s.name || s.short_id) }); }); });
-    all.sort(function (x, y) { return x.a.started_ms - y.a.started_ms; });
-    document.getElementById('tlempty').hidden = all.length > 0;
-    all.forEach(function (it) {
-      var a = it.a, end = a.state === 'ended' ? a.last_ms : now;
-      var row = el('div', 'row'), lbl = el('div', 'lbl', it.who + ' · ' + aTitle(a)), track = el('div', 'track');
-      lbl.title = lbl.textContent;
-      var left = Math.max(0, (a.started_ms - t0) / W * 100), right = Math.min(100, (end - t0) / W * 100);
-      var bar = el('div', 'bar ' + a.state + (a.state === 'ended' && !a.exact ? ' est' : ''));
-      bar.style.left = left + '%'; bar.style.width = Math.max(0.4, right - left) + '%';
-      bar.title = aLabel(a) + ' · ' + fmt(end - a.started_ms);
-      track.appendChild(bar); row.appendChild(lbl); row.appendChild(track); rows.appendChild(row);
-    });
+  function row(a, b, pill, pillCls) {
+    var li = el('div', 'li'), l = el('div'); l.appendChild(el('div', 'a', a)); if (b) l.appendChild(el('div', 'b', b));
+    li.appendChild(l); if (pill) li.appendChild(el('span', 'pill ' + (pillCls || ''), pill)); return li;
   }
 
   function render() {
     if (!data) return;
-    var now = serverNow(), msgs = [];
+    var now = serverNow(), msgs = [], sess = data.sessions;
+    var failing = failedSince !== null || !data.ok;
     if (failedSince !== null) msgs.push('서버에 연결되지 않음 · 마지막 정상 갱신 ' + fmt(performance.now() - fetchedPerf) + ' 전');
     else if (!data.ok) msgs.push('세션 목록을 읽지 못함 · ' + data.error);
-    else if (data.last_ok_ms && now - data.last_ok_ms > 10000) msgs.push('데이터 갱신이 ' + fmt(now - data.last_ok_ms) + ' 전부터 멈춤');
+    else if (data.last_ok_ms && now - data.last_ok_ms > 10000) { msgs.push('데이터 갱신이 ' + fmt(now - data.last_ok_ms) + ' 전부터 멈춤'); failing = true; }
     var b = document.getElementById('banner'); b.style.display = msgs.length ? 'block' : 'none'; b.textContent = msgs.join(' / ');
-    var b2 = document.getElementById('banner2');
-    b2.style.display = data.agents_unreadable ? 'block' : 'none';
+    var b2 = document.getElementById('banner2'); b2.style.display = data.agents_unreadable ? 'block' : 'none';
     b2.textContent = data.agents_unreadable ? '서브에이전트 기록 ' + data.agents_unreadable + '개를 읽지 못함 · Claude Code가 파일 형식을 바꿨을 수 있음' : '';
+    var beat = document.getElementById('beat');
+    beat.className = 'beat ' + (failing ? 'bad' : 'ok');
+    beat.textContent = failing ? '● 연결 확인 필요' : '● 실시간 · ' + fmt(performance.now() - fetchedPerf) + ' 전 갱신';
+    var ul = document.getElementById('usagelink'); ul.hidden = !(data.usage && data.usage.shown);
 
-    var counts = { s: { busy: 0, idle: 0, ended: 0, unknown: 0, gone: 0 }, a: { running: 0, quiet: 0, ended: 0 } };
-    renderTree(now, counts);
-    renderTimeline(now);
-    var p = ['세션 작업 중 ' + counts.s.busy, '쉬는 중 ' + counts.s.idle];
-    if (counts.s.unknown) p.push('확인 불가 ' + counts.s.unknown);
-    document.getElementById('summary').textContent = p.join(' · ');
-    document.getElementById('summary2').textContent = '서브에이전트 작업 중 ' + counts.a.running + ' · 조용함 ' + counts.a.quiet + ' · 끝남 ' + counts.a.ended + ' · 지금 동시에 ' + data.concurrent + '개';
-    document.title = ((counts.s.busy || counts.a.running) ? '▶ ' + counts.s.busy + '+' + counts.a.running + ' 작업 중' : '세션 현황') + ((b.style.display === 'block') ? ' ⚠' : '');
-    document.getElementById('empty').hidden = data.sessions.length > 0;
+    var active = [], idle = [], ended = [], longest = null, busyN = 0, runN = 0, quietN = 0, idleN = 0;
+    sess.forEach(function (s) {
+      var live = s.state === 'busy' || s.state === 'unknown' || s.agents.some(isActive);
+      if (s.state === 'busy') busyN++; if (s.state === 'idle') idleN++;
+      s.agents.forEach(function (a) {
+        if (a.state === 'running') runN++; if (a.state === 'quiet') quietN++;
+        if (isActive(a)) { var d = now - a.started_ms; if (!longest || d > longest.ms) longest = { ms: d, who: a.type + (a.title ? ' · ' + a.title : '') }; }
+        else ended.push({ s: s, a: a });
+      });
+      if (s.state === 'busy') { var dd = now - ((s.busy_since_ms && s.busy_exact) ? s.busy_since_ms : s.first_seen_ms); if (!longest || dd > longest.ms) longest = { ms: dd, who: sName(s) }; }
+      if (live && s.state !== 'ended' && s.state !== 'gone') active.push(s);
+      else if (s.state === 'idle') idle.push(s);
+      else ended.push({ s: s, a: null });
+    });
+
+    var hl = document.getElementById('headline'), sub = document.getElementById('subline');
+    if (failing && !data.ok) { hl.className = 'bad'; hl.textContent = '상태를 읽지 못하고 있습니다'; sub.textContent = '위 빨간 줄을 확인하세요'; }
+    else if (busyN || runN || quietN) {
+      hl.className = 'work'; hl.textContent = '작업 중 · 세션 ' + busyN + '개' + ((runN + quietN) ? ' · 서브에이전트 ' + (runN + quietN) + '개' : '');
+      sub.textContent = idleN ? '쉬는 중인 세션 ' + idleN + '개는 내 입력을 기다리는 중' : '';
+    } else {
+      hl.className = ''; hl.textContent = sess.length ? '지금 돌고 있는 작업이 없습니다' : '실행 중인 세션이 없습니다';
+      sub.textContent = idleN ? '쉬는 중인 세션 ' + idleN + '개가 내 입력을 기다리는 중' : '';
+    }
+
+    var tiles = clear('tiles');
+    function tile(k, v, s) { var t = el('div', 'tile'); t.appendChild(el('div', 'k', k)); t.appendChild(el('div', 'v', v)); t.appendChild(el('div', 's', s || ' ')); tiles.appendChild(t); }
+    tile('작업 중인 세션', String(busyN), '쉬는 중 ' + idleN);
+    tile('서브에이전트 진행', String(runN + quietN), quietN ? '그중 조용함 ' + quietN : '지금 동시에 ' + data.concurrent + '개');
+    tile('가장 오래 걸리는 중', longest ? fmt(longest.ms) : '-', longest ? longest.who : '진행 중인 작업 없음');
+    var u = data.usage;
+    if (u && u.shown) {
+      if (!u.enabled) tile('오늘 실사용 토큰', '꺼짐', '토큰 기록이 꺼져 있음(usage-dashboard 스킬로 켬)');
+      else if (!u.available) tile('오늘 실사용 토큰', '-', '아직 기록이 없음');
+      else tile('오늘 실사용 토큰', fmtTok(u.today.main + u.today.sub), '메인 ' + fmtTok(u.today.main) + ' · 서브 ' + fmtTok(u.today.sub) + ' · 최근 5시간 ' + fmtTok(u.last5h.main + u.last5h.sub) + ' · 기록 갱신 ' + fmt(now - u.updated_ms) + ' 전');
+    }
+
+    var act = clear('active'); active.forEach(function (s) { act.appendChild(sessionCard(s, now)); });
+    document.getElementById('activenone').hidden = active.length > 0;
+    var il = clear('idle'); idle.forEach(function (s) { il.appendChild(row(sName(s), s.folder + (s.started_ms ? ' · 세션 시작 후 ' + fmt(now - s.started_ms) : ''), '⏸ 쉬는 중', 'idle')); });
+    il.style.display = idle.length ? '' : 'none'; document.getElementById('idlenone').hidden = idle.length > 0;
+    var el2 = clear('ended');
+    ended.sort(function (x, y) { return (y.a ? y.a.last_ms : (y.s.ended_ms || 0)) - (x.a ? x.a.last_ms : (x.s.ended_ms || 0)); });
+    ended.forEach(function (it) {
+      if (it.a) el2.appendChild(row(it.a.type + (it.a.title ? ' · ' + it.a.title : ''), sName(it.s) + ' · 걸린 시간 ' + fmt(it.a.last_ms - it.a.started_ms) + ' · ' + fmt(now - it.a.last_ms) + ' 전', '■ ' + aLabel(it.a)));
+      else el2.appendChild(row(sName(it.s), it.s.folder + (it.s.ended_ms ? ' · ' + fmt(now - it.s.ended_ms) + ' 전' : ''), '■ ' + S_LABEL[it.s.state]));
+    });
+    el2.style.display = ended.length ? '' : 'none'; document.getElementById('endednone').hidden = ended.length > 0;
+    document.getElementById('s-ended').textContent = '최근 끝난 것 (' + ended.length + ')';
+
+    var W = data.window_sec * 1000, t0 = now - W, rows = clear('rows'), scale = clear('scale'), all = [];
+    for (var m = 0; m <= data.window_sec / 60; m += 5) { var sp = el('span', '', m === data.window_sec / 60 ? '지금' : '-' + (data.window_sec / 60 - m) + '분'); sp.style.left = (m * 60000 / W * 100) + '%'; scale.appendChild(sp); }
+    sess.forEach(function (s) { s.agents.forEach(function (a) { all.push({ a: a, who: s.state === 'gone' ? s.short_id : (s.name || s.short_id) }); }); });
+    all.sort(function (x, y) { return x.a.started_ms - y.a.started_ms; });
+    document.getElementById('tlempty').hidden = all.length > 0;
+    all.forEach(function (it) {
+      var a = it.a, end = a.state === 'ended' ? a.last_ms : now, rw = el('div', 'row'), lbl = el('div', 'lbl', it.who + ' · ' + a.type + (a.title ? ' · ' + a.title : '')), track = el('div', 'track');
+      lbl.title = lbl.textContent;
+      var left = Math.max(0, (a.started_ms - t0) / W * 100), right = Math.min(100, (end - t0) / W * 100);
+      var bar = el('div', 'bar ' + a.state + (a.state === 'ended' && !a.exact ? ' est' : ''));
+      bar.style.left = left + '%'; bar.style.width = Math.max(0.4, right - left) + '%'; bar.title = aLabel(a) + ' · ' + fmt(end - a.started_ms);
+      track.appendChild(bar); rw.appendChild(lbl); rw.appendChild(track); rows.appendChild(rw);
+    });
     document.getElementById('winmin').textContent = Math.round(data.window_sec / 60);
-    document.getElementById('meta').textContent = '화면은 1초마다, 서버는 ' + data.poll_sec + '초마다 갱신 · 세션은 claude agents --json, 서브에이전트는 Claude Code가 남기는 기록 파일(문서화되지 않은 형식)에서 읽음 · 조용함은 마지막 활동이 90초 넘게 없는 것(도구를 오래 실행 중일 수 있어 멈춤으로 단정하지 않음), 줄무늬 막대는 끝남을 추정한 것 · 에이전트 팀은 아직 표시하지 않음';
+    document.title = (busyN + runN + quietN ? '▶ ' + (busyN + runN + quietN) + ' 작업 중' : '작업 현황') + (failing ? ' ⚠' : '');
   }
 
   function poll() {
