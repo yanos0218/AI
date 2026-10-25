@@ -581,7 +581,7 @@ FEOF
   LP="$("${PY}" -I -c "import socket;s=socket.socket();s.bind(('127.0.0.1',0));print(s.getsockname()[1]);s.close()")"
   export CLAUDE_BIN="${T}/fakeclaude" LIVE_PORT="${LP}" LIVE_POLL_SEC=0.3 CLAUDE_CONFIG_DIR="${T}/cfg"
   out="$(bash "${SK}/scripts/live.sh" start 2>&1)"; rc=$?
-  if [[ "${rc}" != 0 ]]; then echo "  --- 진단: ${out}"; head -20 "${T}/cfg/live-status/server.log" 2>&1; "${PY}" --version 2>&1; curl -sv -m 3 "http://127.0.0.1:${LP}/" 2>&1 | head -8; fi
+  if [[ "${rc}" != 0 ]]; then echo "  --- 진단: ${out}"; head -20 "${T}/cfg/live-status/server.log" 2>&1; "${PY}" --version 2>&1; curl -sv -m 3 "http://127.0.0.1:${LP}/" 2>&1 | head -8; ps -p "$(cat "${T}/cfg/live-status/server.pid" 2>/dev/null)" -o pid,stat,command 2>&1 | head -3; lsof -nP -iTCP:"${LP}" 2>&1 | head -4; env | grep -i "proxy" | head -3; fi
   chk "start: 켜지고 주소를 알림"                        '[[ "${rc}" = 0 && "${out}" == *"http://127.0.0.1:${LP}/"* ]]'
   sleep 1
   chk "켜진 서버가 가짜 세션을 보여 줌"                   'curl -s -m 3 "http://127.0.0.1:${LP}/api/state" | grep -q "shell-test"'
