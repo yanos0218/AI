@@ -556,11 +556,13 @@ chk "상태 글자 네 가지가 있음"                           'grep -q "작
 chk "색 말고 모양도 함께 씀"                             'grep -q "▶" "${SK}/scripts/live.html" && grep -q "⏸" "${SK}/scripts/live.html"'
 chk "탭이 다시 보이면 즉시 갱신"                         'grep -q "visibilitychange" "${SK}/scripts/live.html"'
 if command -v node >/dev/null 2>&1; then
+  # 파이썬이 경로를 직접 열면 Windows의 Git Bash 임시 경로(/tmp/...)를 못 찾으므로 입출력은 셸 리다이렉트로 한다
   "${PY}" -I -c "
-import re,io,sys
-s=io.open('${SK}/scripts/live.html',encoding='utf-8').read()
-io.open('${T}/live.js','w',encoding='utf-8').write(re.search(r'<script>(.*)</script>',s,re.S).group(1))"
-  chk "자바스크립트 문법 검사(node --check)"             'node --check "${T}/live.js" >/dev/null 2>&1'
+import re,sys
+s=sys.stdin.buffer.read().decode('utf-8')
+sys.stdout.buffer.write(re.search(r'<script>(.*)</script>',s,re.S).group(1).encode('utf-8'))" < "${SK}/scripts/live.html" > "${T}/live.js"
+  JSPATH="${T}/live.js"; command -v cygpath >/dev/null 2>&1 && JSPATH="$(cygpath -m "${T}/live.js")"
+  chk "자바스크립트 문법 검사(node --check)"             'node --check "${JSPATH}" >/dev/null 2>&1'
 else
   echo "  건너뜀  node가 없어 자바스크립트 문법 검사 생략"
 fi
@@ -579,6 +581,7 @@ FEOF
   LP="$("${PY}" -I -c "import socket;s=socket.socket();s.bind(('127.0.0.1',0));print(s.getsockname()[1]);s.close()")"
   export CLAUDE_BIN="${T}/fakeclaude" LIVE_PORT="${LP}" LIVE_POLL_SEC=0.3 CLAUDE_CONFIG_DIR="${T}/cfg"
   out="$(bash "${SK}/scripts/live.sh" start 2>&1)"; rc=$?
+  if [[ "${rc}" != 0 ]]; then echo "  --- 진단: ${out}"; head -20 "${T}/cfg/live-status/server.log" 2>&1; "${PY}" --version 2>&1; curl -sv -m 3 "http://127.0.0.1:${LP}/" 2>&1 | head -8; fi
   chk "start: 켜지고 주소를 알림"                        '[[ "${rc}" = 0 && "${out}" == *"http://127.0.0.1:${LP}/"* ]]'
   sleep 1
   chk "켜진 서버가 가짜 세션을 보여 줌"                   'curl -s -m 3 "http://127.0.0.1:${LP}/api/state" | grep -q "shell-test"'
