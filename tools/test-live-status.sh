@@ -361,6 +361,21 @@ page = io.open(page_path, encoding='utf-8').read() if os.path.exists(page_path) 
 r('usage_tpl_renders_with_base_script', rc == 0 and '__DATA__' not in page and 'function headline()' in page)
 shutil.rmtree(td, ignore_errors=True)
 
+# 5g. 서버를 열 때 이름 조회(getfqdn)를 하지 않음(DNS 없는 환경에서 시작이 멈추던 문제, 2026-10-25 CI macOS)
+import socket
+_orig = socket.getfqdn
+def _boom(*a, **k):
+    raise RuntimeError('dns lookup')
+socket.getfqdn = _boom
+try:
+    srv = live.make_server(0)
+    r('bind_without_dns_lookup', srv.server_address[0] == '127.0.0.1')
+    srv.server_close()
+except RuntimeError:
+    r('bind_without_dns_lookup', False)
+finally:
+    socket.getfqdn = _orig
+
 # 6. HTTP
 live.STATE = live.State()
 live.STATE.update([ag('abcdef12-0000-0000-0000-000000000000', 'busy', name='web')], None, int(time.time() * 1000))
@@ -525,6 +540,8 @@ chk "다시 작업 중이 되면 지움"                             'py idle_si
 chk "탭 아이콘(data:)을 허용하는 보안 헤더"                 'py http_csp_allows_data_icon'
 chk "화면에 방금 끝남·내 차례 표시와 탭 아이콘 코드가 있음"   'grep -q "방금 끝남" "${SK}/scripts/live.html" && grep -q "내 차례" "${SK}/scripts/live.html" && grep -q "setIcon" "${SK}/scripts/live.html"'
 chk "토큰 단위는 만·억(K·M 아님)"                          'grep -q "억" "${SK}/scripts/live.html" && ! grep -Eq "toFixed\\([^)]*\\) \\+ .(K|M)." "${SK}/scripts/live.html"'
+
+chk "서버를 열 때 DNS 이름 조회를 하지 않음"                'py bind_without_dns_lookup'
 
 echo "== 3. HTTP"
 chk "루트가 화면(HTML)을 줌"                             'py http_root_200_html'

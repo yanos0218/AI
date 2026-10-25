@@ -22,6 +22,7 @@ import json
 import os
 import re
 import shutil
+import socketserver
 import subprocess
 import sys
 import threading
@@ -518,8 +519,16 @@ class Handler(BaseHTTPRequestHandler):
     do_PUT = do_DELETE = do_PATCH = do_POST
 
 
+class LocalServer(ThreadingHTTPServer):
+    def server_bind(self):
+        # 표준 HTTPServer는 바인드 때 getfqdn(역방향 DNS 조회)을 불러, DNS가 없는 환경(CI의 macOS 러너 등)에서 서버가 뜨기 전에 오래 멈춘다.
+        # 이 서버는 127.0.0.1 전용이라 이름을 조회할 필요가 없다.
+        socketserver.TCPServer.server_bind(self)
+        self.server_name, self.server_port = self.server_address[0], self.server_address[1]
+
+
 def make_server(port):
-    return ThreadingHTTPServer(('127.0.0.1', port), Handler)
+    return LocalServer(('127.0.0.1', port), Handler)
 
 
 def main():
