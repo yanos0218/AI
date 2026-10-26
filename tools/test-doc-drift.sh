@@ -72,6 +72,10 @@ chk "없는 상대 링크 docs/d.md:1 → missing.md 경고"    'grep -q "docs/d
 chk "있는 링크·외부·앵커·메일은 경고하지 않음"          '! grep -Eq "README.md|e.com|#sec|mailto" <<<"${out}"'
 chk "코드 조각·코드 블록 안 링크는 보지 않음"           '! grep -Eq "nocode|nope" <<<"${out}"'
 
+mk; put .gitignore 'gen.json'; put docs/h.md '[생성 파일](gen.json)'; git -C "${R}" add -A
+out="$(run 'git commit -m x')"
+chk ".gitignore 대상 파일을 가리키는 링크는 조용함"      '[[ -z "${out}" ]]'
+
 echo "== 4. CHANGELOG 릴리즈 섹션의 다음 컷"
 mk; put CHANGELOG.md "$(printf '## [Unreleased]\n- 다음 컷에 넣을 것\n## [1.0.0] - 2026-01-01\n- 다음 컷 후보')"; git -C "${R}" add -A
 out="$(run 'git commit -m x')"

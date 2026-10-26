@@ -12,7 +12,7 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 - 2026-10-26에 `live-status` 스킬을 기본 영역에 승격하고(MINOR, [#213](https://github.com/yanos0218/AI/issues/213) 닫음) `git-guardrails` onFailure block([#211](https://github.com/yanos0218/AI/issues/211))을 Windows·Linux 실제 기기까지 확인해 닫음. 상세는 [CHANGELOG.md](../CHANGELOG.md)와 `gh issue list --state closed`.
 - 2026-10-26에 v0.16.0을 컷함(MINOR). 웹(Claude.ai)은 Release zip 업로드와 Project instructions 갱신이 남음(사용자 작업). Mac mini·Linux는 `live-status`가 들어가는 갱신 대기.
 - 남은 확인은 다른 저장소 폴더의 대화형 `config-update`, Linux 갱신 때 8단계 기록 줄, 인라인 코드 확인 창, VS Code 멀티루트임.
-- 진행 중은 [#216](https://github.com/yanos0218/AI/issues/216)(`live-status` 에이전트 팀 구역 실제 팀 파일 확인, 팀 기능을 쓸 때까지 대기), 문서 낡음 알림 훅 초안 [#219](https://github.com/yanos0218/AI/issues/219)(조사 #218, 승격은 사용자 요청 때, 세 OS CI 통과·kolo 저장소 재생 측정 미검증)와 조사 #209·#210·#212. 보류는 [#5](https://github.com/yanos0218/AI/issues/5)(알림 훅), 요구사항 미정 #7·#8.
+- 진행 중은 [#216](https://github.com/yanos0218/AI/issues/216)(`live-status` 에이전트 팀 구역 실제 팀 파일 확인, 팀 기능을 쓸 때까지 대기), 문서 낡음 알림 훅 초안 [#219](https://github.com/yanos0218/AI/issues/219)(조사 #218, 승격은 사용자 요청 때, 세 OS CI 통과·저장소 4곳 재생 측정 완료, 파이썬 3.6·새 세션 동작 미검증)와 조사 #209·#210·#212. 보류는 [#5](https://github.com/yanos0218/AI/issues/5)(알림 훅), 요구사항 미정 #7·#8.
 - 다음 세션 첫 행동은 `gh issue list --state open`으로 최신 상태 확인(이 요약보다 이슈 최신 댓글이 정확), 새 달 첫 세션이면 월 점검 제안([monthly-check.md](monthly-check.md)).
 
 ## 문서 지도 (작업 종류 → 읽을 문서)

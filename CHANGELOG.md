@@ -9,9 +9,9 @@
 
 ### Added
 
-- 문서 낡음 알림 훅 초안 `drafts/hooks/doc-drift-check.sh`·`doc_drift.py`와 시험 `tools/test-doc-drift.sh` 25건([Issue #219](https://github.com/yanos0218/AI/issues/219), 조사 [Issue #218](https://github.com/yanos0218/AI/issues/218))
+- 문서 낡음 알림 훅 초안 `drafts/hooks/doc-drift-check.sh`·`doc_drift.py`와 시험 `tools/test-doc-drift.sh` 26건([Issue #219](https://github.com/yanos0218/AI/issues/219), 조사 [Issue #218](https://github.com/yanos0218/AI/issues/218))
   - 커밋 때 삭제·이름변경된 경로가 다른 `.md`에 남았는지, 올리는 `.md`의 상대 링크 대상이 있는지, `CHANGELOG.md` 릴리즈 섹션에 "다음 컷"이 남았는지를 경고만 함
-  - 최근 커밋 50건 재생에서 AI 저장소는 2건 모두 실제 낡음(live-status 승격의 README 경로, v0.16.0 컷의 "다음 컷" 문구), OpenClaw는 0건, 평균 약 90ms
+  - 최근 커밋 50건 재생에서 AI 저장소는 2건 모두 실제 낡음(live-status 승격의 README 경로, v0.16.0 컷의 "다음 컷" 문구), OpenClaw·kolo-api는 0건, kolo_pwa는 `.gitignore` 대상 파일을 가리키는 링크 오탐 2건이 나와 그 경우를 제외하도록 고친 뒤 0건, 평균 약 90ms
 
 ### Fixed
 
@@ -27,7 +27,7 @@
   - 127.0.0.1에만 묶고 Host 검사, 대화 내용과 전체 경로와 전체 ID는 내보내지 않음, 작업 제목은 `LIVE_SHOW_TITLES=0`으로 숨김, 일시적으로 목록이 비어도 연속 3번 안 보일 때만 끝남으로 처리
   - 화면은 핵심 정보 순서로 설계: 한 문장 요약과 숫자 타일 넷(작업 중 세션, 서브에이전트 진행, 가장 오래 걸리는 중, 오늘 실사용 토큰), 지금 진행 중, 쉬는 중, 접어 둔 최근 끝난 것, 타임라인, 읽는 법
   - 토큰은 usage-dashboard의 `usage-log/hourly.json` 집계(입력+출력, 캐시 읽기 제외)를 읽고, 같은 서버가 기존 사용량 화면을 `/usage/`로 연결(허용 파일 2개만, 돌아가는 줄만 주입), `LIVE_SHOW_USAGE=0`으로 끔
-  - 배경 셸 명령은 미표시, 화면은 WebKit 캡처로 밝은·어두운 테마와 좁은 폭을 확인했고 사용자 확인 전
+  - 배경 셸 명령은 미표시, 화면은 WebKit 캡처로 밝은·어두운 테마와 좁은 폭을 확인했고 Linux 서버를 SSH 터널로 연 사용자 PC 브라우저에서 사용자가 직접 확인(2026-10-25, 항목별 결과는 전달 안 됨)
   - 에이전트 팀 구역(공식 문서 형식의 `teams/`·`tasks/` 파일을 읽어 구성원과 공유 작업 개수만 표시, 실제 팀 파일은 미확인)
   - 방금 끝난 일을 "내 차례"·"방금 끝남"으로 강조, 탭 제목·아이콘에 상태 표시, 토큰 단위를 만·억으로 통일
 - 알림 훅 초안 `drafts/hooks/notify.sh`와 시험 `tools/test-notify.sh` 18건([Issue #5](https://github.com/yanos0218/AI/issues/5), 초안이라 배포 안 됨)

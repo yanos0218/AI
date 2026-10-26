@@ -162,6 +162,13 @@ def stale_references(root, removed):
     return found
 
 
+def ignored(root, rel):
+    """.gitignore 대상(실행하면 생기는 파일)은 저장소에 없어도 깨진 링크로 보지 않는다. kolo_pwa 수집기 README 사례."""
+    p = subprocess.run(['git', '-C', root, 'check-ignore', '-q', '--', rel], stdout=subprocess.DEVNULL,
+                       stderr=subprocess.DEVNULL, timeout=8)
+    return p.returncode == 0
+
+
 def broken_links(root, md_paths):
     found = []
     for rel in md_paths:
@@ -176,7 +183,7 @@ def broken_links(root, md_paths):
                 continue
             for t in link_targets(line):
                 r = resolve(rel, t)
-                if r and not os.path.exists(os.path.join(root, r)):
+                if r and not os.path.exists(os.path.join(root, r)) and not ignored(root, r):
                     found.append('%s:%d → %s' % (rel, n, t))
     return found
 
