@@ -33,7 +33,7 @@
 
 | 방법 | 장점 | 안 쓰는 이유 |
 | --- | --- | --- |
-| dotfiles + 심링크(stow/chezmoi)로 `~/.claude`를 저장소에 직접 연결 | 편집 즉시 `git status`에 드러남 | Windows 심링크는 관리자/개발자 모드 필요, `~/.claude`에 런타임 데이터(세션·캐시)가 섞여 선별 링크 관리가 필요. 커뮤니티도 "파일 단위 선별"을 권함. 기기 3대가 되면 재검토 |
+| dotfiles + 심링크(stow/chezmoi)로 `~/.claude`를 저장소에 직접 연결 | 편집 즉시 `git status`에 드러남 | Windows 심링크는 관리자/개발자 모드 필요, `~/.claude`에 런타임 데이터(세션·캐시)가 섞여 선별 링크 관리가 필요. 커뮤니티도 "파일 단위 선별"을 권함. 기기가 3대(Windows·Mac·Linux)가 됐지만 설치 스크립트(`tools/install.sh`)가 잘 돌아 재검토할 이유가 아직 없음(2026-10-26 기준) |
 | managed settings(`C:\Program Files\ClaudeCode\managed-settings.json`)로 기본을 잠금 | 사용자·프로젝트 설정이 절대 덮어쓸 수 없음 | 고칠 때마다 관리자 권한. 1인 환경에서는 훅 + 대조로 충분 |
 | `~/.claude` 자체를 git 저장소로 | 모든 변경이 커밋 | 세션 기록·메모리 등 민감·대용량 파일이 섞임 |
 

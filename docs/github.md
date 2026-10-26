@@ -4,7 +4,7 @@ Claude와 GitHub를 엮는 방법은 크게 넷임. 아래는 **사용자 저장
 
 현황(2026-09-08 조사, AI 저장소는 2026-09-12에 예외로 바뀜, 아래 표)
 
-저장소 11개 전부 비공개, GitHub Free 플랜(브랜치 보호 불가, Pro 필요). 이슈 0개(백로그는 각 저장소 `docs/PROGRESS.md`의 `P-NN`). PR은 kolo_pwa·kolo-api가 Dependabot뿐이고 OpenClaw만 Codex(OpenAI 클라우드 에이전트)가 만든 PR 18개임. 즉 사람이 브랜치→PR을 쓰는 습관은 없고 `main` 직접 push. Actions는 kolo_pwa(`test.yml` 경로 필터로 분 절약, `release.yml` 태그 push→Release)·OpenClaw(`lint.yml`, `release.yml`)에 있고 Release는 각각 30·42개.
+저장소 11개 중 AI만 공개(2026-10-21 사용자 확인, [Issue #198](https://github.com/yanos0218/AI/issues/198))이고 나머지는 비공개, GitHub Free 플랜(브랜치 보호 불가, Pro 필요). 이슈 0개(백로그는 각 저장소 `docs/PROGRESS.md`의 `P-NN`). PR은 kolo_pwa·kolo-api가 Dependabot뿐이고 OpenClaw만 Codex(OpenAI 클라우드 에이전트)가 만든 PR 18개임. 즉 사람이 브랜치→PR을 쓰는 습관은 없고 `main` 직접 push. Actions는 kolo_pwa(`test.yml` 경로 필터로 분 절약, `release.yml` 태그 push→Release)·OpenClaw(`lint.yml`, `release.yml`)에 있고 Release는 각각 30·42개.
 
 | 방법 | 무엇을 해주나 | 상태 | 비고 |
 | --- | --- | --- | --- |
@@ -29,9 +29,9 @@ PR 습관(브랜치에서 작업 → `gh pr create` → merge)을 먼저 한 저
 | 기능 | 현재 | 판단 | 이유 |
 | --- | --- | --- | --- |
 | 저장소·커밋·push | 11개 저장소, Conventional Commits | 씀 | 백업·이력의 기본 |
-| Releases·태그 | kolo_pwa 30, OpenClaw 42, 이 저장소 v0.1.0 | 씀 | 어느 기기에 어느 버전이 깔렸는지의 기준점. zip 첨부로 웹 업로드 산출물도 보관 |
+| Releases·태그 | kolo_pwa 30, OpenClaw 42, 이 저장소 v0.16.0(2026-10-26 기준) | 씀 | 어느 기기에 어느 버전이 깔렸는지의 기준점. zip 첨부로 웹 업로드 산출물도 보관 |
 | Actions | kolo_pwa test·release, OpenClaw lint·release | 씀 | 월 2,000분 한도. kolo_pwa처럼 경로 필터로 절약. 이 저장소는 `lint.yml`([Issue #52](https://github.com/yanos0218/AI/issues/52))·`issue-format-check.yml`([Issue #114](https://github.com/yanos0218/AI/issues/114)) |
-| Dependabot 알림 | kolo_pwa·kolo-api만 켜짐 | **켠다** | 무료, 저장소 Settings → Security 클릭 1회. AI·OpenClaw·Script·Etc는 꺼져 있음 |
+| Dependabot 알림 | kolo_pwa·kolo-api가 켜짐, AI는 2026-10-26 `gh api repos/yanos0218/AI/vulnerability-alerts`가 204로 켜짐 확인 | **켠다** | 무료, 저장소 Settings → Security 클릭 1회. OpenClaw·Script·Etc는 2026-09-08 조사 때 꺼져 있었고 이후 확인 안 함 |
 | Dependabot 버전 업데이트 | kolo_pwa(actions만) | 유지 | 의존성 트리가 있는 저장소만 |
 | PR | 사람이 만든 PR 없음(Codex·Dependabot뿐) | 필요할 때 | Claude 클라우드·`@claude`·리뷰 코멘트가 전부 PR 위에서 도니, 그걸 쓰기로 하면 같이 시작 |
 | 이슈·마일스톤·라벨 | AI 저장소는 라벨로 이슈 관리, 릴리즈마다 마일스톤 배정(2026-09-17부터, `dev-release` §2 8번). 나머지 저장소는 이슈 0·마일스톤 0 | AI는 쓴다, 나머지는 보류 | AI는 할 일까지 Issue, `docs/PROGRESS.md`는 배포 표만. 마일스톤은 "이슈가 어느 릴리즈에 실제로 포함됐는지" 검색용([Issue #109](https://github.com/yanos0218/AI/issues/109)). 나머지 저장소는 `P-NN` 파일 하나가 아직 더 빠름 |

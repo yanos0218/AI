@@ -7,6 +7,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- 낡은 문서 표기 정정(README의 live-status 경로, `docs/github.md`의 Release 버전·공개 여부·Dependabot 알림, `docs/config-lifecycle.md`·`review-vs-official.md`·`repo-standard.md`·`PROGRESS.md`·`testing.md`, 0.16.0 항목의 MINOR 문구, [Issue #217](https://github.com/yanos0218/AI/issues/217))
+
 ## [0.16.0] - 2026-10-26
 
 ### Added
@@ -36,7 +40,7 @@
   - `dashboard.html`에 맨 위 한 문장 요약, 보조 글자 대비 4.5:1 이상, 글자 12px 이상, 세션 시작 크기 도움말, 캐시 재작성 설명을 캐시 수명에 맞게 정정
   - `tools/test-live-status.sh`에 만료 판정 시험 4건 추가(시험을 5분 고정으로 되돌리면 실패하는 것 확인)
 
-- 안전 훅 `git-guardrails.sh`가 실패하면 통과하지 않고 차단하도록 설정에 `"onFailure": "block"` 추가, Claude Code 2.1.295 이상 필요([Issue #211](https://github.com/yanos0218/AI/issues/211), 설정 키 추가라 다음 컷에서 MINOR 후보)
+- 안전 훅 `git-guardrails.sh`가 실패하면 통과하지 않고 차단하도록 설정에 `"onFailure": "block"` 추가, Claude Code 2.1.295 이상 필요([Issue #211](https://github.com/yanos0218/AI/issues/211), 설정 키 추가라 이 컷이 MINOR)
   - 시작 실패와 시간 초과는 모든 Bash·PowerShell 명령을 막고, 스크립트가 예상 밖 오류(종료 코드 1)로 끝나면 EXIT 트랩이 전체 차단 대신 확인 창(`ask`)을 띄움
   - `gh-throttle`·`format-guard`는 제외, 복구 방법은 `docs/install.md`
   - 새 세션(Claude Code 2.1.309, Haiku) 시험 6가지: 정상 통과, 종료 코드 1 차단, 시간 초과 차단, 옵션 없으면 통과(현 상태), 실제 훅에 오류 주입 시 확인 창, 실제 훅 정상 명령 통과

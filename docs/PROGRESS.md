@@ -75,7 +75,7 @@
 | usage-dashboard 스킬(요청 시 켜는 기록 훅 + 로컬 대시보드) | 기본 (2026-09-29 승격, Windows 실사용·Mac 화면 확인 [#136](https://github.com/yanos0218/AI/issues/136), 2026-10-25 캐시 만료 판정·화면 개선 반영 [#215](https://github.com/yanos0218/AI/issues/215)) | ✓ | ✓ | - (Linux 제외) | - (로컬 전용) | `claude -p` 세션은 기록 안 됨, 90일 쌓인 뒤(2026-12 말) Windows 처리 시간 측정 |
 | `base/vscode/` 확장 목록·설정·설치 스크립트 | 기본 (2026-09-29 16개 [#165](https://github.com/yanos0218/AI/issues/165), Mac 폴백 확인 [#57](https://github.com/yanos0218/AI/issues/57), 2026-10-24 WSL의 Windows `code` 중단 [#204](https://github.com/yanos0218/AI/issues/204)) | ✓ | ✓ | - | - | - |
 | `tools/bootstrap.sh` (신규 기기 설치) | 기본 (빈 `HOME` 시뮬레이션 2026-09-17) | - | - | - | - | 실제 신규 기기에서 curl 한 줄 검증 |
-| 저장소 전용 훅(`.claude/hooks/` baseline-guard·pre-commit-check·session-end-check) | 기본 (2026-09-29 커밋 검사 우회·경로 읽기 수정 [#156](https://github.com/yanos0218/AI/issues/156) [#163](https://github.com/yanos0218/AI/issues/163)) | 저장소 안 | 저장소 안 | 저장소 안 | - | - |
+| 저장소 전용 훅(`.claude/hooks/` baseline-guard·pre-commit-check·session-end-check·handoff-stale-check·progress-stale-check) | 기본 (2026-09-29 커밋 검사 우회·경로 읽기 수정 [#156](https://github.com/yanos0218/AI/issues/156) [#163](https://github.com/yanos0218/AI/issues/163)) | 저장소 안 | 저장소 안 | 저장소 안 | - | - |
 | 이 저장소 CI(lint.yml + check-docs.sh) | 기본 (2026-09-08, shellcheck 대상 확대 [#161](https://github.com/yanos0218/AI/issues/161)) | GitHub | GitHub | GitHub | - | - |
 | 성향 데이터 → 전역 지침 후보 | 초안 (월 점검에서 auto memory·대화 기록 검토 [#9](https://github.com/yanos0218/AI/issues/9) [#15](https://github.com/yanos0218/AI/issues/15)) | - | - | - | - | 월 점검 |
 | 블로그용 스킬 | 계획 (역할 구분 선행 [#7](https://github.com/yanos0218/AI/issues/7)) | - | - | - | - | - |

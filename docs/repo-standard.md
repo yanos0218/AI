@@ -27,4 +27,4 @@
 | Script | ✗ | ✗ (shellcheck 후보) | ✗ | ✗ | ✗ | ✗ | ✓ | **이력에 개인키** ([Issue #56](https://github.com/yanos0218/AI/issues/56)) |
 | Etc | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ | |
 
-Script·Etc는 활동이 적어(마지막 push 2026-06) 보관/최소/전부 중 사용자가 고름. 자동으로 맞춰 주는 `repo-setup` 스킬은 초안·1시나리오 통과([Issue #56](https://github.com/yanos0218/AI/issues/56)).
+Script·Etc는 활동이 적어(마지막 push 2026-06) 보관/최소/전부 중 사용자가 고름. 자동으로 맞춰 주는 `repo-setup` 스킬은 기본 단계, 3시나리오 통과(2026-09-09, [Issue #56](https://github.com/yanos0218/AI/issues/56)).
