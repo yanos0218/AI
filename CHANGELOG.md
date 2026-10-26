@@ -25,6 +25,7 @@
 
 ### Changed
 
+- `docs/testing.md` 훅 시험 절에 `claude -p --allowedTools`가 프롬프트를 삼키는 주의사항 추가([Issue #211](https://github.com/yanos0218/AI/issues/211))
 - `tools/test-live-status.sh`가 파이썬 3.6(Rocky Linux 8 기본)에서 `usage.py`의 `fromisoformat` 예외로 중간에 죽어 약 30건이 연쇄 실패하던 것을 고침([Issue #213](https://github.com/yanos0218/AI/issues/213))
   - 캐시 만료 판정 구간(2g)만 3.6에서 "건너뜀"으로 표시하고 나머지는 그대로 시험, 이 기기(Rocky Linux 8.10, 파이썬 3.6.8)에서 통과
 - 토큰 대시보드(`usage-dashboard`) 캐시 만료 판정과 화면 개선을 기본 영역에 반영([Issue #215](https://github.com/yanos0218/AI/issues/215), [Issue #214](https://github.com/yanos0218/AI/issues/214) 조사 근거)

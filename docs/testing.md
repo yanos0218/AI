@@ -36,6 +36,9 @@ SessionStart 알림이나 PreToolUse 경고가 Claude에게 실제로 도착하�
   - 저장소를 임시 폴더에 clone하고 알림이 날 상태를 일부러 만듦(예: HANDOFF "지금" 절에 닫힌 이슈 번호). `gh`가 쓰이는 훅은 사본의 origin을 실제 저장소 주소로 바꿈. 사본에서 커밋·push하지 않음.
   - 사본 폴더에서 `claude -p --model sonnet --max-turns 1 "세션 시작할 때 훅이 준 알림이 있었으면 그대로 옮겨 써줘. 없으면 없다고만 해줘. 도구는 쓰지 마."`를 실행하고 답변에 알림 원문이 있는지 봄.
   - `claude`가 PATH에 없으면 VS Code 확장의 `~/.vscode/extensions/anthropic.claude-code-*/resources/native-binary/claude`를 씀.
+- `claude -p` 호출 주의
+  - `--allowedTools`는 뒤에 오는 값을 모두 도구 이름으로 읽어 프롬프트를 삼킴(`Error: Input must be provided either through stdin or as a prompt argument`).
+  - 프롬프트는 표준입력으로 넘기거나 `--allowedTools=Bash`처럼 `=`로 붙임([Issue #211](https://github.com/yanos0218/AI/issues/211), 2026-10-25).
 - PreToolUse 경고 시험
   - 변경을 먼저 `git add`로 스테이징한 뒤 대상 명령을 따로 실행해 경고가 결과에 붙는지 봄. 훅 스크립트는 사본에서 JSON 입력을 파이프로 넣어 출력과 종료 코드도 봄.
 - 시험이 맞게 열렸는지 확인함
