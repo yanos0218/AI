@@ -55,7 +55,7 @@ allowed-tools: Bash(git tag --list*) Bash(git log*) Bash(git diff*) Bash(git sta
 - [ ] 5. 마지막 태그 이후 바뀐 파일 전체(`git diff --stat <마지막태그>..HEAD`)를 훑어, 세션 요약·진행 보드 성격의 문서(있다면)가 최신인지 확인하고 답변에 명시
 - [ ] 6. 커밋 chore(release): vX.Y.Z
 - [ ] 7. ★ 사용자 확인 ★ → git tag vX.Y.Z → git push origin main vX.Y.Z
-- [ ] 8. GitHub Release 생성 또는 자동 워크플로 결과 확인, 검증 스크립트 실행
+- [ ] 8. GitHub Release 생성 또는 자동 워크플로 결과 확인, 검증 스크립트 실행, 제목이 `vX.Y.Z - 한국어 제목` 꼴인지 확인(아니면 `gh release edit --title`로 보충, 2026-10-26 v0.14.0·v0.13.1 제목 누락)
 - [ ] 9. (GitHub Issues를 쓰는 저장소만) 마일스톤 vX.Y.Z 생성 → 직전 태그 이후 커밋의 `Refs #N`(과거 커밋은 `Closes #N`)을 배정 → 닫음. 명령은 `references/release-steps.md`
 ```
 

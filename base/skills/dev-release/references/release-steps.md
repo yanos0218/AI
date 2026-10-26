@@ -23,6 +23,10 @@ git push origin main vX.Y.Z
 # 7. Release — 자동 워크플로가 없을 때만
 gh release create vX.Y.Z --title "vX.Y.Z - 한국어 제목" --notes-file <노트파일>
 scripts/release-check.sh vX.Y.Z              # 있으면
+
+# 8. Release 제목 확인 — 제목이 vX.Y.Z - 로 시작해야 한다(태그 이름만 있으면 보충)
+gh release view vX.Y.Z --json name -q .name
+# 비어 있거나 태그 이름과 같으면: gh release edit vX.Y.Z --title "vX.Y.Z - 한국어 제목"
 ```
 
 브랜치 보호나 PR 필수 규칙이 있는 저장소는 `main` 직접 push 대신 작업 브랜치 → PR → merge 후 `main`을 `git pull --ff-only`로 최신화한 다음 태그를 찍는다.
@@ -34,7 +38,7 @@ scripts/release-check.sh vX.Y.Z              # 있으면
   - 워크플로 신설 이전에 push된 태그는 자동으로 안 걸리므로 Actions 탭에서 `Run workflow`로 수동 실행.
 - **`workflow_dispatch`만 있는 경우**
   - 태그는 손으로 push하고, Actions에서 입력값(태그·제목)을 넣어 실행한다.
-- 실행 후 `gh run list --workflow=<파일명> --limit 1`과 `gh release view vX.Y.Z`로 결과를 확인하고 사용자에게 보고한다.
+- 실행 후 `gh run list --workflow=<파일명> --limit 1`과 `gh release view vX.Y.Z`로 결과를 확인하고 사용자에게 보고한다. 제목(`--json name -q .name`)이 "vX.Y.Z - 한국어 제목" 꼴인지도 본다(위 8번과 같은 보충 방법).
 
 ## 3. 버전이 박힌 파일 — 플랫폼별
 

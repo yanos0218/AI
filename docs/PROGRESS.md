@@ -64,7 +64,7 @@
 | 컴팩션 안전망 훅(`compact-snapshot.sh`·`compact-snapshot-show.sh`) | 기본 (2026-09-27 승격, 실제 자동 컴팩션에서 확인 [#104](https://github.com/yanos0218/AI/issues/104)) | ✓ | ✓ | ✓ | - | - |
 | 형식 검사 훅(`format-guard.sh`·`md-format-check.sh`·`format_check.py`·`check-cram.py`) | 기본 (2026-09-29 승격, 시험 32/32, 새 세션에서 위반 커밋 차단 확인 [#141](https://github.com/yanos0218/AI/issues/141)) | ✓ | ✓ | ✓ | - | `check-cram.py` 필드-값 형식 예외 판정 2026-10-17 기본 반영 [#175](https://github.com/yanos0218/AI/issues/175)<br>`.md` 문장형 검사 2026-10-21 추가, 시험 43/43(2026-10-26 `bash tools/test-format-guard.sh` 재실행) [#188](https://github.com/yanos0218/AI/issues/188) |
 | 용도별 에이전트 3종(`base/agents/` + `verifier-guard`) | 기본 (2026-09-27 승격, 새 세션 18회 [#131](https://github.com/yanos0218/AI/issues/131)) | ✓ | ✓ | ✓ | - | VS Code 화면에서 위임 사용 확인 |
-| dev-release 스킬 | 기본 (3시나리오 2026-09-08, 문서 동기화 확인 단계 [#121](https://github.com/yanos0218/AI/issues/121)) | ✓ | ✓ | ✓ | 갱신 대기(v0.11.4) | - |
+| dev-release 스킬 | 기본 (3시나리오 2026-09-08, 문서 동기화 확인 단계 [#121](https://github.com/yanos0218/AI/issues/121), 2026-10-26 Release 제목 확인 단계 [#221](https://github.com/yanos0218/AI/issues/221)) | ✓ | ✓ | ✓ | 갱신 대기(v0.11.4) | - |
 | dev-workflow 스킬 | 기본 (3시나리오 2026-09-09) | ✓ | ✓ | ✓ | 갱신 대기(v0.11.4) | - |
 | repo-setup 스킬 | 기본 (3시나리오 2026-09-09) | ✓ | ✓ | ✓ | 갱신 대기(v0.11.4) | - |
 | self-audit 스킬 | 기본 (3시나리오 2026-09-13, 이슈 본문 형식 수정 2026-10-07 [#172](https://github.com/yanos0218/AI/issues/172)) | ✓ | ✓ | ✓ | ✗ | Mac·Linux 새 세션 발동 미검증 |

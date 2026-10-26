@@ -9,6 +9,9 @@
 
 ### Added
 
+- `dev-release` 스킬 8단계에 Release 제목이 `vX.Y.Z - 한국어 제목` 꼴인지 확인하고 아니면 `gh release edit --title`로 보충하는 단계 추가([Issue #221](https://github.com/yanos0218/AI/issues/221))
+  - v0.14.0·v0.13.1 Release가 제목 없이 만들어진 일이 근거임
+  - 문안 수정이라 발동 조건은 그대로이고, 확인 명령은 v0.16.0·v0.14.0 실제 Release에서 제목이 나오는 것을 직접 확인함
 - 기본 영역 `settings.example.json`에 `"language": "korean"` 추가, `tools/settings_merge.py`가 설치 때 이 값으로 맞춤([Issue #223](https://github.com/yanos0218/AI/issues/223), 조사 [Issue #222](https://github.com/yanos0218/AI/issues/222))
   - 도구 호출 앞뒤 진행 설명이 영어로 시작하는 재발(대화 기록 1235블록 중 약 4.8%)을 줄이려는 것임
   - 효과는 12회 비교 시험이 양쪽 0건이라 판단 불가, 반영 뒤 월별 영어 비율로 확인함
