@@ -6,13 +6,13 @@
 
 Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원본 저장소. 개발자가 아닌 사용자가 여러 스택의 프로젝트를 오가며 Claude에게 (1) 매번 같은 배경을 다시 설명하지 않고, (2) 멋대로 진행하거나 너무 자주 묻지 않게 하고, (3) 검증 없이 "됐다"는 말을 못 하게 하고, (4) 결론만 짧게 듣도록 만듦. 저장소별 규칙은 각 저장소에 두고 여기서는 **참조만** 함.
 
-## 지금 (2026-10-25) · 마지막 월 점검 2026-10-07([#171](https://github.com/yanos0218/AI/issues/171))
+## 지금 (2026-10-26) · 마지막 월 점검 2026-10-07([#171](https://github.com/yanos0218/AI/issues/171))
 
 - 변경 이력은 [CHANGELOG.md](../CHANGELOG.md) `[Unreleased]`, 기기별 설치 버전은 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태)이 원본(여기엔 적지 않음).
-- 2026-10-24에 닫은 일은 읽기 차단 기본 반영, `fingerprint.sh` 설치본 줄, `progress-stale-check.sh` 훅, WSL의 Windows VS Code 중단과 `extensions.txt` CRLF 수정, Windows 시험 지연 원인 기록, `config-update` 보고 문안 기본 반영임. 상세는 CHANGELOG `[Unreleased]`와 [os-differences.md](os-differences.md), 번호는 `gh issue list --state closed`.
-- 2026-10-24에 v0.15.0을 컷함(MINOR). 웹(Claude.ai)은 Release zip 업로드와 Project instructions 갱신이 남음(사용자 작업).
-- 남은 확인은 Linux 설치가 낡음이라 갱신 때 `config-update` 8단계에 기록 줄이 나오는지, 다른 저장소 폴더의 대화형 `config-update`, 인라인 코드 확인 창, VS Code 멀티루트임.
-- 진행 중은 [#213](https://github.com/yanos0218/AI/issues/213)(실시간 현황 초안, 에이전트 팀은 실제 팀 파일 확인 대기)과 조사 [#214](https://github.com/yanos0218/AI/issues/214)(캐시 재작성 줄이기, 사용자 마무리 선언 대기). 보류는 요구사항 미정 #5·#7·#8. 다중 저장소 조사와 OS별 설정 구조 이슈는 2026-10-24 닫음(Windows·Mac 공통 출력 대조에서 운영체제 차이 없음, 덧입히기 구조는 실제 차이가 생기면 새 이슈로 설계).
+- 2026-10-26에 `live-status` 스킬을 기본 영역에 승격하고(MINOR, [#213](https://github.com/yanos0218/AI/issues/213) 닫음) `git-guardrails` onFailure block([#211](https://github.com/yanos0218/AI/issues/211))을 Windows·Linux 실제 기기까지 확인해 닫음. 상세는 [CHANGELOG.md](../CHANGELOG.md)와 `gh issue list --state closed`.
+- 2026-10-26에 v0.16.0을 컷함(MINOR). 웹(Claude.ai)은 Release zip 업로드와 Project instructions 갱신이 남음(사용자 작업). Mac mini·Linux는 `live-status`가 들어가는 갱신 대기.
+- 남은 확인은 다른 저장소 폴더의 대화형 `config-update`, Linux 갱신 때 8단계 기록 줄, 인라인 코드 확인 창, VS Code 멀티루트임.
+- 진행 중은 [#216](https://github.com/yanos0218/AI/issues/216)(`live-status` 에이전트 팀 구역 실제 팀 파일 확인, 팀 기능을 쓸 때까지 대기)과 조사 #209·#210·#212. 보류는 [#5](https://github.com/yanos0218/AI/issues/5)(알림 훅), 요구사항 미정 #7·#8.
 - 다음 세션 첫 행동은 `gh issue list --state open`으로 최신 상태 확인(이 요약보다 이슈 최신 댓글이 정확), 새 달 첫 세션이면 월 점검 제안([monthly-check.md](monthly-check.md)).
 
 ## 문서 지도 (작업 종류 → 읽을 문서)
