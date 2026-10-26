@@ -15,6 +15,8 @@
   - 판정표 → 사용자가 고른 것만 생성. 다른 저장소에 적용하는 일은 그 저장소에서.
 - (2026-09-17) `base/` 반영(승격)과 릴리즈 컷은 별개 이벤트임을 재확인
   - 승격은 검증+요청 즉시, 컷은 쌓였다가 필요할 때. 매번 묶으면 번호 소진 사고 재발([Issue #107](https://github.com/yanos0218/AI/issues/107) 논의 중 정리).
+- (2026-10-26) `live-status` 스킬을 에이전트 팀 구역 미검증인 채로 기본 영역에 승격
+  - 팀 기능을 쓰지 않으면 영원히 못 하는 확인이라 승격을 막지 않고 SKILL.md 한계로 표기, 확인은 [Issue #216](https://github.com/yanos0218/AI/issues/216)으로 분리([Issue #213](https://github.com/yanos0218/AI/issues/213)).
 - (2026-09-17) 다른 저장소용 이슈 라벨을 `task`/`bug`/`error`/`research` 4개로 고정 요구하려던 초안을 철회
   - kolo_pwa·kolo-api 실사용 관찰(참고용) 결과 "라벨이 있어도 문서화 안 되면 하나로 몰린다"만 확인됨 → 저장소 자유 + 문서화 원칙만 요구로 완화([Issue #107](https://github.com/yanos0218/AI/issues/107)).
 

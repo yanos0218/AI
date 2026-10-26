@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# 실시간 세션 현황 초안(drafts/skills/live-status) 시험(Issue #213). 실제 claude 없이 가짜 목록과 가짜 실행 파일로 확인한다.
+# 실시간 세션 현황 초안(base/skills/live-status) 시험(Issue #213). 실제 claude 없이 가짜 목록과 가짜 실행 파일로 확인한다.
 # 실제 화면 모양은 확인하지 못한다. 사용자가 VS Code 통합 브라우저에서 직접 본다.
 #   bash tools/test-live-status.sh
 # shellcheck disable=SC2034  # 변수는 chk의 eval 문자열 안에서 씀
 set -u
 cd "$(dirname "${0}")/.." || exit 1
 PY="$(command -v python3 || command -v python)"
-SK="drafts/skills/live-status"
+SK="base/skills/live-status"
 T="$(mktemp -d)"; trap 'rm -rf "${T}"' EXIT
 fail=0
 ok()  { printf '  ok    %s\n' "$1"; }
@@ -17,7 +17,7 @@ IS_WIN=0; case "$(uname -s)" in MINGW*|MSYS*|CYGWIN*) IS_WIN=1;; esac
 # 파이썬 쪽 확인은 ASCII 키=0|1 줄로만 출력한다(Windows 파이프의 cp1252에서 한글 출력이 죽는 것을 피함)
 pyout="$(IS_WIN="${IS_WIN}" "${PY}" -I - <<'PYEOF' 2>&1
 import sys, os, json, time, threading, http.client, tempfile, stat
-sys.path.insert(0, 'drafts/skills/live-status/scripts')
+sys.path.insert(0, 'base/skills/live-status/scripts')
 import live
 
 def r(key, val):

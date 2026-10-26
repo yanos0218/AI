@@ -9,7 +9,7 @@
 
 ### Added
 
-- 실시간 세션 현황 화면 초안 `drafts/skills/live-status/`와 시험 `tools/test-live-status.sh` 105건([Issue #213](https://github.com/yanos0218/AI/issues/213), 초안이라 배포 안 됨)
+- 실시간 세션 현황 화면 `base/skills/live-status/`(기본 영역 승격)와 시험 `tools/test-live-status.sh` 105건([Issue #213](https://github.com/yanos0218/AI/issues/213), 에이전트 팀 구역은 실제 팀 파일 확인 전 [Issue #216](https://github.com/yanos0218/AI/issues/216))
   - 파이썬 표준 라이브러리 서버가 `claude agents --json`(세션)과 Claude Code가 남기는 서브에이전트 기록 파일을 읽어 구조도(세션 아래 서브에이전트)와 최근 30분 타임라인을 보여 줌, 기본 포트 8766
   - 서브에이전트 상태는 `meta.json`의 `finished`와 기록 파일 수정 시각으로 판정(작업 중·조용함·끝남, finished 표시가 없는 옛 기록은 끝남 추정), 기록은 첫 줄만 읽음, 문서화되지 않은 형식이라 읽지 못하면 화면에 알림
   - 127.0.0.1에만 묶고 Host 검사, 대화 내용과 전체 경로와 전체 ID는 내보내지 않음, 작업 제목은 `LIVE_SHOW_TITLES=0`으로 숨김, 일시적으로 목록이 비어도 연속 3번 안 보일 때만 끝남으로 처리

@@ -23,7 +23,7 @@ flowchart LR
 | 층 | 역할 | 이 저장소 원본 | 강제력 |
 | --- | --- | --- | --- |
 | 1 기억·규칙 | 항상 깔리는 지침 | [base/claude-md/CLAUDE.md](../base/claude-md/CLAUDE.md), [base/rules/](../base/rules/), 저장소별 `CLAUDE.md`, auto memory | 조언(안 지킬 수 있음) |
-| 2 업무 매뉴얼 | 필요할 때만 불러오는 절차 | [base/skills/](../base/skills/) 7개(`_template` 제외) | 조언, 설명이 맞을 때 발동 |
+| 2 업무 매뉴얼 | 필요할 때만 불러오는 절차 | [base/skills/](../base/skills/) 8개(`_template` 제외) | 조언, 설명이 맞을 때 발동 |
 | 3 제어·보안 | 막거나 기록하는 장치 | [base/hooks/](../base/hooks/) 셸 입구 11개, [base/settings.example.json](../base/settings.example.json)의 권한(허용 25·차단 7) | 강제(훅 exit 2, 권한 차단)<br>훅은 가드레일이지 보안 경계가 아님, 샌드박스는 보류 |
 | 4 역할 분담 | 격리된 컨텍스트에서 맡기는 일 | [base/agents/](../base/agents/) 3개(`auditor`·`researcher`·`verifier`) | 조언, `verifier`만 훅으로 쓰기 차단 |
 | 5 표준 배포 | 여러 기기에 같은 설정을 깔기 | 플러그인은 미도입<br>대신 [tools/install.sh](../tools/install.sh)·[tools/pack.sh](../tools/pack.sh)·[tools/check-install.sh](../tools/check-install.sh)·`config-update` 스킬 | 대조로 확인(`check-install.sh`) |

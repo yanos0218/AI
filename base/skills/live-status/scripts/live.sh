@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 실시간 세션 현황 서버를 켜고 끈다(Issue #213 초안). 사용법: bash live.sh start|stop|status|url|open
+# 실시간 세션 현황 서버를 켜고 끈다(Issue #213). 사용법: bash live.sh start|stop|status|url|open
 #   start   서버를 백그라운드로 띄운다(이미 떠 있으면 주소만 알린다)
 #   stop    끈다
 #   status  떠 있는지 알린다
