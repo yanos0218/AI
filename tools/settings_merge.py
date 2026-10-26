@@ -8,7 +8,7 @@
   - permissions의 목록(allow·ask·deny)은 합집합. 사용자 항목을 먼저 두고 없는 base 항목을 뒤에 붙인다.
   - hooks는 base 훅 스크립트를 가리키는 항목만 base 것으로 바꾸고, 그 밖의 사용자 훅은 남긴다.
   - env는 base 키만 덮고 사용자 키는 남긴다.
-  - statusLine·model·effortLevel·modelSettings·$schema는 base 값으로 맞춘다(기본 모델 고정, Issue #187).
+  - statusLine·model·effortLevel·modelSettings·language·$schema는 base 값으로 맞춘다(기본 모델 고정 Issue #187, 응답 언어 Issue #223).
   - base가 읽기 차단(blockReadsOutsideWorkingDirectories)을 켜면 additionalDirectories에 ~/.claude와 원본 저장소를
     합집합으로 넣는다(Issue #205). 경로는 기기마다 달라 base 파일에 두지 않고 설치 때 계산한다.
   - 값이 바뀌어 다시 쓸 때는 settings.json.bak.<시각>으로 먼저 백업한다.
@@ -22,7 +22,7 @@ import sys
 import time
 
 OD = collections.OrderedDict
-SCALAR_KEYS = ('$schema', 'statusLine', 'model', 'effortLevel', 'modelSettings')
+SCALAR_KEYS = ('$schema', 'statusLine', 'model', 'effortLevel', 'modelSettings', 'language')
 
 
 def load(path):

@@ -175,6 +175,10 @@ chk "권한 추가 키는 공통 구역에서 차이로 드러남" '! cmp -s "${
 edit "d['model'] = 'claude-opus-5-5'"
 bash tools/fingerprint.sh --common >"${T}/fp-model.txt" 2>&1
 chk "model 어긋남이 base 대비 DIFF로 보임" 'grep -q "settings base 대비 = DIFF model" "${T}/fp-model.txt"'
+edit "d['language'] = 'english'"
+chk "language 어긋남이 check에서 DIFF로 보임" '"${PY}" tools/settings_merge.py check "${CLAUDE_CONFIG_DIR}/settings.json" base/settings.example.json | grep -q "DIFF *language"'
+edit "d.pop('language')"
+chk "language 키가 없어도 check에서 DIFF로 보임" '"${PY}" tools/settings_merge.py check "${CLAUDE_CONFIG_DIR}/settings.json" base/settings.example.json | grep -q "DIFF *language"'
 
 echo "== 9. 오래된 백업은 종류별 최근 3개만 남기고 자동 정리한다(직접 만든 이름은 그대로)"
 H9="${T}/home9"; export CLAUDE_CONFIG_DIR="${H9}"

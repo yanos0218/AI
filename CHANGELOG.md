@@ -9,6 +9,10 @@
 
 ### Added
 
+- 기본 영역 `settings.example.json`에 `"language": "korean"` 추가, `tools/settings_merge.py`가 설치 때 이 값으로 맞춤([Issue #223](https://github.com/yanos0218/AI/issues/223), 조사 [Issue #222](https://github.com/yanos0218/AI/issues/222))
+  - 도구 호출 앞뒤 진행 설명이 영어로 시작하는 재발(대화 기록 1235블록 중 약 4.8%)을 줄이려는 것임
+  - 효과는 12회 비교 시험이 양쪽 0건이라 판단 불가, 반영 뒤 월별 영어 비율로 확인함
+  - 병합 시험에 language 어긋남·키 없음 사례 2건 추가
 - 쉬운 설명 요청 지침 주입 훅 초안 `drafts/hooks/easy-explain-hint.sh`·`easy_explain.py`와 시험 `tools/test-easy-explain.sh` 9건([Issue #222](https://github.com/yanos0218/AI/issues/222), 후보 출처 [Issue #220](https://github.com/yanos0218/AI/issues/220))
 - 문서 낡음 알림 훅 초안 `drafts/hooks/doc-drift-check.sh`·`doc_drift.py`와 시험 `tools/test-doc-drift.sh` 26건([Issue #219](https://github.com/yanos0218/AI/issues/219), 조사 [Issue #218](https://github.com/yanos0218/AI/issues/218))
   - 커밋 때 삭제·이름변경된 경로가 다른 `.md`에 남았는지, 올리는 `.md`의 상대 링크 대상이 있는지, `CHANGELOG.md` 릴리즈 섹션에 "다음 컷"이 남았는지를 경고만 함
