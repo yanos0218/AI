@@ -60,7 +60,7 @@ Windows(Git Bash, bash 5, gawk)에서만 시험하면 Mac(bash 3.2, BSD 도구)�
 - 파이썬 3.7 이상 전용 기능을 쓰지 않음
   - Rocky Linux 8 기본 3.6.8에서 `sys.stdout.reconfigure`, `datetime.fromisoformat`, `subprocess.run(capture_output=)`, `dataclasses`, `from __future__ import annotations`가 없음([Issue #202](https://github.com/yanos0218/AI/issues/202)).
   - 출력 인코딩은 `reconfigure`가 없으면 `io.TextIOWrapper`로 감쌈([tools/settings_merge.py](../tools/settings_merge.py) `utf8_stdio`), 훅 셸 입구는 `PYTHONIOENCODING=utf-8`을 지정함.
-  - CI 러너는 모두 3.7 이상이라 3.6 경로는 CI가 못 잡음. 파이썬 관련 변경 뒤에는 RHEL 8 계열 기기에서 `tools/test-install-merge.sh`와 `tools/test-hooks-py.sh`를 직접 돌림.
+  - CI 러너는 모두 3.7 이상이라 3.6 실행은 CI가 못 잡음. 대신 lint 작업이 `vermin --target=3.6-`로 훅·도구(`base/hooks`·`tools`·`drafts/hooks`·`.claude/hooks`)의 3.7 이상 전용 기능을 정적으로 막음([Issue #219](https://github.com/yanos0218/AI/issues/219) 2026-10-26, 스킬 스크립트는 3.6 건너뜀 처리라 제외). 파이썬 관련 변경 뒤에는 RHEL 8 계열 기기에서 `tools/test-install-merge.sh`와 `tools/test-hooks-py.sh`를 직접 돌림.
   - `tools/test-hooks-py.sh`의 입력 도우미는 `python3 -c`에 한글을 실어 3.6에서 `LC_ALL=C`로는 실행되지 않음(명령줄 해석 실패, 훅 결함 아님), `LC_ALL=C.UTF-8`로 돌림.
   - 예외는 `usage-dashboard`의 `fromisoformat`, Linux 제외 대상이라 그대로 둠.
   - [tools/test-live-status.sh](../tools/test-live-status.sh)의 캐시 만료 판정 구간은 3.6에서 "건너뜀"으로 표시하고 나머지는 그대로 시험함([Issue #213](https://github.com/yanos0218/AI/issues/213)).

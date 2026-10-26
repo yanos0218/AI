@@ -9,6 +9,8 @@
 
 ### Added
 
+- CI lint 작업에 파이썬 3.6 호환 정적 검사 추가(`vermin==1.9.2 --target=3.6-`, 대상 `base/hooks`·`tools`·`drafts/hooks`·`.claude/hooks`)([Issue #219](https://github.com/yanos0218/AI/issues/219))
+  - 3.6 기기 없이도 3.7 이상 전용 기능이 들어오는 것을 막음. 실제 3.6 실행 확인은 여전히 RHEL 8 기기에서 함
 - `dev-release` 스킬 8단계에 Release 제목이 `vX.Y.Z - 한국어 제목` 꼴인지 확인하고 아니면 `gh release edit --title`로 보충하는 단계 추가([Issue #221](https://github.com/yanos0218/AI/issues/221))
   - v0.14.0·v0.13.1 Release가 제목 없이 만들어진 일이 근거임
   - 문안 수정이라 발동 조건은 그대로이고, 확인 명령은 v0.16.0·v0.14.0 실제 Release에서 제목이 나오는 것을 직접 확인함

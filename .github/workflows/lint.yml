@@ -37,6 +37,14 @@ jobs:
       - name: 문서 상한·필수 파일
         run: bash tools/check-docs.sh
 
+      # Rocky Linux 8 기본 파이썬이 3.6이라 훅·도구에 3.7 이상 전용 기능이 들어오면 막는다(Issue #219).
+      # 스킬 스크립트(live.py·usage.py)는 3.7 전용 호출이 있고 3.6에서 건너뛰도록 처리돼 있어 대상에서 뺀다(docs/testing.md).
+      - name: 파이썬 3.6 호환 정적 검사
+        run: |
+          python3 -m pip install -q vermin==1.9.2
+          shopt -s nullglob
+          vermin --no-tips --target=3.6- --violations base/hooks/*.py tools/*.py drafts/hooks/*.py .claude/hooks/*.py
+
   # 같은 저장소를 Windows·Mac에서 쓰므로 세 운영체제에서 같은 시험을 돌린다(Issue #197).
   # 임시 CLAUDE_CONFIG_DIR만 써서 러너의 홈은 건드리지 않는다(Issue #194).
   # 공개 저장소라 표준 러너 분이 무료다. 비공개로 바꾸면 Windows 2배·macOS 10배라 다시 검토한다.
