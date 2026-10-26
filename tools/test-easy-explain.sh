@@ -13,6 +13,7 @@ check 쉽게다시설명 '{"prompt":"쉽게 다시 설명해줘"}' hit
 check 쉬운말로 '{"prompt":"쉬운 말로 설명해줘"}' hit
 check 이해안돼 '{"prompt":"이게 이해가 안 돼"}' hit
 check 무슨말 '{"prompt":"그게 무슨 말이야"}' hit
+check 쉽게알려줘 '{"prompt":"어떤 내용인지 쉽게 알려줘"}' hit
 check 일상표현 '{"prompt":"이거 쉽게 고칠 수 있나?"}' none
 check 무관 '{"prompt":"커밋해줘"}' none
 check 깨진JSON '{"prompt":"쉽게 설명' none
