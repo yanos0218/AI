@@ -4,9 +4,11 @@
 set -u
 cd "$(dirname "${0}")/.." || exit 1
 fail=0
+checked=0   # 줄 수를 실제로 센 파일 수. 0이면 아무것도 검사하지 못한 것이라 통과로 치지 않는다(2026-09-29 0줄 오독 사례)
 
 limit() { # 파일 상한
   local f="${1}" max="${2}"
+  checked=$((checked + 1))
   [[ -f "${f}" ]] || { echo "MISSING ${f}"; fail=1; return; }
   # 줄 수는 bash 내장 read로 센다. 파일마다 wc를 띄우면 Windows 느린 시각에 24초가 걸려 커밋 검사 훅이 제한 시간을 넘겼다(Issue #148)
   # mapfile은 Mac 기본 bash 3.2에 없어 모든 파일을 0줄로 세고 통과시켰다(2026-09-28)
@@ -30,5 +32,8 @@ done < <(grep -oE '^(claude-md|skills|scripts|vscode|drafts|docs|\.claude|\.gith
 # 문서 갱신 누락 검사(Issue #192): 존재·참조·개수 대조. 파이썬 한 번 호출이라 느린 시각에도 가볍다(Issue #148)
 PY="$(command -v python3 || command -v python || true)"
 if [[ -n "${PY}" ]]; then "${PY}" tools/check-doc-sync.py || fail=1; else echo "skip doc-sync: python 없음"; fi
+
+echo "검사한 줄 수 상한 파일: ${checked}개"
+[[ "${checked}" -gt 0 ]] || { echo "검사 대상 0개: 통과가 아니라 미검증"; fail=1; }
 
 exit "${fail}"

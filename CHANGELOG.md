@@ -9,6 +9,11 @@
 
 ### Added
 
+- 전역 지침(`base/claude-md/CLAUDE.md`)에 self-audit 후보 3건 반영([Issue #224](https://github.com/yanos0218/AI/issues/224), 후보 출처 [Issue #220](https://github.com/yanos0218/AI/issues/220))
+  - §4 사용자에게 시키는 명령은 실행 위치와 확인 여부(확인함·미검증)를 함께 적음
+  - §5 다음 작업을 추천하거나 대기 이유를 설명하기 전에 대상 이슈의 최신 댓글과 현재 파일 상태를 직접 확인함
+  - §8 설계 제시 때 사전 검토(문제·파생 문제·대안·위험) 칸을 채움
+- `tools/check-docs.sh`가 마지막에 검사한 파일 수를 출력하고 0개면 실패 처리함([Issue #224](https://github.com/yanos0218/AI/issues/224))
 - CI lint 작업에 파이썬 3.6 호환 정적 검사 추가(`vermin==1.9.2 --target=3.6-`, 대상 `base/hooks`·`tools`·`drafts/hooks`·`.claude/hooks`)([Issue #219](https://github.com/yanos0218/AI/issues/219))
   - 3.6 기기 없이도 3.7 이상 전용 기능이 들어오는 것을 막음. 실제 3.6 실행 확인은 여전히 RHEL 8 기기에서 함
 - `dev-release` 스킬 8단계에 Release 제목이 `vX.Y.Z - 한국어 제목` 꼴인지 확인하고 아니면 `gh release edit --title`로 보충하는 단계 추가([Issue #221](https://github.com/yanos0218/AI/issues/221))
@@ -25,6 +30,7 @@
 
 ### Fixed
 
+- `handoff-stale-check.sh`가 "닫음"으로 적은 HANDOFF 줄의 이슈를 낡은 참조로 오탐하던 것을 수정함([Issue #224](https://github.com/yanos0218/AI/issues/224))
 - 낡은 문서 표기 정정(README의 live-status 경로, `docs/github.md`의 Release 버전·공개 여부·Dependabot 알림, `docs/config-lifecycle.md`·`review-vs-official.md`·`repo-standard.md`·`PROGRESS.md`·`testing.md`, 0.16.0 항목의 MINOR 문구, [Issue #217](https://github.com/yanos0218/AI/issues/217))
 
 ## [0.16.0] - 2026-10-26
