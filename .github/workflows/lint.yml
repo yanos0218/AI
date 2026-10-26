@@ -71,3 +71,6 @@ jobs:
 
       - name: 문서 낡음 알림 훅 초안 시험
         run: bash tools/test-doc-drift.sh
+
+      - name: 쉬운 설명 지침 훅 초안 시험
+        run: bash tools/test-easy-explain.sh

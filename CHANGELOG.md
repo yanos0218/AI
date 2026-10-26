@@ -9,6 +9,7 @@
 
 ### Added
 
+- 쉬운 설명 요청 지침 주입 훅 초안 `drafts/hooks/easy-explain-hint.sh`·`easy_explain.py`와 시험 `tools/test-easy-explain.sh` 8건([Issue #222](https://github.com/yanos0218/AI/issues/222), 후보 출처 [Issue #220](https://github.com/yanos0218/AI/issues/220))
 - 문서 낡음 알림 훅 초안 `drafts/hooks/doc-drift-check.sh`·`doc_drift.py`와 시험 `tools/test-doc-drift.sh` 26건([Issue #219](https://github.com/yanos0218/AI/issues/219), 조사 [Issue #218](https://github.com/yanos0218/AI/issues/218))
   - 커밋 때 삭제·이름변경된 경로가 다른 `.md`에 남았는지, 올리는 `.md`의 상대 링크 대상이 있는지, `CHANGELOG.md` 릴리즈 섹션에 "다음 컷"이 남았는지를 경고만 함
   - 최근 커밋 50건 재생에서 AI 저장소는 2건 모두 실제 낡음(live-status 승격의 README 경로, v0.16.0 컷의 "다음 컷" 문구), OpenClaw·kolo-api는 0건, kolo_pwa는 `.gitignore` 대상 파일을 가리키는 링크 오탐 2건이 나와 그 경우를 제외하도록 고친 뒤 0건, 평균 약 90ms
