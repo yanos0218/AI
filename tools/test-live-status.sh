@@ -300,29 +300,34 @@ def tline(sid, minute, mid, cc, cr, kind):
         u['cache_creation'] = cr_obj
     ts = '2026-10-20T%02d:%02d:00.000Z' % (minute // 60, minute % 60)
     return json.dumps({'type': 'assistant', 'timestamp': ts, 'cwd': '/work/p', 'message': {'id': mid, 'model': 'claude-sonnet-5-5', 'content': [], 'usage': u}})
-def ttl_case(sid, kind, gaps):
-    os.makedirs(os.path.join(ud, 'p'), exist_ok=True)
-    path = os.path.join(ud, 'p', sid + '.jsonl')
-    ts0 = '2026-10-20T00:00:00.000Z'
-    lines = [json.dumps({'type': 'user', 'uuid': 'u-' + sid, 'timestamp': ts0, 'cwd': '/work/p', 'message': {'role': 'user', 'content': 'hello'}})]
-    minute = 1
-    lines.append(tline(sid, minute, sid + 'm0', 50000, 0, kind))
-    for i, g in enumerate(gaps):
-        minute += g
-        lines.append(tline(sid, minute, '%sm%d' % (sid, i + 1), 50000, 10, kind))
-    with open(path, 'w') as f:
-        f.write('\n'.join(lines) + '\n')
-    st = usage.Store()
-    st.add_file(path, 'main', sid, 'p')
-    return list(st.requests.values())[-1]
-r1 = ttl_case('aaaa1111', '1h', [10, 180])
-r('ttl_1h_rewrites_counted', r1['rewrites'] == 2)
-r('ttl_1h_ten_minutes_not_expired', r1['idle_rewrites'] == 1)
-r2 = ttl_case('bbbb2222', '5m', [10])
-r('ttl_5m_ten_minutes_expired', r2['rewrites'] == 1 and r2['idle_rewrites'] == 1)
-r3 = ttl_case('cccc3333', None, [10])
-r('ttl_unknown_uses_five_minutes', r3['rewrites'] == 1 and r3['idle_rewrites'] == 1)
-r('ttl_cache_ttl_helper', usage.cache_ttl({'cache_creation': {'ephemeral_1h_input_tokens': 5}}) == 3600 and usage.cache_ttl({'cache_creation': {'ephemeral_5m_input_tokens': 5}}) == 300 and usage.cache_ttl({}) is None and usage.cache_ttl({'cache_creation': {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': 0}}) is None)
+import datetime
+# 파이썬 3.6(Rocky Linux 8 기본)에는 fromisoformat이 없어 usage.py가 못 읽음, usage-dashboard는 Linux 제외 대상이라 이 구간만 생략
+if not hasattr(datetime.datetime, "fromisoformat"):
+    r('ttl_skipped_no_fromisoformat', True)
+else:
+    def ttl_case(sid, kind, gaps):
+        os.makedirs(os.path.join(ud, 'p'), exist_ok=True)
+        path = os.path.join(ud, 'p', sid + '.jsonl')
+        ts0 = '2026-10-20T00:00:00.000Z'
+        lines = [json.dumps({'type': 'user', 'uuid': 'u-' + sid, 'timestamp': ts0, 'cwd': '/work/p', 'message': {'role': 'user', 'content': 'hello'}})]
+        minute = 1
+        lines.append(tline(sid, minute, sid + 'm0', 50000, 0, kind))
+        for i, g in enumerate(gaps):
+            minute += g
+            lines.append(tline(sid, minute, '%sm%d' % (sid, i + 1), 50000, 10, kind))
+        with open(path, 'w') as f:
+            f.write('\n'.join(lines) + '\n')
+        st = usage.Store()
+        st.add_file(path, 'main', sid, 'p')
+        return list(st.requests.values())[-1]
+    r1 = ttl_case('aaaa1111', '1h', [10, 180])
+    r('ttl_1h_rewrites_counted', r1['rewrites'] == 2)
+    r('ttl_1h_ten_minutes_not_expired', r1['idle_rewrites'] == 1)
+    r2 = ttl_case('bbbb2222', '5m', [10])
+    r('ttl_5m_ten_minutes_expired', r2['rewrites'] == 1 and r2['idle_rewrites'] == 1)
+    r3 = ttl_case('cccc3333', None, [10])
+    r('ttl_unknown_uses_five_minutes', r3['rewrites'] == 1 and r3['idle_rewrites'] == 1)
+    r('ttl_cache_ttl_helper', usage.cache_ttl({'cache_creation': {'ephemeral_1h_input_tokens': 5}}) == 3600 and usage.cache_ttl({'cache_creation': {'ephemeral_5m_input_tokens': 5}}) == 300 and usage.cache_ttl({}) is None and usage.cache_ttl({'cache_creation': {'ephemeral_1h_input_tokens': 0, 'ephemeral_5m_input_tokens': 0}}) is None)
 os.environ.pop('USAGE_LOG_DIR', None)
 shutil.rmtree(ud, ignore_errors=True)
 
@@ -518,10 +523,14 @@ chk "팀이 화면 데이터에 들어감"                            'py teams_
 chk "화면에 에이전트 팀 구역이 있음"                        'grep -q "에이전트 팀" "${SK}/scripts/live.html" && grep -q "teamlist" "${SK}/scripts/live.html"'
 
 echo "== 2g. 캐시 만료 판정(기본 영역 usage.py)"
-chk "1시간형 캐시 기록이면 3시간 쉬면 만료, 10분은 만료 아님"  'py ttl_1h_rewrites_counted && py ttl_1h_ten_minutes_not_expired'
-chk "5분형 캐시 기록이면 10분 쉬어도 만료"                    'py ttl_5m_ten_minutes_expired'
-chk "캐시 종류를 모르는 옛 기록은 5분으로 판정"               'py ttl_unknown_uses_five_minutes'
-chk "캐시 수명 해석 함수가 1시간·5분·없음을 가림"              'py ttl_cache_ttl_helper'
+if py ttl_skipped_no_fromisoformat; then
+  echo "  건너뜀  파이썬 3.6은 fromisoformat이 없어 생략(usage-dashboard는 Linux 제외 대상, docs/testing.md)"
+else
+  chk "1시간형 캐시 기록이면 3시간 쉬면 만료, 10분은 만료 아님"  'py ttl_1h_rewrites_counted && py ttl_1h_ten_minutes_not_expired'
+  chk "5분형 캐시 기록이면 10분 쉬어도 만료"                    'py ttl_5m_ten_minutes_expired'
+  chk "캐시 종류를 모르는 옛 기록은 5분으로 판정"               'py ttl_unknown_uses_five_minutes'
+  chk "캐시 수명 해석 함수가 1시간·5분·없음을 가림"              'py ttl_cache_ttl_helper'
+fi
 
 echo "== 2d. 토큰 대시보드 화면 템플릿(기본 영역)"
 chk "보조 글자색 대비 4.5:1 이상(밝은 테마)"                'py usage_tpl_light_contrast'

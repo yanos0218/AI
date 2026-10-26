@@ -36,6 +36,9 @@ SessionStart 알림이나 PreToolUse 경고가 Claude에게 실제로 도착하�
   - 저장소를 임시 폴더에 clone하고 알림이 날 상태를 일부러 만듦(예: HANDOFF "지금" 절에 닫힌 이슈 번호). `gh`가 쓰이는 훅은 사본의 origin을 실제 저장소 주소로 바꿈. 사본에서 커밋·push하지 않음.
   - 사본 폴더에서 `claude -p --model sonnet --max-turns 1 "세션 시작할 때 훅이 준 알림이 있었으면 그대로 옮겨 써줘. 없으면 없다고만 해줘. 도구는 쓰지 마."`를 실행하고 답변에 알림 원문이 있는지 봄.
   - `claude`가 PATH에 없으면 VS Code 확장의 `~/.vscode/extensions/anthropic.claude-code-*/resources/native-binary/claude`를 씀.
+- `claude -p` 호출 주의
+  - `--allowedTools`는 뒤에 오는 값을 모두 도구 이름으로 읽어 프롬프트를 삼킴(`Error: Input must be provided either through stdin or as a prompt argument`).
+  - 프롬프트는 표준입력으로 넘기거나 `--allowedTools=Bash`처럼 `=`로 붙임([Issue #211](https://github.com/yanos0218/AI/issues/211), 2026-10-25).
 - PreToolUse 경고 시험
   - 변경을 먼저 `git add`로 스테이징한 뒤 대상 명령을 따로 실행해 경고가 결과에 붙는지 봄. 훅 스크립트는 사본에서 JSON 입력을 파이프로 넣어 출력과 종료 코드도 봄.
 - 시험이 맞게 열렸는지 확인함
@@ -60,6 +63,7 @@ Windows(Git Bash, bash 5, gawk)에서만 시험하면 Mac(bash 3.2, BSD 도구)�
   - CI 러너는 모두 3.7 이상이라 3.6 경로는 CI가 못 잡음. 파이썬 관련 변경 뒤에는 RHEL 8 계열 기기에서 `tools/test-install-merge.sh`와 `tools/test-hooks-py.sh`를 직접 돌림.
   - `tools/test-hooks-py.sh`의 입력 도우미는 `python3 -c`에 한글을 실어 3.6에서 `LC_ALL=C`로는 실행되지 않음(명령줄 해석 실패, 훅 결함 아님), `LC_ALL=C.UTF-8`로 돌림.
   - 예외는 `usage-dashboard`의 `fromisoformat`, Linux 제외 대상이라 그대로 둠.
+  - [tools/test-live-status.sh](../tools/test-live-status.sh)의 캐시 만료 판정 구간은 3.6에서 "건너뜀"으로 표시하고 나머지는 그대로 시험함([Issue #213](https://github.com/yanos0218/AI/issues/213)).
 - 빈 글롭은 `shopt -s nullglob`으로 건너뜀
   - 폴더가 비면 글롭이 문자 그대로 넘어감.
 - 임시 경로를 네이티브 프로그램에 직접 넘기지 않음
