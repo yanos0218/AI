@@ -25,6 +25,8 @@
 
 ### Changed
 
+- `tools/test-live-status.sh`가 파이썬 3.6(Rocky Linux 8 기본)에서 `usage.py`의 `fromisoformat` 예외로 중간에 죽어 약 30건이 연쇄 실패하던 것을 고침([Issue #213](https://github.com/yanos0218/AI/issues/213))
+  - 캐시 만료 판정 구간(2g)만 3.6에서 "건너뜀"으로 표시하고 나머지는 그대로 시험, 이 기기(Rocky Linux 8.10, 파이썬 3.6.8)에서 통과
 - 토큰 대시보드(`usage-dashboard`) 캐시 만료 판정과 화면 개선을 기본 영역에 반영([Issue #215](https://github.com/yanos0218/AI/issues/215), [Issue #214](https://github.com/yanos0218/AI/issues/214) 조사 근거)
   - `usage.py`가 "쉬어서 캐시 만료"를 5분 고정이 아니라 기록에 남은 캐시 종류(1시간형 3600초·5분형 300초, 모르면 5분)로 판정, 구독의 메인 대화는 1시간형이라 이전엔 과대 집계
   - 이전에 쌓은 기록의 쉰 뒤 횟수는 5분 기준 그대로(최근 30일 요약에서 점차 사라짐)
