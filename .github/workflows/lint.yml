@@ -68,3 +68,6 @@ jobs:
 
       - name: 실시간 현황 초안 시험
         run: bash tools/test-live-status.sh
+
+      - name: 문서 낡음 알림 훅 초안 시험
+        run: bash tools/test-doc-drift.sh

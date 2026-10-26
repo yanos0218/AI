@@ -7,6 +7,12 @@
 
 ## [Unreleased]
 
+### Added
+
+- 문서 낡음 알림 훅 초안 `drafts/hooks/doc-drift-check.sh`·`doc_drift.py`와 시험 `tools/test-doc-drift.sh` 25건([Issue #219](https://github.com/yanos0218/AI/issues/219), 조사 [Issue #218](https://github.com/yanos0218/AI/issues/218))
+  - 커밋 때 삭제·이름변경된 경로가 다른 `.md`에 남았는지, 올리는 `.md`의 상대 링크 대상이 있는지, `CHANGELOG.md` 릴리즈 섹션에 "다음 컷"이 남았는지를 경고만 함
+  - 최근 커밋 50건 재생에서 AI 저장소는 2건 모두 실제 낡음(live-status 승격의 README 경로, v0.16.0 컷의 "다음 컷" 문구), OpenClaw는 0건, 평균 약 90ms
+
 ### Fixed
 
 - 낡은 문서 표기 정정(README의 live-status 경로, `docs/github.md`의 Release 버전·공개 여부·Dependabot 알림, `docs/config-lifecycle.md`·`review-vs-official.md`·`repo-standard.md`·`PROGRESS.md`·`testing.md`, 0.16.0 항목의 MINOR 문구, [Issue #217](https://github.com/yanos0218/AI/issues/217))
