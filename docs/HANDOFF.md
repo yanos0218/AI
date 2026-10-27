@@ -13,7 +13,7 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 - 남은 확인은 다른 저장소 폴더의 대화형 `config-update`, Linux 갱신 때 8단계 기록 줄, 인라인 코드 확인 창, VS Code 멀티루트임.
 - 진행 중은 효과·실행 확인 대기인 것들임.
   - [#223](https://github.com/yanos0218/AI/issues/223)·[#224](https://github.com/yanos0218/AI/issues/224)는 한두 달 뒤 영어 비율·재발 여부, [#221](https://github.com/yanos0218/AI/issues/221)은 다음 컷에서 제목 확인 단계 동작.
-  - 문서 낡음 훅([#219](https://github.com/yanos0218/AI/issues/219), 2026-10-27 기본 승격 뒤 닫음)의 남은 확인은 [#227](https://github.com/yanos0218/AI/issues/227)(변수·가상 경로 한계)이고, 훅 초안 [#222](https://github.com/yanos0218/AI/issues/222)(쉬운 설명, CLI·VS Code 주입 확인, 영어 진행 설명 감지 훅은 `language` 효과를 본 뒤 결정), 승격은 사용자 요청 때. [#216](https://github.com/yanos0218/AI/issues/216)(에이전트 팀 파일 확인 대기), [#220](https://github.com/yanos0218/AI/issues/220)(self-audit 후보, 7번 보류), 조사 #209·#210·#212, 보류 [#5](https://github.com/yanos0218/AI/issues/5)·요구사항 미정 #7·#8.
+  - 문서 낡음 훅([#219](https://github.com/yanos0218/AI/issues/219))은 2026-10-27 기본 승격과 확인을 마쳐 닫음(한계는 [operating-flow.md](operating-flow.md)). 훅 초안 [#222](https://github.com/yanos0218/AI/issues/222)(쉬운 설명, CLI·VS Code 주입 확인, 영어 진행 설명 감지 훅은 `language` 효과를 본 뒤 결정), 승격은 사용자 요청 때. [#216](https://github.com/yanos0218/AI/issues/216)(에이전트 팀 파일 확인 대기), [#220](https://github.com/yanos0218/AI/issues/220)(self-audit 후보, 7번 보류), 조사 #209·#210·#212, 보류 [#5](https://github.com/yanos0218/AI/issues/5)·요구사항 미정 #7·#8.
 - 다음 세션 첫 행동은 `gh issue list --state open`으로 최신 상태 확인(이 요약보다 이슈 최신 댓글이 정확), 새 달 첫 세션이면 월 점검 제안([monthly-check.md](monthly-check.md)).
 
 ## 문서 지도 (작업 종류 → 읽을 문서)
