@@ -1,5 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+    "permissions": {
+    "allow": [
+      "Bash(bash tools/ci-wait.sh *)"
+    ]
+  },
   "//": "if 조건은 명령 이름만 쓴다(Bash(git *) 등). \"git commit *\"처럼 인자까지 쓰면 $()·heredoc 명령에서 조건과 상관없이 전부 발동해 같은 훅이 여러 개 동시에 떴다(Issue #147·#148)",
   "hooks": {
     "PreToolUse": [

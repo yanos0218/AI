@@ -26,6 +26,7 @@
 - 바꾼 것별 검사 명령, 시험 도구, 세 OS 호환 규칙, 설치 순서는 [docs/testing.md](docs/testing.md)(2026-09-29 분리).
 - 스크립트는 Mac(bash 3.2·BSD 도구·`python3`만)에서도 돌게 쓰고, `base/` 설치는 커밋한 뒤에 한다. 둘 다 2026-09-28~29에 실제 문제로 이어졌다.
 - 스킬 발동은 새 세션(`tools/test-skill.sh`)으로 시험한다. 같은 세션 안에서 직접 부르는 것은 발동 시험이 아니다.
+- push한 커밋의 CI는 전역 §4의 `gh run watch`를 직접 쓰지 않고 `bash tools/ci-wait.sh .`로 확인한다([docs/testing.md](docs/testing.md), [Issue #229](https://github.com/yanos0218/AI/issues/229)).
 
 ## 문서 규칙
 

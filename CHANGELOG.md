@@ -12,6 +12,7 @@
 - `tools/ci-wait.sh` 추가, 푸시한 커밋의 CI를 끝까지 기다려 통과·실패·미검증을 한 줄로 보고함([Issue #229](https://github.com/yanos0218/AI/issues/229))
   - push·pull_request 실행만 세고 이슈 이벤트 워크플로는 제외, 실행 0건은 종료 코드 2(미검증)
   - 시험 `tools/test-ci-wait.sh`(가짜 `gh`)를 CI 세 운영체제 시험에 추가
+  - 저장소 `.claude/settings.json`에 `Bash(bash tools/ci-wait.sh *)` 허용 규칙, 저장소 `CLAUDE.md` 검증 절에 사용 문구 추가, `base/`는 변경 없음([Issue #230](https://github.com/yanos0218/AI/issues/230))
 - 전역 지침(`base/claude-md/CLAUDE.md`)에 self-audit 후보 3건 반영([Issue #224](https://github.com/yanos0218/AI/issues/224), 후보 출처 [Issue #220](https://github.com/yanos0218/AI/issues/220))
   - §4 사용자에게 시키는 명령은 실행 위치와 확인 여부(확인함·미검증)를 함께 적음
   - §5 다음 작업을 추천하거나 대기 이유를 설명하기 전에 대상 이슈의 최신 댓글과 현재 파일 상태를 직접 확인함
