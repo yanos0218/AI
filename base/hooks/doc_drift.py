@@ -43,6 +43,12 @@ def git(root, *args):
     return p.stdout.decode('utf-8', 'replace') if p.returncode == 0 else ''
 
 
+def native_path(p):
+    """Git Bash가 쓰는 `/c/Users/...` 꼴을 윈도우 파이썬이 읽는 `C:/Users/...`로 바꾼다(윈도우 밖은 그대로)."""
+    m = re.match(r'^/([A-Za-z])(?:/(.*))?$', p) if os.name == 'nt' else None
+    return '%s:/%s' % (m.group(1).upper(), m.group(2) or '') if m else p
+
+
 def parse_command(cmd):
     """(commit이 있는지, widen, -C 경로). widen=1은 commit -a, 2는 git add가 같은 명령에 있음."""
     masked = hooklib.mask_heredocs(hooklib.quote_mask(cmd))
@@ -208,7 +214,7 @@ def main():
     commit, widen, cdir = parse_command(hooklib.command_of(inp))
     if not commit:
         return
-    base = os.path.join(cwd, cdir) if cdir else cwd
+    base = os.path.join(cwd, native_path(cdir)) if cdir else cwd
     root = git(base, 'rev-parse', '--show-toplevel').strip()
     if not root:
         return

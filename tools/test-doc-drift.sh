@@ -100,6 +100,12 @@ chk "따옴표 안의 git commit 글자는 무시"             '[[ -z "${out}" ]
 mk; put tools/old6.sh x; put docs/g.md '`tools/old6.sh`'; base; git -C "${R}" rm -q tools/old6.sh
 out="$(run "git -C $(winpath "${R}") commit -m x" "${T}")"
 chk "git -C <경로> commit: 다른 폴더에서도 그 저장소 검사" 'grep -q "docs/g.md:1" <<<"${out}"'
+wp="$(winpath "${R}")"
+if [[ "${wp}" =~ ^([A-Za-z]):/(.*)$ ]]; then
+  msys="/$(printf '%s' "${BASH_REMATCH[1]}" | tr '[:upper:]' '[:lower:]')/${BASH_REMATCH[2]}"
+  out="$(run "git -C ${msys} commit -m x" "${T}")"
+  chk "git -C /c/... (Git Bash 경로) commit: 윈도우에서도 저장소 검사" 'grep -q "docs/g.md:1" <<<"${out}"'
+fi
 mkdir -p "${T}/plain"
 out="$(run 'git commit -m x' "${T}/plain")"
 chk "git 저장소가 아닌 폴더: 조용함"               '[[ -z "${out}" ]]'
