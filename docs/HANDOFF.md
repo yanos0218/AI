@@ -6,7 +6,7 @@
 
 Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원본 저장소. 개발자가 아닌 사용자가 여러 스택의 프로젝트를 오가며 Claude에게 (1) 매번 같은 배경을 다시 설명하지 않고, (2) 멋대로 진행하거나 너무 자주 묻지 않게 하고, (3) 검증 없이 "됐다"는 말을 못 하게 하고, (4) 결론만 짧게 듣도록 만듦. 저장소별 규칙은 각 저장소에 두고 여기서는 **참조만** 함.
 
-## 지금 (2026-10-26) · 마지막 월 점검 2026-10-07([#171](https://github.com/yanos0218/AI/issues/171))
+## 지금 (2026-10-27) · 마지막 월 점검 2026-10-07([#171](https://github.com/yanos0218/AI/issues/171))
 
 - 변경 이력은 [CHANGELOG.md](../CHANGELOG.md) `[Unreleased]`, 기기별 설치 버전은 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태)이 원본(여기엔 적지 않음).
 - 2026-10-26에 v0.16.0을 컷함(MINOR). 웹(Claude.ai)은 Release zip 업로드와 Project instructions 갱신이 남음(사용자 작업). 이후 기본 영역에 `language: korean`([#223](https://github.com/yanos0218/AI/issues/223)), `dev-release` 제목 확인([#221](https://github.com/yanos0218/AI/issues/221)), 전역 지침 3건([#224](https://github.com/yanos0218/AI/issues/224))이 들어갔고 릴리즈 컷은 아직. Windows(`-29-g483936d`)·Linux(`-37-g743840d`)·Mac mini 모두 이 변경까지 설치함(2026-10-27).
