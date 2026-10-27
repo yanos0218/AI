@@ -34,6 +34,7 @@
 ### Fixed
 
 - `handoff-stale-check.sh`가 "닫음"으로 적은 HANDOFF 줄의 이슈를 낡은 참조로 오탐하던 것을 수정함([Issue #224](https://github.com/yanos0218/AI/issues/224))
+- `tools/test-easy-explain.sh`가 임시 폴더로 `CLAUDE_CONFIG_DIR`을 돌려, "깨진 JSON" 사례가 실제 `hook-errors.log`에 가짜 오류 줄을 남기던 것을 수정함([Issue #225](https://github.com/yanos0218/AI/issues/225))
 - 낡은 문서 표기 정정(README의 live-status 경로, `docs/github.md`의 Release 버전·공개 여부·Dependabot 알림, `docs/config-lifecycle.md`·`review-vs-official.md`·`repo-standard.md`·`PROGRESS.md`·`testing.md`, 0.16.0 항목의 MINOR 문구, [Issue #217](https://github.com/yanos0218/AI/issues/217))
 
 ## [0.16.0] - 2026-10-26

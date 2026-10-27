@@ -3,6 +3,8 @@
 set -u
 here="$(cd "$(dirname "${0}")/.." && pwd)"
 hook="${here}/drafts/hooks/easy-explain-hint.sh"
+T="$(mktemp -d)"; trap 'rm -rf "${T}"' EXIT
+export CLAUDE_CONFIG_DIR="${T}/cfg"; mkdir -p "${CLAUDE_CONFIG_DIR}" # 깨진 JSON 사례가 실제 hook-errors.log를 오염시키지 않게 격리(Issue #225)
 pass=0; fail=0
 check() { # 이름 입력 기대(hit|none)
   local out; out="$(printf '%s' "${2}" | bash "${hook}")"
