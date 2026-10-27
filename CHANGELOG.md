@@ -39,7 +39,7 @@
 
 - `handoff-stale-check.sh`가 "닫음"으로 적은 HANDOFF 줄의 이슈를 낡은 참조로 오탐하던 것을 수정함([Issue #224](https://github.com/yanos0218/AI/issues/224))
 - `tools/test-easy-explain.sh`가 임시 폴더로 `CLAUDE_CONFIG_DIR`을 돌려, "깨진 JSON" 사례가 실제 `hook-errors.log`에 가짜 오류 줄을 남기던 것을 수정함([Issue #225](https://github.com/yanos0218/AI/issues/225))
-- `tools/ci-wait.sh`가 결론이 빈 job(끝나지 않음)이 있어도 "CI 통과"로 보고하던 것을 수정함, 결과 구분자를 탭에서 `|`로 바꾸고 빈 결론은 `미완료`로 세어 통과에서 제외, 시험 `tools/test-ci-wait.sh`에 사례 추가([Issue #232](https://github.com/yanos0218/AI/issues/232))
+- `tools/ci-wait.sh`가 결론이 빈 job(끝나지 않음)이 있어도 "CI 통과"로 보고하던 것을 수정함, 결과 구분자를 탭에서 `|`로 바꾸고 빈 결론은 `미완료`로 세어 통과에서 제외, `gh run watch`가 실행이 끝나기 전에 돌아오면 상태가 `completed`가 될 때까지 최대 5번 다시 기다리고 끝내 안 끝나면 통과 아님, 시험 `tools/test-ci-wait.sh`에 사례 추가([Issue #232](https://github.com/yanos0218/AI/issues/232))
 - `docs/review-vs-official.md`의 읽기 차단 서술을 정정함, `Bash` 읽기는 `-p`에서만 거부되고 대화형(Windows·Linux)에서는 막히지 않음([Issue #228](https://github.com/yanos0218/AI/issues/228))
 - 낡은 문서 표기 정정(README의 live-status 경로, `docs/github.md`의 Release 버전·공개 여부·Dependabot 알림, `docs/config-lifecycle.md`·`review-vs-official.md`·`repo-standard.md`·`PROGRESS.md`·`testing.md`, 0.16.0 항목의 MINOR 문구, [Issue #217](https://github.com/yanos0218/AI/issues/217))
 

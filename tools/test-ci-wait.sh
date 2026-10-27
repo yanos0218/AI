@@ -31,7 +31,11 @@ case "$1 $2" in
     n=$(( $(cat "${FAKE}/listcount" 2>/dev/null || echo 0) + 1 )); echo "${n}" > "${FAKE}/listcount"
     if [[ -f "${FAKE}/list.${n}" ]]; then cat "${FAKE}/list.${n}"; elif [[ -f "${FAKE}/list" ]]; then cat "${FAKE}/list"; fi ;;
   "run watch") exit "$(cat "${FAKE}/$3.watchrc" 2>/dev/null || echo 0)" ;;
-  "run view") cat "${FAKE}/$3.view" ;;
+  "run view")
+    if [[ "$*" == *"--json status"* ]]; then
+      n=$(( $(cat "${FAKE}/$3.stcount" 2>/dev/null || echo 0) + 1 )); echo "${n}" > "${FAKE}/$3.stcount"
+      if [[ -f "${FAKE}/$3.status.${n}" ]]; then cat "${FAKE}/$3.status.${n}"; else echo completed; fi
+    else cat "${FAKE}/$3.view"; fi ;;
 esac
 EOF
 chmod +x "${BIN}/gh"
@@ -107,6 +111,14 @@ reset; printf '100\tpush\n' > "${FAKE}/list"; view 100 success success:lint :tes
 out="$(run)"; rc=$?
 chk "run이 success여도 빈 결론 job이 있으면 종료 코드 1, CI 통과 문구 없음" '[[ "${rc}" = 1 ]] && ! grep -q "CI 통과" <<< "${out}"'
 chk "미완료 job 이름이 실패 목록에 들어감"           'grep -q "성공·건너뜀 아님 test" <<< "${out}"'
+
+echo "== 6-4. watch가 끝나기 전에 돌아오면 다시 기다림 (Issue #232)"
+reset; printf '100\tpush\n' > "${FAKE}/list"; view 100 success success:lint success:test; echo in_progress > "${FAKE}/100.status.1"
+out="$(run)"; rc=$?
+chk "처음 상태가 in_progress면 watch를 다시 함, 통과"   '[[ "${rc}" = 0 ]] && [[ "$(grep -c "^run watch 100 " "${CALLS}")" = 2 ]]'
+reset; printf '100\tpush\n' > "${FAKE}/list"; view 100 success success:lint; for i in 1 2 3 4 5 6 7 8; do echo in_progress > "${FAKE}/100.status.${i}"; done
+out="$(run)"; rc=$?
+chk "끝내 안 끝나면 다시 하는 횟수에서 멈추고 통과 아님"  '[[ "${rc}" = 1 ]] && ! grep -q "CI 통과" <<< "${out}" && [[ "$(grep -c "^run watch 100 " "${CALLS}")" -le 5 ]]'
 
 echo "== 7. 결과를 읽지 못함 / job 0개"
 reset; printf '100\tpush\n' > "${FAKE}/list"; : > "${FAKE}/100.view"

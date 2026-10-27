@@ -32,7 +32,17 @@ runs=0; bad_runs=0; jobs=0; jobs_ok=0; jobs_skip=0; failed=""; first_bad=""
 for id in ${ids}; do
   runs=$((runs + 1))
   # 실패하면 watch가 0이 아닌 값으로 끝난다. 판정은 아래 view의 결과로 하므로 값은 버린다
-  gh run watch "${id}" --exit-status > /dev/null 2>&1
+  # watch가 실행이 끝나기 전에 돌아온 적이 있어(Issue #232) 상태가 completed가 될 때까지 최대 5번 다시 기다린다
+  st=""
+  for _ in 1 2 3 4 5; do
+    gh run watch "${id}" --exit-status > /dev/null 2>&1
+    st="$(gh run view "${id}" --json status --jq .status | tr -d '\r')"
+    [[ "${st}" = "completed" ]] && break
+  done
+  if [[ "${st}" != "completed" ]]; then
+    echo "[${id}] 끝나지 않음(상태 ${st:-읽지 못함})"
+    bad_runs=$((bad_runs + 1)); [[ -z "${first_bad}" ]] && first_bad="${id}"
+  fi
   out="$(gh run view "${id}" --json workflowName,conclusion,jobs --jq \
     '"run|" + .workflowName + "|" + (.conclusion | tostring), (.jobs[] | "job|" + (.conclusion | tostring) + "|" + .name)' | tr -d '\r')"
   if [[ -z "${out}" ]]; then
