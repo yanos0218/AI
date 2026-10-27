@@ -24,7 +24,7 @@ flowchart LR
 | --- | --- | --- | --- |
 | 1 기억·규칙 | 항상 깔리는 지침 | [base/claude-md/CLAUDE.md](../base/claude-md/CLAUDE.md), [base/rules/](../base/rules/), 저장소별 `CLAUDE.md`, auto memory | 조언(안 지킬 수 있음) |
 | 2 업무 매뉴얼 | 필요할 때만 불러오는 절차 | [base/skills/](../base/skills/) 8개(`_template` 제외) | 조언, 설명이 맞을 때 발동 |
-| 3 제어·보안 | 막거나 기록하는 장치 | [base/hooks/](../base/hooks/) 셸 입구 11개, [base/settings.example.json](../base/settings.example.json)의 권한(허용 25·차단 7) | 강제(훅 exit 2, 권한 차단)<br>훅은 가드레일이지 보안 경계가 아님, 샌드박스는 보류 |
+| 3 제어·보안 | 막거나 기록하는 장치 | [base/hooks/](../base/hooks/) 셸 입구 12개, [base/settings.example.json](../base/settings.example.json)의 권한(허용 25·차단 7) | 강제(훅 exit 2, 권한 차단)<br>훅은 가드레일이지 보안 경계가 아님, 샌드박스는 보류 |
 | 4 역할 분담 | 격리된 컨텍스트에서 맡기는 일 | [base/agents/](../base/agents/) 3개(`auditor`·`researcher`·`verifier`) | 조언, `verifier`만 훅으로 쓰기 차단 |
 | 5 표준 배포 | 여러 기기에 같은 설정을 깔기 | 플러그인은 미도입<br>대신 [tools/install.sh](../tools/install.sh)·[tools/pack.sh](../tools/pack.sh)·[tools/check-install.sh](../tools/check-install.sh)·`config-update` 스킬 | 대조로 확인(`check-install.sh`) |
 
@@ -66,7 +66,7 @@ flowchart LR
 | --- | --- | --- |
 | 세션 시작 | `session-start-check.sh`<br>설치 버전·저장소 표준·self-audit 안내·대량 조회 누적 확인 | `handoff-stale-check.sh`<br>HANDOFF "지금" 절이 닫힌 이슈를 가리키면 알림, 정상이면 출력 없음<br>`progress-stale-check.sh`<br>PROGRESS §0 이 기기 행에 설치 버전이 없으면 알림, 정상이면 출력 없음 |
 | 컴팩션 직전·직후 | `compact-snapshot.sh`·`compact-snapshot-show.sh`<br>git 상태·최근 검사 명령 저장 후 보여줌 | - |
-| 명령 실행 전(Bash) | `git-guardrails.sh`<br>push·삭제 등 확인, 모든 명령<br>`gh-throttle.sh`<br>GitHub 쓰기 명령 간격 조절, `gh`·`bash` 명령만<br>`format-guard.sh`<br>커밋·이슈·PR·릴리즈 본문 형식 검사, 위반이면 막음, `git`·`gh` 명령만 | `baseline-guard.sh`<br>`base/` 쓰기 확인, 모든 명령<br>`pre-commit-check.sh`<br>커밋 전 문서·스크립트 검사, 이슈 번호 확인, `git`·`bash` 명령만 |
+| 명령 실행 전(Bash) | `git-guardrails.sh`<br>push·삭제 등 확인, 모든 명령<br>`gh-throttle.sh`<br>GitHub 쓰기 명령 간격 조절, `gh`·`bash` 명령만<br>`format-guard.sh`<br>커밋·이슈·PR·릴리즈 본문 형식 검사, 위반이면 막음, `git`·`gh` 명령만<br>`doc-drift-check.sh`<br>커밋 때 사라진 경로 참조·깨진 링크·CHANGELOG "다음 컷" 알림, 경고만, `git` 명령만, 경로를 셸 변수로 쓴 `git -C`는 못 잡음 | `baseline-guard.sh`<br>`base/` 쓰기 확인, 모든 명령<br>`pre-commit-check.sh`<br>커밋 전 문서·스크립트 검사, 이슈 번호 확인, `git`·`bash` 명령만 |
 | 파일 편집 전(Edit·Write) | - | `baseline-guard.sh` |
 | 명령·편집 뒤 | `config-changelog.sh`<br>`~/.claude` 설정 변경 기록, 편집은 `~/.claude` 파일만, 명령은 `.claude`가 든 것만, 백그라운드<br>`bulk-read-log.sh`<br>대량 조회 기록, 백그라운드<br>`md-format-check.sh`<br>`.md`에 새로 쓴 부분의 목록 줄바꿈·문장형 끝맺음(음슴체) 검사, `.md` 편집만, 지침 문서(`CLAUDE.md`·`rules/`·`skills/`·`agents/`)와 `.claude/no-eumseum-check`가 있는 저장소는 문장형 검사 제외 | - |
 | 답변 끝 | `usage-dashboard` 스킬의 `usage.sh hook`<br>토큰 사용 기록, 켜 뒀을 때만, 백그라운드 | `session-end-check.sh`<br>문서 갱신 누락 안내 |

@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# 문서 낡음 알림 훅 초안(drafts/hooks/doc-drift-check.sh) 시험(Issue #219). 임시 git 저장소에서 사례별로 경고가 나오고 안 나오는지 확인한다.
+# 문서 낡음 알림 훅(base/hooks/doc-drift-check.sh) 시험(Issue #219). 임시 git 저장소에서 사례별로 경고가 나오고 안 나오는지 확인한다.
 # 훅 입력은 JSON을 파이프로 넣는다. 실제 Claude 세션 동작은 승격 때 따로 확인한다.
 #   bash tools/test-doc-drift.sh
 # shellcheck disable=SC2034  # out·rc는 chk의 eval 문자열 안에서 씀
 set -u
 cd "$(dirname "${0}")/.." || exit 1
-HOOK="$(pwd)/drafts/hooks/doc-drift-check.sh"
+HOOK="$(pwd)/base/hooks/doc-drift-check.sh"
 T="$(mktemp -d)"; trap 'rm -rf "${T}"' EXIT
 export CLAUDE_CONFIG_DIR="${T}/cfg"; mkdir -p "${CLAUDE_CONFIG_DIR}"
 if hash python 2>/dev/null; then PY=python; else PY=python3; fi

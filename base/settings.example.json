@@ -93,6 +93,12 @@
             "if": "Bash(gh *)",
             "command": "bash ~/.claude/hooks/format-guard.sh",
             "timeout": 30
+          },
+          {
+            "type": "command",
+            "if": "Bash(git *)",
+            "command": "bash ~/.claude/hooks/doc-drift-check.sh",
+            "timeout": 30
           }
         ]
       },

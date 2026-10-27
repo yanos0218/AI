@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""문서 낡음 알림 훅 본체 초안(Issue #219). doc-drift-check.sh가 `git commit`일 때만 부른다.
+"""문서 낡음 알림 훅 본체(Issue #219). doc-drift-check.sh가 `git commit`일 때만 부른다.
 
 저장소 구조를 가정하지 않고 이번 커밋의 변경 목록에서 출발한다. 경고만 하고 커밋은 막지 않는다.
   1. 삭제·이름변경된 경로(디렉터리가 통째로 사라졌으면 폴더 단위)가 추적 중인 다른 .md에 남았는지(백틱·본문·상대 링크)
@@ -19,7 +19,6 @@ from urllib.parse import unquote
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-sys.path.append(os.path.join(HERE, '..', '..', 'base', 'hooks'))   # 초안 위치에서는 base/hooks의 hooklib를 쓴다. 승격하면 같은 폴더에 있다
 import hooklib  # noqa: E402
 
 HOOK = 'doc-drift-check'
