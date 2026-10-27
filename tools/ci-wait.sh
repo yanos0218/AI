@@ -26,6 +26,7 @@ if [[ -z "${ids}" ]]; then
   exit 2
 fi
 
+# 구분자를 탭이 아닌 |로 쓴다. 탭은 read가 연속된 것을 하나로 합쳐, 결론이 빈 job의 칸이 밀려 통과로 셌다(Issue #232)
 # 실행이 success면 그 안의 skipped job(조건부 job)은 정상이다. 실행 단위 skipped·cancelled는 통과로 세지 않는다
 runs=0; bad_runs=0; jobs=0; jobs_ok=0; jobs_skip=0; failed=""; first_bad=""
 for id in ${ids}; do
@@ -33,13 +34,13 @@ for id in ${ids}; do
   # 실패하면 watch가 0이 아닌 값으로 끝난다. 판정은 아래 view의 결과로 하므로 값은 버린다
   gh run watch "${id}" --exit-status > /dev/null 2>&1
   out="$(gh run view "${id}" --json workflowName,conclusion,jobs --jq \
-    '"run\t" + .workflowName + "\t" + (.conclusion | tostring), (.jobs[] | "job\t" + (.conclusion | tostring) + "\t" + .name)' | tr -d '\r')"
+    '"run|" + .workflowName + "|" + (.conclusion | tostring), (.jobs[] | "job|" + (.conclusion | tostring) + "|" + .name)' | tr -d '\r')"
   if [[ -z "${out}" ]]; then
     echo "[${id}] 결과를 읽지 못함"
     bad_runs=$((bad_runs + 1)); [[ -z "${first_bad}" ]] && first_bad="${id}"
     continue
   fi
-  while IFS=$'\t' read -r kind a b; do
+  while IFS='|' read -r kind a b; do
     if [[ "${kind}" = "run" ]]; then
       echo "[${a}] ${b}"
       if [[ "${b}" != "success" ]]; then
@@ -47,6 +48,7 @@ for id in ${ids}; do
       fi
     else
       jobs=$((jobs + 1))
+      [[ -z "${a}" ]] && a="미완료"
       printf '  %-10s %s\n' "${a}" "${b}"
       case "${a}" in
         success) jobs_ok=$((jobs_ok + 1)) ;;

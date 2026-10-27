@@ -41,7 +41,7 @@ reset() { rm -f "${FAKE}"/* "${CALLS}"; : > "${CALLS}"; }
 run() { PATH="${BIN}:${PATH}" bash "${SCRIPT}" "${REPO}" 2>&1; }
 view() { # $1=ID $2=run 결론, 나머지는 "결론:이름" job들
   local id="$1" c="$2"; shift 2
-  { printf 'run\t워크플로%s\t%s\n' "${id}" "${c}"; for j in "$@"; do printf 'job\t%s\t%s\n' "${j%%:*}" "${j#*:}"; done; } > "${FAKE}/${id}.view"
+  { printf 'run|워크플로%s|%s\n' "${id}" "${c}"; for j in "$@"; do printf 'job|%s|%s\n' "${j%%:*}" "${j#*:}"; done; } > "${FAKE}/${id}.view"
 }
 
 echo "== 1. 전부 성공"
@@ -101,6 +101,12 @@ chk "push 실행만 watch함, 통과"                       '[[ "${rc}" = 0 ]] &
 reset; printf '300\tissues\n' > "${FAKE}/list"
 out="$(run)"; rc=$?
 chk "이슈 이벤트 실행뿐이면 0건과 같이 미검증(종료 코드 2)" '[[ "${rc}" = 2 ]] && grep -q "CI 미검증" <<< "${out}"'
+
+echo "== 6-3. 결론이 빈 job(끝나지 않음)은 통과로 세지 않음 (Issue #232)"
+reset; printf '100\tpush\n' > "${FAKE}/list"; view 100 success success:lint :test
+out="$(run)"; rc=$?
+chk "run이 success여도 빈 결론 job이 있으면 종료 코드 1, CI 통과 문구 없음" '[[ "${rc}" = 1 ]] && ! grep -q "CI 통과" <<< "${out}"'
+chk "미완료 job 이름이 실패 목록에 들어감"           'grep -q "성공·건너뜀 아님 test" <<< "${out}"'
 
 echo "== 7. 결과를 읽지 못함 / job 0개"
 reset; printf '100\tpush\n' > "${FAKE}/list"; : > "${FAKE}/100.view"
