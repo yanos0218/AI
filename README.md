@@ -73,6 +73,7 @@
 | [tools/check-docs.sh](tools/check-docs.sh) | 문서 줄 수 상한과 필수 파일 검사 (CI와 로컬 공용)<br>[tools/check-doc-sync.py](tools/check-doc-sync.py)를 불러 문서 갱신 누락(존재·깨진 참조·개수)도 검사 |
 | [tools/check-doc-sync.py](tools/check-doc-sync.py) | 문서 갱신 누락 검사<br>도구·훅·스킬·에이전트·문서가 README·operating-flow에 있는지, 문서 속 경로가 실제로 있는지, 개수 표기가 맞는지 |
 | [tools/check-install.sh](tools/check-install.sh) | 설치본 `~/.claude`가 `base/`와 같은지, 프로젝트마다 쌓인 권한·설정 이력은 무엇인지 보고 |
+| [tools/ci-wait.sh](tools/ci-wait.sh)<br>[tools/test-ci-wait.sh](tools/test-ci-wait.sh) | 푸시한 커밋의 CI를 끝까지 기다려 통과 여부를 한 줄로 보고<br>push·pull_request 실행만 세고 0건은 미검증(종료 코드 2), 시험은 가짜 `gh`로 판정 규칙 확인 |
 | [tools/settings_merge.py](tools/settings_merge.py) | `install.sh`·`check-install.sh`가 쓰는 settings.json 병합·대조 규칙<br>사용자 값 보존, 변경 시 백업 |
 | [tools/test-install-merge.sh](tools/test-install-merge.sh) | 설치 병합 시험<br>임시 폴더에서 사용자 allow·훅·고친 스킬이 보존되고 백업되는지, 재실행·`--dry-run` 결과 확인 |
 | [tools/measure-model.sh](tools/measure-model.sh) | 모델별 구독 한도 소모 측정<br>같은 읽기 전용 작업을 모델마다 돌려 5시간·주간 한도 사용률과 정답률 비교, 한도를 쓰므로 실행 전 확인 |

@@ -82,3 +82,6 @@ jobs:
 
       - name: 쉬운 설명 지침 훅 초안 시험
         run: bash tools/test-easy-explain.sh
+
+      - name: CI 결과 확인 스크립트 시험
+        run: bash tools/test-ci-wait.sh
