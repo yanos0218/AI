@@ -10,7 +10,7 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 
 - 변경 이력은 [CHANGELOG.md](../CHANGELOG.md) `[Unreleased]`, 기기별 설치 버전은 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태)이 원본(여기엔 적지 않음).
 - 2026-10-26에 v0.16.0을 컷함(MINOR). 웹(Claude.ai)은 Release zip 업로드와 Project instructions 갱신이 남음(사용자 작업). 이후 기본 영역에 `language: korean`([#223](https://github.com/yanos0218/AI/issues/223)), `dev-release` 제목 확인([#221](https://github.com/yanos0218/AI/issues/221)), 전역 지침 3건([#224](https://github.com/yanos0218/AI/issues/224))이 들어갔고 릴리즈 컷은 아직. Windows(`-29-g483936d`)·Linux(`-37-g743840d`)·Mac mini 모두 이 변경까지 설치함(2026-10-27).
-- 남은 확인은 Mac mini의 다른 저장소 폴더 대화형 `config-update`, Linux 대화형 인라인 코드 재시험임(Windows의 대화형·멀티루트는 [#195](https://github.com/yanos0218/AI/issues/195) 댓글 2026-10-27에 확인).
+- 남은 확인은 Mac mini의 다른 저장소 폴더 대화형 `config-update`, Linux 대화형 `Bash`가 읽기 차단을 건너뛰는 불일치(2026-10-27, `-p`에선 거부, Windows·Mac 대화형 재현 확인 대기)임([#195](https://github.com/yanos0218/AI/issues/195) 댓글, Windows의 대화형·멀티루트는 2026-10-27에 확인).
 - 진행 중은 효과·실행 확인 대기인 것들임.
   - [#223](https://github.com/yanos0218/AI/issues/223)·[#224](https://github.com/yanos0218/AI/issues/224)는 한두 달 뒤 영어 비율·재발 여부, [#221](https://github.com/yanos0218/AI/issues/221)은 다음 컷에서 제목 확인 단계 동작.
   - 문서 낡음 훅([#219](https://github.com/yanos0218/AI/issues/219))은 2026-10-27 기본 승격과 확인을 마쳐 닫음(한계는 [operating-flow.md](operating-flow.md)). 훅 초안 [#222](https://github.com/yanos0218/AI/issues/222)(쉬운 설명, CLI·VS Code 주입 확인, 영어 진행 설명 감지 훅은 `language` 효과를 본 뒤 결정), 승격은 사용자 요청 때. [#216](https://github.com/yanos0218/AI/issues/216)(에이전트 팀 파일 확인 대기), [#220](https://github.com/yanos0218/AI/issues/220)(self-audit 후보, 7번 보류), 조사 #209·#210·#212, 보류 [#5](https://github.com/yanos0218/AI/issues/5)·요구사항 미정 #7·#8.
