@@ -7,6 +7,7 @@
 - 기본은 Sonnet 5.5, effort는 medium
   - 원본은 [base/settings.example.json](../base/settings.example.json)의 `model`·`effortLevel`·`modelSettings`
   - 같은 방식으로 `language: korean`(응답 언어)도 맞춤([Issue #223](https://github.com/yanos0218/AI/issues/223), 영어 진행 설명 줄이기)
+    - 효과는 [tools/eng-scan.py](../tools/eng-scan.py)로 월별 영어 우세 블록 비율을 비교함, 2026-10-28 기준선은 9월 5.3%·10월 3.5%(10월 26일 반영 전후가 섞임)
   - `tools/install.sh`가 설치할 때마다 이 값으로 맞춤(기기에서 `/model`로 바꿔 둔 값도 되돌아옴)
 - 모델은 별칭(`sonnet`)이 아니라 전체 ID로 적음
   - 별칭이 가리키는 버전이 CLI 버전마다 달라, 기기 간 차이의 원인이 되기 때문

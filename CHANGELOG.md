@@ -13,6 +13,9 @@
   - push·pull_request 실행만 세고 이슈 이벤트 워크플로는 제외, 실행 0건은 종료 코드 2(미검증)
   - 시험 `tools/test-ci-wait.sh`(가짜 `gh`)를 CI 세 운영체제 시험에 추가
   - 저장소 `.claude/settings.json`에 `Bash(bash tools/ci-wait.sh *)` 허용 규칙, 저장소 `CLAUDE.md` 검증 절에 사용 문구 추가, `base/`는 변경 없음([Issue #230](https://github.com/yanos0218/AI/issues/230))
+- `tools/eng-scan.py` 추가, 대화 기록의 진행 설명 중 영어 우세 블록 비율을 월별로 집계함([Issue #222](https://github.com/yanos0218/AI/issues/222), 효과 측정 대상 [Issue #223](https://github.com/yanos0218/AI/issues/223))
+  - 2026-10-28 기준선은 9월 5.3%(599블록 중 32), 10월 3.5%(770블록 중 27), 합계 4.3%
+  - 파일명 나열 같은 오탐이 섞여 절대값보다 월별 추세로 봄
 - 전역 지침(`base/claude-md/CLAUDE.md`)에 self-audit 후보 3건 반영([Issue #224](https://github.com/yanos0218/AI/issues/224), 후보 출처 [Issue #220](https://github.com/yanos0218/AI/issues/220))
   - §4 사용자에게 시키는 명령은 실행 위치와 확인 여부(확인함·미검증)를 함께 적음
   - §5 다음 작업을 추천하거나 대기 이유를 설명하기 전에 대상 이슈의 최신 댓글과 현재 파일 상태를 직접 확인함
