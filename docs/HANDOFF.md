@@ -9,7 +9,7 @@ Claude를 개인용으로 원활하고 효율적으로 쓰기 위한 설정 원�
 ## 지금 (2026-10-26) · 마지막 월 점검 2026-10-07([#171](https://github.com/yanos0218/AI/issues/171))
 
 - 변경 이력은 [CHANGELOG.md](../CHANGELOG.md) `[Unreleased]`, 기기별 설치 버전은 [PROGRESS.md §0](PROGRESS.md#0-자산-현황--단계와-배포-상태)이 원본(여기엔 적지 않음).
-- 2026-10-26에 v0.16.0을 컷함(MINOR). 웹(Claude.ai)은 Release zip 업로드와 Project instructions 갱신이 남음(사용자 작업). 이후 기본 영역에 `language: korean`([#223](https://github.com/yanos0218/AI/issues/223)), `dev-release` 제목 확인([#221](https://github.com/yanos0218/AI/issues/221)), 전역 지침 3건([#224](https://github.com/yanos0218/AI/issues/224))이 들어갔고 릴리즈 컷은 아직. Windows(`-20-g567cf70`)·Linux(`-21-g996440b`)·Mac mini 모두 이 변경까지 설치함(2026-10-27).
+- 2026-10-26에 v0.16.0을 컷함(MINOR). 웹(Claude.ai)은 Release zip 업로드와 Project instructions 갱신이 남음(사용자 작업). 이후 기본 영역에 `language: korean`([#223](https://github.com/yanos0218/AI/issues/223)), `dev-release` 제목 확인([#221](https://github.com/yanos0218/AI/issues/221)), 전역 지침 3건([#224](https://github.com/yanos0218/AI/issues/224))이 들어갔고 릴리즈 컷은 아직. Windows(`-29-g483936d`)·Linux(`-21-g996440b`)·Mac mini 모두 이 변경까지 설치함(2026-10-27).
 - 남은 확인은 다른 저장소 폴더의 대화형 `config-update`, Linux 갱신 때 8단계 기록 줄, 인라인 코드 확인 창, VS Code 멀티루트임.
 - 진행 중은 효과·실행 확인 대기인 것들임.
   - [#223](https://github.com/yanos0218/AI/issues/223)·[#224](https://github.com/yanos0218/AI/issues/224)는 한두 달 뒤 영어 비율·재발 여부, [#221](https://github.com/yanos0218/AI/issues/221)은 다음 컷에서 제목 확인 단계 동작.
