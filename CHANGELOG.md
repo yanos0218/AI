@@ -38,6 +38,11 @@
   - 윈도우에서 `git -C /c/Users/...`(Git Bash 경로)를 윈도우 파이썬이 못 읽어 경고가 조용히 빠지던 것을 `C:/Users/...`로 바꿔 읽게 고침(2026-10-27 Windows 시험에서 발견), 시험 1건 추가
   - PowerShell에는 등록하지 않음(Bash만)
 
+### Changed
+
+- `base/agents/auditor.md` 모델 변경([Issue #236](https://github.com/yanos0218/AI/issues/236))
+  - Sonnet에서 Haiku로 낮춤(`/usage` 경고 "단순 서브에이전트에 더 싼 모델" 반영, 읽기 전용 검색이라 위험이 작음)
+
 ### Fixed
 
 - `handoff-stale-check.sh`가 "닫음"으로 적은 HANDOFF 줄의 이슈를 낡은 참조로 오탐하던 것을 수정함([Issue #224](https://github.com/yanos0218/AI/issues/224))

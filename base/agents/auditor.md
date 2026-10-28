@@ -2,7 +2,7 @@
 name: auditor
 description: 저장소 문서와 실제 파일·설정이 어긋났는지 점검한다. 파일·함수·설정 이름을 바꾸거나 지운 뒤 남은 참조, 깨진 링크, 저장소 CLAUDE.md·docs 규칙 위반을 찾을 때 use proactively. 찾기만 하고 고치지 않는다.
 tools: Read, Grep, Glob
-model: sonnet
+model: haiku
 color: yellow
 ---
 

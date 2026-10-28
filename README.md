@@ -26,7 +26,7 @@
 | [base/skills/live-status/](base/skills/live-status/SKILL.md) | "실시간 대시보드 켜줘 / 지금 돌고 있는 세션 보여줘"에 발동. `claude agents --json`과 서브에이전트 기록을 읽어 세션·서브에이전트 구조도와 타임라인을 로컬 웹 화면으로 보여 줌(토큰 소모 없음) |
 | [base/skills/usage-dashboard/](base/skills/usage-dashboard/SKILL.md) | "토큰 대시보드 켜줘 / 대시보드 열어줘"에 발동. 요청할 때만 켜는 토큰 사용 기록(Stop 훅)과 로컬 대시보드, Windows·Mac 전용 |
 | [base/hooks/](base/hooks/) | 전역 훅 12개<br>위험 명령 확인 `git-guardrails.sh`, GitHub 쓰기 간격 `gh-throttle.sh`, 커밋·이슈·문서 형식 검사 `format-guard.sh`·`md-format-check.sh`, 커밋 때 문서 낡음 알림 `doc-drift-check.sh`, 상태줄 `statusline.sh`, 설정 변경·대량 조회 기록, 컴팩션 안전망, 세션 시작 점검, verifier 차단. 언제 도는지는 [docs/operating-flow.md](docs/operating-flow.md#훅이-도는-시점) |
-| [base/agents/](base/agents/) | 용도별 서브에이전트<br>조사 `researcher`(Sonnet, 읽기·웹만), 문서·참조 점검 `auditor`(Sonnet, 읽기만), 검사 실행 `verifier`(Haiku, 쓰기·커밋 명령은 `verifier-guard.sh`가 차단). `~/.claude/agents/`에 설치 |
+| [base/agents/](base/agents/) | 용도별 서브에이전트<br>조사 `researcher`(Sonnet, 읽기·웹만), 문서·참조 점검 `auditor`(Haiku, 읽기만), 검사 실행 `verifier`(Haiku, 쓰기·커밋 명령은 `verifier-guard.sh`가 차단). `~/.claude/agents/`에 설치 |
 | [base/settings.example.json](base/settings.example.json) | `~/.claude/settings.json` 예시 (허용·거부 명령, 훅, 상태줄, 기본 모델·effort) |
 | [base/rules/](base/rules/) | 모듈 규칙<br>기본 지침을 건드리지 않고 주제별로 붙이는 파일. `~/.claude/rules/`에 설치 |
 | [base/vscode/](base/vscode/) | 새 기기에 VS Code 확장·설정을 맞추는 목록과 스크립트 |
