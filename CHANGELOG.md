@@ -40,6 +40,8 @@
 
 ### Changed
 
+- `docs/review-vs-official.md` 읽기 차단 행에 Mac 대화형 재현을 추가([Issue #228](https://github.com/yanos0218/AI/issues/228))
+  - `Bash` 읽기가 대화형에서 막히지 않는 것이 Windows·Linux·Mac 모두 확인됨(2026-10-28)
 - `docs/monthly-check.md` 갱신([Issue #233](https://github.com/yanos0218/AI/issues/233), [Issue #234](https://github.com/yanos0218/AI/issues/234))
   - 8번 사용량에 `/usage` 경고 목록 기록을 추가하고, 5번에 모델 새 버전이 나온 달의 `/doctor prompt-audit` 실행을 추가함
 - 전역 `CLAUDE.md`를 줄임([Issue #236](https://github.com/yanos0218/AI/issues/236))
