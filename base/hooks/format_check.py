@@ -53,7 +53,7 @@ QUOTED = re.compile(r'`[^`]*`|"[^"]*"|“[^”]*”|\'[^\']*\'')
 # (위 ENDING은 이슈·PR·릴리즈 본문용 좁은 목록. 기존 .md 299줄 중 ENDING은 173줄만 잡았고 넓은 쪽 표본 14줄에 오탐 0)
 SENTENCE_DA = re.compile(r'다(?=[.!?]?\s*$|[.!?]\s)')
 # Claude에게 주는 지침 문서는 명령형이 규칙의 예외라 검사하지 않는다(docs-format-local.md)
-EUM_EXEMPT_DIRS = {'.claude', 'rules', 'skills', 'agents', 'commands', 'test-fixtures'}
+EUM_EXEMPT_DIRS = {'.claude', 'rules', 'skills', 'agents', 'commands', 'claude-md-details', 'test-fixtures'}
 EUM_EXEMPT_NAMES = {'claude.md', 'skill.md', 'agents.md'}
 LIST = re.compile(r'^\s*(?:[-*]|\d+\.)\s+')
 TRAILER = re.compile(r'^(Refs|Closes|Fixes|Co-Authored-By|Signed-off-by|BREAKING CHANGE)\b', re.I)

@@ -40,6 +40,11 @@
 
 ### Changed
 
+- 전역 `CLAUDE.md`를 줄임([Issue #236](https://github.com/yanos0218/AI/issues/236))
+  - §5의 조사·`--limit`·저장소 상태 수정 세부 규칙을 `base/claude-md-details/research.md`로 옮기고 본문에는 경로와 한 줄 요약만 남김(약 1.5KB 감소, `/usage` 경고 "Trim ~/.claude/CLAUDE.md" 반영)
+  - 사고 날짜·집계 설명 4곳 제거
+  - `install.sh`가 `~/.claude/claude-md-details/`로 복사하고 `check-install.sh`가 대조
+  - 형식 검사 훅(`format_check.py`)이 `claude-md-details/`를 명령형 예외 경로로 취급(시험 1건 추가)
 - `base/agents/auditor.md` 모델 변경([Issue #236](https://github.com/yanos0218/AI/issues/236))
   - Sonnet에서 Haiku로 낮춤(`/usage` 경고 "단순 서브에이전트에 더 싼 모델" 반영, 읽기 전용 검색이라 위험이 작음)
 

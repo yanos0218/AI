@@ -62,6 +62,13 @@ if ls base/rules/*.md >/dev/null 2>&1; then
   say "  rules 설치: $(ls base/rules | tr '\n' ' ')"
 fi
 
+# 3c. claude-md-details (CLAUDE.md가 경로로 가리키는 세부 규칙, 필요할 때만 읽힘) — base/claude-md-details/*.md → ~/.claude/claude-md-details/
+if ls base/claude-md-details/*.md >/dev/null 2>&1; then
+  run mkdir -p "${CLAUDE_HOME}/claude-md-details"
+  for f in base/claude-md-details/*.md; do run cp "${f}" "${CLAUDE_HOME}/claude-md-details/"; done
+  say "  claude-md-details 설치: $(ls base/claude-md-details | tr '\n' ' ')"
+fi
+
 # 4. settings.json 병합 — 규칙은 tools/settings_merge.py(permissions 목록 합집합, base 훅만 교체, 변경 시 .bak 백업)
 SETTINGS_OK=1
 if [[ "${DRY}" = 1 ]]; then "${PY}" tools/settings_merge.py install "${CLAUDE_HOME}/settings.json" base/settings.example.json --dry-run || SETTINGS_OK=0

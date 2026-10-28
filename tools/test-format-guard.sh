@@ -69,6 +69,7 @@ run 0 '.md 표 셀 음슴체 통과' post Edit "{\"file_path\": \"${D}/x.md\", \
 run 0 '.md 음슴체 문단 통과' post Write "{\"file_path\": \"${D}/x.md\", \"content\": \"# 제목\\n\\n이 문단은 음슴체로 끝남\\n\"}"
 run 0 '.md 코드 블록·백틱 안 문장형은 제외' post Write "{\"file_path\": \"${D}/x.md\", \"content\": \"예시는 \`했다\`처럼 씀\\n\\n\`\`\`\\n이 줄은 예시이다.\\n\`\`\`\\n\"}"
 run 0 'rules 아래 지침 문서는 제외' post Write "{\"file_path\": \"${D}/rules/x.md\", \"content\": \"이 규칙은 명령형으로 쓴다.\\n\"}"
+run 0 'claude-md-details 아래 지침 문서는 제외' post Write "{\"file_path\": \"${D}/claude-md-details/x.md\", \"content\": \"이 규칙은 명령형으로 쓴다.\\n\"}"
 run 0 'CLAUDE.md는 제외' post Write "{\"file_path\": \"${D}/CLAUDE.md\", \"content\": \"이 지침은 명령형으로 쓴다.\\n\"}"
 mkdir -p "${tmp}/off/.claude" && : > "${tmp}/off/.claude/no-eumseum-check"
 RUN_CWD="${tmp}/off" run 0 '.claude/no-eumseum-check가 있으면 문장형 검사 끔' post Write "{\"file_path\": \"${tmp}/off/x.md\", \"content\": \"이 문단은 문장형으로 끝난다.\\n\"}"
