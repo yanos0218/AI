@@ -40,6 +40,8 @@
 
 ### Changed
 
+- `docs/monthly-check.md` 갱신([Issue #233](https://github.com/yanos0218/AI/issues/233), [Issue #234](https://github.com/yanos0218/AI/issues/234))
+  - 8번 사용량에 `/usage` 경고 목록 기록을 추가하고, 5번에 모델 새 버전이 나온 달의 `/doctor prompt-audit` 실행을 추가함
 - 전역 `CLAUDE.md`를 줄임([Issue #236](https://github.com/yanos0218/AI/issues/236))
   - §5의 조사·`--limit`·저장소 상태 수정 세부 규칙을 `base/claude-md-details/research.md`로 옮기고 본문에는 경로와 한 줄 요약만 남김(약 1.9KB 감소(12,586 → 10,734바이트), `/usage` 경고 "Trim ~/.claude/CLAUDE.md" 반영)
   - 사고 날짜·집계 설명 4곳 제거

@@ -9,10 +9,14 @@
 - [ ] 3. 설정 변경 이력 — ~/.claude/config-changelog.md 를 그 기기에서 읽고, 반영할 변경만 Issue 후보로 남긴 뒤 원본은 비움
 - [ ] 4. auto memory 검토 — ~/.claude/projects/*/memory/*.md 를 그 기기에서 읽음(저장소로 복사하지 않음). 저장소 무관 성향은 Issue로 후보 등록(`task` 라벨)
 - [ ] 5. 대화 기록 검토 — 사용자가 요청하면 self-audit 스킬 실행(최근 세션 기록을 직접 읽음, 비용 발생). 두 번 이상 반복된 것만 전역 지침 후보로 Issue 등록
+  - 모델 새 버전이 나온 달에는 대화창에서 `/doctor prompt-audit`도 한 번 돌림. `self-audit`가 못 보는 지침·스킬 문서의 경로 존재 확인, 지침 파일끼리 충돌, 이력 서술을 봄(비교 결과는 [Issue #234](https://github.com/yanos0218/AI/issues/234))
   - 시험 없이 반영한 알림성 전역 지침 문안(drafts/README.md 승격 조건 1)이 지난 점검 이후 지켜졌는지도 함께 확인. 안 지켜졌으면 문안 보강이나 훅 후보로 Issue(#182)
 - [ ] 6. 스킬 재시험 — base/skills/* 각 3시나리오를 tools/test-skill.sh 로 (Sonnet). 실패하면 초안으로 내려 수정
 - [ ] 7. /insights — 대화형 세션에서 실행, 제안 중 반복되는 것만 후보
-- [ ] 8. 사용량 — 상태줄 $ 누계, claude.ai 사용량 페이지, GitHub Settings → Billing → Actions 분
+- [ ] 8. 사용량
+  - 상태줄 $ 누계, claude.ai 사용량 페이지, GitHub Settings → Billing → Actions 분
+  - 대화형 세션에서 `/usage`를 열어 경고 목록과 비율을 이슈 댓글에 한 번 기록함(경고 4건이 나오고 한 줄 해결책이 붙는 것은 2026-10-28 확인, [Issue #233](https://github.com/yanos0218/AI/issues/233))
+  - 비율은 겹침 값이라 합산하지 않고, 전월과 같은 경고가 계속 나오는지만 봄
 - [ ] 9. 이슈 정리 — 열린 Issue(`gh issue list --state open`) 우선순위 재검토. PROGRESS §0 표가 실제 배포 상태와 맞는지 확인
   - 파생 관계인데 sub-issue로 안 묶인 것 없는지도 함께: 본문에서 다른 이슈 번호(`#N`)를 파생 의미로 언급한 것 찾아 대조(`docs/issue-format.md` "이슈 수명 관리")
 - [ ] 10. 검토표 갱신 — docs/review-vs-official.md에서 상태가 바뀐 행 갱신. 새로 발견한 문제·제안은 Issue로(`task`/`bug` 라벨, 2026-09-12부터 파일 대신). 새 기능은 조사 규칙대로 조사해 `research` 라벨 이슈로
