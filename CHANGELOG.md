@@ -9,6 +9,8 @@
 
 ### Added
 
+- `tools/test-handoff-stale-check.sh` 추가, `handoff-stale-check.sh`를 임시 폴더와 가짜 `gh`로 12건 시험함([Issue #238](https://github.com/yanos0218/AI/issues/238))
+  - 닫힌 표기 제외 오탐([Issue #237](https://github.com/yanos0218/AI/issues/237)) 재발을 막음, CI 설치 병합 시험 잡에서 세 운영체제 실행
 - `tools/ci-wait.sh` 추가, 푸시한 커밋의 CI를 끝까지 기다려 통과·실패·미검증을 한 줄로 보고함([Issue #229](https://github.com/yanos0218/AI/issues/229))
   - push·pull_request 실행만 세고 이슈 이벤트 워크플로는 제외, 실행 0건은 종료 코드 2(미검증)
   - 시험 `tools/test-ci-wait.sh`(가짜 `gh`)를 CI 세 운영체제 시험에 추가

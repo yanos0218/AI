@@ -68,6 +68,9 @@ jobs:
       - name: PROGRESS 낡음 알림 훅 시험
         run: bash tools/test-progress-stale-check.sh
 
+      - name: HANDOFF 낡음 알림 훅 시험
+        run: bash tools/test-handoff-stale-check.sh
+
       - name: git-guardrails 오류 안전망 시험
         run: bash tools/test-git-guardrails.sh
 
