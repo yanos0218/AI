@@ -7,6 +7,8 @@
 
 ## [Unreleased]
 
+## [0.17.0] - 2026-11-02
+
 ### Added
 
 - `tools/test-handoff-stale-check.sh` 추가, `handoff-stale-check.sh`를 임시 폴더와 가짜 `gh`로 12건 시험함([Issue #238](https://github.com/yanos0218/AI/issues/238))
@@ -33,9 +35,9 @@
   - 효과는 12회 비교 시험이 양쪽 0건이라 판단 불가, 반영 뒤 월별 영어 비율로 확인함
   - 병합 시험에 language 어긋남·키 없음 사례 2건 추가
 - 쉬운 설명 요청 지침 주입 훅 초안 `drafts/hooks/easy-explain-hint.sh`·`easy_explain.py`와 시험 `tools/test-easy-explain.sh` 9건([Issue #222](https://github.com/yanos0218/AI/issues/222), 후보 출처 [Issue #220](https://github.com/yanos0218/AI/issues/220))
-- 문서 낡음 알림 훅 `base/hooks/doc-drift-check.sh`·`doc_drift.py`를 기본 영역으로 승격하고 `settings.example.json`의 PreToolUse(Bash, `if: Bash(git *)`)에 등록, 시험 `tools/test-doc-drift.sh` 27건([Issue #219](https://github.com/yanos0218/AI/issues/219), 조사 [Issue #218](https://github.com/yanos0218/AI/issues/218))
-  - 커밋 때 삭제·이름변경된 경로가 다른 `.md`에 남았는지, 올리는 `.md`의 상대 링크 대상이 있는지, `CHANGELOG.md` 릴리즈 섹션에 "다음 컷"이 남았는지를 경고만 함
-  - 최근 커밋 50건 재생에서 AI 저장소는 2건 모두 실제 낡음(live-status 승격의 README 경로, v0.16.0 컷의 "다음 컷" 문구), OpenClaw·kolo-api는 0건, kolo_pwa는 `.gitignore` 대상 파일을 가리키는 링크 오탐 2건이 나와 그 경우를 제외하도록 고친 뒤 0건, 평균 약 90ms
+- 문서 낡음 알림 훅 `base/hooks/doc-drift-check.sh`·`doc_drift.py`를 기본 영역으로 승격하고 `settings.example.json`의 PreToolUse(Bash, `if: Bash(git *)`)에 등록, 시험 `tools/test-doc-drift.sh` 27건(Windows 경로 사례 1건은 Windows에서만 돌아 그 밖의 운영체제는 26건)([Issue #219](https://github.com/yanos0218/AI/issues/219), 조사 [Issue #218](https://github.com/yanos0218/AI/issues/218))
+  - 커밋 때 삭제·이름변경된 경로가 다른 `.md`에 남았는지, 올리는 `.md`의 상대 링크 대상이 있는지, `CHANGELOG.md` 릴리즈 섹션에 다음 릴리즈를 가리키는 미정 문구가 남았는지를 경고만 함
+  - 최근 커밋 50건 재생에서 AI 저장소는 2건 모두 실제 낡음(live-status 승격의 README 경로, v0.16.0 컷에 남은 미정 문구), OpenClaw·kolo-api는 0건, kolo_pwa는 `.gitignore` 대상 파일을 가리키는 링크 오탐 2건이 나와 그 경우를 제외하도록 고친 뒤 0건, 평균 약 90ms
   - 훅은 명령 문자열만 보므로 `git -C $변수 commit`처럼 경로를 셸 변수로 쓰면 저장소를 못 찾아 경고가 빠지는 한계가 있음(2026-10-27 라이브 세션 확인)
   - 윈도우에서 `git -C /c/Users/...`(Git Bash 경로)를 윈도우 파이썬이 못 읽어 경고가 조용히 빠지던 것을 `C:/Users/...`로 바꿔 읽게 고침(2026-10-27 Windows 시험에서 발견), 시험 1건 추가
   - PowerShell에는 등록하지 않음(Bash만)
@@ -199,30 +201,3 @@
   - 다른 훅처럼 `PYTHONIOENCODING=utf-8`을 지정하고 `reconfigure` 줄을 뺌, `tools/test-hooks-py.sh`에 시험 2건 추가
 - `tools/check-doc-sync.py`가 Windows에서 스킬 폴더 이름을 빈 문자열로 읽던 것을 수정([Issue #200](https://github.com/yanos0218/AI/issues/200))
   - `_template`까지 세어 "스킬 7개로 적었는데 실제는 8개"로 실패했고, README 스킬 목록 누락 검사는 조용히 건너뛰고 있었음
-
-## [0.14.0] - 2026-10-17
-
-### Changed
-
-- 전역 지침 `base/claude-md/CLAUDE.md`
-  - §2에 큰 작업(커밋 여러 개, 릴리즈, 설계 제시) 끝 보고에서 문제·개선점·파생 문제·아이디어를 훑는 규칙 추가([Issue #169](https://github.com/yanos0218/AI/issues/169))
-  - §4에 CI 대기는 `gh run watch`, 실행은 워크플로 이름과 전체 SHA로 고르는 규칙 추가([Issue #176](https://github.com/yanos0218/AI/issues/176))
-  - 새 세션 전후 비교 2회씩, PATCH
-
-### Added
-
-- `tools/measure-model.sh`
-  - 같은 읽기 전용 작업을 모델별로 `claude -p` 반복 실행해 구독 한도 소모(5시간·주간 %p)와 정답률을 비교하는 측정 도구, 시험 문서 `tools/test-fixtures/model-compare/`([Issue #178](https://github.com/yanos0218/AI/issues/178), 기본 영역 아님)
-- `tools/install.sh`·`tools/check-install.sh`
-  - 설치 끝에 PROGRESS §0 기기 행에 적을 버전(`git describe`)을 출력하고, `check-install.sh`가 그 행과 설치 버전 파일을 대조해 한 줄로 보고. PROGRESS 설치 버전 표기를 `git describe` 하나로 통일([Issue #180](https://github.com/yanos0218/AI/issues/180), 기본 영역 아님)
-
-### Fixed
-
-- `base/hooks/config_changelog.py`·`base/settings.example.json`
-  - 보호 경로와 쓰기 명령이 명령 어디에든 따로 있기만 해도 기록하던 오탐 수정(133행 중 실제 쓰기 1행). 같은 명령 조각에서 쓰기 명령 뒤에 보호 경로가 있을 때만, 복사·이동은 목적지만 봄. `$HOME` 경로 인식 추가
-  - Bash·PowerShell 등록에 `.claude`가 든 명령일 때만 뜨는 `if` 조건 추가(모든 명령마다 프로세스가 뜨던 것, [Issue #147](https://github.com/yanos0218/AI/issues/147))
-  - [Issue #173](https://github.com/yanos0218/AI/issues/173), 시험 31/31, PATCH
-- `base/hooks/check-cram.py`
-  - 한 단어 필드명에 서술문이 아닌 한 문장 값이 붙은 필드-값 형식 줄과 큰따옴표 안 콜론을 크램으로 잡던 오탐 수정, 예외 목록 6줄 정리([Issue #175](https://github.com/yanos0218/AI/issues/175), 저장소 .md 2,564줄 판정 동일·시험 32/32, PATCH)
-- `self-audit` 스킬 `references/method.md` 3절
-  - 이슈 본문을 저장소 이슈 형식 문서 우선으로 쓰고, 없으면 배경/제안 내용/기대 효과/결정 헤딩. "근거 한 줄 + 이유"만 적어 이슈 형식 검사에 걸리던 문제([Issue #172](https://github.com/yanos0218/AI/issues/172), 새 세션 시험 2회, PATCH)
