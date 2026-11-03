@@ -13,7 +13,8 @@ if [[ "${1:-}" == "--summary" ]]; then QUIET=1; shift; fi
 CLAUDE_HOME="${CLAUDE_CONFIG_DIR:-${HOME}/.claude}"
 # 기본값은 이 저장소를 담은 상위 폴더(Windows C:\Git, Mac /Library/Git). 예전 /c/Git 고정은 Mac·Linux에서 조용히 "(없음)"이었다(Issue #157)
 PROJECTS_ROOT="${1:-$(cd .. && pwd)}"
-PY="$(command -v python3 || command -v python)"
+# python3·python 중 실제로 실행되는 것을 고른다(Windows 스토어 별칭은 이름은 있어도 실행하면 실패, Issue #250)
+PY=""; for c in python3 python; do p="$(command -v "${c}" 2>/dev/null)" && "${p}" -c 'import sys' >/dev/null 2>&1 && { PY="${p}"; break; }; done
 drift=0
 
 section() { printf '\n== %s\n' "${1}"; }

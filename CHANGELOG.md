@@ -14,6 +14,12 @@
   - 2단계는 Git for Windows·Python이 있으면(없으면 동의 후 `winget`으로 설치, `winget`이 실패하면 설치 파일 직접 내려받기, [Issue #250](https://github.com/yanos0218/AI/issues/250)) `tools/install.sh`로 훅까지 병합
   - Windows 실제 동작과 PowerShell 5.1 문법은 미검증(로컬에 PowerShell 없음), CI 시험은 [Issue #249](https://github.com/yanos0218/AI/issues/249)
 
+### Fixed
+
+- `tools/install.sh`·`tools/check-install.sh`가 `python3` 이름이 실행 안 되는 Windows 스토어 별칭이어도 되는 `python`을 고르도록 수정([Issue #250](https://github.com/yanos0218/AI/issues/250))
+  - 실제 Windows에서 `python3` 별칭이 앞서 `settings.json` 병합이 실패했음(2026-11-03), 시험 `tools/test-install-ps1.sh`에 재현 추가
+  - 훅 쪽 같은 문제는 [Issue #251](https://github.com/yanos0218/AI/issues/251)에서 판단함
+
 ## [0.17.0] - 2026-11-02
 
 ### Added

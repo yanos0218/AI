@@ -10,7 +10,8 @@
 set -u
 cd "$(dirname "${0}")/.." || exit 1
 CLAUDE_HOME="${CLAUDE_CONFIG_DIR:-${HOME}/.claude}"
-PY="$(command -v python3 || command -v python)"
+# python3·python 중 실제로 실행되는 것을 고른다(Windows 스토어 별칭은 이름은 있어도 실행하면 실패, Issue #250)
+PY=""; for c in python3 python; do p="$(command -v "${c}" 2>/dev/null)" && "${p}" -c 'import sys' >/dev/null 2>&1 && { PY="${p}"; break; }; done
 DRY=0; [[ "${1:-}" = "--dry-run" ]] && DRY=1
 say() { printf '%s\n' "$*"; }
 run() { if [[ "${DRY}" = 1 ]]; then say "  (dry) $*"; else "$@"; fi; }
