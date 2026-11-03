@@ -90,6 +90,16 @@ function Install-ClaudeConfig {
         if ($LASTEXITCODE -eq 0 -and "$v".Trim() -eq '3') { return $c.Source }
       } catch {}
     }
+    # 방금 설치한 Python은 스토어 별칭(WindowsApps)보다 PATH 뒤에 붙어 이름으로는 못 찾으므로 설치 위치에서도 찾는다
+    foreach ($b in @((Join-Path $env:LOCALAPPDATA 'Programs\Python'), (Join-Path $env:ProgramFiles 'Python3*'))) {
+      if (-not $b) { continue }
+      foreach ($f in @(Get-ChildItem -Path $b -Filter 'python.exe' -Recurse -Depth 2 -ErrorAction SilentlyContinue)) {
+        try {
+          $v = & $f.FullName -c 'import sys;print(sys.version_info[0])' 2>$null
+          if ($LASTEXITCODE -eq 0 -and "$v".Trim() -eq '3') { return $f.FullName }
+        } catch {}
+      }
+    }
     return $null
   }
 
@@ -224,6 +234,8 @@ function Install-ClaudeConfig {
     }
     if ($bash -and $py) {
       Say '== 2단계: 훅 포함 전체 병합 (install.sh)'
+      # install.sh가 쓰는 python이 스토어 별칭보다 먼저 잡히도록 찾은 python 위치를 PATH 앞에 둔다
+      $env:Path = (Split-Path $py) + ';' + $env:Path
       Push-Location $source
       try { & $bash 'tools/install.sh'; $code = $LASTEXITCODE } finally { Pop-Location }
       if ($code -eq 0) {
@@ -239,6 +251,8 @@ function Install-ClaudeConfig {
       Say '== 끝. 훅까지 설치됨. Claude Code를 새 세션으로 시작함.'
     } else {
       Say '== 1단계만 끝남. 훅과 상태줄은 꺼져 있고 git-guardrails 보호가 없음.'
+      $miss = @(); if (-not $bash) { $miss += 'Git for Windows' }; if (-not $py) { $miss += 'Python 3' }
+      if ($miss.Count) { Say ('   아직 못 찾은 것: ' + ($miss -join ', ') + ' (방금 설치했다면 새 PowerShell 창에서 같은 명령을 다시 실행하면 찾을 수 있음)') }
       Say '   Git for Windows(https://git-scm.com/download/win)와 Python 3(https://www.python.org/downloads/, 설치 때 Add to PATH 체크)를'
       Say '   직접 설치한 뒤 새 PowerShell 창에서 같은 명령을 다시 실행하면 훅까지 설치됨.'
     }
