@@ -66,7 +66,7 @@
 | 경로 | 무엇 |
 | --- | --- |
 | [tools/bootstrap.sh](tools/bootstrap.sh) | 신규 기기용 단일 명령 설치<br>저장소를 `~/claude-config`에 clone(있으면 pull) 후 `install.sh` 자동 실행 |
-| [tools/install.ps1](tools/install.ps1) | Windows 첫 설치<br>bash·git·python 없이 PowerShell 한 줄로 시작, 갖춰지면 `install.sh`로 훅까지 병합 |
+| [tools/install.ps1](tools/install.ps1) | Windows 첫 설치<br>bash·git·python 없이 PowerShell 한 줄로 시작, 갖춰지면 `install.sh`로 훅까지 병합<br>시험 [tools/test-install-ps1.sh](tools/test-install-ps1.sh) |
 | [tools/install.sh](tools/install.sh) | `base/` → `~/.claude` 설치 (멱등, settings 병합, `--dry-run`). 기기 3대 공통 |
 | [tools/test-skill.sh](tools/test-skill.sh) | 스킬 발동 시험<br>시나리오 저장소에 넣고 새 세션으로 실행, 발동·비용 추출 (기본 Sonnet) |
 | [tools/test-agent.sh](tools/test-agent.sh) | 에이전트 발동 시험<br>같은 폴더 에이전트 전부를 `--agents`로 넘겨 새 세션으로 실행, 위임 대상·에이전트 안 도구 호출·훅 차단·토큰 추출 |

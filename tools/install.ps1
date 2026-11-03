@@ -61,12 +61,17 @@ function Install-ClaudeConfig {
 
   # 'bash'라는 이름은 WSL(System32\bash.exe)일 수 있어 쓰지 않고 Git 설치 위치에서만 찾는다
   function Find-GitBash {
-    $cands = @(
-      (Join-Path $env:ProgramFiles 'Git\bin\bash.exe'),
-      (Join-Path ${env:ProgramFiles(x86)} 'Git\bin\bash.exe'),
-      (Join-Path $env:LOCALAPPDATA 'Programs\Git\bin\bash.exe')
+    # 일부 환경변수는 없을 수 있어(32비트 Windows 등) 값이 있는 것만 쓴다
+    $bases = @(
+      @($env:ProgramFiles, 'Git\bin\bash.exe'),
+      @(${env:ProgramFiles(x86)}, 'Git\bin\bash.exe'),
+      @($env:LOCALAPPDATA, 'Programs\Git\bin\bash.exe')
     )
-    foreach ($c in $cands) { if ($c -and (Test-Path $c)) { return $c } }
+    foreach ($b in $bases) {
+      if (-not $b[0]) { continue }
+      $c = Join-Path $b[0] $b[1]
+      if (Test-Path $c) { return $c }
+    }
     $g = Get-Command git.exe -ErrorAction SilentlyContinue
     if ($g) {
       $c = Join-Path (Split-Path (Split-Path $g.Source)) 'bin\bash.exe'
@@ -184,7 +189,13 @@ function Install-ClaudeConfig {
       Say '== 2단계: 훅 포함 전체 병합 (install.sh)'
       Push-Location $source
       try { & $bash 'tools/install.sh'; $code = $LASTEXITCODE } finally { Pop-Location }
-      if ($code -eq 0) { $hooksOn = $true } else { Say "  install.sh가 실패함(종료 코드 $code). 위 메시지 확인 후 같은 명령을 다시 실행함." }
+      if ($code -eq 0) {
+        $hooksOn = $true
+        # .git이 없는 폴더에서 install.sh는 버전을 못 구해 빈 값으로 덮어쓴다. 근본 수정 전까지(Issue #248) 태그를 복원함
+        $vf = Join-Path $claude '.claude-config-version'
+        $vl = [IO.File]::ReadAllLines($vf)
+        if ($vl.Count -lt 2 -or -not $vl[1]) { [IO.File]::WriteAllText($vf, ($source + "`n" + $tag + "`n`n"), $utf8) }
+      } else { Say "  install.sh가 실패함(종료 코드 $code). 위 메시지 확인 후 같은 명령을 다시 실행함." }
     }
 
     if ($hooksOn) {
