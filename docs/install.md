@@ -26,7 +26,14 @@ mkdir -p ~/.claude/agents && cp base/agents/*.md ~/.claude/agents/
 
 `.sh` 스크립트는 **Git Bash**(Git for Windows에 들어 있음)에서 실행함. PowerShell·cmd에서는 돌지 않음.
 
-Git for Windows가 없으면 `bash`를 찾지 못해 "실행할 수 없다"는 오류가 날 수 있음. 먼저 [Git for Windows](https://git-scm.com/downloads/win)를 설치함(관리자 권한 불필요 여부는 미검증).
+PowerShell에서 `bash`가 `CommandNotFoundException`("'bash' 용어가 cmdlet, 함수, 스크립트 파일 또는 실행할 수 있는 프로그램 이름으로 인식되지 않습니다")으로 실패하면 이 PC에 bash가 없다는 뜻임(2026-11-03 Windows 실제 오류).
+
+- 해결
+  - [Git for Windows](https://git-scm.com/downloads/win)를 설치한 뒤 **Git Bash**를 새로 열어 실행함(관리자 권한 불필요 여부는 미검증).
+  - 이미 설치했는데 같은 오류면 PATH에 없는 것이므로 PowerShell에서 전체 경로로 호출함.
+    - `& "C:\Program Files\Git\bin\bash.exe" tools/install.sh --dry-run`
+    - 이 경로는 공식 setup 문서의 `CLAUDE_CODE_GIT_BASH_PATH` 예시에서 확인했고, 실제 실행은 미검증.
+- WSL이 없는 PC라서 `bash`가 WSL로 새지는 않았음(WSL이 있었다면 오류 문구가 달랐을 것).
 
 - 열기
   - 시작 메뉴에서 "Git Bash"를 열거나, VS Code 터미널 프로필을 Git Bash로 고름.
