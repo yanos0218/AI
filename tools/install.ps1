@@ -94,15 +94,51 @@ function Install-ClaudeConfig {
   }
 
   function Install-WithWinget($id, $name) {
-    if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
-      Say "  winget이 없어 $name 을(를) 자동 설치할 수 없음. 직접 설치한 뒤 같은 명령을 다시 실행함."
-      return $false
-    }
+    if (-not (Get-Command winget -ErrorAction SilentlyContinue)) { Say "  winget이 없음"; return $false }
     Say "  $name 설치 중(winget)..."
-    & winget install --id $id -e --accept-package-agreements --accept-source-agreements
-    if ($LASTEXITCODE -ne 0) { Say "  $name 설치 실패(종료 코드 $LASTEXITCODE)"; return $false }
-    Update-SessionPath
+    try { & winget install --id $id -e --accept-package-agreements --accept-source-agreements } catch { Say "  winget 실행 실패($($_.Exception.Message))"; return $false }
+    if ($LASTEXITCODE -ne 0) { Say "  winget 설치 실패(종료 코드 $LASTEXITCODE)"; return $false }
     return $true
+  }
+
+  # 설치 파일을 받아 무음 설치한다. 권한 창(UAC)은 사용자가 화면에서 결정하고, 거절하면 실패로 돌려준다
+  function Install-Exe($name, $url, $expectSha, $installArgs) {
+    $dl = Join-Path ([IO.Path]::GetTempPath()) ('claude-config-dl-' + $ts)
+    New-Item -ItemType Directory -Force -Path $dl | Out-Null
+    $exe = Join-Path $dl ([IO.Path]::GetFileName($url))
+    Say "  $name 설치 파일 내려받는 중: $url"
+    Invoke-WebRequest -Uri $url -OutFile $exe -UseBasicParsing -UserAgent 'claude-config-installer'
+    if ($expectSha) {
+      $got = (Get-FileHash $exe -Algorithm SHA256).Hash
+      if ($got -ne $expectSha) { Remove-Item $exe -Force -ErrorAction SilentlyContinue; Say "  sha256이 달라 설치하지 않음"; return $false }
+      Say '  sha256 일치 확인'
+    }
+    Say "  $name 설치 중(권한 창이 뜨면 화면에서 선택해 주세요)..."
+    try { $pr = Start-Process -FilePath $exe -ArgumentList $installArgs -Wait -PassThru } catch { Say "  $name 설치를 시작하지 못함(권한 창을 거절했거나 실행이 막힘)"; return $false } finally { Remove-Item $dl -Recurse -Force -ErrorAction SilentlyContinue }
+    if ($pr.ExitCode -ne 0) { Say "  $name 설치 실패(종료 코드 $($pr.ExitCode))"; return $false }
+    return $true
+  }
+
+  function Install-Direct($kind) {
+    $arch = if ($env:PROCESSOR_ARCHITEW6432) { $env:PROCESSOR_ARCHITEW6432 } else { $env:PROCESSOR_ARCHITECTURE }
+    if ($arch -ne 'AMD64') { Say "  직접 설치는 64비트(x64) Windows만 지원함(현재 $arch)"; return $false }
+    if ($kind -eq 'git') {
+      $rel = Invoke-RestMethod -Uri 'https://api.github.com/repos/git-for-windows/git/releases/latest' -UserAgent 'claude-config-installer'
+      $asset = $rel.assets | Where-Object { $_.name -match '^Git-.*-64-bit\.exe$' } | Select-Object -First 1
+      if (-not $asset -or -not $asset.digest -or $asset.digest -notmatch '^sha256:') { Say '  Git 설치 파일 또는 sha256 정보를 찾지 못해 설치하지 않음'; return $false }
+      return (Install-Exe 'Git for Windows' $asset.browser_download_url ($asset.digest -replace '^sha256:', '').ToUpper() @('/VERYSILENT', '/NORESTART', '/SUPPRESSMSGBOXES'))
+    }
+    # python.org는 해시를 따로 알려주지 않아 주소 고정과 HTTPS에 의존한다
+    return (Install-Exe 'Python 3' 'https://www.python.org/ftp/python/3.12.10/python-3.12.10-amd64.exe' $null @('/quiet', 'InstallAllUsers=0', 'PrependPath=1', 'Include_launcher=0', 'Include_test=0'))
+  }
+
+  # winget이 되면 쓰고, 안 되면 직접 내려받아 설치한다
+  function Install-Program($wingetId, $name, $kind) {
+    if (Install-WithWinget $wingetId $name) { Update-SessionPath; return $true }
+    Say "  winget을 쓸 수 없어 $name 설치 파일을 직접 받음"
+    try { $ok = Install-Direct $kind } catch { Say "  직접 설치 실패($($_.Exception.Message))"; $ok = $false }
+    if ($ok) { Update-SessionPath }
+    return $ok
   }
 
   try {
@@ -178,9 +214,9 @@ function Install-ClaudeConfig {
       if (-not $bash) { $need += 'Git for Windows' }
       if (-not $py) { $need += 'Python 3' }
       Say ("== 2단계에 필요한 것이 없음: " + ($need -join ', '))
-      if (Confirm-Install ((($need -join ', ') + '을(를) winget으로'))) {
-        if (-not $bash) { [void](Install-WithWinget 'Git.Git' 'Git for Windows') }
-        if (-not $py) { [void](Install-WithWinget 'Python.Python.3.12' 'Python 3') }
+      if (Confirm-Install ((($need -join ', ') + '을(를)'))) {
+        if (-not $bash) { [void](Install-Program 'Git.Git' 'Git for Windows' 'git') }
+        if (-not $py) { [void](Install-Program 'Python.Python.3.12' 'Python 3' 'python') }
         $bash = Find-GitBash
         $py = Find-Python
       }
@@ -202,7 +238,8 @@ function Install-ClaudeConfig {
       Say '== 끝. 훅까지 설치됨. Claude Code를 새 세션으로 시작함.'
     } else {
       Say '== 1단계만 끝남. 훅과 상태줄은 꺼져 있고 git-guardrails 보호가 없음.'
-      Say '   Git for Windows와 Python 3를 설치한 뒤 같은 명령을 다시 실행하면 훅까지 설치됨.'
+      Say '   Git for Windows(https://git-scm.com/download/win)와 Python 3(https://www.python.org/downloads/, 설치 때 Add to PATH 체크)를'
+      Say '   직접 설치한 뒤 새 PowerShell 창에서 같은 명령을 다시 실행하면 훅까지 설치됨.'
     }
   } catch {
     Write-Host ("설치 실패: " + $_.Exception.Message) -ForegroundColor Red

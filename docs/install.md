@@ -36,7 +36,9 @@ irm https://raw.githubusercontent.com/yanos0218/AI/main/tools/install.ps1 | iex
   - 이미 `settings.json`이 있으면 건드리지 않음.
 - 2단계(Git for Windows와 Python 3가 있을 때)
   - zip 안의 `tools/install.sh`로 훅 포함 전체 병합을 실행함.
-  - 둘 중 없는 것이 있으면 동의를 물은 뒤 `winget`으로 설치함. 거절하거나 `winget`이 없으면 1단계에서 멈추고 안내함.
+  - 둘 중 없는 것이 있으면 동의를 물은 뒤 `winget`으로 설치함.
+    - `winget`이 없거나 실패하면(2026-11-03 `winget` v1.2 PC에서 프로그램이 죽음) 설치 파일을 직접 받아 무음 설치함. Git은 GitHub 릴리즈의 sha256과 대조하고, Python은 3.12.10 주소 고정(해시 없음). 64비트(x64)만 지원함.
+    - 권한 창(UAC)은 화면에서 직접 결정함. 거절하거나 실패하면 1단계에서 멈추고 직접 설치 주소를 안내함.
   - 설치 뒤 같은 명령을 다시 실행해도 안전함(같은 파일은 건드리지 않고 다른 파일은 백업 후 교체).
 - 주의
   - `irm ... | iex` 한 줄로 실행함. `.ps1` 파일로 저장해 실행하면 한글이 깨지거나 실행 정책에 막힐 수 있음.

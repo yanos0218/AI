@@ -16,7 +16,7 @@ git archive --format=zip --prefix=AI-test/ HEAD -o "${T}/pkg.zip" || exit 1
 C="${T}/home/.claude"
 mkdir -p "${T}/home" "${T}/pf/Git/bin"
 run() { env -i HOME="${T}/home" PATH=/usr/bin:/bin:/opt/homebrew/bin USERPROFILE="${T}/home" ProgramFiles="${T}/pf" LOCALAPPDATA="${T}/lad" \
-  CLAUDE_CONFIG_DIR="${C}" CLAUDE_CONFIG_ZIP="${T}/pkg.zip" CLAUDE_CONFIG_ASSUME=no pwsh -NoProfile -File tools/install.ps1 2>&1; }
+  CLAUDE_CONFIG_DIR="${C}" CLAUDE_CONFIG_ZIP="${T}/pkg.zip" CLAUDE_CONFIG_ASSUME="${ASSUME:-no}" pwsh -NoProfile -File tools/install.ps1 2>&1; }
 
 echo "== 문법"
 "$(command -v pwsh)" -NoProfile -Command '$e=$null;$t=$null;[void][System.Management.Automation.Language.Parser]::ParseFile("tools/install.ps1",[ref]$t,[ref]$e);exit $e.Count' \
@@ -38,6 +38,10 @@ echo "== 기존 settings.json 보존"
 echo '{"x":1}' > "${C}/settings.json"
 run >/dev/null
 [[ "$(cat "${C}/settings.json")" = '{"x":1}' ]] && ok "기존 settings.json을 바꾸지 않음" || bad "기존 settings.json이 바뀜"
+
+echo "== 설치 동의했지만 winget도 직접 설치도 못 하는 환경(x64 Windows가 아님)"
+out="$(ASSUME=yes run)"
+echo "${out}" | grep -q '64비트(x64) Windows만 지원' && echo "${out}" | grep -q 'git-scm.com/download/win' && ok "직접 설치 불가 사유와 수동 설치 주소 안내" || bad "폴백 안내 없음: ${out}"
 
 echo "== 2단계: 가짜 Git Bash (bash.exe)"
 printf '#!/bin/bash\nexec /bin/bash "$@"\n' > "${T}/pf/Git/bin/bash.exe"; chmod +x "${T}/pf/Git/bin/bash.exe"

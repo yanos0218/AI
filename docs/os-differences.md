@@ -23,7 +23,7 @@
 | 운영체제별(설치) | VS Code 설정 파일 위치<br>Windows `%APPDATA%`, Mac `~/Library/Application Support` | 설치 스크립트가 운영체제별로 갈라짐 | [base/vscode/install.sh](../base/vscode/install.sh), [base/vscode/install.ps1](../base/vscode/install.ps1) |
 | 운영체제별(설치) | Mac 전용 확장 `swift-vscode` | 기본 목록에서 빼고 Mac에서 따로 설치 | [install.md](install.md) |
 | 운영체제별(설치) | Linux RHEL 계열 최소 설치본<br>git·diff·python3이 버전마다 없을 수 있음 | 설치 전에 `dnf install -y git diffutils python3`을 실행 | [install.md](install.md) |
-| 운영체제별(설치) | Windows 초기 설치<br>깨끗한 Windows에는 bash·git·python이 없어 `install.sh`를 못 돌림 | `tools/install.ps1`이 PowerShell만으로 1단계를 하고, bash·python이 갖춰지면(없으면 동의 후 `winget` 설치) `install.sh`로 2단계 | [Issue #247](https://github.com/yanos0218/AI/issues/247), 실제 PC 오류는 [Issue #245](https://github.com/yanos0218/AI/issues/245) |
+| 운영체제별(설치) | Windows 초기 설치<br>깨끗한 Windows에는 bash·git·python이 없어 `install.sh`를 못 돌림 | `tools/install.ps1`이 PowerShell만으로 1단계를 하고, bash·python이 갖춰지면(없으면 동의 후 `winget` 설치, `winget`이 죽으면 설치 파일 직접 받기) `install.sh`로 2단계 | [Issue #247](https://github.com/yanos0218/AI/issues/247), 실제 PC 오류는 [Issue #245](https://github.com/yanos0218/AI/issues/245) |
 | 공통(운영체제 전용 항목 포함) | settings.json 훅의 `PowerShell` matcher 4곳<br>Windows 전용 도구용이지만 모든 기기에 같이 설치되고 Mac에서는 해당 도구가 없어 쓰이지 않음 | 같은 값을 병합, 무해해서 갈라 두지 않음 | [base/settings.example.json](../base/settings.example.json) |
 | 공통 | `permissions.blockReadsOutsideWorkingDirectories` 켜짐 | 같은 값을 병합([Issue #195](https://github.com/yanos0218/AI/issues/195), [Issue #205](https://github.com/yanos0218/AI/issues/205)) | [base/settings.example.json](../base/settings.example.json) |
 | 기기별 | `permissions.additionalDirectories`의 `~/.claude`·원본 저장소 경로<br>기기마다 경로가 다름 | 설치가 기기에 맞게 계산해 병합, 지문의 [공통] 줄에서 뺌 | [tools/settings_merge.py](../tools/settings_merge.py) |

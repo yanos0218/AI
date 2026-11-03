@@ -11,7 +11,7 @@
 
 - `tools/install.ps1` 추가, bash·git·python이 없는 Windows에서 PowerShell 한 줄로 설정을 설치함([Issue #247](https://github.com/yanos0218/AI/issues/247))
   - 1단계는 최신 릴리즈 zip의 `base/`를 복사하고 `settings.json`이 없으면 훅·상태줄을 뺀 값으로 생성(bash 없이 훅을 등록하면 `git-guardrails`가 명령을 막을 수 있어서)
-  - 2단계는 Git for Windows·Python이 있으면(없으면 동의 후 `winget`으로 설치) `tools/install.sh`로 훅까지 병합
+  - 2단계는 Git for Windows·Python이 있으면(없으면 동의 후 `winget`으로 설치, `winget`이 실패하면 설치 파일 직접 내려받기, [Issue #250](https://github.com/yanos0218/AI/issues/250)) `tools/install.sh`로 훅까지 병합
   - Windows 실제 동작과 PowerShell 5.1 문법은 미검증(로컬에 PowerShell 없음), CI 시험은 [Issue #249](https://github.com/yanos0218/AI/issues/249)
 
 ## [0.17.0] - 2026-11-02
