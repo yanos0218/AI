@@ -96,7 +96,7 @@ function Install-ClaudeConfig {
   function Install-WithWinget($id, $name) {
     if (-not (Get-Command winget -ErrorAction SilentlyContinue)) { Say "  winget이 없음"; return $false }
     Say "  $name 설치 중(winget)..."
-    try { & winget install --id $id -e --accept-package-agreements --accept-source-agreements } catch { Say "  winget 실행 실패($($_.Exception.Message))"; return $false }
+    try { & winget install --id $id -e --accept-package-agreements --accept-source-agreements | Out-Host } catch { Say "  winget 실행 실패($($_.Exception.Message))"; return $false }
     if ($LASTEXITCODE -ne 0) { Say "  winget 설치 실패(종료 코드 $LASTEXITCODE)"; return $false }
     return $true
   }
@@ -134,7 +134,8 @@ function Install-ClaudeConfig {
 
   # winget이 되면 쓰고, 안 되면 직접 내려받아 설치한다
   function Install-Program($wingetId, $name, $kind) {
-    if (Install-WithWinget $wingetId $name) { Update-SessionPath; return $true }
+    # 함수 안 외부 프로그램 출력이 반환값에 섞이므로 결과는 -eq $true로만 판정한다
+    if ((Install-WithWinget $wingetId $name) -eq $true) { Update-SessionPath; return $true }
     Say "  winget을 쓸 수 없어 $name 설치 파일을 직접 받음"
     try { $ok = Install-Direct $kind } catch { Say "  직접 설치 실패($($_.Exception.Message))"; $ok = $false }
     if ($ok) { Update-SessionPath }

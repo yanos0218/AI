@@ -15,7 +15,7 @@ bad() { fail=$((fail+1)); echo "  FAIL $1"; }
 git archive --format=zip --prefix=AI-test/ HEAD -o "${T}/pkg.zip" || exit 1
 C="${T}/home/.claude"
 mkdir -p "${T}/home" "${T}/pf/Git/bin"
-run() { env -i HOME="${T}/home" PATH=/usr/bin:/bin:/opt/homebrew/bin USERPROFILE="${T}/home" ProgramFiles="${T}/pf" LOCALAPPDATA="${T}/lad" \
+run() { env -i HOME="${T}/home" PATH="${PATHADD:+${PATHADD}:}/usr/bin:/bin:/opt/homebrew/bin" USERPROFILE="${T}/home" ProgramFiles="${T}/pf" LOCALAPPDATA="${T}/lad" \
   CLAUDE_CONFIG_DIR="${C}" CLAUDE_CONFIG_ZIP="${T}/pkg.zip" CLAUDE_CONFIG_ASSUME="${ASSUME:-no}" pwsh -NoProfile -File tools/install.ps1 2>&1; }
 
 echo "== 문법"
@@ -42,6 +42,11 @@ run >/dev/null
 echo "== 설치 동의했지만 winget도 직접 설치도 못 하는 환경(x64 Windows가 아님)"
 out="$(ASSUME=yes run)"
 echo "${out}" | grep -q '64비트(x64) Windows만 지원' && echo "${out}" | grep -q 'git-scm.com/download/win' && ok "직접 설치 불가 사유와 수동 설치 주소 안내" || bad "폴백 안내 없음: ${out}"
+
+echo "== winget이 출력을 내고 실패하면 직접 내려받기로 넘어감(Issue #250, 출력이 반환값에 섞여 폴백이 건너뛰어진 결함)"
+mkdir -p "${T}/fakebin"; printf '#!/bin/sh\necho "winget 가짜 출력"\nexit 1\n' > "${T}/fakebin/winget"; chmod +x "${T}/fakebin/winget"
+out="$(PATHADD="${T}/fakebin" ASSUME=yes run)"
+echo "${out}" | grep -q '설치 파일을 직접 받음' && ok "winget 실패 뒤 직접 내려받기로 넘어감" || bad "직접 받기로 안 넘어감: ${out}"
 
 echo "== 2단계: 가짜 Git Bash (bash.exe)"
 printf '#!/bin/bash\nexec /bin/bash "$@"\n' > "${T}/pf/Git/bin/bash.exe"; chmod +x "${T}/pf/Git/bin/bash.exe"
