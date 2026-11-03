@@ -34,6 +34,9 @@ PowerShell에서 `bash`가 `CommandNotFoundException`("'bash' 용어가 cmdlet, 
     - `& "C:\Program Files\Git\bin\bash.exe" tools/install.sh --dry-run`
     - 이 경로는 공식 setup 문서의 `CLAUDE_CODE_GIT_BASH_PATH` 예시에서 확인했고, 실제 실행은 미검증.
 - WSL이 없는 PC라서 `bash`가 WSL로 새지는 않았음(WSL이 있었다면 오류 문구가 달랐을 것).
+- `install.sh` 파일 하나만 내려받아 실행하면 안 됨.
+  - 같은 저장소의 `base/`와 `tools/settings_merge.py`를 복사하고 `git`으로 버전을 구하기 때문임.
+  - 저장소를 따로 받지 않으려면 아래 한 줄 설치(`bootstrap.sh`)를 Git Bash에서 실행함.
 
 - 열기
   - 시작 메뉴에서 "Git Bash"를 열거나, VS Code 터미널 프로필을 Git Bash로 고름.
