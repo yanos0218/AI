@@ -88,3 +88,19 @@ jobs:
 
       - name: CI 결과 확인 스크립트 시험
         run: bash tools/test-ci-wait.sh
+
+  # 설치기(tools/install.ps1)는 사용자 PC의 Windows PowerShell 5.1로 도므로 같은 5.1로 시험한다(Issue #249).
+  # shell: powershell이 5.1(pwsh가 7). 시험 파일은 ASCII만 쓴다(5.1이 BOM 없는 UTF-8을 ANSI로 읽음).
+  # winget·직접 내려받기 설치는 러너에서 흉내 낼 수 없어 범위 밖이다(실제 PC 시험, docs/testing.md).
+  install-ps-test:
+    name: 설치기 PowerShell 5.1 시험 (windows-latest)
+    runs-on: windows-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        shell: powershell
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: install.ps1 시험
+        run: .\tools\test-install-ps1.ps1

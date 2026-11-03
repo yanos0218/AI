@@ -15,6 +15,8 @@
 ### Changed
 
 - `docs/install.md` Windows 절에 한 줄 설치 확인 결과와 `raw` 주소 5분 캐시·릴리즈 기준 안내 추가([Issue #247](https://github.com/yanos0218/AI/issues/247))
+- CI에 `설치기 PowerShell 5.1 시험` job 추가, `tools/test-install-ps1.ps1`이 `windows-latest`의 Windows PowerShell 5.1로 `install.ps1`을 시험함([Issue #249](https://github.com/yanos0218/AI/issues/249))
+  - 시나리오 A는 bash를 숨긴 1단계, B는 러너의 실제 Git·Python으로 2단계, 5.1 시험 결과는 첫 CI 실행 뒤 확정
 - `docs/os-differences.md` Windows 초기 설치 행에 시험 기기가 초기화한 깨끗한 PC(기존 개발 PC와 다른 기기)임을 기록
 
 ## [0.18.0] - 2026-11-04
