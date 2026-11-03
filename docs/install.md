@@ -43,9 +43,10 @@ irm https://raw.githubusercontent.com/yanos0218/AI/main/tools/install.ps1 | iex
 - 주의
   - `irm ... | iex` 한 줄로 실행함. `.ps1` 파일로 저장해 실행하면 한글이 깨지거나 실행 정책에 막힐 수 있음.
   - 보안 프로그램이 한 줄 실행을 막으면 [GitHub Releases](https://github.com/yanos0218/AI/releases)에서 zip을 받아 Git Bash에서 `bash tools/install.sh`를 실행함.
-  - 최신 릴리즈 기준이라 릴리즈 컷 전의 `base/` 변경은 반영되지 않음.
+  - 설정 파일과 `tools/install.sh`는 최신 릴리즈 zip에서 오므로 릴리즈 컷 전의 `base/`·`tools/` 변경은 반영되지 않음. `install.ps1` 자체만 `main`에서 받음.
+  - 주소의 `main` 파일은 GitHub가 약 5분 캐시하므로 push 직후에는 옛 `install.ps1`이 내려올 수 있음.
   - 시험용 환경변수는 `tools/install.ps1` 머리말 참고(`CLAUDE_CONFIG_DIR`, `CLAUDE_CONFIG_ZIP`, `CLAUDE_CONFIG_ASSUME`).
-  - 2026-11-03 기준 이 PC에서 실행해 보지 못함(미검증).
+  - 2026-11-04 실제 깨끗한 Windows(`winget` v1.2, bash·git·python 없음)에서 한 줄 실행으로 훅 병합까지 끝나고 새 Claude Code 세션에서 `/hooks`와 상태줄이 보이는 것을 확인함([Issue #247](https://github.com/yanos0218/AI/issues/247)). Windows PowerShell 5.1 CI 시험은 [Issue #249](https://github.com/yanos0218/AI/issues/249).
 
 ### Windows에서 실행하는 위치
 

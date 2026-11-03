@@ -7,6 +7,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- `docs/install.md` Windows 절에 한 줄 설치 확인 결과와 `raw` 주소 5분 캐시·릴리즈 기준 안내 추가([Issue #247](https://github.com/yanos0218/AI/issues/247))
+
 ## [0.18.0] - 2026-11-04
 
 ### Added
