@@ -26,6 +26,8 @@ mkdir -p ~/.claude/agents && cp base/agents/*.md ~/.claude/agents/
 
 `.sh` 스크립트는 **Git Bash**(Git for Windows에 들어 있음)에서 실행함. PowerShell·cmd에서는 돌지 않음.
 
+Git for Windows가 없으면 `bash`를 찾지 못해 "실행할 수 없다"는 오류가 날 수 있음. 먼저 [Git for Windows](https://git-scm.com/downloads/win)를 설치함(관리자 권한 불필요 여부는 미검증).
+
 - 열기
   - 시작 메뉴에서 "Git Bash"를 열거나, VS Code 터미널 프로필을 Git Bash로 고름.
 - PowerShell·cmd에서 `bash`를 치면 Git Bash가 아니라 WSL(`C:\WINDOWS\system32\bash.exe`)이 실행됨.
@@ -105,7 +107,9 @@ curl -fsSL https://claude.ai/install.sh | bash
 ```
 
 - `~/.claude/`(CLAUDE.md·skills·hooks·settings.json)는 CLI와 확장이 **같은 파일을 공유**하므로 한 번만 설치하면 둘 다 적용됨.
-- Windows에서는 Claude Code가 명령 실행에 Git Bash를 쓰므로 Git for Windows가 필수임. 훅 스크립트(`bash ~/.claude/hooks/...`)도 그 bash로 돎.
+- Git for Windows는 Claude Code 자체에는 선택이지만, 이 설정에는 필요함(2026-11-03 공식 문서 확인, [setup](https://code.claude.com/docs/en/setup)).
+  - 없으면 Claude Code는 셸 명령을 PowerShell 도구로 실행함.
+  - 이 저장소의 훅은 `bash ~/.claude/hooks/...` 형태라 Git Bash가 있어야 돎. 없으면 훅이 PowerShell로 실행되어 깨질 수 있음.
 - 설치 후 `claude doctor`로 상태를 확인함.
 - 설정 위치
   - 확장 자체 설정(`claudeCode.*`)은 VS Code 설정.
