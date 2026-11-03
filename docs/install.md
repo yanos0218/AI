@@ -22,6 +22,29 @@ mkdir -p ~/.claude/agents && cp base/agents/*.md ~/.claude/agents/
 
 스킬 목록은 세션 시작 시 고정되므로 복사 후 **새 세션**에서 확인 필요.
 
+### Windows 처음 설치 (PowerShell 한 줄)
+
+bash·git·python이 없는 깨끗한 Windows에서 시작하는 방법임([Issue #247](https://github.com/yanos0218/AI/issues/247)). PowerShell(관리자 권한 불필요 여부는 미검증)에서 한 줄을 실행함.
+
+```powershell
+irm https://raw.githubusercontent.com/yanos0218/AI/main/tools/install.ps1 | iex
+```
+
+- 1단계(PowerShell만)
+  - 최신 릴리즈 zip을 받아 `base/`를 `~/.claude`에 복사함. 저장소를 따로 받지 않음.
+  - `settings.json`이 없으면 훅과 상태줄을 뺀 값으로 만듦. bash 없이 훅을 등록하면 `git-guardrails`(`onFailure: "block"`)가 모든 명령을 막을 수 있어서임.
+  - 이미 `settings.json`이 있으면 건드리지 않음.
+- 2단계(Git for Windows와 Python 3가 있을 때)
+  - zip 안의 `tools/install.sh`로 훅 포함 전체 병합을 실행함.
+  - 둘 중 없는 것이 있으면 동의를 물은 뒤 `winget`으로 설치함. 거절하거나 `winget`이 없으면 1단계에서 멈추고 안내함.
+  - 설치 뒤 같은 명령을 다시 실행해도 안전함(같은 파일은 건드리지 않고 다른 파일은 백업 후 교체).
+- 주의
+  - `irm ... | iex` 한 줄로 실행함. `.ps1` 파일로 저장해 실행하면 한글이 깨지거나 실행 정책에 막힐 수 있음.
+  - 보안 프로그램이 한 줄 실행을 막으면 [GitHub Releases](https://github.com/yanos0218/AI/releases)에서 zip을 받아 Git Bash에서 `bash tools/install.sh`를 실행함.
+  - 최신 릴리즈 기준이라 릴리즈 컷 전의 `base/` 변경은 반영되지 않음.
+  - 시험용 환경변수는 `tools/install.ps1` 머리말 참고(`CLAUDE_CONFIG_DIR`, `CLAUDE_CONFIG_ZIP`, `CLAUDE_CONFIG_ASSUME`).
+  - 2026-11-03 기준 이 PC에서 실행해 보지 못함(미검증).
+
 ### Windows에서 실행하는 위치
 
 `.sh` 스크립트는 **Git Bash**(Git for Windows에 들어 있음)에서 실행함. PowerShell·cmd에서는 돌지 않음.

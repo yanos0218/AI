@@ -66,6 +66,7 @@
 | 경로 | 무엇 |
 | --- | --- |
 | [tools/bootstrap.sh](tools/bootstrap.sh) | 신규 기기용 단일 명령 설치<br>저장소를 `~/claude-config`에 clone(있으면 pull) 후 `install.sh` 자동 실행 |
+| [tools/install.ps1](tools/install.ps1) | Windows 첫 설치<br>bash·git·python 없이 PowerShell 한 줄로 시작, 갖춰지면 `install.sh`로 훅까지 병합 |
 | [tools/install.sh](tools/install.sh) | `base/` → `~/.claude` 설치 (멱등, settings 병합, `--dry-run`). 기기 3대 공통 |
 | [tools/test-skill.sh](tools/test-skill.sh) | 스킬 발동 시험<br>시나리오 저장소에 넣고 새 세션으로 실행, 발동·비용 추출 (기본 Sonnet) |
 | [tools/test-agent.sh](tools/test-agent.sh) | 에이전트 발동 시험<br>같은 폴더 에이전트 전부를 `--agents`로 넘겨 새 세션으로 실행, 위임 대상·에이전트 안 도구 호출·훅 차단·토큰 추출 |
@@ -108,13 +109,12 @@
 기본 영역이 바뀌면 각 기기에서 다시 설치함. 상세와 Claude.ai·VS Code 절차는 [docs/install.md](docs/install.md).
 
 ```bash
-# 신규 기기 — clone 없이 한 줄로
+# Windows PowerShell — 준비물 없이 한 줄(Git·Python은 동의 후 자동 설치, Issue #247)
+irm https://raw.githubusercontent.com/yanos0218/AI/main/tools/install.ps1 | iex
+# Mac·Linux 신규 기기 — clone 없이 한 줄로
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/yanos0218/AI/main/tools/bootstrap.sh)"
-
 # 이미 clone된 저장소 — 갱신
 bash tools/install.sh            # --dry-run 으로 먼저 볼 수 있음
 ```
 
-이미 설치돼 있으면 어느 저장소에 있든 "설정 업데이트해줘"라고 말해도 된다(`config-update` 스킬).
-
-CLAUDE.md·훅·스킬을 복사하고 `settings.json`에 `permissions`·`hooks`·`statusLine`·`env`·`model`·`effortLevel`·`modelSettings`·`language` 키를 합침(그 밖의 기기별 키는 유지). 스킬·훅은 **새 세션**부터 적용됨. 어느 기기에 어느 버전이 깔렸는지는 [docs/PROGRESS.md §0](docs/PROGRESS.md#0-자산-현황--단계와-배포-상태) 표.
+이미 설치돼 있으면 어느 저장소에 있든 "설정 업데이트해줘"라고 말해도 된다(`config-update` 스킬). CLAUDE.md·훅·스킬을 복사하고 `settings.json`에 `permissions`·`hooks`·`statusLine`·`env`·`model`·`effortLevel`·`modelSettings`·`language` 키를 합침(그 밖의 기기별 키는 유지). 스킬·훅은 **새 세션**부터 적용됨. 어느 기기에 어느 버전이 깔렸는지는 [docs/PROGRESS.md §0](docs/PROGRESS.md#0-자산-현황--단계와-배포-상태) 표.
