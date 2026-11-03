@@ -22,6 +22,22 @@ mkdir -p ~/.claude/agents && cp base/agents/*.md ~/.claude/agents/
 
 스킬 목록은 세션 시작 시 고정되므로 복사 후 **새 세션**에서 확인 필요.
 
+### Windows에서 실행하는 위치
+
+`.sh` 스크립트는 **Git Bash**(Git for Windows에 들어 있음)에서 실행함. PowerShell·cmd에서는 돌지 않음.
+
+- 열기
+  - 시작 메뉴에서 "Git Bash"를 열거나, VS Code 터미널 프로필을 Git Bash로 고름.
+- PowerShell·cmd에서 `bash`를 치면 Git Bash가 아니라 WSL(`C:\WINDOWS\system32\bash.exe`)이 실행됨.
+  - `~/.claude`가 없는 리눅스 홈을 보고 설치되어 Windows의 Claude Code에는 적용되지 않음([Issue #194](https://github.com/yanos0218/AI/issues/194), [os-differences.md](os-differences.md)).
+- 확인 명령(Git Bash에서)
+  - `uname -s`가 `MINGW64_NT-...`처럼 `MINGW`로 시작하면 Git Bash임.
+  - `command -v python python3` 중 하나는 나와야 함(설치·대조 스크립트가 필요로 함).
+- `./tools/install.sh`처럼 직접 실행하지 않고 항상 `bash tools/install.sh`로 호출함.
+  - 저장소의 `.sh`에는 실행 권한이 없어 Mac·Linux에서도 직접 실행은 안 됨.
+- 신규 기기용 한 줄 설치(`tools/bootstrap.sh`, [README](../README.md) "설치")도 Git Bash에서 실행함.
+- PowerShell에서 실행하는 것은 VS Code용 `base/vscode/install.ps1`뿐임(`pwsh -File base/vscode/install.ps1`).
+
 ### settings.json 병합
 
 `~/.claude/settings.json`이 없으면 `base/settings.example.json`을 복사하고, 있으면 사용자가 넣은 값을 지우지 않고 base 값을 병합함([tools/settings_merge.py](../tools/settings_merge.py), [Issue #194](https://github.com/yanos0218/AI/issues/194)).

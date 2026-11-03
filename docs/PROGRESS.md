@@ -1,6 +1,6 @@
 # claude-config 진행 보드 (PROGRESS)
 
-> "지금 어디까지 됐고, 다음에 뭘 할지"를 이 문서 하나로 추적한다. kolo_pwa `docs/PROGRESS.md`와 같은 역할.
+> "지금 어디까지 됐고, 다음에 뭘 할지"를 이 문서 하나로 추적함. kolo_pwa `docs/PROGRESS.md`와 같은 역할.
 >
 > **역할 분리**
 >
@@ -10,7 +10,7 @@
 > - [README.md](../README.md) = **무엇이 왜 이렇게 만들어졌는지** (구조, 설치, 검토표)
 > - git log = 완료된 변경 이력
 >
-> **업데이트 규칙**: §0 표는 자산 단계·배포 여부가 바뀔 때 갱신한다. 새 할 일은 `gh issue create --label task`로. 세션이 끝날 때 이 표와 HANDOFF "지금" 절을 같이 갱신한다.
+> **업데이트 규칙**: §0 표는 자산 단계·배포 여부가 바뀔 때 갱신함. 새 할 일은 `gh issue create --label task`로. 세션이 끝날 때 이 표와 HANDOFF "지금" 절을 같이 갱신함.
 >
 > **크기 규칙 ([Issue #49](https://github.com/yanos0218/AI/issues/49), 2026-09-08; 범위 조정 [Issue #11](https://github.com/yanos0218/AI/issues/11) 2026-09-12)**: 이 파일은 **§0 자산 현황 표**만 담는다. 할 일·발견한 문제·완료 이력은 전부 GitHub Issue로 관리한다(라벨 `task`/`bug`, open/closed로 진행 상태 구분).
 

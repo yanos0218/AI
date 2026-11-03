@@ -34,7 +34,7 @@ PR 습관(브랜치에서 작업 → `gh pr create` → merge)을 먼저 한 저
 | Dependabot 알림 | kolo_pwa·kolo-api가 켜짐, AI는 2026-10-26 `gh api repos/yanos0218/AI/vulnerability-alerts`가 204로 켜짐 확인 | **켠다** | 무료, 저장소 Settings → Security 클릭 1회. OpenClaw·Script·Etc는 2026-09-08 조사 때 꺼져 있었고 이후 확인 안 함 |
 | Dependabot 버전 업데이트 | kolo_pwa(actions만) | 유지 | 의존성 트리가 있는 저장소만 |
 | PR | 사람이 만든 PR 없음(Codex·Dependabot뿐) | 필요할 때 | Claude 클라우드·`@claude`·리뷰 코멘트가 전부 PR 위에서 도니, 그걸 쓰기로 하면 같이 시작 |
-| 이슈·마일스톤·라벨 | AI 저장소는 라벨로 이슈 관리, 릴리즈마다 마일스톤 배정(2026-09-17부터, `dev-release` §2 8번). 나머지 저장소는 이슈 0·마일스톤 0 | AI는 쓴다, 나머지는 보류 | AI는 할 일까지 Issue, `docs/PROGRESS.md`는 배포 표만. 마일스톤은 "이슈가 어느 릴리즈에 실제로 포함됐는지" 검색용([Issue #109](https://github.com/yanos0218/AI/issues/109)). 나머지 저장소는 `P-NN` 파일 하나가 아직 더 빠름 |
+| 이슈·마일스톤·라벨 | AI 저장소는 라벨로 이슈 관리, 릴리즈마다 마일스톤 배정(2026-09-17부터, `dev-release` §2 8번). 나머지 저장소는 이슈 0·마일스톤 0 | AI는 사용, 나머지는 보류 | AI는 할 일까지 Issue, `docs/PROGRESS.md`는 배포 표만. 마일스톤은 "이슈가 어느 릴리즈에 실제로 포함됐는지" 검색용([Issue #109](https://github.com/yanos0218/AI/issues/109)). 나머지 저장소는 `P-NN` 파일 하나가 아직 더 빠름 |
 | Projects(칸반) | 켜져 있으나 미사용 | 안 씀 | AI 저장소도 PROGRESS §0 표가 매트릭스 역할을 대신함, 토큰에 `read:project` 스코프도 없음 |
 | Wiki·Discussions·Pages | 꺼짐 | 불가/불필요 | Free 비공개 저장소는 Wiki·Pages 불가. 문서는 `docs/`, 서비스는 NAS |
 | 브랜치 보호·룰셋·CODEOWNERS | 없음 | **불가**(Pro 필요) | 대신 로컬 훅(`git-guardrails`)이 push 앞에서 확인. 두 번째 개발자가 오면 Pro($4/월) |
