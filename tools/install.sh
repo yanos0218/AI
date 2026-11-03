@@ -17,7 +17,8 @@ say() { printf '%s\n' "$*"; }
 run() { if [[ "${DRY}" = 1 ]]; then say "  (dry) $*"; else "$@"; fi; }
 
 TS="$(date +%Y%m%d%H%M%S)"
-BASE_VER="$(git describe --tags --always 2>/dev/null)"
+# 저장소 없이 zip만 풀어 쓰는 설치(tools/install.ps1)는 git describe가 비므로 CLAUDE_CONFIG_BASE_VER로 태그를 받는다(Issue #248)
+BASE_VER="${CLAUDE_CONFIG_BASE_VER:-$(git describe --tags --always 2>/dev/null)}"
 BASE_TREE="$(git rev-parse HEAD:base 2>/dev/null)"   # base/ 내용 지문. 문서만 바뀐 커밋과 구별하는 데 씀(Issue #150)
 SRC_ABS="$(pwd)"
 say "== 대상: ${CLAUDE_HOME}  (base 버전: ${BASE_VER})"
@@ -107,6 +108,6 @@ if [[ "${SETTINGS_OK}" = 1 ]]; then say "== 설치 끝. 스킬·훅은 새 세�
 else say "== 설치 끝, 단 settings.json 병합은 실패했음(위 메시지 확인). 나머지 파일만 설치됨."; fi
 # 설치 직후엔 PROGRESS를 아직 못 고쳤으므로 비교하지 않고 적을 값만 알린다. 대조는 check-install.sh가 한다(Issue #180)
 case "$(uname -s)" in MINGW*|MSYS*|CYGWIN*) surface="Windows";; Darwin) surface="Mac mini";; Linux) surface="Linux";; *) surface="?";; esac
-say "== 기록: docs/PROGRESS.md §0 표면별 설치 버전 '${surface}' 행 → ${BASE_VER} / $(date +%Y-%m-%d) (claude-config 세션에서 갱신)"
+[[ -n "${CLAUDE_CONFIG_BASE_VER:-}" ]] || say "== 기록: docs/PROGRESS.md §0 표면별 설치 버전 '${surface}' 행 → ${BASE_VER} / $(date +%Y-%m-%d) (claude-config 세션에서 갱신)"
 [[ "${DRY}" = 1 ]] || bash tools/check-install.sh | tail -1
 [[ "${SETTINGS_OK}" = 1 ]] || exit 1

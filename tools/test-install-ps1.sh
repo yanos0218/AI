@@ -54,7 +54,7 @@ rm -f "${C}/settings.json"
 out="$(run)"
 echo "${out}" | grep -q '훅까지 설치됨' && ok "훅까지 설치됨 안내" || bad "2단계 안내 없음"
 "${PY}" -c "import json,sys; d=json.load(open(sys.argv[1])); assert 'hooks' in d and 'statusLine' in d" "${C}/settings.json" && ok "settings.json에 hooks·statusLine 병합" || bad "훅 병합 안 됨"
-[[ "$(sed -n 2p "${C}/.claude-config-version")" = "local" ]] && ok "버전 표시 파일에 태그 복원(임시, Issue #248)" || bad "버전 표시 파일 태그 없음"
+[[ "$(sed -n 2p "${C}/.claude-config-version")" = "local" ]] && ok "버전 표시 파일에 릴리즈 태그 기록(Issue #248)" || bad "버전 표시 파일에 태그 없음"
 
 echo "== install.sh: 실행 안 되는 python3 별칭이 앞서도 되는 python을 고름(Windows 스토어 별칭 재현, Issue #250)"
 mkdir -p "${T}/alias"; printf '#!/bin/sh\necho "Python "\nexit 49\n' > "${T}/alias/python3"; chmod +x "${T}/alias/python3"; ln -s "${PY}" "${T}/alias/python"

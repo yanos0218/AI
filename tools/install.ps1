@@ -237,13 +237,10 @@ function Install-ClaudeConfig {
       # install.sh가 쓰는 python이 스토어 별칭보다 먼저 잡히도록 찾은 python 위치를 PATH 앞에 둔다
       $env:Path = (Split-Path $py) + ';' + $env:Path
       Push-Location $source
-      try { & $bash 'tools/install.sh'; $code = $LASTEXITCODE } finally { Pop-Location }
+      $env:CLAUDE_CONFIG_BASE_VER = $tag
+      try { & $bash 'tools/install.sh'; $code = $LASTEXITCODE } finally { Pop-Location; Remove-Item Env:CLAUDE_CONFIG_BASE_VER -ErrorAction SilentlyContinue }
       if ($code -eq 0) {
         $hooksOn = $true
-        # .git이 없는 폴더에서 install.sh는 버전을 못 구해 빈 값으로 덮어쓴다. 근본 수정 전까지(Issue #248) 태그를 복원함
-        $vf = Join-Path $claude '.claude-config-version'
-        $vl = [IO.File]::ReadAllLines($vf)
-        if ($vl.Count -lt 2 -or -not $vl[1]) { [IO.File]::WriteAllText($vf, ($source + "`n" + $tag + "`n`n"), $utf8) }
       } else { Say "  install.sh가 실패함(종료 코드 $code). 위 메시지 확인 후 같은 명령을 다시 실행함." }
     }
 

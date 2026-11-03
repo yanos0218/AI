@@ -7,6 +7,11 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- `tools/install.sh`가 환경변수 `CLAUDE_CONFIG_BASE_VER`로 설치 버전을 받음, `.git` 없는 zip 설치에서 "base 버전"이 비던 문제 수정([Issue #248](https://github.com/yanos0218/AI/issues/248))
+  - `tools/install.ps1`이 릴리즈 태그를 넘기고 임시 복원 코드를 제거함, 패키지 설치에서는 PROGRESS 행 갱신 안내를 건너뜀
+
 ### Changed
 
 - `docs/install.md` Windows 절에 한 줄 설치 확인 결과와 `raw` 주소 5분 캐시·릴리즈 기준 안내 추가([Issue #247](https://github.com/yanos0218/AI/issues/247))
