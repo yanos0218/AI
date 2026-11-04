@@ -6,8 +6,9 @@ input="$(cat)"
 
 if command -v jq >/dev/null 2>&1; then
   fields="$(printf '%s' "${input}" | jq -r '[.model.display_name // "?", .workspace.current_dir // "", (.context_window.used_percentage // 0 | floor), (.cost.total_cost_usd // 0)] | @tsv')"
-elif command -v python3 >/dev/null 2>&1 || command -v python >/dev/null 2>&1; then
-  py="$(command -v python3 || command -v python)"
+elif command -v python >/dev/null 2>&1 || command -v python3 >/dev/null 2>&1; then
+  # python을 먼저 찾는다: Windows의 python3는 Microsoft Store 별칭이라 실행하면 "Python"만 찍고 실패한다(Issue #253)
+  py="$(command -v python || command -v python3)"
   fields="$(printf '%s' "${input}" | "${py}" -c '
 import json,sys
 d=json.load(sys.stdin)

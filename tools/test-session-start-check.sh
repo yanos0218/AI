@@ -113,6 +113,20 @@ FAKE
   echo v0.19.0 > "${tagf}"; touch -t 202001010000 "${tagf}"
   FAKE_CURL=ok FAKE_TAG=v0.20.0 prun >/dev/null; sleep 2
   if [[ "$(head -1 "${tagf}")" == v0.20.0 ]]; then pass=$((pass + 1)); else fail=$((fail + 1)); echo "실패: 하루 지난 캐시를 다시 받지 않음"; fi
+  # Windows의 python3는 실행하면 "Python"만 찍고 종료 코드 49로 실패하는 Microsoft Store 별칭이다(Issue #253).
+  # python이 진짜면 그쪽을 써야 한다. jq가 있으면 파이썬 경로를 타지 않아 이 사례를 건너뛴다.
+  if command -v jq >/dev/null 2>&1; then
+    echo "건너뜀: jq가 있어 파이썬 선택 시험(스토어 별칭 python3)이 의미 없음"
+  else
+    mkdir -p "${tmp}/alias"
+    realpy="$(command -v python || command -v python3)"
+    printf '#!/usr/bin/env bash\nexec "%s" "$@"\n' "${realpy}" > "${tmp}/alias/python"
+    printf '#!/usr/bin/env bash\necho -n Python\nexit 49\n' > "${tmp}/alias/python3"
+    chmod +x "${tmp}/alias/python" "${tmp}/alias/python3"
+    echo v0.19.0 > "${tagf}"
+    out="$(printf '{"cwd":"%s","transcript_path":""}' "${tmp}" | HOME="${tmp}/home" CLAUDE_CONFIG_DIR='' PATH="${tmp}/alias:${tmp}/bin:${PATH}" bash "${hook}" 2>&1)"
+    if [[ "${out}" == *"낡았습니다"* ]]; then pass=$((pass + 1)); else fail=$((fail + 1)); echo "실패: 스토어 별칭 python3가 앞서도 python으로 알림을 내야 함 ${out}"; fi
+  fi
 fi
 
 echo "통과 ${pass} / 실패 ${fail}"

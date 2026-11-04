@@ -3,7 +3,8 @@
 # 저장한 스냅샷을 보여주고 파일을 지운다(다음 컴팩션 때 새로 써서 쌓이지 않게). (Issue #104)
 set -u
 input="$(cat)"
-PY="$(command -v python3 || command -v python || true)"
+# python을 먼저 찾는다: Windows의 python3는 Microsoft Store 별칭이라 실행하면 "Python"만 찍고 실패한다(Issue #253)
+PY="$(command -v python || command -v python3 || true)"
 
 get_field() {
   if command -v jq >/dev/null 2>&1; then

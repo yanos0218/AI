@@ -17,7 +17,8 @@
 # 개수를 세서(self-audit과 같은 방식) 다음 세션 시작 때 알려준다.
 set -u
 input="$(cat)"
-PY="$(command -v python3 || command -v python || true)"
+# python을 먼저 찾는다: Windows의 python3는 Microsoft Store 별칭이라 실행하면 "Python"만 찍고 실패한다(Issue #253)
+PY="$(command -v python || command -v python3 || true)"
 
 get_field() {
   if command -v jq >/dev/null 2>&1; then
