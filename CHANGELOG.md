@@ -12,6 +12,10 @@
 - `tools/` 스크립트 11개, `drafts/hooks/notify.sh`, `base/skills/live-status/scripts/live.sh`가 이름만 보고 `python3`를 골라 Windows의 Microsoft Store 별칭(출력 "Python", 종료 코드 49)에 걸리던 문제 수정([Issue #255](https://github.com/yanos0218/AI/issues/255))
   - `tools/install.sh`처럼 `python3`·`python` 중 `-c 'import sys'`가 실제로 성공하는 것을 고름
   - `tools/test-python-pick.sh` 추가, 이름 순서만 믿는 줄이 남았는지 정적으로 확인하고 가짜 별칭을 앞에 둔 채 `check-cram.sh`·`check-docs.sh`를 실행함, CI `설치 병합 시험` job에 등록
+- `tools/install.ps1`이 설치 뒤 다시 시작하는 방법을 알리지 않아 생기던 문제 2건에 안내 추가([Issue #258](https://github.com/yanos0218/AI/issues/258), [Issue #259](https://github.com/yanos0218/AI/issues/259))
+  - Git·Python을 이번 실행에서 설치했으면 Claude Code와 터미널 창을 모두 닫고 새 창에서 시작하라고 안내함(같은 창은 새 PATH를 몰라 `python`이 Store 별칭으로 잡힘)
+  - Claude Code 세션 안(`CLAUDECODE=1`)에서 Git Bash 없이 시작한 경우 그 세션의 명령이 `git-guardrails` 훅 실패로 막힐 수 있다고 경고함
+  - [docs/install.md](docs/install.md) 주의에 같은 내용 추가
 
 ### Changed
 
