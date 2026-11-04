@@ -7,6 +7,8 @@
 
 ## [Unreleased]
 
+## [0.18.1] - 2026-11-04
+
 ### Fixed
 
 - `tools/install.sh`가 환경변수 `CLAUDE_CONFIG_BASE_VER`로 설치 버전을 받음, `.git` 없는 zip 설치에서 "base 버전"이 비던 문제 수정([Issue #248](https://github.com/yanos0218/AI/issues/248))
