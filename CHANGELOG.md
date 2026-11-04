@@ -7,6 +7,12 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- 훅 4개(`session-start-check.sh`, `compact-snapshot.sh`, `compact-snapshot-show.sh`, `statusline.sh`)가 `python3`를 먼저 골라, Windows에서 Microsoft Store 별칭(출력 "Python", 종료 코드 49)에 걸려 조용히 종료되던 문제 수정([Issue #253](https://github.com/yanos0218/AI/issues/253))
+  - `python` → `python3` 순으로 바꿔 [docs/testing.md](docs/testing.md)의 훅 규칙과 맞춤
+  - `tools/test-session-start-check.sh`에 가짜 스토어 별칭 시나리오 추가(`jq`가 없을 때만 실행), 수정 전 훅은 10건 실패·수정 후 27건 통과
+
 ## [0.18.1] - 2026-11-04
 
 ### Fixed

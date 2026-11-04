@@ -65,7 +65,7 @@ Windows(Git Bash, bash 5, gawk)에서만 시험하면 Mac(bash 3.2, BSD 도구)�
   - `sed -i`(인자 없이), `stat -c`, `date -d`, `readlink -f`, `grep -P` 금지.
   - `awk -v`에 여러 줄 값을 넘기지 않는다(BSD awk 오류). 환경변수로 넘기고 `ENVIRON`으로 읽음.
 - 파이썬은 이름을 고정하지 않음
-  - Mac은 `python` 없이 `python3`만 있음. 훅은 `python` → `python3` 순(Windows는 `python3`가 느린 스토어 별칭), 도구는 `command -v python3 || command -v python`.
+  - Mac은 `python` 없이 `python3`만 있음. 훅은 `python` → `python3` 순(Windows는 `python3`가 실행하면 "Python"만 찍고 종료 코드 49로 실패하는 스토어 별칭, 훅 4개가 어겨 알림·상태줄이 조용히 꺼진 사례 [Issue #253](https://github.com/yanos0218/AI/issues/253)), 도구는 `command -v python3 || command -v python`.
 - 파이썬 3.7 이상 전용 기능을 쓰지 않음
   - Rocky Linux 8 기본 3.6.8에서 `sys.stdout.reconfigure`, `datetime.fromisoformat`, `subprocess.run(capture_output=)`, `dataclasses`, `from __future__ import annotations`가 없음([Issue #202](https://github.com/yanos0218/AI/issues/202)).
   - 출력 인코딩은 `reconfigure`가 없으면 `io.TextIOWrapper`로 감쌈([tools/settings_merge.py](../tools/settings_merge.py) `utf8_stdio`), 훅 셸 입구는 `PYTHONIOENCODING=utf-8`을 지정함.

@@ -7,7 +7,8 @@
 # TodoWrite 체크리스트 추출은 승격 때 뺐다: 최근 30일 세션 88개에서 호출 0건, VS Code 확장엔 도구 자체가 없음(2026-09-27).
 set -u
 input="$(cat)"
-PY="$(command -v python3 || command -v python || true)"
+# python을 먼저 찾는다: Windows의 python3는 Microsoft Store 별칭이라 실행하면 "Python"만 찍고 실패한다(Issue #253)
+PY="$(command -v python || command -v python3 || true)"
 
 get_field() {
   if command -v jq >/dev/null 2>&1; then
