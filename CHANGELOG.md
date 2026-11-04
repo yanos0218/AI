@@ -16,6 +16,10 @@
 ### Changed
 
 - [docs/testing.md](docs/testing.md)와 [docs/os-differences.md](docs/os-differences.md)의 파이썬 선택 규칙을 "실행 확인 후 선택"으로 정정(도구는 `python3`→`python` 이름 순서였음)
+- 읽기 차단 서술 정정([Issue #228](https://github.com/yanos0218/AI/issues/228), [Issue #231](https://github.com/yanos0218/AI/issues/231))
+  - [docs/install.md](docs/install.md)는 "작업 폴더 밖 읽기가 막힘"을 `Read` 도구 한정으로 고치고 대화형 `Bash`는 막히지 않는다고 적음
+  - [docs/review-vs-official.md](docs/review-vs-official.md)에 Windows 2.1.318 대화형 재현(2026-11-04)과, 공식 문서가 읽기 전용 `Bash` 명령도 이 설정의 영향 대상으로 적고 있어 어긋난다는 점을 추가
+  - [docs/HANDOFF.md](docs/HANDOFF.md)의 남은 재시험에서 Windows를 뺌
 
 ## [0.18.2] - 2026-11-04
 

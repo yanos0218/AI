@@ -101,7 +101,7 @@ PowerShell에서 `bash`가 `CommandNotFoundException`("'bash' 용어가 cmdlet, 
   - 이름이 `.bak.<숫자 14자리>`인 것만 대상이라 직접 만든 백업은 그대로임.
   - `--dry-run`은 지울 목록만 보여 주고, 병합이 실패한 설치에서는 지우지 않음.
 - 읽기 차단과 추가 폴더
-  - `permissions.blockReadsOutsideWorkingDirectories`가 켜져 있어 작업 폴더 밖 읽기가 막힘.
+  - `permissions.blockReadsOutsideWorkingDirectories`가 켜져 있어 `Read` 도구의 작업 폴더 밖 읽기가 막힘. 대화형 `Bash`는 막히지 않음([Issue #228](https://github.com/yanos0218/AI/issues/228), [review-vs-official.md](review-vs-official.md)).
   - 설치가 `~/.claude`와 원본 저장소 경로를 계산해 `permissions.additionalDirectories`에 합집합으로 넣음. 그래야 다른 저장소에서도 `config-update`가 버전 파일과 원본 저장소를 읽음([Issue #205](https://github.com/yanos0218/AI/issues/205)).
   - 다른 저장소를 읽어야 하면 세션에서 `/add-dir`로 그 폴더를 추가함.
 - 주의할 점
