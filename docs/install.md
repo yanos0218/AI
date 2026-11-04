@@ -45,6 +45,9 @@ irm https://raw.githubusercontent.com/yanos0218/AI/main/tools/install.ps1 | iex
   - 보안 프로그램이 한 줄 실행을 막으면 [GitHub Releases](https://github.com/yanos0218/AI/releases)에서 zip을 받아 Git Bash에서 `bash tools/install.sh`를 실행함.
   - 설정 파일과 `tools/install.sh`는 최신 릴리즈 zip에서 오므로 릴리즈 컷 전의 `base/`·`tools/` 변경은 반영되지 않음. `install.ps1` 자체만 `main`에서 받음.
   - 주소의 `main` 파일은 GitHub가 약 5분 캐시하므로 push 직후에는 옛 `install.ps1`이 내려올 수 있음.
+  - 갱신
+    - 이 설치는 원본 저장소(git)가 없는 패키지 설치라 `config-update` 스킬로 갱신할 수 없음. 스킬은 패키지 설치를 알아보고 한 줄 설치기 재실행을 안내한 뒤 끝남([Issue #248](https://github.com/yanos0218/AI/issues/248)).
+    - 새 릴리즈가 나오면 세션 시작 훅이 하루 한 번 최신 릴리즈 태그를 받아 비교해 한 줄로 알림. 같은 한 줄 명령을 다시 실행하면 갱신됨([Issue #252](https://github.com/yanos0218/AI/issues/252)).
   - 시험용 환경변수는 `tools/install.ps1` 머리말 참고(`CLAUDE_CONFIG_DIR`, `CLAUDE_CONFIG_ZIP`, `CLAUDE_CONFIG_ASSUME`).
   - 2026-11-04 실제 깨끗한 Windows(`winget` v1.2, bash·git·python 없음)에서 한 줄 실행으로 훅 병합까지 끝나고 새 Claude Code 세션에서 `/hooks`와 상태줄이 보이는 것을 확인함([Issue #247](https://github.com/yanos0218/AI/issues/247)). Windows PowerShell 5.1 CI 시험은 [Issue #249](https://github.com/yanos0218/AI/issues/249).
 

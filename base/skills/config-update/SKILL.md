@@ -12,6 +12,9 @@ allowed-tools: Bash(cat ~/.claude/.claude-config-version) Bash(git -C* fetch*) B
 
 - `~/.claude/.claude-config-version`을 읽는다.
   - 1행은 원본 저장소 경로(SRC_PATH), 2행은 설치된 버전(표시용), 3행은 설치한 `base/` 트리 해시(비교용)다. 옛 설치본은 3행이 없다.
+- 1행 경로가 git 저장소의 최상위가 아니면 zip으로 설치한 **패키지 설치**다(Windows 한 줄 설치기의 `~/.claude/.config-source` 등, [Issue #248](https://github.com/yanos0218/AI/issues/248)).
+  - 판별은 `git -C "<SRC_PATH>" rev-parse --show-prefix` 하나로 한다. 명령이 실패하거나 출력이 비어 있지 않으면 패키지 설치다.
+  - 패키지 설치면 아래 절차(git 명령 전부)가 성립하지 않는다. 시작하지 말고 "원본 저장소 없이 설치한 패키지 설치라 config-update로 갱신할 수 없습니다. 갱신하려면 설치할 때 쓴 한 줄 설치기를 다시 실행하세요"라고만 알리고 끝낸다. 새로 clone하거나 설치 스크립트를 직접 돌리지 않는다.
 - 파일이 없으면 아직 `tools/install.sh`를 한 번도 실행한 적이 없는 것이다. **경로를 추측하지 말고** 원본 저장소 위치를 사용자에게 물어본다.
 - 같은 세션에 다른 SessionStart 알림(저장소 표준 제안, 대량 조회 누적 등)이 함께 떠 있어도, 이 체크리스트를 먼저 끝내고 나서 그것들에 답한다.
 
