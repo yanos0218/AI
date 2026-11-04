@@ -42,6 +42,10 @@ irm https://raw.githubusercontent.com/yanos0218/AI/main/tools/install.ps1 | iex
   - 설치 뒤 같은 명령을 다시 실행해도 안전함(같은 파일은 건드리지 않고 다른 파일은 백업 후 교체).
 - 주의
   - `irm ... | iex` 한 줄로 실행함. `.ps1` 파일로 저장해 실행하면 한글이 깨지거나 실행 정책에 막힐 수 있음.
+  - 설치가 끝나면 Claude Code와 터미널 창을 모두 닫고 **새 터미널 창**에서 Claude Code를 시작함.
+    - 설치 전에 연 창은 방금 바뀐 PATH를 모름. 같은 창에서 다시 시작하면 `python`·`python3`가 모두 Store 별칭으로 잡혀 상태줄이 `[] 0%`로 깨지고 python을 쓰는 훅이 실패함(2026-11-04 실제 PC, [Issue #259](https://github.com/yanos0218/AI/issues/259)).
+    - Claude Code 세션 안에서 설치기를 실행하면 그 세션에 훅이 바로 적용됨. 세션이 Git Bash 없이 시작했으면 훅이 `bash`를 찾지 못해 `git-guardrails`(`onFailure: "block"`)가 이후 명령을 모두 막음. 다시 시작하면 풀림(2026-11-04 실제 PC, [Issue #258](https://github.com/yanos0218/AI/issues/258)).
+    - 설치기는 Git·Python을 새로 설치했으면 새 창 안내를, Claude Code 세션 안(`CLAUDECODE=1`)에서 Git Bash 없이 시작했으면 차단 경고를 끝에 출력함.
   - 보안 프로그램이 한 줄 실행을 막으면 [GitHub Releases](https://github.com/yanos0218/AI/releases)에서 zip을 받아 Git Bash에서 `bash tools/install.sh`를 실행함.
   - 설정 파일과 `tools/install.sh`는 최신 릴리즈 zip에서 오므로 릴리즈 컷 전의 `base/`·`tools/` 변경은 반영되지 않음. `install.ps1` 자체만 `main`에서 받음.
   - 주소의 `main` 파일은 GitHub가 약 5분 캐시하므로 push 직후에는 옛 `install.ps1`이 내려올 수 있음.

@@ -220,14 +220,17 @@ function Install-ClaudeConfig {
     # 6. 2단계: bash와 python이 있으면 훅까지 전체 병합
     $bash = Find-GitBash
     $py = Find-Python
+    # 마지막 안내용. 시작 때 Git Bash가 없었는지, 이번 실행에서 프로그램을 설치했는지 기억한다(Issue #258, #259)
+    $bashAtStart = [bool]$bash
+    $installedNow = $false
     if (-not $bash -or -not $py) {
       $need = @()
       if (-not $bash) { $need += 'Git for Windows' }
       if (-not $py) { $need += 'Python 3' }
       Say ("== 2단계에 필요한 것이 없음: " + ($need -join ', '))
       if (Confirm-Install ((($need -join ', ') + '을(를)'))) {
-        if (-not $bash) { [void](Install-Program 'Git.Git' 'Git for Windows' 'git') }
-        if (-not $py) { [void](Install-Program 'Python.Python.3.12' 'Python 3' 'python') }
+        if (-not $bash) { if ((Install-Program 'Git.Git' 'Git for Windows' 'git') -eq $true) { $installedNow = $true } }
+        if (-not $py) { if ((Install-Program 'Python.Python.3.12' 'Python 3' 'python') -eq $true) { $installedNow = $true } }
         $bash = Find-GitBash
         $py = Find-Python
       }
@@ -246,6 +249,16 @@ function Install-ClaudeConfig {
 
     if ($hooksOn) {
       Say '== 끝. 훅까지 설치됨. Claude Code를 새 세션으로 시작함.'
+      if ($installedNow) {
+        # 실행 중인 창은 방금 바뀐 PATH를 모르므로 같은 창에서 다시 시작하면 python이 스토어 별칭으로 잡힘(Issue #259)
+        Say '   Git·Python을 방금 설치했으므로 Claude Code와 이 터미널 창을 모두 닫고, 새 터미널 창을 열어 Claude Code를 시작함.'
+        Say '   같은 창에서 다시 시작하면 새 PATH가 반영되지 않아 상태줄과 훅이 깨질 수 있음.'
+      }
+      if ($env:CLAUDECODE -eq '1' -and -not $bashAtStart) {
+        # Claude Code 세션 안에서 실행되면 그 세션에 훅이 바로 적용되지만 세션은 bash를 몰라 명령이 막힘(Issue #258)
+        Say '   [주의] Claude Code 세션 안에서 실행됨. 이 세션은 Git Bash 없이 시작해 훅이 bash를 찾지 못하므로 이후 명령이 모두 막힐 수 있음.'
+        Say '   이 세션에서 다른 작업을 이어가지 말고 위 순서대로 Claude Code를 다시 시작함.'
+      }
     } else {
       Say '== 1단계만 끝남. 훅과 상태줄은 꺼져 있고 git-guardrails 보호가 없음.'
       $miss = @(); if (-not $bash) { $miss += 'Git for Windows' }; if (-not $py) { $miss += 'Python 3' }
