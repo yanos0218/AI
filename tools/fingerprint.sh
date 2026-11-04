@@ -12,7 +12,8 @@ SCRIPT_DIR="$(cd "$(dirname "${0}")" && pwd)"
 # 현재 작업 폴더가 속한 저장소(없으면 그 폴더)의 CLAUDE.md·memory를 본다
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 CLAUDE_HOME="${CLAUDE_CONFIG_DIR:-${HOME}/.claude}"
-PY="$(command -v python3 || command -v python)"
+# python3·python 중 실제로 실행되는 것을 고른다(Windows 스토어 별칭 python3는 이름만 있고 실행하면 실패, Issue #255)
+PY=""; for c in python3 python; do p="$(command -v "${c}" 2>/dev/null)" && "${p}" -c 'import sys' >/dev/null 2>&1 && { PY="${p}"; break; }; done
 [[ -n "${PY}" ]] || { echo "python3 또는 python이 필요함"; exit 1; }
 
 CLI="PATH에 없음"

@@ -8,7 +8,9 @@
 # 넘겨(명령 문자열에 끼워 넣지 않음) 폴더 이름의 따옴표·$() 같은 문자가 실행되지 않게 한다.
 # macOS는 osascript, Linux는 notify-send(없으면 조용히 끝남), Windows는 PowerShell 풍선 알림이다. Windows 분기는 미검증.
 set -u
-PY="$(command -v python3 || command -v python)" || exit 0
+# python3·python 중 실제로 실행되는 것을 고른다(Windows 스토어 별칭 python3는 이름만 있고 실행하면 실패, Issue #255)
+PY=""; for c in python3 python; do p="$(command -v "${c}" 2>/dev/null)" && "${p}" -c 'import sys' >/dev/null 2>&1 && { PY="${p}"; break; }; done
+[[ -n "${PY}" ]] || exit 0
 IFS= read -r -d '' input || true
 fields="$(printf '%s' "${input}" | "${PY}" -I -c '
 import sys, json, os, re

@@ -7,6 +7,16 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- `tools/` 스크립트 11개, `drafts/hooks/notify.sh`, `base/skills/live-status/scripts/live.sh`가 이름만 보고 `python3`를 골라 Windows의 Microsoft Store 별칭(출력 "Python", 종료 코드 49)에 걸리던 문제 수정([Issue #255](https://github.com/yanos0218/AI/issues/255))
+  - `tools/install.sh`처럼 `python3`·`python` 중 `-c 'import sys'`가 실제로 성공하는 것을 고름
+  - `tools/test-python-pick.sh` 추가, 이름 순서만 믿는 줄이 남았는지 정적으로 확인하고 가짜 별칭을 앞에 둔 채 `check-cram.sh`·`check-docs.sh`를 실행함, CI `설치 병합 시험` job에 등록
+
+### Changed
+
+- [docs/testing.md](docs/testing.md)와 [docs/os-differences.md](docs/os-differences.md)의 파이썬 선택 규칙을 "실행 확인 후 선택"으로 정정(도구는 `python3`→`python` 이름 순서였음)
+
 ## [0.18.2] - 2026-11-04
 
 ### Fixed

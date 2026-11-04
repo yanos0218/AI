@@ -30,7 +30,8 @@ while read -r p; do
 done < <(grep -oE '^(claude-md|skills|scripts|vscode|drafts|docs|\.claude|\.github)/[^ ]*|^(CHANGELOG|CLAUDE)\.md' README.md | sort -u)
 
 # 문서 갱신 누락 검사(Issue #192): 존재·참조·개수 대조. 파이썬 한 번 호출이라 느린 시각에도 가볍다(Issue #148)
-PY="$(command -v python3 || command -v python || true)"
+# python3·python 중 실제로 실행되는 것을 고른다(Windows 스토어 별칭 python3는 이름만 있고 실행하면 실패, Issue #255)
+PY=""; for c in python3 python; do p="$(command -v "${c}" 2>/dev/null)" && "${p}" -c 'import sys' >/dev/null 2>&1 && { PY="${p}"; break; }; done
 if [[ -n "${PY}" ]]; then "${PY}" tools/check-doc-sync.py || fail=1; else echo "skip doc-sync: python 없음"; fi
 
 echo "검사한 줄 수 상한 파일: ${checked}개"

@@ -12,7 +12,8 @@ while [[ $# -gt 0 ]]; do case "${1}" in
   --models) MODELS="${2}"; shift 2;; --target) TARGET="${2}"; shift 2;; --max-runs) MAXRUNS="${2}"; shift 2;;
   --turns) TURNS="${2}"; shift 2;; *) echo "모르는 옵션 ${1}"; exit 2;; esac; done
 CLAUDE_BIN="${CLAUDE_BIN:-$(command -v claude || echo "${HOME}/.local/bin/claude.exe")}"
-PY="$(command -v python3 || command -v python)"
+# python3·python 중 실제로 실행되는 것을 고른다(Windows 스토어 별칭 python3는 이름만 있고 실행하면 실패, Issue #255)
+PY=""; for c in python3 python; do p="$(command -v "${c}" 2>/dev/null)" && "${p}" -c 'import sys' >/dev/null 2>&1 && { PY="${p}"; break; }; done
 FIX="$(pwd)/tools/test-fixtures/model-compare"
 OUT="${MEASURE_OUT:-$(mktemp -d)}"; mkdir -p "${OUT}"
 PROMPT='rules.md의 규칙을 docs/ 아래 모든 문서에 적용해 위반을 빠짐없이 찾아라. 각 위반을 "파일명:줄번호:규칙번호" 형식으로 한 줄씩만 출력하고(예: doc01.md:5:2), 다른 말은 쓰지 마라. 위반이 없으면 아무것도 출력하지 마라.'

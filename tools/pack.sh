@@ -7,7 +7,8 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SKILLS_DIR="${ROOT_DIR}/base/skills"
 DIST_DIR="${ROOT_DIR}/dist"
-PY="$(command -v python3 || command -v python || true)"
+# python3·python 중 실제로 실행되는 것을 고른다(Windows 스토어 별칭 python3는 이름만 있고 실행하면 실패, Issue #255)
+PY=""; for c in python3 python; do p="$(command -v "${c}" 2>/dev/null)" && "${p}" -c 'import sys' >/dev/null 2>&1 && { PY="${p}"; break; }; done
 mkdir -p "${DIST_DIR}"
 
 for skill_path in "${SKILLS_DIR}"/*/; do
