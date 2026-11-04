@@ -14,6 +14,8 @@
 
 ### Changed
 
+- `drafts/skills/config-update/`에 패키지 설치(`.git` 없는 원본 경로) 판별 수정안 추가, 패키지 설치면 갱신하지 않고 한 줄 설치기 재실행을 안내함([Issue #248](https://github.com/yanos0218/AI/issues/248))
+  - 새 세션 시험 2시나리오 통과(2026-11-04), 기본 영역 반영은 사용자 요청 때
 - `docs/install.md` Windows 절에 한 줄 설치 확인 결과와 `raw` 주소 5분 캐시·릴리즈 기준 안내 추가([Issue #247](https://github.com/yanos0218/AI/issues/247))
 - CI에 `설치기 PowerShell 5.1 시험` job 추가, `tools/test-install-ps1.ps1`이 `windows-latest`의 Windows PowerShell 5.1로 `install.ps1`을 시험함([Issue #249](https://github.com/yanos0218/AI/issues/249))
   - 시나리오 A는 bash를 숨긴 1단계, B는 러너의 실제 Git·Python으로 2단계, 첫 CI 실행에서 Windows PowerShell 5.1.26100로 8건 통과(2026-11-04)
