@@ -14,7 +14,8 @@ INSTALLED=0; MODEL="claude-sonnet-5"; TOOLS="Read,Glob,Grep,Agent,Bash(ls*),Bash
 while [[ $# -gt 0 ]]; do case "${1}" in
   --model) MODEL="${2}"; shift 2;; --tools) TOOLS="${2}"; shift 2;; --turns) TURNS="${2}"; shift 2;; --installed) INSTALLED=1; shift;; *) echo "모르는 옵션 ${1}"; exit 2;; esac; done
 CLAUDE_BIN="${CLAUDE_BIN:-$(command -v claude || echo "${HOME}/.local/bin/claude.exe")}"
-PY="$(command -v python3 || command -v python)"
+# python3·python 중 실제로 실행되는 것을 고른다(Windows 스토어 별칭 python3는 이름만 있고 실행하면 실패, Issue #255)
+PY=""; for c in python3 python; do p="$(command -v "${c}" 2>/dev/null)" && "${p}" -c 'import sys' >/dev/null 2>&1 && { PY="${p}"; break; }; done
 [[ -d "${FIX}/.git" ]] || { echo "시나리오 저장소가 git 저장소가 아님: ${FIX}"; exit 2; }
 
 name="$(basename "${AGENT}" .md)"

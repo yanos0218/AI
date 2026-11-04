@@ -12,7 +12,8 @@ PORT="${LIVE_PORT:-8766}"
 URL="http://127.0.0.1:${PORT}/"
 DIR="${CLAUDE_CONFIG_DIR:-${HOME}/.claude}/live-status"
 PIDFILE="${DIR}/server.pid"
-PY="$(command -v python3 || command -v python)"
+# python3·python 중 실제로 실행되는 것을 고른다(Windows 스토어 별칭 python3는 이름만 있고 실행하면 실패, Issue #255)
+PY=""; for c in python3 python; do p="$(command -v "${c}" 2>/dev/null)" && "${p}" -c 'import sys' >/dev/null 2>&1 && { PY="${p}"; break; }; done
 [[ -n "${PY}" ]] || { echo "python3 또는 python이 필요합니다."; exit 1; }
 serving() { curl -s -o /dev/null -m 2 "${URL}"; }
 running() { [[ -f "${PIDFILE}" ]] && kill -0 "$(cat "${PIDFILE}")" 2>/dev/null; }

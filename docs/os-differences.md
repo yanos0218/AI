@@ -18,7 +18,7 @@
 | 공통 | 전역 지침, rules, agents, skills·hooks 파일 내용 | `install.sh`가 같은 파일을 복사 | [tools/install.sh](../tools/install.sh) |
 | 공통 | settings.json의 모델·effort·env·상태줄·허용·차단 목록·훅 | 같은 값을 병합([Issue #194](https://github.com/yanos0218/AI/issues/194)) | [base/settings.example.json](../base/settings.example.json), [tools/settings_merge.py](../tools/settings_merge.py) |
 | 운영체제별(코드) | 대시보드 열기·주소 복사<br>Mac은 `open`·`pbcopy`, Windows는 `cmd.exe`·`clip.exe` | 실행할 때 `uname -s`로 분기 | [base/skills/usage-dashboard/scripts/usage.sh](../base/skills/usage-dashboard/scripts/usage.sh) |
-| 운영체제별(코드) | 파이썬 이름<br>Windows는 `python`, Mac은 `python3` | 있는 것을 순서대로 찾음 | [testing.md](testing.md) "세 OS에서 도는 스크립트 쓰기" |
+| 운영체제별(코드) | 파이썬 이름<br>Windows는 `python`, Mac은 `python3` | 이름만 보지 않고 실제로 실행되는 것을 고름(Windows 스토어 별칭 `python3` 방지) | [testing.md](testing.md) "세 OS에서 도는 스크립트 쓰기" |
 | 운영체제별(코드) | 상태줄 JSON 읽기 도구<br>`jq`가 없는 Linux 등 | jq, python, node 순으로 찾음 | [install.md](install.md) |
 | 운영체제별(설치) | VS Code 설정 파일 위치<br>Windows `%APPDATA%`, Mac `~/Library/Application Support` | 설치 스크립트가 운영체제별로 갈라짐 | [base/vscode/install.sh](../base/vscode/install.sh), [base/vscode/install.ps1](../base/vscode/install.ps1) |
 | 운영체제별(설치) | Mac 전용 확장 `swift-vscode` | 기본 목록에서 빼고 Mac에서 따로 설치 | [install.md](install.md) |

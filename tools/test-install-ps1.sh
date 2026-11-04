@@ -4,7 +4,8 @@
 # pwsh가 없으면 미검증으로 끝낸다(종료 코드 0). PowerShell 7로 도는 시험이라 Windows PowerShell 5.1 동작은 보증하지 않는다.
 set -u
 cd "$(dirname "${0}")/.." || exit 1
-PY="$(command -v python3 || command -v python)"
+# python3·python 중 실제로 실행되는 것을 고른다(Windows 스토어 별칭 python3는 이름만 있고 실행하면 실패, Issue #255)
+PY=""; for c in python3 python; do p="$(command -v "${c}" 2>/dev/null)" && "${p}" -c 'import sys' >/dev/null 2>&1 && { PY="${p}"; break; }; done
 if ! command -v pwsh >/dev/null 2>&1; then echo "미검증: pwsh가 없음"; exit 0; fi
 
 T="$(mktemp -d)"; trap 'rm -rf "${T}"' EXIT
