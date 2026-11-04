@@ -14,9 +14,9 @@
 
 ### Changed
 
-- `drafts/hooks/session-start-check.sh`에 패키지 설치(`.git` 없는 원본 경로)의 낡음 알림 수정안 추가([Issue #252](https://github.com/yanos0218/AI/issues/252))
+- `session-start-check.sh`(기본 영역)에 패키지 설치(`.git` 없는 원본 경로)의 낡음 알림 추가([Issue #252](https://github.com/yanos0218/AI/issues/252))
   - 하루 한 번 백그라운드 `curl`로 GitHub 최신 릴리즈 태그를 `~/.claude/.latest-release-tag`에 받아 설치된 태그와 비교, 최신 태그가 더 새로울 때만 한 줄 설치기 재실행 안내(재설치 직후 옛 캐시와 수동 zip 설치의 `local` 태그는 알리지 않음)
-  - `tools/test-session-start-check.sh`에 가짜 `curl` 시나리오 11건 추가(초안 훅 26건 통과, 기본 훅은 기존 15건 통과, 기능이 없으면 새 시나리오는 건너뜀)
+  - `tools/test-session-start-check.sh`에 가짜 `curl` 시나리오 11건 추가(26건 통과), 사용자 요청으로 초안에서 승격(2026-11-04)
 - `drafts/skills/config-update/`에 패키지 설치(`.git` 없는 원본 경로) 판별 수정안 추가, 패키지 설치면 갱신하지 않고 한 줄 설치기 재실행을 안내함([Issue #248](https://github.com/yanos0218/AI/issues/248))
   - 새 세션 시험 2시나리오 통과(2026-11-04), 기본 영역 반영은 사용자 요청 때
 - `docs/install.md` Windows 절에 한 줄 설치 확인 결과와 `raw` 주소 5분 캐시·릴리즈 기준 안내 추가([Issue #247](https://github.com/yanos0218/AI/issues/247))

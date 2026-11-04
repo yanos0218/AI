@@ -7,6 +7,8 @@
 # 읽기만 한다 — 파일을 쓰거나 지우지 않는다. 조건에 안 걸리면 아무 말도 안 한다(2026-09-12, Issue #62 / 2026-09-13, 3번 추가 / 2026-09-15, 4번 추가).
 # 예외: 1번은 하루 한 번 원본 저장소에서 git fetch를 백그라운드로 돌린다. .git 안의 원격 추적 정보만 바뀌고
 # 작업 트리 파일은 건드리지 않는다. 기다리지 않으므로 판정은 직전 fetch 결과로 한다(Issue #150).
+# 예외 2: 패키지 설치(원본 경로에 .git이 없음)는 하루 한 번 GitHub 최신 릴리즈 태그를 백그라운드 curl로 받아
+# ~/.claude/.latest-release-tag에 적고, 설치된 태그와 다르면 알린다. 이 파일만 쓴다(Issue #252).
 #
 # 4번 배경: PreToolUse/PostToolUse 훅이 매 도구 호출마다 Claude에게 실시간으로
 # 알려주는 게 기술적으로 안 됨을 실제 세션 3개로 확인함(systemMessage·평문 stdout
@@ -59,6 +61,24 @@ if [[ -f "${VER_FILE}" ]]; then
     if [[ "${STALE}" == 1 ]]; then
       CURRENT_VER="$(git -C "${SRC_PATH}" describe --tags --always "${TARGET}" 2>/dev/null || true)"
       echo "[claude-config] 전역 설정이 낡았습니다(설치됨 ${INSTALLED_VER} → 최신 ${CURRENT_VER}).${BEHIND} 사용자에게 갱신 여부만 물으세요. 승인되면 config-update 스킬로만 갱신하고, 원본 저장소의 파일은 읽거나 고치지 마세요."
+    fi
+  elif [[ -n "${SRC_PATH:-}" ]] && [[ -n "${INSTALLED_VER:-}" ]] && [[ -d "${SRC_PATH}" ]]; then
+    # 패키지 설치: 원본 경로가 있는데 .git이 없다(경로 자체가 없으면 건너뛴다). 최신 릴리즈 태그와 설치된 태그를 비교한다.
+    TAG_FILE="${HOME}/.claude/.latest-release-tag"
+    if [[ -z "$(find "${TAG_FILE}" -mmin -1440 2>/dev/null)" ]] && command -v curl >/dev/null 2>&1; then
+      (
+        tag="$(curl -fsS --max-time 10 https://api.github.com/repos/yanos0218/AI/releases/latest </dev/null 2>/dev/null | sed -n 's/.*"tag_name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -1)"
+        [[ -n "${tag}" ]] && printf '%s\n' "${tag}" > "${TAG_FILE}"
+      ) >/dev/null 2>&1 &
+    fi
+    LATEST_TAG="$(head -1 "${TAG_FILE}" 2>/dev/null | tr -d '\r')"
+    # 설치 태그가 v숫자 꼴이고 최신 태그가 더 새로울 때만 알린다(재설치 직후 옛 캐시, 수동 zip 설치의 local 태그 제외)
+    NEWER=""
+    if [[ "${INSTALLED_VER}" =~ ^v[0-9] ]] && [[ "${LATEST_TAG}" =~ ^v[0-9] ]] && [[ "${LATEST_TAG}" != "${INSTALLED_VER}" ]]; then
+      NEWER="$(printf '%s\n%s\n' "${INSTALLED_VER}" "${LATEST_TAG}" | sort -V | tail -1)"
+    fi
+    if [[ -n "${NEWER}" ]] && [[ "${NEWER}" == "${LATEST_TAG}" ]]; then
+      echo "[claude-config] 전역 설정이 낡았습니다(설치됨 ${INSTALLED_VER} → 최신 ${LATEST_TAG}, 패키지 설치). 사용자에게 갱신 여부만 물으세요. 이 설치는 원본 저장소가 없어 config-update로 갱신할 수 없으니, 설치할 때 쓴 한 줄 설치기(docs/install.md)를 다시 실행하도록 안내하세요."
     fi
   fi
 fi
