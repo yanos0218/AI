@@ -7,6 +7,8 @@
 
 ## [Unreleased]
 
+## [0.18.2] - 2026-11-04
+
 ### Fixed
 
 - 훅 4개(`session-start-check.sh`, `compact-snapshot.sh`, `compact-snapshot-show.sh`, `statusline.sh`)가 `python3`를 먼저 골라, Windows에서 Microsoft Store 별칭(출력 "Python", 종료 코드 49)에 걸려 조용히 종료되던 문제 수정([Issue #253](https://github.com/yanos0218/AI/issues/253))
