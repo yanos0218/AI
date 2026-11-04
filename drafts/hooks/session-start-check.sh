@@ -72,7 +72,12 @@ if [[ -f "${VER_FILE}" ]]; then
       ) >/dev/null 2>&1 &
     fi
     LATEST_TAG="$(head -1 "${TAG_FILE}" 2>/dev/null | tr -d '\r')"
-    if [[ -n "${LATEST_TAG}" ]] && [[ "${LATEST_TAG}" != "${INSTALLED_VER}" ]]; then
+    # 설치 태그가 v숫자 꼴이고 최신 태그가 더 새로울 때만 알린다(재설치 직후 옛 캐시, 수동 zip 설치의 local 태그 제외)
+    NEWER=""
+    if [[ "${INSTALLED_VER}" =~ ^v[0-9] ]] && [[ "${LATEST_TAG}" =~ ^v[0-9] ]] && [[ "${LATEST_TAG}" != "${INSTALLED_VER}" ]]; then
+      NEWER="$(printf '%s\n%s\n' "${INSTALLED_VER}" "${LATEST_TAG}" | sort -V | tail -1)"
+    fi
+    if [[ -n "${NEWER}" ]] && [[ "${NEWER}" == "${LATEST_TAG}" ]]; then
       echo "[claude-config] 전역 설정이 낡았습니다(설치됨 ${INSTALLED_VER} → 최신 ${LATEST_TAG}, 패키지 설치). 사용자에게 갱신 여부만 물으세요. 이 설치는 원본 저장소가 없어 config-update로 갱신할 수 없으니, 설치할 때 쓴 한 줄 설치기(docs/install.md)를 다시 실행하도록 안내하세요."
     fi
   fi

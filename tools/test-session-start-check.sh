@@ -95,6 +95,13 @@ FAKE
 
   rm -f "${tagf}"; echo v0.18.0 > "${tagf}"; pexpect quiet '패키지 설치, 캐시 태그가 같음'
   echo v0.19.0 > "${tagf}";                   pexpect alert '패키지 설치, 캐시 태그가 더 새로움'
+  # 설치본이 캐시보다 새롭거나(재설치 직후 옛 캐시) 버전 꼴이 아니면(수동 zip의 local) 알리지 않음
+  printf '%s\n%s\n\n' "${tmp}/pkg" "v0.19.0" > "${tmp}/home/.claude/.claude-config-version"
+  echo v0.18.0 > "${tagf}";                   pexpect quiet '패키지 설치, 설치본이 캐시보다 새로움'
+  echo v0.9.0 > "${tagf}"; printf '%s\n%s\n\n' "${tmp}/pkg" "v0.10.0" > "${tmp}/home/.claude/.claude-config-version"; pexpect quiet '패키지 설치, 숫자 비교(v0.10.0 > v0.9.0)'
+  printf '%s\n%s\n\n' "${tmp}/pkg" "local" > "${tmp}/home/.claude/.claude-config-version"
+  echo v0.19.0 > "${tagf}";                   pexpect quiet '패키지 설치, 설치 태그가 local'
+  printf '%s\n%s\n\n' "${tmp}/pkg" "v0.18.0" > "${tmp}/home/.claude/.claude-config-version"
   # 캐시 없음 + 네트워크 실패: 조용히 끝나고 캐시를 만들지 않음
   rm -f "${tagf}"; FAKE_CURL=fail pexpect quiet '패키지 설치, 캐시 없음·curl 실패'; sleep 1
   if [[ -e "${tagf}" ]]; then fail=$((fail + 1)); echo "실패: curl 실패인데 캐시가 생김"; else pass=$((pass + 1)); fi
