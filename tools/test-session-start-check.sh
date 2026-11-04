@@ -73,5 +73,40 @@ start="${SECONDS}"; run >/dev/null; took=$((SECONDS - start))
 if [[ "${took}" -le 3 ]]; then pass=$((pass + 1)); else fail=$((fail + 1)); echo "실패: 응답 없는 원격에서 ${took}초 기다림"; fi
 pkill -f '10.255.255.1/none.git' 2>/dev/null
 
+# 패키지 설치(원본 경로에 .git 없음)의 최신 릴리즈 태그 비교(Issue #252). 가짜 curl로 네트워크 없이 시험한다.
+# 훅에 이 기능이 없으면(승격 전 기본 영역 훅) 건너뛴다.
+if grep -q 'latest-release-tag' "${hook}"; then
+  mkdir -p "${tmp}/bin" "${tmp}/pkg"
+  cat > "${tmp}/bin/curl" <<'FAKE'
+#!/usr/bin/env bash
+[[ "${FAKE_CURL:-fail}" == "ok" ]] || exit 22
+printf '{\n  "tag_name": "%s",\n  "name": "x"\n}\n' "${FAKE_TAG:-v9.9.9}"
+FAKE
+  chmod +x "${tmp}/bin/curl"
+  printf '%s\n%s\n\n' "${tmp}/pkg" "v0.18.0" > "${tmp}/home/.claude/.claude-config-version"
+  tagf="${tmp}/home/.claude/.latest-release-tag"
+  prun() { printf '{"cwd":"%s","transcript_path":""}' "${tmp}" | HOME="${tmp}/home" CLAUDE_CONFIG_DIR='' PATH="${tmp}/bin:${PATH}" bash "${hook}" 2>&1; }
+  pexpect() { # $1=기대(alert|quiet) $2=설명
+    local out got=quiet; out="$(prun)"
+    [[ "${out}" == *"낡았습니다"* && "${out}" == *"한 줄 설치기"* ]] && got=alert
+    if [[ "${got}" == "${1}" ]]; then pass=$((pass + 1)); else fail=$((fail + 1)); echo "실패: ${2} (기대 ${1}, 실제 ${got}) ${out}"; fi
+  }
+  waitfor() { for _ in 1 2 3 4 5 6 7 8 9 10; do [[ -s "${tagf}" ]] && return 0; sleep 0.5; done; return 1; }
+
+  rm -f "${tagf}"; echo v0.18.0 > "${tagf}"; pexpect quiet '패키지 설치, 캐시 태그가 같음'
+  echo v0.19.0 > "${tagf}";                   pexpect alert '패키지 설치, 캐시 태그가 더 새로움'
+  # 캐시 없음 + 네트워크 실패: 조용히 끝나고 캐시를 만들지 않음
+  rm -f "${tagf}"; FAKE_CURL=fail pexpect quiet '패키지 설치, 캐시 없음·curl 실패'; sleep 1
+  if [[ -e "${tagf}" ]]; then fail=$((fail + 1)); echo "실패: curl 실패인데 캐시가 생김"; else pass=$((pass + 1)); fi
+  # 캐시 없음 + curl 성공: 이번엔 조용하고 백그라운드로 캐시가 생기며, 다음 세션에 알림
+  rm -f "${tagf}"; FAKE_CURL=ok FAKE_TAG=v0.19.0 pexpect quiet '패키지 설치, 캐시 없음(첫 세션은 조용)'
+  if waitfor && [[ "$(head -1 "${tagf}")" == v0.19.0 ]]; then pass=$((pass + 1)); else fail=$((fail + 1)); echo "실패: 백그라운드 curl이 캐시를 만들지 않음"; fi
+  pexpect alert '패키지 설치, 받은 캐시로 다음 세션에 알림'
+  # 하루 지난 캐시는 다시 받음
+  echo v0.19.0 > "${tagf}"; touch -t 202001010000 "${tagf}"
+  FAKE_CURL=ok FAKE_TAG=v0.20.0 prun >/dev/null; sleep 2
+  if [[ "$(head -1 "${tagf}")" == v0.20.0 ]]; then pass=$((pass + 1)); else fail=$((fail + 1)); echo "실패: 하루 지난 캐시를 다시 받지 않음"; fi
+fi
+
 echo "통과 ${pass} / 실패 ${fail}"
 [[ "${fail}" -eq 0 ]]
