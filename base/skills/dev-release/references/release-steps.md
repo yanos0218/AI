@@ -64,14 +64,17 @@ num=$(echo "$resp" | python3 -c "import json,sys;print(json.load(sys.stdin)['num
 # 2. 직전 태그..이번 태그 범위 커밋에서 Refs/Closes #N 추출(Closes는 과거 커밋 호환용)
 git log <이전태그>..vX.Y.Z --format="%B" | grep -oiE '(refs|closes) #[0-9]+' | grep -oE '[0-9]+' | sort -un
 
-# 3. 각 이슈에 배정
+# 3. 각 이슈에 배정 — 마일스톤을 닫기 전에 끝낸다(닫힌 마일스톤은 gh issue edit이 "not found"로 못 찾음)
 gh issue edit <N> --milestone "vX.Y.Z"
 
-# 4. 마일스톤 닫기
+# 4. 마일스톤 닫기 — 3번이 전부 끝난 뒤 마지막에
 gh api -X PATCH "repos/<owner>/<repo>/milestones/$num" -f state=closed
 ```
 
-이슈 번호가 존재하지 않아 배정이 실패해도(오탈자 등) 나머지는 계속 진행하고 실패한 번호만 보고한다.
+- 2번 범위에 앞 릴리즈 때 이미 배정된 이슈 번호가 다시 나올 수 있다(문서 커밋이 `Refs`로 다시 참조). 이슈 하나는 마일스톤 하나라서 옮기지 않고 처음 고친 릴리즈에 둔다(2026-11-05 v0.18.3 컷에서 일괄 배정해 나중에 4건을 되돌렸다).
+- 이미 닫아서 배정이 실패했으면 `gh api -X PATCH repos/<owner>/<repo>/milestones/<번호> -f state=open`으로 다시 열고 배정한 뒤 닫는다.
+- zsh에서는 `for p in "248 v0.18.1"; set -- $p`처럼 문자열을 나누는 반복문이 단어 분리가 안 되므로 `bash -c`로 돌린다.
+- 이슈 번호가 존재하지 않아 배정이 실패해도(오탈자 등) 나머지는 계속 진행하고 실패한 번호만 보고한다.
 
 ## 5. 되돌리기
 

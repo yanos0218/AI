@@ -7,6 +7,12 @@
 
 ## [Unreleased]
 
+### Changed
+
+- `dev-release` 스킬의 마일스톤 절차 보강([Issue #267](https://github.com/yanos0218/AI/issues/267))
+  - 이슈 배정이 모두 끝난 뒤 마지막에 마일스톤을 닫도록 순서를 명시함(닫힌 마일스톤은 `gh issue edit`이 못 찾아 실패)
+  - 앞 릴리즈에 이미 배정된 이슈는 옮기지 않고, 이미 닫았을 때 다시 여는 방법과 zsh 반복문 주의를 추가함
+
 ## [0.18.4] - 2026-11-05
 
 ### Added
