@@ -7,6 +7,12 @@
 
 ## [Unreleased]
 
+### Added
+
+- 형식 검사 훅(`format_check.py`)에 이슈 번호 인접 검사 추가([Issue #264](https://github.com/yanos0218/AI/issues/264))
+  - `#242는`처럼 번호 바로 뒤에 한글·영문이 붙으면 GitHub이 링크로 바꾸지 않아, 이슈·PR·릴리즈·커밋 본문과 음슴체 대상 `.md`에서 막음
+  - 링크 주소·URL·백틱·따옴표 속 글자는 보지 않음, 과거 이슈 본문 35건과 커밋 11줄은 그대로 둠
+
 ### Changed
 
 - 전역 지침 `base/claude-md/CLAUDE.md`를 10,734바이트에서 9,292바이트로 줄임([Issue #242](https://github.com/yanos0218/AI/issues/242))

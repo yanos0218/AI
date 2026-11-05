@@ -75,6 +75,15 @@ run 2 '.md 문장형 뒤 괄호(Issue #261)' post Write "{\"file_path\": \"${D}/
 run 2 '.md 문장형 뒤 대시(Issue #261)' post Write "{\"file_path\": \"${D}/x.md\", \"content\": \"# 제목\\n\\n경우는 사실상 하나다 — 직접 편집할 때\\n\"}"
 run 2 '.md 목록 문장형 뒤 닫는 괄호(Issue #261)' post Edit "{\"file_path\": \"${D}/x.md\", \"old_string\": \"a\", \"new_string\": \"- 항목(막는다)\"}"
 run 0 '.md 조사 마다는 문장형 아님(Issue #261)' post Write "{\"file_path\": \"${D}/x.md\", \"content\": \"| 항목 | 값 |\\n| --- | --- |\\n| timeout (잡마다) | 5분 |\\n\"}"
+# Issue #264: 이슈 번호 뒤에 한글·영문이 붙으면 GitHub이 링크로 바꾸지 않는다
+run 2 '번호 인접: 이슈 본문 조사' pre Bash 'gh issue comment 1 --body "- #242는 끝남"'
+run 2 '번호 인접: 이슈 본문 괄호 앞 조사' pre Bash 'gh issue comment 1 --body "- 근거(#242의 댓글)"'
+run 2 '번호 인접: 커밋 본문' pre Bash 'git commit -m "feat: x" -m "- #12abc 처리함"'
+run 0 '번호 인접: 괄호·띄어쓰기·쉼표는 통과' pre Bash 'gh issue comment 1 --body "- (#242)는 끝남, #243 는 대기, #244, #245."'
+run 0 '번호 인접: 링크 주소·앵커는 통과' pre Bash 'gh issue comment 1 --body "- [#242](https://github.com/o/r/issues/242)는 끝남, [표](a.md#0-자산)과 https://x.y/p#1a"'
+run 0 '번호 인접: 백틱 속 색상 코드는 통과' pre Bash 'gh issue comment 1 --body "- 색은 `#1a2b3c`로 지정함"'
+run 2 '번호 인접: .md 새 내용' post Write "{\"file_path\": \"${D}/x.md\", \"content\": \"# 제목\\n\\n- #242는 끝남\\n\"}"
+run 0 '번호 인접: 지침 문서(CLAUDE.md)는 제외' post Write "{\"file_path\": \"${D}/CLAUDE.md\", \"content\": \"- #242는 끝남\\n\"}"
 mkdir -p "${tmp}/off/.claude"&& : > "${tmp}/off/.claude/no-eumseum-check"
 RUN_CWD="${tmp}/off" run 0 '.claude/no-eumseum-check가 있으면 문장형 검사 끔' post Write "{\"file_path\": \"${tmp}/off/x.md\", \"content\": \"이 문단은 문장형으로 끝난다.\\n\"}"
 

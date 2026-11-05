@@ -57,6 +57,10 @@ SENTENCE_DA = re.compile(r'(?<!마)다(?=[.!?]?\s*$|[.!?]\s|[(\)]| —|,\s)')
 EUM_EXEMPT_DIRS = {'.claude', 'rules', 'skills', 'agents', 'commands', 'claude-md-details', 'test-fixtures'}
 EUM_EXEMPT_NAMES = {'claude.md', 'skill.md', 'agents.md'}
 LIST = re.compile(r'^\s*(?:[-*]|\d+\.)\s+')
+# Issue #264: 이슈 번호 바로 뒤에 한글·영문이 붙으면("#242는") GitHub이 링크로 바꾸지 않는다(2026-11-05 렌더링 API로 확인).
+# 링크 주소와 URL은 먼저 지워 앵커(PROGRESS.md#0-자산)를 보지 않고, 백틱·따옴표 안은 QUOTED로 지운다
+REF_ADJACENT = re.compile(r'(?:^|[\s(])#[0-9]+[가-힣A-Za-z]')
+LINK_TARGET = re.compile(r'(?<=\])\([^)]*\)|https?://\S+')   # ](주소)는 괄호만 지워 링크 글자 뒤 조사를 오인하지 않는다
 TRAILER = re.compile(r'^(Refs|Closes|Fixes|Co-Authored-By|Signed-off-by|BREAKING CHANGE)\b', re.I)
 
 
@@ -97,6 +101,9 @@ def check_text(text, kind, cram, eum=False):
             if k:
                 out.append((i + 1, '목록 줄바꿈', t))
                 continue
+        if (kind != 'md' or eum) and REF_ADJACENT.search(QUOTED.sub('', LINK_TARGET.sub('', t))):
+            out.append((i + 1, '번호 인접', t))
+            continue
         if kind in ('gh', 'release') and not t.startswith('|---'):
             plain = QUOTED.sub('', t)
             for seg in plain.split('<br>'):
@@ -124,6 +131,8 @@ def report(hits, where):
         msg.append('  목록 줄바꿈: "주어: 설명"을 주어 줄 + 들여쓴 하위 bullet로, 표 안은 <br>. 코드 값(model: x 등)은 백틱으로 감쌀 것')
     if '음슴체' in kinds:
         msg.append('  음슴체: "~합니다/~한다." 대신 "~함/~됨/~확인"')
+    if '번호 인접' in kinds:
+        msg.append('  번호 인접: "#242는"은 링크가 안 걸림. "(#242)는", "#242 는", "#242," 꼴로 번호 뒤를 띄우거나 괄호로 감쌀 것')
     msg.append('  오탐이라고 판단되면 고치지 말고 사용자에게 묻고, 승인받으면 명령 앞에 FORMAT_GUARD_SKIP=1을 붙인다')
     sys.stderr.write('\n'.join(msg[:MAX_LINES + 2]) + '\n')
 
