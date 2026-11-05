@@ -106,6 +106,11 @@ if [[ "${wp}" =~ ^([A-Za-z]):/(.*)$ ]]; then
   out="$(run "git -C ${msys} commit -m x" "${T}")"
   chk "git -C /c/... (Git Bash 경로) commit: 윈도우에서도 저장소 검사" 'grep -q "docs/g.md:1" <<<"${out}"'
 fi
+mk; put tools/old7.sh x; put docs/h.md '`tools/old7.sh`'; base; git -C "${R}" rm -q tools/old7.sh
+out="$(run "cat <<'EOF'\\ngit commit -a\\nEOF")"
+chk "heredoc 본문 속 git commit은 커밋이 아님(Issue #263)" '[[ -z "${out}" ]]'
+out="$(run "cat <<'EOF'\\nx\\nEOF\\ngit commit -m x")"
+chk "heredoc 뒤의 git commit은 커밋: 경고" 'grep -q "docs/h.md:1" <<<"${out}"'
 mkdir -p "${T}/plain"
 out="$(run 'git commit -m x' "${T}/plain")"
 chk "git 저장소가 아닌 폴더: 조용함"               '[[ -z "${out}" ]]'

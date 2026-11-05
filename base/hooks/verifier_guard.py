@@ -25,7 +25,7 @@ def verdict(cmd):
     for pat, reason in RULES:
         if re.search(pat, cmd, re.M):
             return reason
-    if REDIRECT.search(h.mask_heredocs(h.quote_mask(cmd))):
+    if REDIRECT.search(h.mask_command(cmd)):
         return '출력을 파일로 쓰는 리다이렉션'
     return None
 

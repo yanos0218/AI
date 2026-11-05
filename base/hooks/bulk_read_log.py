@@ -30,9 +30,8 @@ def main():
     if inp.get('agent_id'):          # 서브에이전트 안의 호출은 위임한 것이라 대상 아님(Issue #134)
         return
     cmd = h.command_of(inp)
-    # 따옴표·heredoc 안의 글은 실행되는 명령이 아니므로 가리고 본다. heredoc을 먼저 가려야 한다:
-    # quote_mask가 먼저 돌면 <<'EOF'의 EOF가 지워져 heredoc 구간을 못 찾는다(Issue #262)
-    if not is_bulk(h.quote_mask(h.mask_heredocs(cmd))):
+    # 따옴표·heredoc 안의 글은 실행되는 명령이 아니므로 가리고 본다(순서 문제는 hooklib.mask_command, Issue #262·#263)
+    if not is_bulk(h.mask_command(cmd)):
         return
     log = os.path.join(h.HOME, 'bulk-read-log.md')
     new = not os.path.isfile(log)

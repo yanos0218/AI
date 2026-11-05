@@ -9,6 +9,14 @@
 
 ### Fixed
 
+- heredoc 가림 순서 오류를 `verifier-guard`·`doc-drift-check`에도 수정([Issue #263](https://github.com/yanos0218/AI/issues/263))
+  - `hooklib.mask_command` 추가, `verifier_guard.py`·`doc_drift.py`·`hooklib.command_words`·`bulk_read_log.py`가 사용
+  - 따옴표 밖의 `<<`만 연산자로 보고 구분자는 원문에서 읽으며, 본문 속 짝 없는 따옴표가 뒤의 판정을 흐트러뜨리지 않음
+  - 고쳐진 증상
+    - heredoc 본문의 `>`를 파일 쓰기로 보고 `verifier-guard`가 deny하던 오탐
+    - heredoc 본문의 `git commit`을 실제 커밋으로 보던 `doc-drift-check`의 오탐
+    - 짝 없는 따옴표가 든 heredoc 뒤의 `> 파일`을 `verifier-guard`가 허용하던 누락
+  - `tools/test-hooks-py.sh`(통과 50 / 실패 0)·`tools/test-doc-drift.sh`(통과 28건)에 시험 추가, 수정 전 훅으로는 4건 실패 확인
 - `bulk-read-log` 훅이 정상 조회를 대량 조회로 오탐하던 문제 수정([Issue #262](https://github.com/yanos0218/AI/issues/262))
   - `--limit` 단독 기준을 20에서 100으로 올림(세션 시작의 `gh issue list --limit 50` 제외)
   - 결과를 파일로 저장하는 명령(`> 파일`, `>> 파일`)은 제외, `2>&1`·`> /dev/null`은 파일 저장으로 보지 않음

@@ -35,6 +35,19 @@ expect allow verifier-guard.sh Bash 'python -c "print(1 > 0)"' '따옴표 안 > 
 expect deny  verifier-guard.sh Bash 'echo hi > out.txt' '리다이렉션 차단'
 expect allow verifier-guard.sh Bash 'npm test 2>&1 | tail -5' '출력 합치기는 쓰기 아님'
 expect deny  verifier-guard.sh Bash 'x=$(rm -rf build)' '명령 치환 안의 rm 차단'
+# heredoc 본문과 따옴표 안 << 글자(Issue #263): 본문 속 > 는 쓰기 아님, 따옴표 안 <<EOF 뒤의 실제 리다이렉션은 차단
+expect allow verifier-guard.sh Bash "$(printf "bash check.sh <<'EOF'\na > b\nEOF")" "heredoc 본문 속 > 는 쓰기 아님"
+expect allow verifier-guard.sh Bash "$(printf "cat <<'EOF'\ndon't\nEOF")" '본문 속 짝 없는 따옴표'
+expect deny  verifier-guard.sh Bash "$(printf "cat <<'EOF'\ndon't\nEOF\necho hi > out.txt")" '본문 속 짝 없는 따옴표 뒤의 리다이렉션 차단'
+expect deny  verifier-guard.sh Bash 'echo "a <<EOF b" > out.txt' '따옴표 안 <<EOF 글자 뒤의 리다이렉션 차단'
+expect deny  verifier-guard.sh Bash "$(printf "cat <<'EOF' > out.txt\nx\nEOF")" 'heredoc 연산자 줄의 리다이렉션 차단'
+# hooklib.mask_command: heredoc 본문 속 줄 머리 명령은 명령 자리가 아님
+cw() { PYTHONPATH="${root}/base/hooks" "${PY}" -c "
+import sys, hooklib as h
+print(len(h.command_words(sys.argv[1], r'git\s+push')))" "${1}"; }
+[[ "$(cw "$(printf "cat <<'EOF'\ngit push origin main\nEOF")")" == 0 ]] && ok || ng 'command_words: heredoc 본문 속 git push는 명령 아님'
+[[ "$(cw "$(printf "cat <<'EOF'\nx\nEOF\ngit push origin main")")" == 1 ]] && ok || ng 'command_words: heredoc 뒤의 git push는 명령'
+[[ "$(cw 'echo "a <<EOF b"; git push')" == 1 ]] && ok || ng 'command_words: 따옴표 안 <<EOF 뒤의 git push는 명령'
 # baseline-guard: 읽기 명령과 _template 예외는 통과, 쓰기는 확인
 expect allow baseline-guard.sh Bash 'npx markdownlint-cli2 base/rules/docs-format.md 2>&1 | tail -5' '읽기 명령 통과'
 expect ask   baseline-guard.sh Bash 'cp x.sh base/hooks/' 'base 쓰기 확인'

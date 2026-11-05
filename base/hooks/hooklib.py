@@ -121,6 +121,34 @@ def mask_heredocs(text):
     return ''.join(out)
 
 
+HEREDOC_OP = re.compile(r'<<-?\s*')
+HEREDOC_DELIM = re.compile(r'''(['"]?)([A-Za-z_]+)\1''')
+
+
+def mask_command(cmd):
+    """따옴표 안 글자와 heredoc 본문을 공백으로 바꾼 사본(Issue #263).
+    mask_heredocs(quote_mask(cmd))는 quote_mask가 <<'EOF'의 EOF를 먼저 지워 heredoc 구간을 못 찾는다.
+    반대로 heredoc을 따옴표 처리 없이 먼저 찾으면 "…<<EOF…" 같은 따옴표 안 글자를 연산자로 오해해 뒤 명령이 통째로 가려진다.
+    그래서 따옴표를 가린 사본에서 연산자 위치만 찾고 구분자는 원문에서 읽으며, 본문을 하나 가릴 때마다 따옴표 상태를 다시 센다
+    (본문 속 짝 없는 따옴표가 뒤의 판정을 흐트러뜨리지 않게)."""
+    text, pos = cmd, 0
+    while True:
+        q = quote_mask(text)
+        for op in HEREDOC_OP.finditer(q, pos):
+            d = HEREDOC_DELIM.match(text, op.end())
+            if d:
+                break
+        else:
+            return q
+        nl = text.find('\n', d.end())
+        if nl < 0:
+            return q
+        end = re.search(r'^\s*' + re.escape(d.group(2)) + r'\s*$', text[nl + 1:], re.M)
+        b = nl + 1 + (end.start() if end else len(text) - nl - 1)
+        text = text[:nl + 1] + re.sub(r'[^\n]', ' ', text[nl + 1:b]) + text[b:]
+        pos = b
+
+
 def at_command_start(cmd, pos):
     """pos가 명령 자리인지: 앞이 줄 시작이나 ; && || | $( ( ` 이고 그 사이에는 변수 대입·sudo·env만 있다."""
     head = cmd[:pos]
@@ -131,5 +159,5 @@ def at_command_start(cmd, pos):
 
 def command_words(cmd, pattern):
     """정규식 pattern이 heredoc 본문과 따옴표 밖에서, 명령 자리에 나온 위치들."""
-    masked = mask_heredocs(quote_mask(cmd))
+    masked = mask_command(cmd)
     return [m for m in re.finditer(pattern, masked) if at_command_start(masked, m.start())]

@@ -51,7 +51,7 @@ def native_path(p):
 
 def parse_command(cmd):
     """(commit이 있는지, widen, -C 경로). widen=1은 commit -a, 2는 git add가 같은 명령에 있음."""
-    masked = hooklib.mask_heredocs(hooklib.quote_mask(cmd))
+    masked = hooklib.mask_command(cmd)
     commit, widen, cdir = False, 0, ''
     for m in GIT.finditer(masked):
         if not hooklib.at_command_start(masked, m.start()):
