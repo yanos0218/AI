@@ -31,17 +31,17 @@
   - 종료 코드 0·2 이외(1 포함)와 시간 초과를 실패로 치므로 그대로 켜면 `set -u` 오류 하나로 모든 명령이 막힘
   - 시간 초과만 막는 쪽으로 남기고, `gh-throttle`(대기가 본업)·`format-guard`(python 부재 때 커밋이 막힘)는 제외
   - 최소 버전 Claude Code 2.1.295, 훅이 전체 명령을 막으면 `Edit`로 `~/.claude/settings.json`의 `onFailure` 줄을 지워 복구
-- (2026-09-15) 목록 줄바꿈 규칙 위반은 사람이 수동으로 재검색하는 대신 `tools/check-cram.sh`가 커밋 시 기계적으로 검사·차단한다([Issue #99](https://github.com/yanos0218/AI/issues/99)).
-- (2026-09-15) PreToolUse/PostToolUse 훅은 매 도구 호출마다 Claude에게 실시간으로 알림을 보여줄 수 없다(실제 세션 3개로 확인)
+- (2026-09-15) 목록 줄바꿈 규칙 위반은 사람이 수동으로 재검색하는 대신 `tools/check-cram.sh`가 커밋 시 기계적으로 검사·차단함([Issue #99](https://github.com/yanos0218/AI/issues/99)).
+- (2026-09-15) PreToolUse/PostToolUse 훅은 매 도구 호출마다 Claude에게 실시간으로 알림을 보여줄 수 없음(실제 세션 3개로 확인)
   - 서브에이전트 위임 습관은 `bulk-read-log.sh`의 사후 로그 + `session-start-check.sh`의 개수 기준(10건) 점검으로 대체([Issue #100](https://github.com/yanos0218/AI/issues/100)).
 - (2026-09-16) PreCompact 훅도 같은 계열 제약: 컴팩션 요약 **내용에는 개입 불가**(차단·메시지만 가능, 공식 문서 확인). "강제"가 아니라 "안전망"(git 상태·최근 테스트·미완료 체크리스트를 별도 저장 후 컴팩션 직후 노출)으로 설계, 초안 진행 중([Issue #104](https://github.com/yanos0218/AI/issues/104)).
-- (2026-09-18) 이슈 형식 위반은 `issue-format-check.yml`(GitHub Actions)이 사후 자동 확인한다(사전 차단 불가)
+- (2026-09-18) 이슈 형식 위반은 `issue-format-check.yml`(GitHub Actions)이 사후 자동 확인함(사전 차단 불가)
   - 이슈·코멘트 본문은 크램 확인과 게시 명령을 `&&`로 묶어서 올림. 순서로만 적어 게시가 그대로 진행된 사례 2건 재발 방지([Issue #118](https://github.com/yanos0218/AI/issues/118)).
 - (2026-09-18) release 커밋에만 거는 좁은 차단 훅 대신, `dev-release` §2 절차에 "바뀐 파일 전체를 훑어 관련 문서 갱신 확인" 단계를 추가했음
   - release 아닌 커밋(`docs/github.md` 미갱신)에서 난 미스는 좁은 훅으로 못 잡았을 사례가 근거([Issue #121](https://github.com/yanos0218/AI/issues/121)).
 - (2026-10-17) 전역 지침 검증은 문안 위험도에 맞춰 토큰을 쓴다([Issue #182](https://github.com/yanos0218/AI/issues/182), `drafts/README.md` 승격 조건 1)
   - 막는·승인 흐름 문안은 반영 전 1회로 실제로 틀리는지 먼저 보고, 알림성 문안은 문안 검토 + 월 점검 self-audit로 확인.
-- (2026-10-26) 기본 반영 전 검증은 관찰 기간을 두지 않고 즉시 시험으로 한다([Issue #195](https://github.com/yanos0218/AI/issues/195), 사용자 지시)
+- (2026-10-26) 기본 반영 전 검증은 관찰 기간을 두지 않고 즉시 시험으로 함([Issue #195](https://github.com/yanos0218/AI/issues/195), 사용자 지시)
   - 즉시 시험은 라이브 세션, `claude -p`, CI 세 운영체제를 말함.
   - 즉시 확인이 불가능한 항목만 기간을 두고, 그때는 확인할 조건과 시점을 Issue에 적음.
   - 2026-09-29의 "며칠 써 본 뒤 기본 반영"은 이 결정으로 대체됨(self-audit 2026-10-26 후보 8에서 방침이 엇갈린 것이 확인됨).

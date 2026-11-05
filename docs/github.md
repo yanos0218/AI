@@ -69,7 +69,7 @@ PR 습관(브랜치에서 작업 → `gh pr create` → merge)을 먼저 한 저
 
 ## Actions 제한과 방지
 
-비공개 저장소는 한도가 있다(GitHub Free, 2026-09 기준). 초과하면 워크플로가 **실행되지 않고 실패**하고, 분은 월초에 리셋됨.
+비공개 저장소는 한도가 있음(GitHub Free, 2026-09 기준). 초과하면 워크플로가 **실행되지 않고 실패**하고, 분은 월초에 리셋됨.
 
 | 한도 | 값 | 초과하면 |
 | --- | --- | --- |
@@ -93,7 +93,7 @@ PR 습관(브랜치에서 작업 → `gh pr create` → merge)을 먼저 한 저
 | 폴링은 스크립트로, 15초 간격 | `gh run view` 타이트 루프가 API 한도를 소진하는 문제(Claude Code 알려진 버그) | kolo_pwa `scripts/wait-for-ci.sh`. 다른 저장소에서는 `gh run watch` |
 | 월 사용량 확인 | 한도 근접을 미리 봄 | Settings → Billing and plans → Usage. `gh api users/<id>/settings/billing/actions`는 `user` 스코프 필요 |
 
-현재 kolo_pwa·kolo-api가 최근 30일에 각각 100회 이상 실행됐다(`gh run list` 상한). 분 단위 실제 사용량은 Billing 페이지에서 봐야 한다([Issue #33](https://github.com/yanos0218/AI/issues/33)).
+현재 kolo_pwa·kolo-api가 최근 30일에 각각 100회 이상 실행됨(`gh run list` 상한). 분 단위 실제 사용량은 Billing 페이지에서 봐야 함([Issue #33](https://github.com/yanos0218/AI/issues/33)).
 
 ## 참고한 자료
 

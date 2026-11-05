@@ -12,7 +12,7 @@
 >
 > **업데이트 규칙**: §0 표는 자산 단계·배포 여부가 바뀔 때 갱신함. 새 할 일은 `gh issue create --label task`로. 세션이 끝날 때 이 표와 HANDOFF "지금" 절을 같이 갱신함.
 >
-> **크기 규칙 ([Issue #49](https://github.com/yanos0218/AI/issues/49), 2026-09-08; 범위 조정 [Issue #11](https://github.com/yanos0218/AI/issues/11) 2026-09-12)**: 이 파일은 **§0 자산 현황 표**만 담는다. 할 일·발견한 문제·완료 이력은 전부 GitHub Issue로 관리한다(라벨 `task`/`bug`, open/closed로 진행 상태 구분).
+> **크기 규칙 ([Issue #49](https://github.com/yanos0218/AI/issues/49), 2026-09-08; 범위 조정 [Issue #11](https://github.com/yanos0218/AI/issues/11) 2026-09-12)**: 이 파일은 **§0 자산 현황 표**만 담음. 할 일·발견한 문제·완료 이력은 전부 GitHub Issue로 관리함(라벨 `task`/`bug`, open/closed로 진행 상태 구분).
 
 ---
 
@@ -31,11 +31,11 @@
 
 ### 표면별 설치 버전
 
-설치할 때 이 표만 고침. 아래 자산 표의 칸은 이 버전 기준이다(2026-09-29 git 기록으로 계산, [#168](https://github.com/yanos0218/AI/issues/168)).
+설치할 때 이 표만 고침. 아래 자산 표의 칸은 이 버전 기준임(2026-09-29 git 기록으로 계산, [#168](https://github.com/yanos0218/AI/issues/168)).
 
 - 버전 표기
   - 릴리즈 태그 기준 `git describe` 값 하나만 쓴다(예: `v0.13.1-8-gca8f24e` = v0.13.1 이후 8커밋, 커밋 ca8f24e)
-  - `tools/install.sh`가 끝에 적을 값을 출력하고, `tools/check-install.sh`가 이 행과 설치 버전 파일을 대조한다([#180](https://github.com/yanos0218/AI/issues/180))
+  - `tools/install.sh`가 끝에 적을 값을 출력하고, `tools/check-install.sh`가 이 행과 설치 버전 파일을 대조함([#180](https://github.com/yanos0218/AI/issues/180))
 
 | 표면 | 설치된 것 | 설치일 | 다음 |
 | --- | --- | --- | --- |
@@ -86,14 +86,14 @@
 
 ## 1. 완료
 
-완료 이력은 GitHub Issues에 있다(closed, `task`/`bug` 라벨).
+완료 이력은 GitHub Issues에 있음(closed, `task`/`bug` 라벨).
 
 - 조회: `gh issue list --state closed --label task`
 - 46건은 2026-09-12에 이관, 그 뒤로는 이슈가 닫히는 시점이 곧 완료 시점임
 
 ## 2. 할 일 — 개발·설정
 
-할 일은 GitHub Issues로 관리한다([Issue #11](https://github.com/yanos0218/AI/issues/11), 2026-09-12). `gh issue list --state open --label task`로 확인. 작업 중 발견한 문제는 `bug` 라벨.
+할 일은 GitHub Issues로 관리함([Issue #11](https://github.com/yanos0218/AI/issues/11), 2026-09-12). `gh issue list --state open --label task`로 확인. 작업 중 발견한 문제는 `bug` 라벨.
 
 ## 3. 할 일 — 배포·운영·비개발
 

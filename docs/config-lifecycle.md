@@ -13,7 +13,7 @@
 
 핵심 사실 두 가지:
 
-- 작업 중 "항상 허용"을 눌러 쌓이는 권한은 **그 저장소의 `.claude/settings.local.json`**에 기록된다(kolo_pwa에 실제로 있음). 기본 `~/.claude/settings.json`은 건드리지 않음.
+- 작업 중 "항상 허용"을 눌러 쌓이는 권한은 **그 저장소의 `.claude/settings.local.json`**에 기록됨(kolo_pwa에 실제로 있음). 기본 `~/.claude/settings.json`은 건드리지 않음.
 - Claude가 교정을 스스로 기억하는 auto memory는 `~/.claude/projects/<저장소>/memory/`에 저장소별로 쌓이고, 기본 CLAUDE.md에는 쓰지 않음.
 
 즉 "기본이 바뀌는" 경우는 사실상 하나다 — Claude나 사람이 `~/.claude/` 아래 파일을 **직접 편집**할 때.
