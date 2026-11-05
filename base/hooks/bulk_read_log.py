@@ -7,8 +7,19 @@ import re
 
 import hooklib as h
 
+# --limit 단독 기준은 100 이상(Issue #262: 세션 시작 때 쓰는 `gh issue list --limit 50`은 출력이 20줄 안팎이라 오탐이었다)
 PATTERN = re.compile(r'gh\s+issue\s+list[^\n]*--json[^\n]*(body|comments)|gh\s+api[^\n]*/(issues|comments)[^\n]*--jq'
-                     r'|--limit\s+([2-9][0-9]|[0-9]{3,})|git\s+log[^\n]*-p[^\n]*--all')
+                     r'|--limit\s+[1-9][0-9]{2,}|git\s+log[^\n]*-p[^\n]*--all')
+SEGMENT = re.compile(r'\n|;|&&|\|\|')
+# 결과를 파일로 저장하는 명령은 대화 컨텍스트에 쌓이지 않는다(2>&1, >/dev/null은 파일 저장이 아님)
+FILE_OUT = re.compile(r'(?<![0-9&>])>{1,2}\s*(?!/dev/null|&)[^\s|&;>]')
+
+
+def is_bulk(masked):
+    """가린 명령에서 대량 조회로 볼 부분이 있는지. 명령을 ; && || 줄바꿈으로 나눠 조각마다 보고, 파일로 저장하는 조각은 뺀다."""
+    return any(PATTERN.search(seg) and not FILE_OUT.search(seg) for seg in SEGMENT.split(masked))
+
+
 HEADER = ('# 대량 조회 로그 (bulk-read-log 훅이 자동 기록)\n\n서브에이전트 위임 없이 직접 실행한, 대량 조회로 보이는 명령들. '
           '쌓인 개수가 session-start-check.sh 기준을 넘으면 다음 세션에서 알려준다. 검토 후 비운다(월 점검 3번과 같은 방식).\n\n'
           '| 시각 | 명령 | 작업 폴더 |\n| --- | --- | --- |\n')
@@ -19,8 +30,9 @@ def main():
     if inp.get('agent_id'):          # 서브에이전트 안의 호출은 위임한 것이라 대상 아님(Issue #134)
         return
     cmd = h.command_of(inp)
-    # 따옴표·heredoc 안의 글은 실행되는 명령이 아니므로 가리고 본다
-    if not PATTERN.search(h.mask_heredocs(h.quote_mask(cmd))):
+    # 따옴표·heredoc 안의 글은 실행되는 명령이 아니므로 가리고 본다. heredoc을 먼저 가려야 한다:
+    # quote_mask가 먼저 돌면 <<'EOF'의 EOF가 지워져 heredoc 구간을 못 찾는다(Issue #262)
+    if not is_bulk(h.quote_mask(h.mask_heredocs(cmd))):
         return
     log = os.path.join(h.HOME, 'bulk-read-log.md')
     new = not os.path.isfile(log)

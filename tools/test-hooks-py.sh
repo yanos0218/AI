@@ -61,6 +61,27 @@ mk Bash 'gh issue list --limit 50 --json body --search "한글 검색어"' | bas
 mk Write 'C:\Users\me\.claude\settings.json' | bash "$(hook config-changelog.sh)"
 grep -q 'settings.json' "${tmp}/config-changelog.md" 2>/dev/null && ok || ng 'Windows 경로 설정 파일 수정 기록'
 
+# bulk-read-log 판정(Issue #262): 화면에 쌓이는 대량 조회만 기록, 오탐이던 형태는 건너뜀
+bl() { # $1=기대(log|skip) $2=명령 $3=설명
+  rm -f "${tmp}/bulk-read-log.md"
+  mk Bash "${2}" | bash "$(hook bulk-read-log.sh)"
+  if [[ -f "${tmp}/bulk-read-log.md" ]]; then got=log; else got=skip; fi
+  [[ "${got}" == "${1}" ]] && ok || ng "bulk-read-log ${3} (기대 ${1}, 실제 ${got})"
+}
+bl skip 'gh issue list --state open --limit 50' '세션 시작 목록 조회(50건)'
+bl skip 'gh issue list --state open --limit 99' '99건은 기준 미만'
+bl skip 'cat > f.md <<'"'"'EOF'"'"'
+본문 `gh issue list --limit 50 --json body` 예시와 --limit 500
+EOF
+gh issue create --body-file f.md' '따옴표 heredoc 본문 속 글'
+bl skip 'bash tools/pack.sh; gh issue list --state all --limit 500 --json number,body > dist/issues-backup.json' '결과를 파일로 저장'
+bl skip 'gh issue list --limit 500 --json number,body >> backup.json 2>&1' '덧붙여 저장'
+bl log  'gh issue list --state all --limit 100' '100건 이상 화면 출력'
+bl log  'gh issue list --state all --limit 500 --json number,title,body' '본문 포함 화면 출력'
+bl log  'gh issue list --limit 500 --json body 2>&1 | tail -5' '2>&1은 파일 저장이 아님'
+bl log  'gh issue list --limit 500 --json body > /dev/null; gh issue list --limit 300' '/dev/null 뒤 별도 조각은 기록'
+bl log  'echo ok; gh issue list --limit 500 --json body' '다른 조각 뒤의 대량 조회'
+
 # config-changelog Bash 판정: 같은 명령 조각에서 쓰기 명령 뒤에 보호 경로가 있을 때만 기록(Issue #173)
 cl() { # $1=기대(log|skip) $2=도구 $3=명령 $4=설명
   rm -f "${tmp}/config-changelog.md"

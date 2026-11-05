@@ -9,6 +9,11 @@
 
 ### Fixed
 
+- `bulk-read-log` 훅이 정상 조회를 대량 조회로 오탐하던 문제 수정([Issue #262](https://github.com/yanos0218/AI/issues/262))
+  - `--limit` 단독 기준을 20에서 100으로 올림(세션 시작의 `gh issue list --limit 50` 제외)
+  - 결과를 파일로 저장하는 명령(`> 파일`, `>> 파일`)은 제외, `2>&1`·`> /dev/null`은 파일 저장으로 보지 않음
+  - 따옴표 heredoc(`<<'EOF'`) 본문 속 글을 명령으로 보던 순서 오류 수정(`quote_mask`가 먼저 돌아 `EOF`를 지움)
+  - `tools/test-hooks-py.sh`에 케이스 10개 추가(통과 42 / 실패 0, 수정 전 훅으로는 5건 실패 확인)
 - `md-format-check` 훅의 문장형 종결 검사가 "있다(근거)", "하나다 —", "~다," 꼴을 놓치던 문제 수정([Issue #261](https://github.com/yanos0218/AI/issues/261))
   - 정정 전 docs에서 기존 식은 0줄, 보강한 식은 55줄 적발, 조사 "마다"는 제외
   - `tools/test-format-guard.sh`에 케이스 4개 추가(통과 48 / 실패 0)
