@@ -39,7 +39,7 @@
   - 이슈·코멘트 본문은 크램 확인과 게시 명령을 `&&`로 묶어서 올림. 순서로만 적어 게시가 그대로 진행된 사례 2건 재발 방지([Issue #118](https://github.com/yanos0218/AI/issues/118)).
 - (2026-09-18) release 커밋에만 거는 좁은 차단 훅 대신, `dev-release` §2 절차에 "바뀐 파일 전체를 훑어 관련 문서 갱신 확인" 단계를 추가했음
   - release 아닌 커밋(`docs/github.md` 미갱신)에서 난 미스는 좁은 훅으로 못 잡았을 사례가 근거([Issue #121](https://github.com/yanos0218/AI/issues/121)).
-- (2026-10-17) 전역 지침 검증은 문안 위험도에 맞춰 토큰을 쓴다([Issue #182](https://github.com/yanos0218/AI/issues/182), `drafts/README.md` 승격 조건 1)
+- (2026-10-17) 전역 지침 검증은 문안 위험도에 맞춰 토큰을 씀([Issue #182](https://github.com/yanos0218/AI/issues/182), `drafts/README.md` 승격 조건 1)
   - 막는·승인 흐름 문안은 반영 전 1회로 실제로 틀리는지 먼저 보고, 알림성 문안은 문안 검토 + 월 점검 self-audit로 확인.
 - (2026-10-26) 기본 반영 전 검증은 관찰 기간을 두지 않고 즉시 시험으로 함([Issue #195](https://github.com/yanos0218/AI/issues/195), 사용자 지시)
   - 즉시 시험은 라이브 세션, `claude -p`, CI 세 운영체제를 말함.
@@ -48,11 +48,11 @@
 
 ## 이슈·조사 운영
 
-- (2026-09-09) 토큰이 필요하면 `gh auth status`로 확인하고 없으면 멈춤. 채팅에 붙여넣으라고 하지 않는다(전역 §7, dev-release 0단계).
+- (2026-09-09) 토큰이 필요하면 `gh auth status`로 확인하고 없으면 멈춤. 채팅에 붙여넣으라고 하지 않음(전역 §7, dev-release 0단계).
 - (2026-09-08) 사용자 성향 데이터는 세 곳(로컬 auto memory, claude.ai 메모리, `/insights`)에서 모아 Issue(`task` 라벨)로 후보 등록하고, 전역 지침 반영은 사용자 확인 후(2026-09-12부터 `drafts/claude-md/` 대신).
-- (2026-09-28) `drafts/observations/`(날짜별 관찰 기록·memory 사본·claude.ai 내보내기) 폐지. 월 점검에서 auto memory는 각 기기에서 직접 읽고, 대화 방식은 self-audit가 대화 기록을 직접 읽는다(사용자 요청).
-- (2026-09-13) 조사 기록은 파일(`docs/research/`)이 아니라 GitHub Issue `research` 라벨로 남긴다(파일·이슈 이중 기록 낭비 지적). 그 이전 기록은 archive로 유지.
-- (2026-09-26) 조사 이슈는 주제별 하나를 살아있는 문서로 쓴다(본문=최신 요약, 댓글=갱신 이력, "마무리" 전까지 열어 둠). 단발성만 새 이슈([Issue #133](https://github.com/yanos0218/AI/issues/133)).
+- (2026-09-28) `drafts/observations/`(날짜별 관찰 기록·memory 사본·claude.ai 내보내기) 폐지. 월 점검에서 auto memory는 각 기기에서 직접 읽고, 대화 방식은 self-audit가 대화 기록을 직접 읽음(사용자 요청).
+- (2026-09-13) 조사 기록은 파일(`docs/research/`)이 아니라 GitHub Issue `research` 라벨로 남김(파일·이슈 이중 기록 낭비 지적). 그 이전 기록은 archive로 유지.
+- (2026-09-26) 조사 이슈는 주제별 하나를 살아있는 문서로 씀(본문=최신 요약, 댓글=갱신 이력, "마무리" 전까지 열어 둠). 단발성만 새 이슈([Issue #133](https://github.com/yanos0218/AI/issues/133)).
 
 ## 문서·형식 규칙
 

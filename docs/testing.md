@@ -63,7 +63,7 @@ Windows(Git Bash, bash 5, gawk)에서만 시험하면 Mac(bash 3.2, BSD 도구)�
   - `set -u`에서 빈 배열은 `${a[@]+"${a[@]}"}`로 펼침.
 - GNU 전용 옵션을 쓰지 않음
   - `sed -i`(인자 없이), `stat -c`, `date -d`, `readlink -f`, `grep -P` 금지.
-  - `awk -v`에 여러 줄 값을 넘기지 않는다(BSD awk 오류). 환경변수로 넘기고 `ENVIRON`으로 읽음.
+  - `awk -v`에 여러 줄 값을 넘기지 않음(BSD awk 오류). 환경변수로 넘기고 `ENVIRON`으로 읽음.
 - 파이썬은 이름을 고정하지 않음
   - Mac은 `python` 없이 `python3`만 있음. 훅은 `python` → `python3` 순(Windows는 `python3`가 실행하면 "Python"만 찍고 종료 코드 49로 실패하는 스토어 별칭, 훅 4개가 어겨 알림·상태줄이 조용히 꺼진 사례 [Issue #253](https://github.com/yanos0218/AI/issues/253)), 도구와 스킬 스크립트는 `python3`·`python` 중 `-c 'import sys'`가 실제로 성공하는 것을 고름([tools/install.sh](../tools/install.sh) 13~14행과 같은 방식, 이름 순서만 믿는 `command -v python3 || command -v python`은 금지, [Issue #255](https://github.com/yanos0218/AI/issues/255)). [tools/test-python-pick.sh](../tools/test-python-pick.sh)가 그 줄이 다시 생기는지와 가짜 스토어 별칭이 앞서도 도구가 도는지를 확인함.
 - 파이썬 3.7 이상 전용 기능을 쓰지 않음
@@ -89,7 +89,7 @@ Windows(Git Bash, bash 5, gawk)에서만 시험하면 Mac(bash 3.2, BSD 도구)�
 
 - `base/`를 바꾼 뒤 `bash tools/install.sh`는 커밋한 다음에 돌림
   - 설치 스크립트는 커밋된 `base/` 트리 해시를 버전 표시 파일 3행에 기록함.
-  - 커밋 전에 설치하면 다음 세션에 거짓 "설정이 낡았습니다" 알림이 뜬다(2026-09-29, [Issue #150](https://github.com/yanos0218/AI/issues/150) 반영 중 발견).
+  - 커밋 전에 설치하면 다음 세션에 거짓 "설정이 낡았습니다" 알림이 뜸(2026-09-29, [Issue #150](https://github.com/yanos0218/AI/issues/150) 반영 중 발견).
 - 설치 뒤에는 `bash tools/check-install.sh`로 대조함.
 - Windows에서 설치·시험이 유난히 느리면(`install.sh` 3분 이상) 보안 프로그램의 파일시스템 필터 드라이버를 먼저 의심함
   - `fltmc filters`로 서드파티 필터를 확인하고, `/usr/bin/true` 50회 반복 시간(정상 약 8초)으로 재 봄.

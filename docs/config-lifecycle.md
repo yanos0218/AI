@@ -16,7 +16,7 @@
 - 작업 중 "항상 허용"을 눌러 쌓이는 권한은 **그 저장소의 `.claude/settings.local.json`**에 기록됨(kolo_pwa에 실제로 있음). 기본 `~/.claude/settings.json`은 건드리지 않음.
 - Claude가 교정을 스스로 기억하는 auto memory는 `~/.claude/projects/<저장소>/memory/`에 저장소별로 쌓이고, 기본 CLAUDE.md에는 쓰지 않음.
 
-즉 "기본이 바뀌는" 경우는 사실상 하나다 — Claude나 사람이 `~/.claude/` 아래 파일을 **직접 편집**할 때.
+즉 "기본이 바뀌는" 경우는 사실상 하나, Claude나 사람이 `~/.claude/` 아래 파일을 **직접 편집**할 때임.
 
 ## 2. 그래서 필요한 것은 "이력"과 "대조"
 
@@ -27,7 +27,7 @@
 | `tools/check-install.sh` | 설치본과 `base/` 대조(DIFF/MISSING), `rules/` 목록, 프로젝트별 `settings.local.json`에 쌓인 권한 목록, 변경 이력 꼬리 20줄 | 사용 가능 |
 | 월 점검 ([Issue #42](https://github.com/yanos0218/AI/issues/42)) | 위 둘의 출력을 보고 결정: 여러 저장소에 반복된 권한 → `base/settings.example.json` 승격, 좋은 변경 → `base/`에 반영 후 재설치, 나쁜 변경 → 재설치로 되돌림 | 규칙 |
 
-"보내준다"는 요구는 이 훅의 로그 파일 + `check-install.sh`가 해결함. 기기마다 로그가 남고, 월 점검 때 각 기기에서 `check-install.sh` 출력으로 보고 필요한 것만 Issue로 남긴다(2026-09-28부터 저장소로 복사하지 않음). 실시간으로 어딘가에 전송하는 방식(메일·웹훅)은 외부 서비스 쓰기라 보류.
+"보내준다"는 요구는 이 훅의 로그 파일 + `check-install.sh`가 해결함. 기기마다 로그가 남고, 월 점검 때 각 기기에서 `check-install.sh` 출력으로 보고 필요한 것만 Issue로 남김(2026-09-28부터 저장소로 복사하지 않음). 실시간으로 어딘가에 전송하는 방식(메일·웹훅)은 외부 서비스 쓰기라 보류.
 
 ## 3. 검토했지만 지금은 안 쓰는 방법
 

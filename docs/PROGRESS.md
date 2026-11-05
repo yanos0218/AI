@@ -34,7 +34,7 @@
 설치할 때 이 표만 고침. 아래 자산 표의 칸은 이 버전 기준임(2026-09-29 git 기록으로 계산, [#168](https://github.com/yanos0218/AI/issues/168)).
 
 - 버전 표기
-  - 릴리즈 태그 기준 `git describe` 값 하나만 쓴다(예: `v0.13.1-8-gca8f24e` = v0.13.1 이후 8커밋, 커밋 ca8f24e)
+  - 릴리즈 태그 기준 `git describe` 값 하나만 씀(예: `v0.13.1-8-gca8f24e` = v0.13.1 이후 8커밋, 커밋 ca8f24e)
   - `tools/install.sh`가 끝에 적을 값을 출력하고, `tools/check-install.sh`가 이 행과 설치 버전 파일을 대조함([#180](https://github.com/yanos0218/AI/issues/180))
 
 | 표면 | 설치된 것 | 설치일 | 다음 |

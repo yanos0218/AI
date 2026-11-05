@@ -24,7 +24,7 @@
   - "버그 수정", "작업" 같은 뭉뚱그린 표현 대신 구체적인 대상(파일·기능)과 핵심 동작을 담음.
 - 라벨이 이미 구분해주는 정보(라벨명 자체)는 제목에 반복하지 않음.
 - 목록에서 한눈에 읽히는 길이(대략 40~50자)를 넘기지 않음.
-- 마크다운 기호는 렌더링 안 되니 안 쓴다(아래 "공통" 참고).
+- 마크다운 기호는 렌더링 안 되니 안 씀(아래 "공통" 참고).
 
 ## 개발 (`task`)
 
@@ -93,16 +93,16 @@
 - 영향
   - 이 결론이 바꾼 문서·설정. 없으면 "없음".
 - 2026-09-28 이전 이슈는 `## 조사` 아래 필드 목록(`- 질문:` 등) 형식임
-  - 다시 갱신할 때 새 형식으로 덮어쓴다([Issue #146](https://github.com/yanos0218/AI/issues/146)).
+  - 다시 갱신할 때 새 형식으로 덮어씀([Issue #146](https://github.com/yanos0218/AI/issues/146)).
 - 새 조사 전에 `gh issue list --label research --state all --search "<키워드>"`로 먼저 찾아봄.
-- 주제별 이슈 하나를 살아있는 문서로 쓴다([Issue #133](https://github.com/yanos0218/AI/issues/133), 2026-09-26)
+- 주제별 이슈 하나를 살아있는 문서로 씀([Issue #133](https://github.com/yanos0218/AI/issues/133), 2026-09-26)
   - 조사할 때마다 이슈를 새로 만들면 번호만 늘고, 나중에 여러 이슈를 모아 읽느라 토큰이 늘어남.
   - 같은 주제의 추가 조사·재검증은 그 이슈에서 갱신함. 사용자가 "마무리"라고 할 때까지 열어 둠.
   - 한 번으로 끝나는 단발성 조사만 새 이슈로 만들고 기록 즉시 닫음.
 - 갱신 방법
-  - 본문은 항상 최신 요약으로 덮어쓴다(`gh issue edit <N> --body-file`).
-  - 무엇이 바뀌었는지는 댓글로 남긴다(갱신 이력). 다시 볼 때는 본문만 읽는다(`gh issue view <N> --json body -q .body`).
-  - 닫힌 이슈에 추가 조사가 생기면 새 이슈 대신 다시 연다(`gh issue reopen <N>`).
+  - 본문은 항상 최신 요약으로 덮어씀(`gh issue edit <N> --body-file`).
+  - 무엇이 바뀌었는지는 댓글로 남김(갱신 이력). 다시 볼 때는 본문만 읽음(`gh issue view <N> --json body -q .body`).
+  - 닫힌 이슈에 추가 조사가 생기면 새 이슈 대신 다시 엶(`gh issue reopen <N>`).
 - 조사일이 오래됐으면(기본 90일, Claude Code 기능 관련은 30일) 재조사하고 같은 방법으로 갱신함.
 
 ## 제안·아이디어 (`task`)
@@ -132,19 +132,19 @@
     - 월 점검·정리 중 평행하게 쌓여 있던 이슈 두 개가 사실 부모-자식 관계였음을 뒤늦게 발견(2026-09-14, 파생 이슈 15건 소급 연결 사례)
   - 평행한 별도 이슈로 그냥 두지 않음.
 - 이슈 본문에 "Issue #N에서 파생/이어서/후속" 같은 표현으로 다른 이슈를 언급하는 순간 바로 연결함
-  - 나중으로 미루면 놓친다(2026-09-14, #65~#93 계열에서 15건 소급 발견). 언급하는 그 자리에서 `--add-sub-issue`까지 끝냄.
+  - 나중으로 미루면 놓침(2026-09-14, #65~#93 계열에서 15건 소급 발견). 언급하는 그 자리에서 `--add-sub-issue`까지 끝냄.
 - 완전히 무관한 새 요청일 때만 새 이슈를 엶.
 
 ## 공통
 
-- 목록 항목·표 셀에서 주어와 설명을 `—`나 `:`로 이어쓰지 않는다([base/rules/docs-format.md](../base/rules/docs-format.md)).
+- 목록 항목·표 셀에서 주어와 설명을 `—`나 `:`로 이어쓰지 않음([base/rules/docs-format.md](../base/rules/docs-format.md)).
   - 로컬 `.md`는 커밋 시 `pre-commit-check.sh`가 자동 검사하지만, `gh issue create`·`gh issue comment`·`gh issue close --comment`·`gh release create/edit`는 git 커밋이 아니라 훅이 못 봄
-    - 본문을 파일로 쓴 뒤 `tools/check-cram.sh <파일>`로 확인하고 나서 올린다(Issue #99).
+    - 본문을 파일로 쓴 뒤 `tools/check-cram.sh <파일>`로 확인하고 나서 올림(Issue #99).
     - 확인 명령과 게시 명령을 `;`로 나눠 쓰지 않음. `tools/check-cram.sh <파일> && gh issue create ...`처럼 `&&`로 묶어서, 검사가 실패하면 게시 명령이 물리적으로 실행되지 않게 함(Issue #118 — 순서로만 적어 놨다가 검사 실패에도 게시가 그대로 진행된 사례 2건).
 - 커밋에는 `Closes #N` 대신 `Refs #N`(자동 닫힘 없는 단순 참조)만 씀
   - `Closes #N`은 push하는 순간 자동으로 닫혀서, push 이후에도 검증할 게 남아 있으면 검증이 안 끝난 채 닫히는 위험이 있음([Issue #122](https://github.com/yanos0218/AI/issues/122)).
   - 검증이 전부 끝난 뒤 `gh issue close <N> --comment "..."`로 직접 닫음. "이번 건은 push 뒤 확인이 더 필요한가"를 매번 판단하지 않고 항상 이 방식으로 통일함.
-- 본문·코멘트는 음슴체·명사형으로 쓴다([base/rules/docs-format.md](../base/rules/docs-format.md), [Issue #126](https://github.com/yanos0218/AI/issues/126)).
+- 본문·코멘트는 음슴체·명사형으로 씀([base/rules/docs-format.md](../base/rules/docs-format.md), [Issue #126](https://github.com/yanos0218/AI/issues/126)).
 - 본문·코멘트에 체크박스(`- [ ]`, `- [x]`)를 쓰지 않음
   - 할 일 목록은 일반 목록이나 표로 쓰고, 진행 상황은 댓글로 남김.
   - (2026-10-07) 사용자가 정한 규칙인데 문서에 없어서 [Issue #171](https://github.com/yanos0218/AI/issues/171) 본문에 체크박스를 넣었다가 지적받음. 그래서 이 줄을 추가함.
