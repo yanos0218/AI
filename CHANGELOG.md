@@ -15,6 +15,8 @@
 
 ### Changed
 
+- `tools/eng-scan.py`가 파일 줄 번호 목록과 `file://` 안내 문장을 영어 설명으로 세던 오탐을 제거함([Issue #266](https://github.com/yanos0218/AI/issues/266))
+  - 영어 우세 24건이 20건으로 줄고 비율은 1.8%에서 1.5%로 정정됨
 - 전역 지침 `base/claude-md/CLAUDE.md`를 10,734바이트에서 9,292바이트로 줄임([Issue #242](https://github.com/yanos0218/AI/issues/242))
   - 사고 날짜·이슈 근거 괄호 9곳과 §8 사례 줄을 덜어냄(규칙 문장은 그대로, 이유는 `docs/decisions.md`와 이슈에 있음)
   - §5 서브에이전트 세부(전용 에이전트·모델 값, Sonnet 지정, 병렬 위임 파일 분리)를 `base/claude-md-details/subagents.md`로 분리하고 본문에는 읽으라는 한 문장만 둠

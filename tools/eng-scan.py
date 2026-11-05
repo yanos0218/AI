@@ -6,7 +6,8 @@
 import argparse, collections, glob, json, os, re
 
 HANGUL = re.compile('[가-힣]')
-STRIP = re.compile(r'```.*?```|`[^`]*`|\[[^\]]*\]\([^)]*\)|https?://\S+', re.S)
+# 파일 줄 번호 토큰(doc03.md:11:2)은 영어 문장이 아니라 도구 출력이라 뺀다(Issue #266)
+STRIP = re.compile(r'```.*?```|`[^`]*`|\[[^\]]*\]\([^)]*\)|https?://\S+|\S+\.\w{1,5}:\d+(?::\d+)?', re.S)
 
 ap = argparse.ArgumentParser()
 ap.add_argument('--examples', type=int, default=10, help='영어 우세 블록 예시를 몇 개 보일지')
@@ -37,6 +38,8 @@ for path in files:
             month = str(d.get('timestamp', ''))[:7] or '날짜없음'
             for block in content:
                 if block.get('type') != 'text' or not block.get('text', '').strip():
+                    continue
+                if 'file://' in block['text']:   # 스킬·도구가 출력한 안내 문장은 모델의 진행 설명이 아니다(Issue #266)
                     continue
                 text = STRIP.sub(' ', block['text'])
                 total[month] += 1
