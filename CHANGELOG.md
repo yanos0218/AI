@@ -7,6 +7,8 @@
 
 ## [Unreleased]
 
+## [0.18.3] - 2026-11-05
+
 ### Fixed
 
 - heredoc 가림 순서 오류를 `verifier-guard`·`doc-drift-check`에도 수정([Issue #263](https://github.com/yanos0218/AI/issues/263))

@@ -29,7 +29,7 @@ PR 습관(브랜치에서 작업 → `gh pr create` → merge)을 먼저 한 저
 | 기능 | 현재 | 판단 | 이유 |
 | --- | --- | --- | --- |
 | 저장소·커밋·push | 11개 저장소, Conventional Commits | 씀 | 백업·이력의 기본 |
-| Releases·태그 | kolo_pwa 30, OpenClaw 42, 이 저장소 v0.18.2(2026-11-04 기준) | 씀 | 어느 기기에 어느 버전이 깔렸는지의 기준점. zip 첨부로 웹 업로드 산출물도 보관 |
+| Releases·태그 | kolo_pwa 30, OpenClaw 42, 이 저장소 v0.18.3(2026-11-05 기준) | 씀 | 어느 기기에 어느 버전이 깔렸는지의 기준점. zip 첨부로 웹 업로드 산출물도 보관 |
 | Actions | kolo_pwa test·release, OpenClaw lint·release | 씀 | 월 2,000분 한도. kolo_pwa처럼 경로 필터로 절약. 이 저장소는 `lint.yml`([Issue #52](https://github.com/yanos0218/AI/issues/52))·`issue-format-check.yml`([Issue #114](https://github.com/yanos0218/AI/issues/114)) |
 | Dependabot 알림 | kolo_pwa·kolo-api가 켜짐, AI는 2026-10-26 `gh api repos/yanos0218/AI/vulnerability-alerts`가 204로 켜짐 확인 | **켠다** | 무료, 저장소 Settings → Security 클릭 1회. OpenClaw·Script·Etc는 2026-09-08 조사 때 꺼져 있었고 이후 확인 안 함 |
 | Dependabot 버전 업데이트 | kolo_pwa(actions만) | 유지 | 의존성 트리가 있는 저장소만 |
