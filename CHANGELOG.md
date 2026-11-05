@@ -7,6 +7,13 @@
 
 ## [Unreleased]
 
+### Changed
+
+- 전역 지침 `base/claude-md/CLAUDE.md`를 10,734바이트에서 9,292바이트로 줄임([Issue #242](https://github.com/yanos0218/AI/issues/242))
+  - 사고 날짜·이슈 근거 괄호 9곳과 §8 사례 줄을 덜어냄(규칙 문장은 그대로, 이유는 `docs/decisions.md`와 이슈에 있음)
+  - §5 서브에이전트 세부(전용 에이전트·모델 값, Sonnet 지정, 병렬 위임 파일 분리)를 `base/claude-md-details/subagents.md`로 분리하고 본문에는 읽으라는 한 문장만 둠
+  - 목록 항목 두 개가 줄바꿈 없이 붙어 있던 4곳을 분리
+
 ## [0.18.3] - 2026-11-05
 
 ### Fixed
