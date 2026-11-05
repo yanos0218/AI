@@ -51,7 +51,8 @@ ENDING = re.compile(r'(습니다|습니까|ㅂ니다|합니다|입니다|됩니�
 QUOTED = re.compile(r'`[^`]*`|"[^"]*"|“[^”]*”|\'[^\']*\'')
 # .md 본문의 문장형 끝맺음(Issue #188). 음슴체 문서의 문장은 '다'로 끝나지 않으므로 문장 끝이 '다'인 줄을 본다
 # (위 ENDING은 이슈·PR·릴리즈 본문용 좁은 목록. 기존 .md 299줄 중 ENDING은 173줄만 잡았고 넓은 쪽 표본 14줄에 오탐 0)
-SENTENCE_DA = re.compile(r'다(?=[.!?]?\s*$|[.!?]\s)')
+# Issue #261: "있다(근거)", "하나다 —", "~다," 꼴도 문장 끝으로 본다(정정 전 docs 55줄 중 기존 식은 0줄 적발). 조사 "마다"(예: "(잡마다)")는 제외
+SENTENCE_DA = re.compile(r'(?<!마)다(?=[.!?]?\s*$|[.!?]\s|[(\)]| —|,\s)')
 # Claude에게 주는 지침 문서는 명령형이 규칙의 예외라 검사하지 않는다(docs-format-local.md)
 EUM_EXEMPT_DIRS = {'.claude', 'rules', 'skills', 'agents', 'commands', 'claude-md-details', 'test-fixtures'}
 EUM_EXEMPT_NAMES = {'claude.md', 'skill.md', 'agents.md'}

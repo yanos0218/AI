@@ -10,7 +10,7 @@
 | `drafts/hooks/<이름>.sh` | 새 훅 초안<br>판정이 복잡하면 셸 입구 + 파이썬 본체(`<이름>.py`, 공통 모듈은 [base/hooks/hooklib.py](../base/hooks/hooklib.py)) |
 | `drafts/agents/<이름>.md` | 새 에이전트 초안<br>[tools/test-agent.sh](../tools/test-agent.sh)로 시험 |
 
-전역 지침(`base/claude-md/CLAUDE.md`) 수정안은 파일로 두지 않고 GitHub Issue(`task` 라벨)로 제안한다(2026-09-12부터).
+전역 지침(`base/claude-md/CLAUDE.md`) 수정안은 파일로 두지 않고 GitHub Issue(`task` 라벨)로 제안함(2026-09-12부터).
 
 ## 기본 영역으로 올리는 조건 (승격)
 
@@ -20,7 +20,7 @@
      - 명령 실행 방식이나 중단·우회 판단을 바꾸는 문장이 섞여 있으면 그 부분은 초안에 남기고 새 세션 시험을 거침. 전역 지침의 위험도별 기준과 같은 구분임.
    - 에이전트는 [tools/test-agent.sh](../tools/test-agent.sh)로 새 세션 시험.
    - 훅은 시험 스크립트(예: [tools/test-hooks-py.sh](../tools/test-hooks-py.sh))와 실제 명령·세션에서의 동작 확인.
-   - 전역 지침은 문안의 위험도에 맞춘다([Issue #182](https://github.com/yanos0218/AI/issues/182), 2026-10-17).
+   - 전역 지침은 문안의 위험도에 맞춤([Issue #182](https://github.com/yanos0218/AI/issues/182), 2026-10-17).
      - 행동을 막거나 승인 흐름을 바꾸는 문안은 새 세션 비교. 반영 전 1회를 먼저 돌려 실제로 틀릴 때만 반영 후 2회를 돌림. 반영 후 조건은 시험 저장소 `CLAUDE.md`에 문안을 넣어 대신할 수 있음.
      - 실제 사고가 근거인 알림성 문안은 문안 검토로 갈음하고, 지켜지는지는 월 점검 self-audit가 평소 대화 기록에서 확인함.
      - 공통으로 통과 기준은 시험 전에 정함. 시험 상황을 만들 수 없으면 돌리지 않고 미검증으로 둔 뒤 실제 상황에서 확인함.

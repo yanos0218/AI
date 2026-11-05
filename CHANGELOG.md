@@ -3,12 +3,16 @@
 형식은 [Keep a Changelog](https://keepachangelog.com/ko/1.1.0/), 버전은 [docs/versioning.md](docs/versioning.md).
 **최근 3개 릴리즈 + `[Unreleased]`만 남기고 이전 이력은 지운다**
 
-- 릴리즈마다 [GitHub Releases](https://github.com/yanos0218/AI/releases)에 같은 내용이 있어 중복 관리를 피한다(예: `gh release view v0.5.0`)
+- 릴리즈마다 [GitHub Releases](https://github.com/yanos0218/AI/releases)에 같은 내용이 있어 중복 관리를 피함(예: `gh release view v0.5.0`)
 
 ## [Unreleased]
 
 ### Fixed
 
+- `md-format-check` 훅의 문장형 종결 검사가 "있다(근거)", "하나다 —", "~다," 꼴을 놓치던 문제 수정([Issue #261](https://github.com/yanos0218/AI/issues/261))
+  - 정정 전 docs에서 기존 식은 0줄, 보강한 식은 55줄 적발, 조사 "마다"는 제외
+  - `tools/test-format-guard.sh`에 케이스 4개 추가(통과 48 / 실패 0)
+  - CI `lint` job에 `format_check.py scan md` 단계 추가, Edit·Write를 거치지 않은 쓰기와 기존 위반을 사후에 잡음
 - `tools/` 스크립트 11개, `drafts/hooks/notify.sh`, `base/skills/live-status/scripts/live.sh`가 이름만 보고 `python3`를 골라 Windows의 Microsoft Store 별칭(출력 "Python", 종료 코드 49)에 걸리던 문제 수정([Issue #255](https://github.com/yanos0218/AI/issues/255))
   - `tools/install.sh`처럼 `python3`·`python` 중 `-c 'import sys'`가 실제로 성공하는 것을 고름
   - `tools/test-python-pick.sh` 추가, 이름 순서만 믿는 줄이 남았는지 정적으로 확인하고 가짜 별칭을 앞에 둔 채 `check-cram.sh`·`check-docs.sh`를 실행함, CI `설치 병합 시험` job에 등록

@@ -71,7 +71,11 @@ run 0 '.md 코드 블록·백틱 안 문장형은 제외' post Write "{\"file_pa
 run 0 'rules 아래 지침 문서는 제외' post Write "{\"file_path\": \"${D}/rules/x.md\", \"content\": \"이 규칙은 명령형으로 쓴다.\\n\"}"
 run 0 'claude-md-details 아래 지침 문서는 제외' post Write "{\"file_path\": \"${D}/claude-md-details/x.md\", \"content\": \"이 규칙은 명령형으로 쓴다.\\n\"}"
 run 0 'CLAUDE.md는 제외' post Write "{\"file_path\": \"${D}/CLAUDE.md\", \"content\": \"이 지침은 명령형으로 쓴다.\\n\"}"
-mkdir -p "${tmp}/off/.claude" && : > "${tmp}/off/.claude/no-eumseum-check"
+run 2 '.md 문장형 뒤 괄호(Issue #261)' post Write "{\"file_path\": \"${D}/x.md\", \"content\": \"# 제목\\n\\n한도가 있다(2026-09 기준). 그 뒤는 음슴체임\\n\"}"
+run 2 '.md 문장형 뒤 대시(Issue #261)' post Write "{\"file_path\": \"${D}/x.md\", \"content\": \"# 제목\\n\\n경우는 사실상 하나다 — 직접 편집할 때\\n\"}"
+run 2 '.md 목록 문장형 뒤 닫는 괄호(Issue #261)' post Edit "{\"file_path\": \"${D}/x.md\", \"old_string\": \"a\", \"new_string\": \"- 항목(막는다)\"}"
+run 0 '.md 조사 마다는 문장형 아님(Issue #261)' post Write "{\"file_path\": \"${D}/x.md\", \"content\": \"| 항목 | 값 |\\n| --- | --- |\\n| timeout (잡마다) | 5분 |\\n\"}"
+mkdir -p "${tmp}/off/.claude"&& : > "${tmp}/off/.claude/no-eumseum-check"
 RUN_CWD="${tmp}/off" run 0 '.claude/no-eumseum-check가 있으면 문장형 검사 끔' post Write "{\"file_path\": \"${tmp}/off/x.md\", \"content\": \"이 문단은 문장형으로 끝난다.\\n\"}"
 
 echo "통과 ${pass} / 실패 ${fail}"
