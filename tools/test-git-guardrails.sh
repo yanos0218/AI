@@ -7,7 +7,7 @@ cd "$(dirname "${0}")/.." || exit 1
 # python3·python 중 실제로 실행되는 것을 고른다(Windows 스토어 별칭 python3는 이름만 있고 실행하면 실패, Issue #255)
 PY=""; for c in python3 python; do p="$(command -v "${c}" 2>/dev/null)" && "${p}" -c 'import sys' >/dev/null 2>&1 && { PY="${p}"; break; }; done
 T="$(mktemp -d)"; trap 'rm -rf "${T}"' EXIT
-HOOK="${GG_HOOK:-base/hooks/git-guardrails.sh}"  # 초안 시험은 GG_HOOK=drafts/hooks/git-guardrails.sh
+HOOK="${GG_HOOK:-base/hooks/git-guardrails.sh}"  # 다른 훅 파일 시험은 GG_HOOK=<경로>
 fail=0
 ok()  { printf '  ok    %s\n' "$1"; }
 bad() { printf '  FAIL  %s\n' "$1"; fail=1; }
