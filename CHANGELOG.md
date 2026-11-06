@@ -7,11 +7,15 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- `git-guardrails` 훅이 `git`과 하위 명령 사이에 전역 옵션이 낀 위험 명령을 확인 없이 통과시키던 문제 수정([Issue #268](https://github.com/yanos0218/AI/issues/268))
+  - `git -C 경로 push`, `git -c 키=값 push`, `git --no-pager push`, `git -C 경로 reset --hard` 등 7종 판정이 모두 확인(ask)을 띄움
+  - 값을 받는 옵션(`-C`·`-c`·`--git-dir` 등)과 따옴표 경로를 건너뛰고 하위 명령을 찾음, 새 훅 판정은 0.14초(Windows Git Bash)
+  - `tools/test-git-guardrails.sh`에 옵션이 낀 형태 17건·통과해야 할 형태 6건·긴 옵션 나열 시간 2건 추가, `GG_HOOK` 환경변수로 다른 훅 파일을 시험할 수 있음
+
 ### Changed
 
-- `git-guardrails` 훅의 옵션 끼임 빈틈 수정안을 `drafts/hooks/git-guardrails.sh`에 추가하고 시험 확대([Issue #268](https://github.com/yanos0218/AI/issues/268))
-  - `git -C 경로 push`, `git -c 키=값 push`, `git --no-pager push`처럼 `git`과 하위 명령 사이에 전역 옵션이 끼면 확인 없이 통과하던 문제의 수정안(기본 영역은 승격 전이라 그대로)
-  - `tools/test-git-guardrails.sh`에 옵션이 낀 형태 17건·통과해야 할 형태 6건·긴 옵션 나열 시간 2건 추가, `GG_HOOK` 환경변수로 초안을 시험할 수 있음
 - `dev-release` 스킬의 마일스톤 절차 보강([Issue #267](https://github.com/yanos0218/AI/issues/267))
   - 이슈 배정이 모두 끝난 뒤 마지막에 마일스톤을 닫도록 순서를 명시함(닫힌 마일스톤은 `gh issue edit`이 못 찾아 실패)
   - 앞 릴리즈에 이미 배정된 이슈는 옮기지 않고, 이미 닫았을 때 다시 여는 방법과 zsh 반복문 주의를 추가함

@@ -53,8 +53,14 @@ search_text="${input}
 ${script_content}"
 
 s='[[:space:]]+'
+# git과 하위 명령 사이에 낀 전역 옵션을 건너뛰는 접두 패턴(Issue #268).
+#   값을 따로 받는 옵션(-C 경로, -c 키=값, --git-dir 경로 등)은 값 토큰까지, 그 밖의 -로 시작하는 토큰은 하나만 건너뛴다.
+#   값은 JSON 안의 따옴표(\"...\"), 작은따옴표, 공백 없는 토큰 중 하나다.
+gopt='(-C|-c|--git-dir|--work-tree|--namespace|--config-env|--super-prefix)'
+gval='(\\"[^"]*\\"|'"'"'[^'"'"']*'"'"'|[^[:space:]]+)'
+gp="git(${s}${gopt}${s}${gval}|${s}-[^[:space:]]*)*${s}"
 reason=""
-if [[ "${search_text}" =~ git${s}push ]]; then
+if [[ "${search_text}" =~ ${gp}push ]]; then
   reason="git push -- 원격 저장소에 반영됩니다. force push라면 히스토리를 덮어씁니다."
   upstream="$(git rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>/dev/null || true)"
   if [[ -n "${upstream}" ]]; then
@@ -68,15 +74,15 @@ if [[ "${search_text}" =~ git${s}push ]]; then
       reason="${reason} 확정된 사실이 관련 문서 전반에 반영됐는지 확인하세요(이번 push에 포함된 .md: ${md_list} -- 나열 안 된 다른 주제 문서에도 걸쳐 있을 수 있습니다)."
     fi
   fi
-elif [[ "${search_text}" =~ git${s}reset${s}--hard ]]; then
+elif [[ "${search_text}" =~ ${gp}reset${s}--hard ]]; then
   reason="git reset --hard -- 커밋 안 된 로컬 변경이 전부 사라집니다."
-elif [[ "${search_text}" =~ git${s}clean${s}-[A-Za-z]*f ]]; then
+elif [[ "${search_text}" =~ ${gp}clean${s}-[A-Za-z]*f ]]; then
   reason="git clean -f -- untracked 파일이 복구 불가능하게 삭제됩니다."
-elif [[ "${search_text}" =~ git${s}branch${s}-D ]]; then
+elif [[ "${search_text}" =~ ${gp}branch${s}-D ]]; then
   reason="git branch -D -- 병합 안 된 커밋이 있어도 강제로 브랜치가 삭제됩니다."
-elif [[ "${search_text}" =~ git${s}checkout${s}--|git${s}restore${s}\. ]]; then
+elif [[ "${search_text}" =~ ${gp}checkout${s}--|${gp}restore${s}\. ]]; then
   reason="git checkout -- / restore . -- 커밋 안 된 로컬 변경이 되돌려집니다."
-elif [[ "${search_text}" =~ git${s}tag${s}-d ]]; then
+elif [[ "${search_text}" =~ ${gp}tag${s}-d ]]; then
   reason="git tag -d -- 로컬 태그가 삭제됩니다(원격 태그는 별도로 지워야 함)."
 elif [[ "${search_text}" == *--no-verify* ]]; then
   reason="--no-verify -- 커밋/푸시 훅(검증)을 건너뜁니다."
