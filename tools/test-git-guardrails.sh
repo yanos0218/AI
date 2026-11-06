@@ -7,7 +7,7 @@ cd "$(dirname "${0}")/.." || exit 1
 # python3·python 중 실제로 실행되는 것을 고른다(Windows 스토어 별칭 python3는 이름만 있고 실행하면 실패, Issue #255)
 PY=""; for c in python3 python; do p="$(command -v "${c}" 2>/dev/null)" && "${p}" -c 'import sys' >/dev/null 2>&1 && { PY="${p}"; break; }; done
 T="$(mktemp -d)"; trap 'rm -rf "${T}"' EXIT
-HOOK="base/hooks/git-guardrails.sh"
+HOOK="${GG_HOOK:-base/hooks/git-guardrails.sh}"  # 초안 시험은 GG_HOOK=drafts/hooks/git-guardrails.sh
 fail=0
 ok()  { printf '  ok    %s\n' "$1"; }
 bad() { printf '  FAIL  %s\n' "$1"; fail=1; }
@@ -46,6 +46,54 @@ print('onFailure block entries: %s' % with_block)  # 한글을 쓰면 Windows �
 sys.exit(0 if ok else 1)
 PYEOF
 chk "onFailure block은 git-guardrails 하나에만"  '[[ "${rc}" = 0 ]]'
+
+echo "== 4. git과 하위 명령 사이에 옵션이 낀 형태도 판정(Issue #268)"
+# 인자는 JSON 문자열 안에 들어갈 명령 원문(큰따옴표는 JSON처럼 \" 로 적어 넘긴다)
+run_hook() { printf '{"tool_input":{"command":"%s"}}' "$1" | bash "${HOOK}"; }
+n_ask=0; n_pass=0
+for c in \
+  'git push origin main' \
+  'git -C /tmp/x push origin main' \
+  'git -C /tmp/x push --force origin main' \
+  'git -c user.name=a push' \
+  'git --no-pager push' \
+  'git --git-dir=/tmp/x/.git push' \
+  'git --git-dir /tmp/x/.git --work-tree /tmp/x push' \
+  'git -C /tmp/x reset --hard' \
+  'git -C /tmp/x clean -fd' \
+  'git -C /tmp/x branch -D x' \
+  'git -C /tmp/x checkout -- .' \
+  'git -C /tmp/x restore .' \
+  'git -C /tmp/x tag -d v1' \
+  'git -C \"C:/my dir/x\" push origin main' \
+  "git -C 'C:/my dir/x' push origin main" \
+  'git -C /tmp/x -c a=b --no-pager push' \
+  'cd /tmp/x && git -C . push'
+do
+  out="$(run_hook "${c}")"
+  n_ask=$((n_ask + 1))
+  chk "ask: ${c}" 'grep -q "\"permissionDecision\":\"ask\"" <<<"${out}" && ! grep -q "예상 밖 오류" <<<"${out}"'
+done
+for c in \
+  'git -C /tmp/x status' \
+  'git --no-pager log -5' \
+  'git -c a=b commit -m x' \
+  'git -C /tmp/x diff' \
+  'git -C \"C:/my dir/x\" status' \
+  'git fetch origin'
+do
+  out="$(run_hook "${c}")"
+  n_pass=$((n_pass + 1))
+  chk "통과(출력 없음): ${c}" '[[ -z "${out}" ]]'
+done
+printf '  시험 건수: ask %s건, 통과 %s건\n' "${n_ask}" "${n_pass}"
+# 느린 판정 방지: 긴 옵션 나열도 제한 시간(5초) 안에 끝나야 함
+long="git"; for _ in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20; do long="${long} -c a=b --no-pager"; done
+t0=$SECONDS; out="$(run_hook "${long} push")"; dt=$((SECONDS - t0))
+chk "옵션 20쌍이 낀 push: ask, ${dt}초(2초 미만)" 'grep -q "\"permissionDecision\":\"ask\"" <<<"${out}" && [[ "${dt}" -lt 2 ]]'
+long="git"; for _ in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20; do long="${long} -c a=b --no-pager"; done
+t0=$SECONDS; out="$(run_hook "${long} status")"; dt=$((SECONDS - t0))
+chk "옵션 20쌍이 낀 status: 통과, ${dt}초(2초 미만)" '[[ -z "${out}" && "${dt}" -lt 2 ]]'
 
 echo
 [[ "${fail}" = 0 ]] && echo "결과: 통과" || echo "결과: 실패 항목 있음"
