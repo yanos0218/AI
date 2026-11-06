@@ -84,6 +84,18 @@ run 0 '번호 인접: 링크 주소·앵커는 통과' pre Bash 'gh issue commen
 run 0 '번호 인접: 백틱 속 색상 코드는 통과' pre Bash 'gh issue comment 1 --body "- 색은 `#1a2b3c`로 지정함"'
 run 2 '번호 인접: .md 새 내용' post Write "{\"file_path\": \"${D}/x.md\", \"content\": \"# 제목\\n\\n- #242는 끝남\\n\"}"
 run 0 '번호 인접: 지침 문서(CLAUDE.md)는 제외' post Write "{\"file_path\": \"${D}/CLAUDE.md\", \"content\": \"- #242는 끝남\\n\"}"
+# Issue #270: git과 commit 사이에 전역 옵션이 껴도 커밋 본문을 검사한다
+BADBODY='- a.sh 파일: 설명이 한 줄에 길게 붙어 있는 경우를 막는다'
+run 2 'git -C 경로 commit 위반' pre Bash "git -C /tmp/x commit -m \"feat: x\" -m \"${BADBODY}\""
+run 2 'git -C 큰따옴표 공백 경로 commit 위반' pre Bash "git -C \"/tmp/my x\" commit -m \"feat: x\" -m \"${BADBODY}\""
+run 2 'git -C 작은따옴표 공백 경로 commit 위반' pre Bash "git -C '/tmp/my x' commit -m \"feat: x\" -m \"${BADBODY}\""
+run 2 'git -c 키=값 commit 위반' pre Bash "git -c user.name=a commit -m \"feat: x\" -m \"${BADBODY}\""
+run 2 'git --no-pager commit 위반' pre Bash "git --no-pager commit -m \"feat: x\" -m \"${BADBODY}\""
+run 2 'git 옵션 여러 개 commit 위반' pre Bash "git -C /tmp/x -c a=b --no-pager commit -m \"feat: x\" -m \"${BADBODY}\""
+run 0 'git -c 키=값 commit 정상 본문' pre Bash 'git -c user.name=a commit -m "fix: 제목" -m "- 수정" -m "  - 설명(괄호)"'
+run 0 'git -C 공백 경로 commit 정상 본문' pre Bash 'git -C "/tmp/my x" commit -m "fix: 제목만 있음"'
+run 0 'git -c 키=값 status는 대상 아님' pre Bash "git -c user.name=a status \"${BADBODY}\""
+run 0 'git 옵션 낀 commit 글이 heredoc 데이터 안에 있으면 통과' pre Bash "$(printf '%s\n' "python - <<'EOF'" "print('git -c a=b commit -m x -m \"${BADBODY}\"')" 'EOF')"
 mkdir -p "${tmp}/off/.claude"&& : > "${tmp}/off/.claude/no-eumseum-check"
 RUN_CWD="${tmp}/off" run 0 '.claude/no-eumseum-check가 있으면 문장형 검사 끔' post Write "{\"file_path\": \"${tmp}/off/x.md\", \"content\": \"이 문단은 문장형으로 끝난다.\\n\"}"
 

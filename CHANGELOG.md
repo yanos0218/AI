@@ -9,6 +9,10 @@
 
 ### Fixed
 
+- 형식 검사 훅(`format_check.py`)이 옵션이 낀 `git commit`의 본문을 검사하지 않던 문제 수정([Issue #270](https://github.com/yanos0218/AI/issues/270))
+  - `git -C "공백 경로" commit`, `git -c 키=값 commit`, `git --no-pager commit`처럼 `git`과 `commit` 사이에 전역 옵션이 끼면 위반 본문이 통과하던 것을 막음
+  - `doc_drift.py`와 같은 옵션 집합(`-C` 따옴표 경로 포함, `-c 값`, `--no-pager`, `--no-optional-locks`)을 건너뜀
+  - `tools/test-format-guard.sh`에 옵션이 낀 커밋 10건 추가
 - `git-guardrails` 훅이 `git`과 하위 명령 사이에 전역 옵션이 낀 위험 명령을 확인 없이 통과시키던 문제 수정([Issue #268](https://github.com/yanos0218/AI/issues/268))
   - `git -C 경로 push`, `git -c 키=값 push`, `git --no-pager push`, `git -C 경로 reset --hard` 등 7종 판정이 모두 확인(ask)을 띄움
   - 값을 받는 옵션(`-C`·`-c`·`--git-dir` 등)과 따옴표 경로를 건너뛰고 하위 명령을 찾음, 새 훅 판정은 0.14초(Windows Git Bash)

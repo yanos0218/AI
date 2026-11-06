@@ -148,7 +148,8 @@ def log(reason, cmd=''):
 # ---------- 명령에서 본문 꺼내기 ----------
 
 GH = re.compile(r'\bgh\s+(issue|pr)\s+(create|comment|edit|close|review)\b|\bgh\s+release\s+(create|edit)\b')
-GIT_COMMIT = re.compile(r'\bgit(?:\s+-C\s+\S+)?\s+commit\b')
+# git과 commit 사이에 낀 전역 옵션(-C 경로·-c 값·--no-pager 등)을 건너뛴다(Issue #270, doc_drift.py의 GIT와 같은 옵션 집합)
+GIT_COMMIT = re.compile(r'\bgit(?:\s+(?:-C\s+(?:"[^"]*"|\'[^\']*\'|\S+)|-c\s+\S+|--no-pager|--no-optional-locks))*\s+commit\b')
 ASSIGN = re.compile(r'''(?:^|[;&\s])([A-Za-z_][A-Za-z0-9_]*)=("([^"]*)"|'([^']*)'|([^\s;&|]+))''')
 
 
