@@ -9,6 +9,11 @@
 
 ### Fixed
 
+- `git-guardrails` 훅이 하위 명령 뒤에 다른 인자가 끼거나 긴 옵션을 쓴 위험 명령을 확인 없이 통과시키던 문제 수정([Issue #269](https://github.com/yanos0218/AI/issues/269))
+  - `reset`·`clean`·`branch`·`checkout`·`tag`를 하위 명령 바로 뒤 옵션이 아니라 같은 명령 조각(`;`·`&`·`|` 전까지) 안의 인자로 판정함
+  - 새로 확인(ask)이 뜨는 형태는 `reset HEAD~1 --hard`, `clean -n -f`·`--force`, `branch --delete --force`·`-d -D`·`-df`, `checkout HEAD -- .`, `tag --delete`
+  - 인자 60개가 낀 판정과 `reset` 300번이 든 입력도 0.14초 이내(Windows Git Bash), 오탐 방지 사례(`branch -d x`, `tag -a v1 -m x`, `clean -n` 등)는 통과
+  - `tools/test-git-guardrails.sh`에 ask 15건·통과 12건·시간 2건 추가
 - 형식 검사 훅(`format_check.py`)이 옵션이 낀 `git commit`의 본문을 검사하지 않던 문제 수정([Issue #270](https://github.com/yanos0218/AI/issues/270))
   - `git -C "공백 경로" commit`, `git -c 키=값 commit`, `git --no-pager commit`처럼 `git`과 `commit` 사이에 전역 옵션이 끼면 위반 본문이 통과하던 것을 막음
   - `doc_drift.py`와 같은 옵션 집합(`-C` 따옴표 경로 포함, `-c 값`, `--no-pager`, `--no-optional-locks`)을 건너뜀

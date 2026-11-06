@@ -95,6 +95,54 @@ long="git"; for _ in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20; do long
 t0=$SECONDS; out="$(run_hook "${long} status")"; dt=$((SECONDS - t0))
 chk "옵션 20쌍이 낀 status: 통과, ${dt}초(2초 미만)" '[[ -z "${out}" && "${dt}" -lt 2 ]]'
 
+echo "== 5. 하위 명령 뒤에 인자가 끼거나 긴 옵션을 쓴 위험 명령도 판정(Issue #269)"
+n_ask=0; n_pass=0
+for c in \
+  'git reset HEAD~1 --hard' \
+  'git reset --soft HEAD~1 --hard' \
+  'git -C /tmp/x reset HEAD~1 --hard' \
+  'git clean -n -f' \
+  'git clean -d -f' \
+  'git clean --force' \
+  'git branch --delete --force x' \
+  'git branch -d -D x' \
+  'git branch -d -f x' \
+  'git branch -df x' \
+  'git checkout HEAD -- .' \
+  'git checkout main -- src/a.txt' \
+  'git tag --delete v1' \
+  'git reset --soft HEAD~1; git reset --hard HEAD' \
+  'cd /tmp/x && git reset origin/main --hard'
+do
+  out="$(run_hook "${c}")"
+  n_ask=$((n_ask + 1))
+  chk "ask: ${c}" 'grep -q "\"permissionDecision\":\"ask\"" <<<"${out}" && ! grep -q "예상 밖 오류" <<<"${out}"'
+done
+for c in \
+  'git commit -m \"reset --hard 설명\"' \
+  'git branch -d x' \
+  'git branch --list' \
+  'git tag -a v1 -m x' \
+  'git tag -l' \
+  'git clean -n' \
+  'git checkout -b x' \
+  'git checkout main' \
+  'git reset --soft HEAD~1' \
+  'git reset HEAD file.txt' \
+  'git reset --soft HEAD~1; echo --hard' \
+  'git log --oneline; echo -f'
+do
+  out="$(run_hook "${c}")"
+  n_pass=$((n_pass + 1))
+  chk "통과(출력 없음): ${c}" '[[ -z "${out}" ]]'
+done
+printf '  시험 건수: ask %s건, 통과 %s건\n' "${n_ask}" "${n_pass}"
+long="git reset"; for _ in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30; do long="${long} HEAD~1 path/file.txt"; done
+t0=$SECONDS; out="$(run_hook "${long} --hard")"; dt=$((SECONDS - t0))
+chk "인자 60개가 낀 reset --hard: ask, ${dt}초(2초 미만)" 'grep -q "\"permissionDecision\":\"ask\"" <<<"${out}" && [[ "${dt}" -lt 2 ]]'
+t0=$SECONDS; out="$(run_hook "${long} --soft")"; dt=$((SECONDS - t0))
+chk "인자 60개가 낀 reset --soft: 통과, ${dt}초(2초 미만)" '[[ -z "${out}" && "${dt}" -lt 2 ]]'
+
 echo
 [[ "${fail}" = 0 ]] && echo "결과: 통과" || echo "결과: 실패 항목 있음"
 exit "${fail}"

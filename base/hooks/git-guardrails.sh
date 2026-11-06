@@ -59,6 +59,30 @@ s='[[:space:]]+'
 gopt='(-C|-c|--git-dir|--work-tree|--namespace|--config-env|--super-prefix)'
 gval='(\\"[^"]*\\"|'"'"'[^'"'"']*'"'"'|[^[:space:]]+)'
 gp="git(${s}${gopt}${s}${gval}|${s}-[^[:space:]]*)*${s}"
+
+# 하위 명령 뒤에 다른 인자가 끼거나 긴 옵션(--delete 등)을 써도 판정하기 위한 장치(Issue #269).
+# 하위 명령($1)이 나올 때마다 그 뒤 같은 명령 조각(; & | 전까지)의 인자를 rest에 담고 판정 함수($2)를 부른다.
+# 한 조각에 같은 하위 명령이 여러 번 나와도 모두 본다. 하나라도 참이면 0.
+seg='[^;&|]*'
+rest=""
+git_sub_any() {
+  local text="${search_text}" sub="${1}" pred="${2}" m
+  while [[ "${text}" =~ ${gp}${sub}(${seg}) ]]; do
+    m="${BASH_REMATCH[0]}"
+    rest="${m#*"${sub}"}"
+    "${pred}" && return 0
+    text="${text#*"${m}"}"
+  done
+  return 1
+}
+p_reset()    { [[ "${rest}" =~ ${s}--hard ]]; }
+p_clean()    { [[ "${rest}" =~ ${s}(-[A-Za-z]*f|--force) ]]; }
+p_checkout() { [[ "${rest}" =~ ${s}--(${s}|$) ]]; }
+p_tag()      { [[ "${rest}" =~ ${s}(-[A-Za-z]*d|--delete) ]]; }
+p_branch() {
+  [[ "${rest}" =~ ${s}-[A-Za-z]*D ]] && return 0
+  [[ "${rest}" =~ ${s}(-[A-Za-z]*d|--delete) ]] && [[ "${rest}" =~ ${s}(-[A-Za-z]*f|--force) ]]
+}
 reason=""
 if [[ "${search_text}" =~ ${gp}push ]]; then
   reason="git push -- 원격 저장소에 반영됩니다. force push라면 히스토리를 덮어씁니다."
@@ -74,15 +98,15 @@ if [[ "${search_text}" =~ ${gp}push ]]; then
       reason="${reason} 확정된 사실이 관련 문서 전반에 반영됐는지 확인하세요(이번 push에 포함된 .md: ${md_list} -- 나열 안 된 다른 주제 문서에도 걸쳐 있을 수 있습니다)."
     fi
   fi
-elif [[ "${search_text}" =~ ${gp}reset${s}--hard ]]; then
+elif git_sub_any reset p_reset; then
   reason="git reset --hard -- 커밋 안 된 로컬 변경이 전부 사라집니다."
-elif [[ "${search_text}" =~ ${gp}clean${s}-[A-Za-z]*f ]]; then
+elif git_sub_any clean p_clean; then
   reason="git clean -f -- untracked 파일이 복구 불가능하게 삭제됩니다."
-elif [[ "${search_text}" =~ ${gp}branch${s}-D ]]; then
+elif git_sub_any branch p_branch; then
   reason="git branch -D -- 병합 안 된 커밋이 있어도 강제로 브랜치가 삭제됩니다."
-elif [[ "${search_text}" =~ ${gp}checkout${s}--|${gp}restore${s}\. ]]; then
+elif git_sub_any checkout p_checkout || [[ "${search_text}" =~ ${gp}restore${s}\. ]]; then
   reason="git checkout -- / restore . -- 커밋 안 된 로컬 변경이 되돌려집니다."
-elif [[ "${search_text}" =~ ${gp}tag${s}-d ]]; then
+elif git_sub_any tag p_tag; then
   reason="git tag -d -- 로컬 태그가 삭제됩니다(원격 태그는 별도로 지워야 함)."
 elif [[ "${search_text}" == *--no-verify* ]]; then
   reason="--no-verify -- 커밋/푸시 훅(검증)을 건너뜁니다."
