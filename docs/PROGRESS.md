@@ -36,6 +36,7 @@
 - 버전 표기
   - 릴리즈 태그 기준 `git describe` 값 하나만 씀(예: `v0.13.1-8-gca8f24e` = v0.13.1 이후 8커밋, 커밋 ca8f24e)
   - `tools/install.sh`가 끝에 적을 값을 출력하고, `tools/check-install.sh`가 이 행과 설치 버전 파일을 대조함([#180](https://github.com/yanos0218/AI/issues/180))
+  - 같은 OS 기기가 여럿이면 `표면(기기 이름)` 행을 따로 두고, "설치된 것" 칸 첫 백틱 값에 그 기기 버전만 씀(대조는 이 값과 정확히 비교, [#271](https://github.com/yanos0218/AI/issues/271))
 
 | 표면 | 설치된 것 | 설치일 | 다음 |
 | --- | --- | --- | --- |

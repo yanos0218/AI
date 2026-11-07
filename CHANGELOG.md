@@ -9,6 +9,11 @@
 
 ### Fixed
 
+- `tools/check-install.sh`의 PROGRESS §0 설치 버전 대조와 저장소 훅 `progress-stale-check.sh`가 같은 OS 기기 여러 대를 구분하지 못하던 문제 수정([Issue #271](https://github.com/yanos0218/AI/issues/271))
+  - 표면 이름으로 시작하는 첫 행만 보던 것을 `Windows`·`Windows(패키지 설치 PC)`처럼 같은 표면의 행을 모두 보도록 바꿈
+  - 행 전체에서 부분 문자열로 찾던 것을 "설치된 것" 칸의 첫 백틱 값과 정확히 비교하도록 바꿈(`v0.18.4`가 `v0.18.4-11-g9cd1d29`에 일치하던 것을 막음)
+  - `tools/test-progress-stale-check.sh`에 여러 행·앞부분만 같은 버전 사례 6건 추가, `check-install.sh`도 `PROGRESS_FILE`로 시험함
+
 - `git-guardrails` 훅이 하위 명령 뒤에 다른 인자가 끼거나 긴 옵션을 쓴 위험 명령을 확인 없이 통과시키던 문제 수정([Issue #269](https://github.com/yanos0218/AI/issues/269))
   - `reset`·`clean`·`branch`·`checkout`·`tag`를 하위 명령 바로 뒤 옵션이 아니라 같은 명령 조각(`;`·`&`·`|` 전까지) 안의 인자로 판정함
   - 새로 확인(ask)이 뜨는 형태는 `reset HEAD~1 --hard`, `clean -n -f`·`--force`, `branch --delete --force`·`-d -D`·`-df`, `checkout HEAD -- .`, `tag --delete`

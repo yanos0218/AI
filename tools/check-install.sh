@@ -95,11 +95,22 @@ if [[ "${QUIET}" = 1 ]]; then run_checks >/dev/null; else run_checks; fi
 # PROGRESS §0 표면별 설치 버전 행에 이 기기 설치 버전(git describe, 설치 버전 파일 2행)이 적혔는지(Issue #180).
 # 설치 어긋남과는 별개라 판정(drift)에 넣지 않고, --summary에서도 보이게 판정 줄 바로 위에 한 줄로 낸다
 case "$(uname -s)" in MINGW*|MSYS*|CYGWIN*) surface="Windows";; Darwin) surface="Mac mini";; Linux) surface="Linux";; *) surface="";; esac
-installed_ver="$(sed -n 2p "${CLAUDE_HOME}/.claude-config-version" 2>/dev/null)"
-row="$(grep -m1 "^| ${surface}" docs/PROGRESS.md 2>/dev/null)"
-if [[ -z "${surface}" || -z "${installed_ver}" || -z "${row}" ]]; then echo "기록: PROGRESS §0 설치 버전 확인 못함(표면 ${surface:-?}, 설치 버전 ${installed_ver:-없음})"
-elif [[ "${row}" == *"${installed_ver}"* ]]; then echo "기록: PROGRESS §0 ${surface} 행에 설치 버전 ${installed_ver} 있음"
-else echo "기록: PROGRESS §0 ${surface} 행에 설치 버전 ${installed_ver} 없음 — claude-config 세션에서 그 행을 갱신"; fi
+installed_ver="$(sed -n 2p "${CLAUDE_HOME}/.claude-config-version" 2>/dev/null | tr -d '\r')"
+progress="${PROGRESS_FILE:-docs/PROGRESS.md}"   # 시험용(tools/test-progress-stale-check.sh)
+# 같은 OS 기기가 여럿이면 "Windows", "Windows(패키지 설치 PC)"처럼 행이 여럿이라 표면 이름으로 시작하는 행을 모두 보고,
+# 각 행 "설치된 것" 칸의 첫 백틱 값과 정확히 같은지 비교한다. 부분 문자열 비교는 v0.18.4가 v0.18.4-11-g…에 일치했다(Issue #271)
+rows="$(grep "^| ${surface}[ (]" "${progress}" 2>/dev/null)"
+hit=""; names=""
+while IFS= read -r r; do
+  [[ -z "${r}" ]] && continue
+  name="$(printf '%s' "${r}" | awk -F'|' '{gsub(/^ +| +$/, "", $2); print $2}')"
+  ver="$(printf '%s' "${r}" | awk -F'|' '{print $3}' | sed -n 's/^[^`]*`\([^`]*\)`.*/\1/p')"
+  names="${names:+${names}, }${name}"
+  [[ -z "${hit}" && "${ver}" == "${installed_ver}" ]] && hit="${name}"
+done <<< "${rows}"
+if [[ -z "${surface}" || -z "${installed_ver}" || -z "${rows}" ]]; then echo "기록: PROGRESS §0 설치 버전 확인 못함(표면 ${surface:-?}, 설치 버전 ${installed_ver:-없음})"
+elif [[ -n "${hit}" ]]; then echo "기록: PROGRESS §0 ${hit} 행에 설치 버전 ${installed_ver} 있음"
+else echo "기록: PROGRESS §0 ${names} 행 어디에도 설치 버전 ${installed_ver} 없음 — claude-config 세션에서 이 기기 행을 갱신"; fi
 
 echo
 [[ "${drift}" = 0 ]] && echo "결과: 설치본이 기본 영역과 같다." || echo "결과: 어긋난 항목이 있다(DIFF/MISSING). 의도한 변경이면 base/에 반영, 아니면 재설치(docs/install.md)."

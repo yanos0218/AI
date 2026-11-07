@@ -12,7 +12,15 @@ f="${PROGRESS_FILE:-docs/PROGRESS.md}"
 case "$(uname -s)" in MINGW*|MSYS*|CYGWIN*) surface="Windows";; Darwin) surface="Mac mini";; Linux) surface="Linux";; *) exit 0;; esac
 installed_ver="$(sed -n 2p "${CLAUDE_HOME}/.claude-config-version" 2>/dev/null | tr -d '\r')"
 [[ -n "${installed_ver}" ]] || exit 0
-row="$(grep -m1 "^| ${surface}" "${f}" 2>/dev/null)"
-[[ -n "${row}" ]] || exit 0
-[[ "${row}" == *"${installed_ver}"* ]] && exit 0
-echo "[progress-check] docs/PROGRESS.md §0 ${surface} 행에 이 기기 설치 버전 ${installed_ver}이 없음. 이 내용을 믿지 말고 행의 설치 버전·설치일을 확인한 뒤, 세션 끝에 그 행에서 고칠 것."
+# 같은 OS 기기가 여럿이면 "Windows", "Windows(패키지 설치 PC)"처럼 행이 여럿이라 모두 보고, "설치된 것" 칸의 첫 백틱 값과
+# 정확히 비교한다. 부분 문자열 비교는 v0.18.4가 v0.18.4-11-g…에 일치했다(Issue #271)
+rows="$(grep "^| ${surface}[ (]" "${f}" 2>/dev/null)"
+[[ -n "${rows}" ]] || exit 0
+names=""
+while IFS= read -r r; do
+  name="$(printf '%s' "${r}" | awk -F'|' '{gsub(/^ +| +$/, "", $2); print $2}')"
+  ver="$(printf '%s' "${r}" | awk -F'|' '{print $3}' | sed -n 's/^[^`]*`\([^`]*\)`.*/\1/p')"
+  [[ "${ver}" == "${installed_ver}" ]] && exit 0
+  names="${names:+${names}, }${name}"
+done <<< "${rows}"
+echo "[progress-check] docs/PROGRESS.md §0 ${names} 행 어디에도 이 기기 설치 버전 ${installed_ver}이 없음. 이 내용을 믿지 말고 이 기기 행의 설치 버전·설치일을 확인한 뒤, 세션 끝에 그 행에서 고칠 것."

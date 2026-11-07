@@ -47,6 +47,30 @@ printf '/x/AI\r\nv0.14.0-64-gd8d7300\r\nabc\r\n' >"${T}/home/.claude-config-vers
 out="$(hook)"
 chk "CR이 붙어도 출력 없음"            '[[ -z "${out}" ]]'
 
+echo "== 5. 같은 OS 기기가 여럿이고 버전이 앞부분만 같을 때(Issue #271)"
+# $1=첫 행 버전, $2=두 번째 행 버전. 표면마다 "이름"과 "이름(두 번째 PC)" 두 행을 만든다
+table2() { : >"${T}/progress.md"; for s in "Windows" "Mac mini" "Linux(RHEL 계열)"; do printf '| %s | `%s`(이전 `%s`) |\n| %s(두 번째 PC) | `%s` |\n' "${s}" "$1" "$2" "${s%%(*}" "$2" >>"${T}/progress.md"; done; }
+printf '%s\n%s\n' "/x/AI" "v0.18.4" >"${T}/home/.claude-config-version"
+table2 "v0.18.4-11-g9cd1d29" "v0.18.4"
+out="$(hook)"
+chk "두 번째 행이 일치: 출력 없음"       '[[ -z "${out}" ]]'
+table2 "v0.18.4-11-g9cd1d29" "v0.18.3"
+out="$(hook)"
+chk "앞부분만 같은 버전은 불일치로 알림"  'grep -q "^\[progress-check\] " <<<"${out}"'
+chk "알림에 두 행 이름이 다 들어감"       'grep -q "(두 번째 PC) 행 어디에도" <<<"${out}"'
+table "v0.18.4-11-g9cd1d29"
+out="$(hook)"
+chk "행 하나, 설명 속 옛 값만 같음: 알림"  'grep -q "^\[progress-check\] " <<<"${out}"'
+
+echo "== 6. tools/check-install.sh 기록 줄도 같은 판정"
+ci() { CLAUDE_CONFIG_DIR="${T}/home" PROGRESS_FILE="${T}/progress.md" bash tools/check-install.sh "${T}" 2>/dev/null | grep '^기록: PROGRESS'; }
+table2 "v0.18.4-11-g9cd1d29" "v0.18.4"
+out="$(ci)"
+chk "두 번째 행 이름으로 있음"            'grep -q "(두 번째 PC) 행에 설치 버전 v0.18.4 있음" <<<"${out}"'
+table2 "v0.18.4-11-g9cd1d29" "v0.18.3"
+out="$(ci)"
+chk "앞부분만 같은 버전은 없음"           'grep -q "행 어디에도 설치 버전 v0.18.4 없음" <<<"${out}"'
+
 echo
 [[ "${fail}" = 0 ]] && echo "결과: 통과" || echo "결과: 실패 항목 있음"
 exit "${fail}"
