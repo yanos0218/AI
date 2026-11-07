@@ -7,6 +7,8 @@
 
 ## [Unreleased]
 
+## [0.18.5] - 2026-11-07
+
 ### Fixed
 
 - `git-guardrails` 훅이 다른 낱말의 일부인 `git`·`push`에도 확인(ask)을 띄우던 오탐 수정([Issue #277](https://github.com/yanos0218/AI/issues/277))
@@ -103,11 +105,3 @@
   - [docs/install.md](docs/install.md)는 "작업 폴더 밖 읽기가 막힘"을 `Read` 도구 한정으로 고치고 대화형 `Bash`는 막히지 않는다고 적음
   - [docs/review-vs-official.md](docs/review-vs-official.md)에 Windows 2.1.318 대화형 재현(2026-11-04)과, 공식 문서가 읽기 전용 `Bash` 명령도 이 설정의 영향 대상으로 적고 있어 어긋난다는 점을 추가
   - [docs/HANDOFF.md](docs/HANDOFF.md)의 남은 재시험에서 Windows를 뺌
-
-## [0.18.2] - 2026-11-04
-
-### Fixed
-
-- 훅 4개(`session-start-check.sh`, `compact-snapshot.sh`, `compact-snapshot-show.sh`, `statusline.sh`)가 `python3`를 먼저 골라, Windows에서 Microsoft Store 별칭(출력 "Python", 종료 코드 49)에 걸려 조용히 종료되던 문제 수정([Issue #253](https://github.com/yanos0218/AI/issues/253))
-  - `python` → `python3` 순으로 바꿔 [docs/testing.md](docs/testing.md)의 훅 규칙과 맞춤
-  - `tools/test-session-start-check.sh`에 가짜 스토어 별칭 시나리오 추가(`jq`가 없을 때만 실행), 수정 전 훅은 10건 실패·수정 후 27건 통과
