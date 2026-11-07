@@ -58,7 +58,9 @@ s='[[:space:]]+'
 #   값은 JSON 안의 따옴표(\"...\"), 작은따옴표, 공백 없는 토큰 중 하나다.
 gopt='(-C|-c|--git-dir|--work-tree|--namespace|--config-env|--super-prefix)'
 gval='(\\"[^"]*\\"|'"'"'[^'"'"']*'"'"'|[^[:space:]]+)'
-gp="git(${s}${gopt}${s}${gval}|${s}-[^[:space:]]*)*${s}"
+# 앞 경계(Issue #277): git이 다른 낱말의 끝(digit, legit, my_git)이면 명령이 아니므로 제외한다. 앞 글자가 영숫자·_가 아니거나 문자열 처음이어야 한다.
+#   입력은 JSON이라 실제 줄바꿈·탭이 \n \r \t 두 글자로 들어온다. 그 바로 뒤의 git(여러 줄 명령의 둘째 줄)은 명령 자리이므로 허용한다.
+gp="(^|[^[:alnum:]_]|\\\\[nrt])git(${s}${gopt}${s}${gval}|${s}-[^[:space:]]*)*${s}"
 
 # 하위 명령 뒤에 다른 인자가 끼거나 긴 옵션(--delete 등)을 써도 판정하기 위한 장치(Issue #269).
 # 하위 명령($1)이 나올 때마다 그 뒤 같은 명령 조각(; & | 전까지)의 인자를 rest에 담고 판정 함수($2)를 부른다.
@@ -84,7 +86,8 @@ p_branch() {
   [[ "${rest}" =~ ${s}(-[A-Za-z]*d|--delete) ]] && [[ "${rest}" =~ ${s}(-[A-Za-z]*f|--force) ]]
 }
 reason=""
-if [[ "${search_text}" =~ ${gp}push ]]; then
+# push 뒤 경계(Issue #277): push-to-checkout, pushall처럼 push로 시작하는 다른 낱말은 제외한다.
+if [[ "${search_text}" =~ ${gp}push($|[^[:alnum:]_-]) ]]; then
   reason="git push -- 원격 저장소에 반영됩니다. force push라면 히스토리를 덮어씁니다."
   upstream="$(git rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>/dev/null || true)"
   if [[ -n "${upstream}" ]]; then

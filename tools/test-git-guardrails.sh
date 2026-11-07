@@ -143,6 +143,44 @@ chk "인자 60개가 낀 reset --hard: ask, ${dt}초(2초 미만)" 'grep -q "\"p
 t0=$SECONDS; out="$(run_hook "${long} --soft")"; dt=$((SECONDS - t0))
 chk "인자 60개가 낀 reset --soft: 통과, ${dt}초(2초 미만)" '[[ -z "${out}" && "${dt}" -lt 2 ]]'
 
+echo "== 6. git 앞뒤 경계: 다른 낱말의 일부는 통과, 명령 자리의 git은 계속 판정(Issue #277)"
+n_ask=0; n_pass=0
+for c in \
+  'git push origin main' \
+  '/usr/bin/git push origin main' \
+  "bash -c 'git push origin main'" \
+  '(git push origin main)' \
+  'cd /tmp/x;git push' \
+  'echo a && git push' \
+  'echo a|git reset --hard' \
+  '\"git push\"' \
+  'git push;' \
+  'git push' \
+  'echo a\ngit push origin main' \
+  'cd /tmp/x\ngit reset --hard' \
+  'echo a\tgit push origin main' \
+  'echo a\r\ngit clean -f'
+do
+  out="$(run_hook "${c}")"
+  n_ask=$((n_ask + 1))
+  chk "ask: ${c}" 'grep -q "\"permissionDecision\":\"ask\"" <<<"${out}" && ! grep -q "예상 밖 오류" <<<"${out}"'
+done
+for c in \
+  'echo digit push' \
+  'echo legit reset --hard' \
+  'echo forgit clean -f' \
+  'mygit push origin main' \
+  'my_git push origin main' \
+  'git push-to-checkout' \
+  'git pushall' \
+  'git log --grep=pushed'
+do
+  out="$(run_hook "${c}")"
+  n_pass=$((n_pass + 1))
+  chk "통과(출력 없음): ${c}" '[[ -z "${out}" ]]'
+done
+printf '  시험 건수: ask %s건, 통과 %s건\n' "${n_ask}" "${n_pass}"
+
 echo
 [[ "${fail}" = 0 ]] && echo "결과: 통과" || echo "결과: 실패 항목 있음"
 exit "${fail}"

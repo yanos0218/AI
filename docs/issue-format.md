@@ -140,6 +140,9 @@
 - 목록 항목·표 셀에서 주어와 설명을 `—`나 `:`로 이어쓰지 않음([base/rules/docs-format.md](../base/rules/docs-format.md)).
   - 로컬 `.md`는 커밋 시 `pre-commit-check.sh`가 자동 검사하지만, `gh issue create`·`gh issue comment`·`gh issue close --comment`·`gh release create/edit`는 git 커밋이 아니라 훅이 못 봄
     - 본문을 파일로 쓴 뒤 `tools/check-cram.sh <파일>`로 확인하고 나서 올림(Issue #99).
+    - 본문 파일은 Bash heredoc(`cat > 파일 <<'EOF'`)이 아니라 Write 도구로 만들고 `--body-file`로 넘김(Issue #277)
+      - heredoc 본문에 위험 명령 예시 문장이 들어 있으면 `git-guardrails`가 실제 실행으로 오인해 질문을 띄움.
+      - Write 도구는 Bash 훅을 거치지 않고, `--body-file` 명령에는 본문 문장이 없어 질문이 뜨지 않음(2026-11-07 시험).
     - 확인 명령과 게시 명령을 `;`로 나눠 쓰지 않음. `tools/check-cram.sh <파일> && gh issue create ...`처럼 `&&`로 묶어서, 검사가 실패하면 게시 명령이 물리적으로 실행되지 않게 함(Issue #118 — 순서로만 적어 놨다가 검사 실패에도 게시가 그대로 진행된 사례 2건).
 - 커밋에는 `Closes #N` 대신 `Refs #N`(자동 닫힘 없는 단순 참조)만 씀
   - `Closes #N`은 push하는 순간 자동으로 닫혀서, push 이후에도 검증할 게 남아 있으면 검증이 안 끝난 채 닫히는 위험이 있음([Issue #122](https://github.com/yanos0218/AI/issues/122)).

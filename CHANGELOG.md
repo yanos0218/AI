@@ -9,6 +9,13 @@
 
 ### Fixed
 
+- `git-guardrails` 훅이 다른 낱말의 일부인 `git`·`push`에도 확인(ask)을 띄우던 오탐 수정([Issue #277](https://github.com/yanos0218/AI/issues/277))
+  - `digit push`, `legit reset --hard`, `my_git push`처럼 `git` 앞에 영숫자·`_`가 붙은 낱말과 `push-to-checkout`, `pushall`처럼 `push`로 시작하는 다른 낱말은 통과
+  - 줄바꿈·탭은 JSON에서 `\n`·`\r`·`\t`로 들어오므로 그 바로 뒤의 `git`(여러 줄 명령의 둘째 줄)은 계속 판정함
+  - 따옴표·heredoc 본문은 판정에서 빼지 않음(`bash -c '...'`·`bash <<EOF`로 실행되는 명령을 놓치기 때문), 본문 속 문구 오탐은 문서 규칙으로 줄임
+  - `tools/test-git-guardrails.sh`에 ask 14건·통과 8건 추가(여러 줄 명령 회귀 시험 포함)
+- [docs/issue-format.md](docs/issue-format.md)에 이슈·댓글 본문은 Write 도구로 파일을 만들어 `--body-file`로 올린다는 규칙 추가([Issue #277](https://github.com/yanos0218/AI/issues/277))
+  - 명령 본문(heredoc)에 위험 명령 예시 문장이 들어 있으면 훅이 실제 실행으로 오인해 질문을 띄움
 - `tools/test-format-guard.sh`가 Windows(Git Bash)에서 본문 파일 시험 6건을 항상 실패하던 문제 수정([Issue #275](https://github.com/yanos0218/AI/issues/275))
   - 시험의 임시 폴더 `/tmp/...`는 Git Bash 가상 경로라 훅의 Windows 파이썬이 본문 파일을 열지 못했음
   - `cygpath`가 있으면 임시 폴더를 `C:/...` 꼴로 바꿔 훅 입력에 넣음(훅은 바꾸지 않음), 없는 Mac·Linux는 그대로
