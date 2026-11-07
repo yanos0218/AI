@@ -4,6 +4,8 @@
 set -u
 here="$(cd "$(dirname "${0}")/../base/hooks" && pwd)"   # 시험 대상 훅 폴더
 tmp="$(mktemp -d)"
+# Windows Git Bash의 /tmp는 가상 경로라 훅의 Windows 파이썬이 열지 못한다(Issue #275). cygpath가 있으면 C:/... 꼴로 바꾼다
+if command -v cygpath >/dev/null 2>&1; then tmp="$(cygpath -m "${tmp}")"; fi
 trap 'rm -rf "${tmp}"' EXIT
 export CLAUDE_CONFIG_DIR="${tmp}/home"   # 통과 기록(format-guard.log)을 시험 폴더에 쓴다
 mkdir -p "${CLAUDE_CONFIG_DIR}"

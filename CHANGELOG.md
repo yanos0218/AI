@@ -9,6 +9,11 @@
 
 ### Fixed
 
+- `tools/test-format-guard.sh`가 Windows(Git Bash)에서 본문 파일 시험 6건을 항상 실패하던 문제 수정([Issue #275](https://github.com/yanos0218/AI/issues/275))
+  - 시험의 임시 폴더 `/tmp/...`는 Git Bash 가상 경로라 훅의 Windows 파이썬이 본문 파일을 열지 못했음
+  - `cygpath`가 있으면 임시 폴더를 `C:/...` 꼴로 바꿔 훅 입력에 넣음(훅은 바꾸지 않음), 없는 Mac·Linux는 그대로
+  - Windows에서 `통과 60 / 실패 6`이던 것이 `통과 66 / 실패 0`
+
 - `tools/check-install.sh`의 PROGRESS §0 설치 버전 대조와 저장소 훅 `progress-stale-check.sh`가 같은 OS 기기 여러 대를 구분하지 못하던 문제 수정([Issue #271](https://github.com/yanos0218/AI/issues/271))
   - 표면 이름으로 시작하는 첫 행만 보던 것을 `Windows`·`Windows(패키지 설치 PC)`처럼 같은 표면의 행을 모두 보도록 바꿈
   - 행 전체에서 부분 문자열로 찾던 것을 "설치된 것" 칸의 첫 백틱 값과 정확히 비교하도록 바꿈(`v0.18.4`가 `v0.18.4-11-g9cd1d29`에 일치하던 것을 막음)
