@@ -35,6 +35,10 @@
 
 ### Changed
 
+- `tools/check-docs.sh`가 문서 형식 검사(`format_check.py scan md`)도 함께 돌림([Issue #274](https://github.com/yanos0218/AI/issues/274))
+  - `check-docs.sh` 통과만 보고 push했다가 CI의 형식 검사(번호 인접)에서 실패하던 빈틈을 막음
+  - 대상 목록(`docs/*.md`·README·CHANGELOG·`drafts/*.md`)은 이 스크립트가 유일한 정의, `lint.yml`의 별도 형식 검사 단계는 삭제하고 `check-docs.sh` 단계가 대신함
+  - 기존 파이썬 선택 로직을 재사용하고 대상이 0개이거나 파이썬이 없으면 실패 처리
 - `dev-release` 스킬의 마일스톤 절차 보강([Issue #267](https://github.com/yanos0218/AI/issues/267))
   - 이슈 배정이 모두 끝난 뒤 마지막에 마일스톤을 닫도록 순서를 명시함(닫힌 마일스톤은 `gh issue edit`이 못 찾아 실패)
   - 앞 릴리즈에 이미 배정된 이슈는 옮기지 않고, 이미 닫았을 때 다시 여는 방법과 zsh 반복문 주의를 추가함

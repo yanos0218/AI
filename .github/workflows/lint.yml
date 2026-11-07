@@ -34,16 +34,9 @@ jobs:
           shopt -s nullglob
           shellcheck -S warning base/hooks/*.sh base/vscode/install.sh base/skills/*/scripts/*.sh tools/*.sh .claude/hooks/*.sh drafts/hooks/*.sh
 
-      - name: 문서 상한·필수 파일
+      # 줄 수 상한·필수 파일·문서 형식(목록 줄바꿈·음슴체)을 한 스크립트가 검사한다. 형식 검사 대상 목록은 check-docs.sh가 유일한 정의다(Issue #274)
+      - name: 문서 상한·필수 파일·형식
         run: bash tools/check-docs.sh
-
-      # Edit·Write 도구만 보는 저장 훅(md-format-check)을 우회한 쓰기(Bash의 python·sed 등)와 기존 위반을 잡는다(Issue #261).
-      # 훅과 같은 판정 코드를 쓴다. 음슴체 규칙이 적용되는 문서만 보고, 지침 문서(skills·rules)와 시험 파일(test-fixtures)은 범위 밖이다.
-      - name: 문서 형식 검사 (목록 줄바꿈·음슴체)
-        run: |
-          files=$(git ls-files 'docs/*.md' README.md CHANGELOG.md 'drafts/*.md')
-          echo "검사 대상 .md $(echo "$files" | wc -l)개"
-          PYTHONPATH=base/hooks python3 base/hooks/format_check.py scan md $files
 
       # Rocky Linux 8 기본 파이썬이 3.6이라 훅·도구에 3.7 이상 전용 기능이 들어오면 막는다(Issue #219).
       # 스킬 스크립트(live.py·usage.py)는 3.7 전용 호출이 있고 3.6에서 건너뛰도록 처리돼 있어 대상에서 뺀다(docs/testing.md).

@@ -34,6 +34,19 @@ done < <(grep -oE '^(claude-md|skills|scripts|vscode|drafts|docs|\.claude|\.gith
 PY=""; for c in python3 python; do p="$(command -v "${c}" 2>/dev/null)" && "${p}" -c 'import sys' >/dev/null 2>&1 && { PY="${p}"; break; }; done
 if [[ -n "${PY}" ]]; then "${PY}" tools/check-doc-sync.py || fail=1; else echo "skip doc-sync: python 없음"; fi
 
+# 문서 형식 검사(Issue #274): 목록 줄바꿈·번호 인접·음슴체. 저장 훅(md-format-check)은 Edit·Write만 보므로 Bash로 쓴 수정과 기존 위반을 여기서 잡는다(Issue #261)
+# 훅과 같은 판정 코드를 쓴다. 음슴체 규칙이 적용되는 문서만 보고, 지침 문서(skills·rules)와 시험 파일(test-fixtures)은 범위 밖이다. 대상 목록은 이 스크립트가 유일한 정의다(lint.yml은 이 스크립트를 부름)
+fmt_files=()
+while IFS= read -r f; do [[ -n "${f}" ]] && fmt_files+=("${f}"); done < <(git ls-files 'docs/*.md' README.md CHANGELOG.md 'drafts/*.md')
+echo "형식 검사 대상 .md ${#fmt_files[@]}개"
+if [[ "${#fmt_files[@]}" -eq 0 ]]; then
+  echo "형식 검사 대상 0개: 통과가 아니라 미검증"; fail=1
+elif [[ -n "${PY}" ]]; then
+  PYTHONPATH=base/hooks "${PY}" base/hooks/format_check.py scan md "${fmt_files[@]}" || fail=1
+else
+  echo "형식 검사 불가: python 없음"; fail=1
+fi
+
 echo "검사한 줄 수 상한 파일: ${checked}개"
 [[ "${checked}" -gt 0 ]] || { echo "검사 대상 0개: 통과가 아니라 미검증"; fail=1; }
 
